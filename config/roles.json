@@ -1,0 +1,291 @@
+{
+  "roles": [
+    {
+      "id": "admin",
+      "name": "系統管理員",
+      "description": "完全系統訪問權限",
+      "level": 10,
+      "permissions": [
+        "system:admin:full",
+        "user:manage:all",
+        "crawler:manage:all",
+        "data:manage:all",
+        "logs:view:all",
+        "settings:modify:all",
+        "api:access:all",
+        "reports:generate:all",
+        "scheduler:manage:all",
+        "proxy:manage:all"
+      ]
+    },
+    {
+      "id": "developer",
+      "name": "開發者",
+      "description": "爬蟲開發和管理權限",
+      "level": 7,
+      "permissions": [
+        "crawler:create",
+        "crawler:edit",
+        "crawler:delete",
+        "crawler:test",
+        "data:view",
+        "data:export:own",
+        "logs:view:own",
+        "api:docs:view",
+        "scheduler:create",
+        "settings:view"
+      ]
+    },
+    {
+      "id": "analyst",
+      "name": "數據分析員",
+      "description": "數據分析和報表權限",
+      "level": 5,
+      "permissions": [
+        "data:view",
+        "data:export",
+        "data:analyze",
+        "reports:create",
+        "reports:view:all",
+        "data:clean:read",
+        "logs:view:critical",
+        "settings:view"
+      ]
+    },
+    {
+      "id": "operator",
+      "name": "運營維護員",
+      "description": "系統運營和維護權限",
+      "level": 6,
+      "permissions": [
+        "crawler:execute",
+        "crawler:monitor",
+        "scheduler:manage",
+        "logs:view:all",
+        "data:view",
+        "data:backup",
+        "settings:modify:basic",
+        "proxy:monitor",
+        "system:health:view"
+      ]
+    },
+    {
+      "id": "viewer",
+      "name": "觀察者",
+      "description": "唯讀存取權限",
+      "level": 2,
+      "permissions": [
+        "data:view",
+        "reports:view:public",
+        "logs:view:basic",
+        "crawler:view:status",
+        "settings:view",
+        "dashboard:view"
+      ]
+    },
+    {
+      "id": "guest",
+      "name": "訪客",
+      "description": "有限的基本訪問權限",
+      "level": 1,
+      "permissions": [
+        "dashboard:view",
+        "api:docs:view",
+        "settings:view:basic"
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "code": "system:admin:full",
+      "name": "系統完整管理權限",
+      "description": "完全系統管理權限",
+      "category": "system",
+      "level": "critical"
+    },
+    {
+      "code": "user:manage:all",
+      "name": "用戶管理",
+      "description": "創建、編輯、刪除用戶帳號",
+      "category": "user",
+      "level": "critical"
+    },
+    {
+      "code": "crawler:create",
+      "name": "創建爬蟲",
+      "description": "創建新的爬蟲任務配置",
+      "category": "crawler",
+      "level": "high"
+    },
+    {
+      "code": "crawler:edit",
+      "name": "編輯爬蟲",
+      "description": "修改爬蟲任務配置",
+      "category": "crawler",
+      "level": "high"
+    },
+    {
+      "code": "crawler:delete",
+      "name": "刪除爬蟲",
+      "description": "刪除爬蟲任務",
+      "category": "crawler",
+      "level": "critical"
+    },
+    {
+      "code": "crawler:execute",
+      "name": "執行爬蟲",
+      "description": "手動觸發爬蟲任務執行",
+      "category": "crawler",
+      "level": "high"
+    },
+    {
+      "code": "crawler:monitor",
+      "name": "監控爬蟲",
+      "description": "查看爬蟲執行狀態和日誌",
+      "category": "crawler",
+      "level": "medium"
+    },
+    {
+      "code": "data:view",
+      "name": "查看數據",
+      "description": "瀏覽爬取的數據",
+      "category": "data",
+      "level": "medium"
+    },
+    {
+      "code": "data:export",
+      "name": "導出數據",
+      "description": "導出數據到各種格式",
+      "category": "data",
+      "level": "high"
+    },
+    {
+      "code": "data:delete",
+      "name": "刪除數據",
+      "description": "刪除爬取的數據",
+      "category": "data",
+      "level": "critical"
+    },
+    {
+      "code": "data:clean",
+      "name": "數據清理",
+      "description": "執行數據清理任務",
+      "category": "data",
+      "level": "high"
+    },
+    {
+      "code": "logs:view:all",
+      "name": "查看全部日誌",
+      "description": "查看系統所有級別的日誌",
+      "category": "logs",
+      "level": "high"
+    },
+    {
+      "code": "logs:view:critical",
+      "name": "查看關鍵日誌",
+      "description": "查看錯誤和關鍵日誌信息",
+      "category": "logs",
+      "level": "medium"
+    },
+    {
+      "code": "scheduler:manage",
+      "name": "排程管理",
+      "description": "管理任務排程設置",
+      "category": "scheduler",
+      "level": "high"
+    },
+    {
+      "code": "settings:modify:all",
+      "name": "修改系統設定",
+      "description": "修改所有系統配置",
+      "category": "settings",
+      "level": "critical"
+    },
+    {
+      "code": "settings:view",
+      "name": "查看設定",
+      "description": "查看系統設定",
+      "category": "settings",
+      "level": "low"
+    },
+    {
+      "code": "proxy:manage",
+      "name": "代理管理",
+      "description": "管理代理池設置",
+      "category": "proxy",
+      "level": "high"
+    },
+    {
+      "code": "reports:create",
+      "name": "創建報表",
+      "description": "生成數據分析報表",
+      "category": "reports",
+      "level": "medium"
+    },
+    {
+      "code": "api:access:all",
+      "name": "API 全部訪問",
+      "description": "訪問所有 API 端點",
+      "category": "api",
+      "level": "critical"
+    }
+  ],
+  "resources": [
+    {
+      "id": "dashboard",
+      "name": "儀表板",
+      "type": "page",
+      "actions": ["view"]
+    },
+    {
+      "id": "crawler_editor",
+      "name": "爬蟲編輯器",
+      "type": "page",
+      "actions": ["view", "create", "edit", "delete", "execute"]
+    },
+    {
+      "id": "data_viewer",
+      "name": "數據查看器",
+      "type": "page",
+      "actions": ["view", "export", "delete"]
+    },
+    {
+      "id": "user_manager",
+      "name": "用戶管理",
+      "type": "page",
+      "actions": ["view", "create", "edit", "delete"]
+    },
+    {
+      "id": "system_logs",
+      "name": "系統日誌",
+      "type": "page",
+      "actions": ["view", "export"]
+    },
+    {
+      "id": "settings",
+      "name": "系統設定",
+      "type": "page",
+      "actions": ["view", "modify"]
+    },
+    {
+      "id": "api_endpoints",
+      "name": "API 端點",
+      "type": "api",
+      "actions": ["get", "post", "put", "delete"]
+    }
+  ],
+  "security_policies": {
+    "password_requirements": {
+      "min_length": 8,
+      "require_uppercase": true,
+      "require_lowercase": true,
+      "require_numbers": true,
+      "require_symbols": false
+    },
+    "session_timeout": 3600,
+    "max_login_attempts": 5,
+    "lockout_duration": 900,
+    "audit_log_retention": 90,
+    "access_review_period": 90
+  }
+}

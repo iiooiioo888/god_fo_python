@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用戶管理 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="#crawler" class="hover:text-indigo-200 transition">爬蟲管理</a>
+                <a href="#queue" class="hover:text-indigo-200 transition">任務隊列</a>
+                <a href="#data" class="hover:text-indigo-200 transition">數據預覽</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition text-white font-semibold">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">用戶管理</h2>
+            <p class="text-gray-600">管理用戶帳號、權限和角色分配</p>
+        </div>
+
+        <!-- User Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i data-feather="users" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">總用戶數</p>
+                        <h3 class="text-2xl font-bold text-blue-600">47</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i data-feather="user-check" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">活躍用戶</p>
+                        <h3 class="text-2xl font-bold text-green-600">42</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i data-feather="user-plus" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">新用戶</p>
+                        <h3 class="text-2xl font-bold text-yellow-600">5</h3>
+                        <p class="text-xs text-gray-500 mt-1">本月</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i data-feather="user-x" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">停權用戶</p>
+                        <h3 class="text-2xl font-bold text-red-600">3</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- User List -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-lg font-medium text-gray-900">用戶列表</h3>
+                        <div class="flex space-x-3">
+                            <input type="text" placeholder="搜索用戶..." class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <button id="addUserBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm flex items-center">
+                                <i data-feather="user-plus" class="w-4 h-4 mr-1"></i>
+                                新增用戶
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">用戶信息</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">角色</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">狀態</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">最後登錄</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTable" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <img src="https://static.photos/people/200x200/1" alt="User" class="w-10 h-10 rounded-full mr-3">
+                                            <div>
+                                                <p class="font-medium text-gray-900">張三</p>
+                                                <p class="text-gray-500 text-xs">zhang.san@company.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">管理員</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                                    </td>
+                                    <td class="py-4 px-4 text-gray-600">2023-12-01 09:15</td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-2">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-sm">編輯</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-sm">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <img src="https://static.photos/people/200x200/2" alt="User" class="w-10 h-10 rounded-full mr-3">
+                                            <div>
+                                                <p class="font-medium text-gray-900">李四</p>
+                                                <p class="text-gray-500 text-xs">li.si@company.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">開發者</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                                    </td>
+                                    <td class="py-4 px-4 text-gray-600">2023-11-28 14:22</td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-2">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-sm">編輯</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-sm">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <img src="https://static.photos/people/200x200/3" alt="User" class="w-10 h-10 rounded-full mr-3">
+                                            <div>
+                                                <p class="font-medium text-gray-900">王五</p>
+                                                <p class="text-gray-500 text-xs">wang.wu@company.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">分析員</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">未激活</span>
+                                    </td>
+                                    <td class="py-4 px-4 text-gray-600">從未登錄</td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-2">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-sm">激活</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-sm">查看</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+                <!-- Role Distribution -->
+                <section class="bg-white rounded-lg shadow p-6">
+                    <h4 class="font-medium text-gray-900 mb-4">角色分佈</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">管理員</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium mr-2">2</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 5%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">開發者</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium mr-2">8</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 25%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">分析員</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium mr-2">15</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">觀察者</span>
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium mr-2">22</span>
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 67%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="bg-white rounded-lg shadow p-6">
+                    <h4 class="font-medium text-gray-900 mb-4">快速操作</h4>
+                    <div class="space-y-3">
+                        <button id="manageRolesBtn" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition flex items-center justify-center">
+                            <i data-feather="shield" class="w-4 h-4 mr-2"></i>
+                            權限配置
+                        </button>
+                        <button id="addUserBtn" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition flex items-center justify-center">
+                            <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
+                            新增用戶
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Permissions -->
+                <section class="bg-white rounded-lg shadow p-6">
+                    <h4 class="font-medium text-gray-900 mb-4">權限管理</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">系統設定</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">用戶管理</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">數據導出</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">爬蟲管理</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">系統監控</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Activity Log -->
+                <section class="bg-white rounded-lg shadow p-6">
+                    <h4 class="font-medium text-gray-900 mb-4">近期活動</h4>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <p class="text-gray-900"><span class="font-medium">張三</span> 修改了李四的權限</p>
+                            <p class="text-gray-500 text-xs">2 小時前</p>
+                        </div>
+                        <div class="text-sm">
+                            <p class="text-gray-900"><span class="font-medium">王五</span> 註冊了新帳號</p>
+                            <p class="text-gray-500 text-xs">4 小時前</p>
+                        </div>
+                        <div class="text-sm">
+                            <p class="text-gray-900"><span class="font-medium">趙六</span> 被停權</p>
+                            <p class="text-gray-500 text-xs">1 天前</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">新增用戶</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <form id="addUserForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用戶名</label>
+                        <input type="text" name="username" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
+                        <input type="email" name="email" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">角色</label>
+                        <select name="role" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            <option value="observer">觀察者</option>
+                            <option value="analyst">分析員</option>
+                            <option value="developer">開發者</option>
+                            <option value="admin">管理員</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">部門</label>
+                        <select name="department" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">選擇部門</option>
+                            <option value="engineering">工程部</option>
+                            <option value="analytics">分析部</option>
+                            <option value="management">管理部</option>
+                            <option value="operations">運營部</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" name="sendInvitation" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                        <label class="ml-2 text-sm text-gray-700">發送邀請郵件</label>
+                    </div>
+                </form>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button id="cancelAddUserBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        取消
+                    </button>
+                    <button type="submit" form="addUserForm" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
+                        創建用戶
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RBAC Role Management Modal -->
+    <div id="roleManagementModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-4/5 max-w-5xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-medium text-gray-900 flex items-center">
+                        <i data-feather="shield" class="w-6 h-6 mr-2 text-indigo-600"></i>
+                        RBAC 權限管理系統
+                    </h3>
+                    <button id="closeRoleModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Roles Selection -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h4 class="text-lg font-medium text-gray-900 mb-4">角色配置</h4>
+                        <div id="rolesList" class="space-y-3">
+                            <!-- Roles will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Permissions Configuration -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h4 class="text-lg font-medium text-gray-900 mb-4" id="selectedRoleName">選擇一個角色以配置權限</h4>
+                        <div id="permissionsConfig" class="space-y-4">
+                            <!-- Permissions will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+                    <div class="text-sm text-gray-600">
+                        <p class="flex items-center">
+                            <i data-feather="info" class="w-4 h-4 mr-1"></i>
+                            RBAC 權限控制系統 - 遵循最小權限原則
+                        </p>
+                        <p class="mt-1 text-xs">所有權限變更將自動記錄到審計日誌</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button id="resetPermissionsBtn" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                            重置為默認
+                        </button>
+                        <button id="savePermissionsBtn" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" disabled>
+                            保存權限配置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // RBAC權限管理系統
+        class RBACManager {
+            constructor() {
+                this.roles = [];
+                this.permissions = [];
+                this.selectedRole = null;
+                this.rolePermissions = {};
+            }
+
+            async loadRolesData() {
+                try {
+                    // 在真實應用中這應該是API調用
+                    // fetch('/api/rbac/roles').then(res => res.json()).then(data => {
+                    //     this.roles = data.roles;
+                    //     this.permissions = data.permissions;
+                    //     this.renderRolesList();
+                    // });
+
+                    // 模擬加載角色數據 (從 roles.json)
+                    const response = await fetch('config/roles.json');
+                    const data = await response.json();
+
+                    this.roles = data.roles;
+                    this.permissions = data.permissions;
+
+                    // 初始化角色權限映射
+                    this.roles.forEach(role => {
+                        this.rolePermissions[role.id] = role.permissions;
+                    });
+
+                    this.renderRolesList();
+                } catch (error) {
+                    console.error('Failed to load roles data:', error);
+                    // 使用默認數據作為備用
+                    this.loadDefaultData();
+                }
+            }
+
+            loadDefaultData() {
+                this.roles = [
+                    { id: 'admin', name: '系統管理員', description: '完全系統訪問權限', level: 10 },
+                    { id: 'developer', name: '開發者', description: '爬蟲開發和管理權限', level: 7 },
+                    { id: 'analyst', name: '數據分析員', description: '數據分析和報表權限', level: 5 },
+                    { id: 'operator', name: '運營維護員', description: '系統運營和維護權限', level: 6 },
+                    { id: 'viewer', name: '觀察者', description: '唯讀存取權限', level: 2 },
+                    { id: 'guest', name: '訪客', description: '有限的基本訪問權限', level: 1 }
+                ];
+
+                this.permissions = [
+                    { code: 'user:manage:all', name: '用戶管理', category: 'user', level: 'critical' },
+                    { code: 'crawler:create', name: '創建爬蟲', category: 'crawler', level: 'high' },
+                    { code: 'data:view', name: '查看數據', category: 'data', level: 'medium' },
+                    { code: 'settings:modify:all', name: '修改系統設定', category: 'settings', level: 'critical' }
+                ];
+
+                this.renderRolesList();
+            }
+
+            renderRolesList() {
+                const rolesList = document.getElementById('rolesList');
+                rolesList.innerHTML = '';
+
+                this.roles.forEach(role => {
+                    const roleDiv = document.createElement('div');
+                    roleDiv.className = 'role-item flex items-center justify-between p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-indigo-300 hover:bg-indigo-50';
+                    roleDiv.dataset.roleId = role.id;
+
+                    roleDiv.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 rounded-full bg-indigo-500"></div>
+                            <div>
+                                <h5 class="font-medium text-gray-900">${role.name}</h5>
+                                <p class="text-sm text-gray-600">${role.description}</p>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            級別 ${role.level}
+                        </div>
+                    `;
+
+                    roleDiv.addEventListener('click', () => this.selectRole(role.id));
+                    rolesList.appendChild(roleDiv);
+                });
+            }
+
+            selectRole(roleId) {
+                this.selectedRole = roleId;
+                const selectedRole = this.roles.find(r => r.id === roleId);
+
+                // 更新UI
+                document.querySelectorAll('#rolesList .role-item').forEach(item => {
+                    item.classList.remove('border-indigo-500', 'bg-indigo-50');
+                });
+                document.querySelector(`[data-role-id="${roleId}"]`).classList.add('border-indigo-500', 'bg-indigo-50');
+
+                // 顯示選擇的角色權限
+                document.getElementById('selectedRoleName').textContent = `${selectedRole.name} 權限配置`;
+                this.renderPermissions(selectedRole);
+
+                // 啟用保存按鈕
+                document.getElementById('savePermissionsBtn').disabled = false;
+            }
+
+            renderPermissions(selectedRole) {
+                const permissionsConfig = document.getElementById('permissionsConfig');
+                permissionsConfig.innerHTML = '';
+
+                const categories = {
+                    'system': { name: '系統管理', icon: 'settings', color: 'red' },
+                    'user': { name: '用戶管理', icon: 'users', color: 'blue' },
+                    'crawler': { name: '爬蟲管理', icon: 'globe', color: 'green' },
+                    'data': { name: '數據管理', icon: 'database', color: 'purple' },
+                    'logs': { name: '日誌管理', icon: 'file-text', color: 'yellow' },
+                    'settings': { name: '設定管理', icon: 'settings', color: 'gray' },
+                    'api': { name: 'API 訪問', icon: 'cloud', color: 'indigo' },
+                    'reports': { name: '報表管理', icon: 'bar-chart', color: 'pink' },
+                    'scheduler': { name: '任務排程', icon: 'clock', color: 'cyan' },
+                    'proxy': { name: '代理管理', icon: 'shield', color: 'orange' }
+                };
+
+                const groupedPermissions = {};
+                this.permissions.forEach(perm => {
+                    if (!groupedPermissions[perm.category]) {
+                        groupedPermissions[perm.category] = [];
+                    }
+                    groupedPermissions[perm.category].push(perm);
+                });
+
+                Object.keys(groupedPermissions).forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'border border-gray-200 rounded-lg p-4 mb-4';
+
+                    const categoryInfo = categories[category] || { name: category, icon: 'circle', color: 'gray' };
+                    const currentPermissions = this.rolePermissions[this.selectedRole] || [];
+
+                    categoryDiv.innerHTML = `
+                        <div class="flex items-center justify-between mb-3">
+                            <h5 class="font-medium text-gray-900 flex items-center">
+                                <i data-feather="${categoryInfo.icon}" class="w-4 h-4 mr-2 text-${categoryInfo.color}-600"></i>
+                                ${categoryInfo.name}
+                            </h5>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2" id="permissions-${category}">
+                        </div>
+                    `;
+
+                    const permContainer = categoryDiv.querySelector(`#permissions-${category}`);
+                    groupedPermissions[category].forEach(perm => {
+                        const hasPermission = currentPermissions.includes(perm.code);
+                        const permDiv = document.createElement('div');
+                        permDiv.className = 'flex items-center justify-between py-2 px-3 rounded border';
+
+                        const levelColors = {
+                            'low': 'text-green-600',
+                            'medium': 'text-yellow-600',
+                            'high': 'text-orange-600',
+                            'critical': 'text-red-600'
+                        };
+
+                        permDiv.innerHTML = `
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="permission-checkbox" data-permission="${perm.code}" ${hasPermission ? 'checked' : ''}>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-900">${perm.name}</span>
+                                    <span class="text-xs ${levelColors[perm.level] || 'text-gray-500'} ml-2">${perm.level}</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-500">${perm.description}</div>
+                        `;
+
+                        permDiv.querySelector('.permission-checkbox').addEventListener('change', (e) => {
+                            this.updatePermission(this.selectedRole, perm.code, e.target.checked);
+                        });
+
+                        permContainer.appendChild(permDiv);
+                    });
+
+                    permissionsConfig.appendChild(categoryDiv);
+                });
+
+                // 重新初始化Feather圖標
+                if (typeof feather !== 'undefined') {
+                    feather.replace();
+                }
+            }
+
+            updatePermission(roleId, permissionCode, enabled) {
+                if (!this.rolePermissions[roleId]) {
+                    this.rolePermissions[roleId] = [];
+                }
+
+                if (enabled) {
+                    if (!this.rolePermissions[roleId].includes(permissionCode)) {
+                        this.rolePermissions[roleId].push(permissionCode);
+                    }
+                } else {
+                    this.rolePermissions[roleId] = this.rolePermissions[roleId].filter(p => p !== permissionCode);
+                }
+            }
+
+            async savePermissions() {
+                const saveBtn = document.getElementById('savePermissionsBtn');
+                const originalText = saveBtn.textContent;
+
+                try {
+                    saveBtn.textContent = '保存中...';
+                    saveBtn.disabled = true;
+
+                    // 在真實應用中這應該是API調用
+                    // await fetch('/api/rbac/roles/' + this.selectedRole, {
+                    //     method: 'PATCH',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ permissions: this.rolePermissions[this.selectedRole] })
+                    // });
+
+                    // 模擬API調用延遲
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    alert(`角色 "${this.selectedRole}" 的權限配置已保存！\n\n修改的權限: ${this.rolePermissions[this.selectedRole].join(', ')}\n\n此變更已記錄到審計日誌。`);
+
+                    // 隱藏模態框
+                    document.getElementById('roleManagementModal').classList.add('hidden');
+
+                } catch (error) {
+                    alert('保存失敗，請重試：' + error.message);
+                } finally {
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                }
+            }
+
+            resetToDefault() {
+                if (confirm('確定要將權限重置為默認設定嗎？這將丟失所有自定義權限配置。')) {
+                    // 重新加載默認權限配置
+                    this.loadRolesData();
+                    alert('權限已重置為默認設定');
+                }
+            }
+        }
+
+        // 用戶管理頁面腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化 Feathers 圖標
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+
+            // 初始化RBAC管理器
+            const rbacManager = new RBACManager();
+
+            // 權限配置按鈕
+            const manageRolesBtn = document.getElementById('manageRolesBtn');
+            const closeRoleModalBtn = document.getElementById('closeRoleModalBtn');
+            const savePermissionsBtn = document.getElementById('savePermissionsBtn');
+            const resetPermissionsBtn = document.getElementById('resetPermissionsBtn');
+
+            manageRolesBtn.addEventListener('click', async function() {
+                await rbacManager.loadRolesData();
+                document.getElementById('roleManagementModal').classList.remove('hidden');
+            });
+
+            closeRoleModalBtn.addEventListener('click', function() {
+                document.getElementById('roleManagementModal').classList.add('hidden');
+            });
+
+            savePermissionsBtn.addEventListener('click', function() {
+                rbacManager.savePermissions();
+            });
+
+            resetPermissionsBtn.addEventListener('click', function() {
+                rbacManager.resetToDefault();
+            });
+
+            // 新增用戶按鈕
+            const addUserBtn = document.querySelectorAll('#addUserBtn')[1]; // 使用第二個按鈕（侧邊欄的）
+            const addUserModal = document.getElementById('addUserModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelAddUserBtn = document.getElementById('cancelAddUserBtn');
+
+            addUserBtn.addEventListener('click', function() {
+                addUserModal.classList.remove('hidden');
+            });
+
+            closeModalBtn.addEventListener('click', function() {
+                addUserModal.classList.add('hidden');
+            });
+
+            cancelAddUserBtn.addEventListener('click', function() {
+                addUserModal.classList.add('hidden');
+            });
+
+            // 新增用戶表單提交
+            document.getElementById('addUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const userData = Object.fromEntries(formData.entries());
+
+                alert(`用戶 "${userData.username}" 創建成功！邀請郵件已發送至 ${userData.email}`);
+
+                // 添加到用戶列表
+                addUserToTable(userData);
+
+                // 關閉模態框並重置表單
+                addUserModal.classList.add('hidden');
+                this.reset();
+            });
+
+            // 用戶操作按鈕
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('button:has-text("編輯")')) {
+                    // 編輯用戶邏輯
+                    alert('編輯功能即將實現...');
+                } else if (e.target.matches('button:has-text("查看")')) {
+                    // 查看用戶詳情邏輯
+                    alert('查看詳情功能即將實現...');
+                } else if (e.target.matches('button:has-text("激活")')) {
+                    // 激活用戶邏輯
+                    e.target.closest('tr').cells[2].innerHTML = '<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>';
+                    e.target.textContent = '編輯';
+                    alert('用戶已成功激活！');
+                }
+            });
+        });
+
+        function addUserToTable(userData) {
+            const userTable = document.getElementById('userTable');
+            const newRow = document.createElement('tr');
+
+            // 決定角色標籤樣式
+            const roleStyles = {
+                admin: 'bg-red-100 text-red-800',
+                developer: 'bg-blue-100 text-blue-800',
+                analyst: 'bg-purple-100 text-purple-800',
+                observer: 'bg-green-100 text-green-800'
+            };
+
+            const roleStyle = roleStyles[userData.role] || 'bg-gray-100 text-gray-800';
+
+            newRow.innerHTML = `
+                <td class="py-4 px-4">
+                    <div class="flex items-center">
+                        <img src="https://static.photos/people/200x200/${Math.floor(Math.random()*20)+1}" alt="User" class="w-10 h-10 rounded-full mr-3">
+                        <div>
+                            <p class="font-medium text-gray-900">${userData.username}</p>
+                            <p class="text-gray-500 text-xs">${userData.email}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="py-4 px-4">
+                    <span class="px-2 py-1 ${roleStyle} text-xs rounded-full">${getRoleName(userData.role)}</span>
+                </td>
+                <td class="py-4 px-4">
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">待激活</span>
+                </td>
+                <td class="py-4 px-4 text-gray-600">從未登錄</td>
+                <td class="py-4 px-4">
+                    <div class="flex space-x-2">
+                        <button class="text-indigo-600 hover:text-indigo-800 text-sm">編輯</button>
+                        <button class="text-gray-500 hover:text-gray-700 text-sm">查看</button>
+                    </div>
+                </td>
+            `;
+
+            userTable.appendChild(newRow);
+        }
+
+        function getRoleName(roleValue) {
+            const roleNames = {
+                admin: '管理員',
+                developer: '開發者',
+                analyst: '分析員',
+                observer: '觀察者'
+            };
+            return roleNames[roleValue] || roleValue;
+        }
+    </script>
+</body>
+</html>

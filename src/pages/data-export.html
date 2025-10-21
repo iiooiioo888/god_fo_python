@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數據導出 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="crawler-editor.html" class="hover:text-indigo-200 transition">爬蟲管理</a>
+                <a href="task-scheduler.html" class="hover:text-indigo-200 transition">任務排程</a>
+                <a href="data-analytics.html" class="hover:text-indigo-200 transition text-white font-semibold">數據分析</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">數據導出</h2>
+            <p class="text-gray-600">將爬取的數據導出為多種格式，支持文件壓縮和批量處理</p>
+        </div>
+
+        <!-- Export Configuration -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">導出配置</h3>
+            </div>
+            <div class="p-6">
+                <form id="exportForm" class="space-y-6">
+                    <!-- Data Selection -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">數據來源</label>
+                            <select name="dataSource" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="all">全部數據</option>
+                                <option value="ecommerce">電商數據</option>
+                                <option value="news">新聞數據</option>
+                                <option value="social">社交數據</option>
+                                <option value="weibo">微博數據</option>
+                                <option value="zhihu">知乎數據</option>
+                                <option value="douban">豆瓣數據</option>
+                                <option value="taobao">淘寶數據</option>
+                                <option value="jd">京東數據</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">數據類型</label>
+                            <select name="dataType" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="raw">原始數據</option>
+                                <option value="processed">處理後數據</option>
+                                <option value="filtered">已過濾數據</option>
+                                <option value="analysed">已分析數據</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">日期範圍</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <input type="date" name="startDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="text-xs text-gray-500 mt-1 block">開始日期</label>
+                            </div>
+                            <div>
+                                <input type="date" name="endDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <label class="text-xs text-gray-500 mt-1 block">結束日期</label>
+                            </div>
+                            <div class="flex items-end">
+                                <button type="button" id="datePresetBtn" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition flex items-center">
+                                    <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
+                                    快速選擇
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Options -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <h4 class="text-base font-medium text-gray-900 mb-4">導出選項</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Format Selection -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">導出格式 *</label>
+                                <div class="space-y-3">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="format" value="json" class="text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-sm">JSON (<code class="text-xs bg-gray-100 px-1 rounded">*.json</code>)</span>
+                                        <span class="ml-2 text-xs text-gray-500">推薦用於API集成</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="format" value="csv" class="text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-sm">CSV (<code class="text-xs bg-gray-100 px-1 rounded">*.csv</code>)</span>
+                                        <span class="ml-2 text-xs text-gray-500">適合Excel打開</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="format" value="excel" class="text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-sm">Excel (<code class="text-xs bg-gray-100 px-1 rounded">*.xlsx</code>)</span>
+                                        <span class="ml-2 text-xs text-gray-500">支援多表和工作簿</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="format" value="xml" class="text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-sm">XML (<code class="text-xs bg-gray-100 px-1 rounded">*.xml</code>)</span>
+                                        <span class="ml-2 text-xs text-gray-500">結構化數據格式</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Additional Options -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">附加選項</label>
+                                <div class="space-y-3">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="compression" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-sm">壓縮文件 (ZIP)</span>
+                                        <span class="ml-2 text-xs text-gray-500">減少文件大小</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="splitFiles" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-sm">分割大文件</span>
+                                        <span class="ml-2 text-xs text-gray-500">單個文件不超過100MB</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="encode" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-sm">UTF-8編碼</span>
+                                        <span class="ml-2 text-xs text-gray-500">確保中文字正確顯示</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="headers" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-sm">包含列標題</span>
+                                        <span class="ml-2 text-xs text-gray-500">CSV格式適用</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Fields -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">自定義字段（可選）</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">包含字段（逗號分隔）</label>
+                                <input
+                                    type="text"
+                                    name="includeFields"
+                                    placeholder="id, title, content, author, date"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">排除字段（逗號分隔）</label>
+                                <input
+                                    type="text"
+                                    name="excludeFields"
+                                    placeholder="raw_html, metadata"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Button -->
+                    <div class="flex justify-end pt-6 border-t border-gray-200">
+                        <div class="flex space-x-3">
+                            <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                                設置預設值
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition flex items-center">
+                                <i data-feather="download" class="w-4 h-4 mr-2"></i>
+                                開始導出
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Export History -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium text-gray-900">導出歷史</h3>
+                <button class="px-4 py-2 text-indigo-600 hover:text-indigo-800 transition text-sm">
+                    <i data-feather="refresh-cw" class="w-4 h-4 inline mr-1"></i>
+                    刷新
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">任務名稱</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">數據來源</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">記錄數</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">文件大小</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">格式</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">狀態</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">開始時間</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-900">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exportHistory" class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="py-3 px-4">電商商品數據-121月</td>
+                            <td class="py-3 px-4">電商數據</td>
+                            <td class="py-3 px-4">15,247</td>
+                            <td class="py-3 px-4">45.2 MB</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">JSON</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="py-3 px-4">2023-12-01 14:30</td>
+                            <td class="py-3 px-4">
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm mr-3">下載</button>
+                                <button class="text-gray-500 hover:text-gray-700 text-sm">刪除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4">新聞數據匯總-Q4</td>
+                            <td class="py-3 px-4">新聞數據</td>
+                            <td class="py-3 px-4">8,932</td>
+                            <td class="py-3 px-4">28.7 MB</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">CSV</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">處理中</span>
+                            </td>
+                            <td class="py-3 px-4">2023-12-01 15:15</td>
+                            <td class="py-3 px-4">
+                                <button class="text-gray-500 text-sm mr-3 cursor-not-allowed" disabled>等待中</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4">微博情感分析數據-本月</td>
+                            <td class="py-3 px-4">社交數據</td>
+                            <td class="py-3 px-4">22,156</td>
+                            <td class="py-3 px-4">78.3 MB</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded">Excel</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">失敗</span>
+                            </td>
+                            <td class="py-3 px-4">2023-12-01 13:45</td>
+                            <td class="py-3 px-4">
+                                <button class="text-red-600 hover:text-red-800 text-sm mr-3">重試</button>
+                                <button class="text-gray-500 hover:text-gray-700 text-sm">刪除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Export Templates -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition cursor-pointer border-2 border-transparent hover:border-indigo-300">
+                <div class="w-12 h-12 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i data-feather="shopping-cart" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-2">電商數據模板</h4>
+                <p class="text-sm text-gray-600 mb-3">商品資料、價格、評價</p>
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-md transition">
+                    立即使用
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition cursor-pointer border-2 border-transparent hover:border-indigo-300">
+                <div class="w-12 h-12 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-feather="file-text" class="w-6 h-6 text-green-600"></i>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-2">新聞內容模板</h4>
+                <p class="text-sm text-gray-600 mb-3">標題、內容、作者、時間</p>
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-md transition">
+                    立即使用
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition cursor-pointer border-2 border-transparent hover:border-indigo-300">
+                <div class="w-12 h-12 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i data-feather="users" class="w-6 h-6 text-purple-600"></i>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-2">社交媒體模板</h4>
+                <p class="text-sm text-gray-600 mb-3">貼文、用戶、互動數據</p>
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-md transition">
+                    立即使用
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition cursor-pointer border-2 border-transparent hover:border-indigo-300">
+                <div class="w-12 h-12 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i data-feather="bar-chart-3" class="w-6 h-6 text-orange-600"></i>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-2">分析報表模板</h4>
+                <p class="text-sm text-gray-600 mb-3">統計數據、趨勢分析</p>
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-md transition">
+                    立即使用
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 數據導出頁面腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化 Feathers 圖標
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+
+            // 日期範圍快速選擇
+            const datePresetBtn = document.getElementById('datePresetBtn');
+            const startDateInput = document.querySelector('input[name="startDate"]');
+            const endDateInput = document.querySelector('input[name="endDate"]');
+
+            datePresetBtn.addEventListener('click', function() {
+                showDatePresets();
+            });
+
+            // 設置默認日期
+            setDefaultDates();
+
+            // 表單提交
+            document.getElementById('exportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // 收集表單數據
+                const formData = new FormData(this);
+                const exportConfig = Object.fromEntries(formData.entries());
+
+                // 驗證必要字段
+                if (!exportConfig.startDate || !exportConfig.endDate) {
+                    alert('請選擇日期範圍');
+                    return;
+                }
+
+                // 檢查選擇的格式
+                const selectedFormat = document.querySelector('input[name="format"]:checked');
+                if (!selectedFormat) {
+                    alert('請選擇導出格式');
+                    return;
+                }
+
+                alert(`開始導出 ${exportConfig.dataSource} 的數據...\n格式: ${selectedFormat.value.toUpperCase()}\n日期範圍: ${exportConfig.startDate} 到 ${exportConfig.endDate}`);
+
+                // 模擬導出進程
+                simulateExport();
+            });
+
+            // 模板卡片點擊
+            const templateCards = document.querySelectorAll('.template-card');
+            templateCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 移除其他卡片的高亮
+                    templateCards.forEach(c => {
+                        c.classList.remove('border-indigo-500', 'ring-2', 'ring-indigo-200');
+                    });
+
+                    // 高亮當前卡片
+                    this.classList.add('border-indigo-500', 'ring-2', 'ring-indigo-200');
+
+                    // 應用模板設定
+                    applyTemplate(this.dataset.template);
+                });
+            });
+        });
+
+        function setDefaultDates() {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 30);
+
+            document.querySelector('input[name="startDate"]').valueAsDate = startDate;
+            document.querySelector('input[name="endDate"]').valueAsDate = endDate;
+        }
+
+        function showDatePresets() {
+            const presets = [
+                { label: '今天', days: 0 },
+                { label: '昨天', days: 1 },
+                { label: '最近7天', days: 7 },
+                { label: '最近30天', days: 30 },
+                { label: '最近90天', days: 90 },
+                { label: '最近一年', days: 365 }
+            ];
+
+            // 創建下拉菜單
+            let presetHtml = '<div class="absolute top-12 left-0 bg-white border border-gray-300 rounded-md shadow-lg p-2 z-10" id="datePresetMenu">';
+            presets.forEach(preset => {
+                presetHtml += `<button class="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm" onclick="selectDatePreset(${preset.days})">${preset.label}</button>`;
+            });
+            presetHtml += '</div>';
+
+            // 移除現有菜單
+            const existingMenu = document.getElementById('datePresetMenu');
+            if (existingMenu) existingMenu.remove();
+
+            // 添加新菜單
+            document.getElementById('datePresetBtn').insertAdjacentHTML('afterend', presetHtml);
+
+            // 點擊外部關閉
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('#datePresetMenu') && !e.target.closest('#datePresetBtn')) {
+                    const menu = document.getElementById('datePresetMenu');
+                    if (menu) menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
+        function selectDatePreset(days) {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+
+            document.querySelector('input[name="startDate"]').valueAsDate = startDate;
+            document.querySelector('input[name="endDate"]').valueAsDate = endDate;
+
+            // 關閉菜單
+            const menu = document.getElementById('datePresetMenu');
+            if (menu) menu.remove();
+        }
+
+        function applyTemplate(template) {
+            const templateConfigs = {
+                ecommerce: {
+                    dataSource: 'ecommerce',
+                    format: 'json',
+                    fields: 'id,title,price,category,platform'
+                },
+                news: {
+                    dataSource: 'news',
+                    format: 'csv',
+                    fields: 'id,title,content,author,publish_date'
+                },
+                social: {
+                    dataSource: 'social',
+                    format: 'excel',
+                    fields: 'post_id,user,content,timestamp,likes,comments'
+                },
+                analytics: {
+                    dataSource: 'all',
+                    format: 'json',
+                    fields: 'metric,value,date,category'
+                }
+            };
+
+            const config = templateConfigs[template];
+            if (config) {
+                // 設置數據來源
+                document.querySelector('select[name="dataSource"]').value = config.dataSource;
+
+                // 設置格式
+                document.querySelector(`input[name="format"][value="${config.format}"]`).checked = true;
+
+                // 設置字段
+                document.querySelector('input[name="includeFields"]').value = config.fields;
+
+                alert(`已載入 ${template} 模板設定`);
+            }
+        }
+
+        function simulateExport() {
+            // 在真實應用中，這裡會向後端發送請求並監控進度
+            const button = document.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i data-feather="loader" class="w-4 h-4 mr-2 animate-spin"></i>導出中...';
+            button.disabled = true;
+
+            // 添加到歷史記錄
+            const historyTable = document.getElementById('exportHistory');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="py-3 px-4">自定義數據導出</td>
+                <td class="py-3 px-4">多來源</td>
+                <td class="py-3 px-4">-</td>
+                <td class="py-3 px-4">-</td>
+                <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">處理中</span></td>
+                <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">processing</span></td>
+                <td class="py-3 px-4">${new Date().toLocaleString()}</td>
+                <td class="py-3 px-4"><button class="text-gray-500 text-sm cursor-not-allowed" disabled>等待中</button></td>
+            `;
+            historyTable.insertBefore(newRow, historyTable.firstChild);
+
+            // 模擬完成
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+
+                // 更新狀態
+                newRow.cells[5].innerHTML = '<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>';
+                newRow.cells[2].innerHTML = '8,432';
+                newRow.cells[3].innerHTML = '24.7 MB';
+                newRow.cells[8].innerHTML = '<button class="text-indigo-600 hover:text-indigo-800 text-sm mr-3">下載</button><button class="text-gray-500 hover:text-gray-700 text-sm">刪除</button>';
+
+                alert('數據導出完成！請檢查下載連結。');
+                feather.replace();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

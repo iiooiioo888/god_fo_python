@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數據分析儀表板 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="#crawler" class="hover:text-indigo-200 transition">爬蟲管理</a>
+                <a href="#queue" class="hover:text-indigo-200 transition text-white font-semibold">數據預覽</a>
+                <a href="#data" class="text-indigo-200 transition">數據分析</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">數據分析儀表板</h2>
+            <p class="text-gray-600">深入分析您的爬取數據，發現洞察和趨勢</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">分析設定</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">數據源</label>
+                        <select id="dataSource" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">全部數據</option>
+                            <option value="ecommerce">電商數據</option>
+                            <option value="news">新聞數據</option>
+                            <option value="social">社交數據</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">時間範圍</label>
+                        <select id="timeRange" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="7days">最近7天</option>
+                            <option value="30days">最近30天</option>
+                            <option value="90days">最近90天</option>
+                            <option value="custom">自定義</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">分析類型</label>
+                        <select id="analysisType" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="overview">總覽統計</option>
+                            <option value="trend">趨勢分析</option>
+                            <option value="distribution">分佈分析</option>
+                            <option value="correlation">相關性分析</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button id="generateReportBtn" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition flex items-center justify-center">
+                            <i data-feather="bar-chart-2" class="w-4 h-4 mr-2"></i>
+                            生成報表
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">總數據量</p>
+                        <h3 class="text-2xl font-bold text-blue-600" id="totalRecords">125,847</h3>
+                        <p class="text-sm text-gray-500 mt-1"><span class="text-green-500">+12.5%</span> 較上週</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i data-feather="database" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">數據質量</p>
+                        <h3 class="text-2xl font-bold text-green-600" id="dataQuality">94.2%</h3>
+                        <p class="text-sm text-gray-500 mt-1"><span class="text-green-500">+2.1%</span> 較上週</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i data-feather="check-circle" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">更新頻率</p>
+                        <h3 class="text-2xl font-bold text-orange-600" id="updateFrequency">2.3 天</h3>
+                        <p class="text-sm text-gray-500 mt-1"><span class="text-red-500">-0.5天</span> 較上週</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                        <i data-feather="refresh-cw" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">重複率</p>
+                        <h3 class="text-2xl font-bold text-red-600" id="duplicateRate">3.1%</h3>
+                        <p class="text-sm text-gray-500 mt-1"><span class="text-green-500">-0.8%</span> 較上週</p>
+                    </div>
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i data-feather="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Data Growth Trend -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">數據增長趨勢</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="dataGrowthChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Data Sources Distribution -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">數據來源分佈</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="dataSourcesChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Categories Overview -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">類別分析</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="categoriesChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Quality Metrics -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">質量指標</h3>
+                </div>
+                <div class="p-6">
+                    <canvas id="qualityChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Top Keywords -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">熱門關鍵字</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-3" id="keywordList">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">人工智能</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">1,247</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">機器學習</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 72%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">892</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">大數據</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div class="bg-orange-600 h-2 rounded-full" style="width: 68%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">734</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">區塊鏈</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 64%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">651</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium">物聯網</span>
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 59%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">587</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Quality Issues -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">數據質量問題</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4" id="qualityIssues">
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i data-feather="x-circle" class="w-4 h-4 text-red-500 mr-2"></i>
+                                <span class="text-sm font-medium">缺失數據</span>
+                            </div>
+                            <span class="text-xs text-red-600 font-medium">3.2%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i data-feather="alert-circle" class="w-4 h-4 text-yellow-500 mr-2"></i>
+                                <span class="text-sm font-medium">格式錯誤</span>
+                            </div>
+                            <span class="text-xs text-yellow-600 font-medium">1.8%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i data-feather="info" class="w-4 h-4 text-blue-500 mr-2"></i>
+                                <span class="text-sm font-medium">重複數據</span>
+                            </div>
+                            <span class="text-xs text-blue-600 font-medium">2.1%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i data-feather="check-circle" class="w-4 h-4 text-green-500 mr-2"></i>
+                                <span class="text-sm font-medium">數據完整</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">94.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">近期活動</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4" id="recentActivity">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">新增 1,247 條電商數據記錄</p>
+                                <p class="text-xs text-gray-500">2 小時前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">數據清理任務完成</p>
+                                <p class="text-xs text-gray-500">4 小時前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">檢測到 156 條重複記錄</p>
+                                <p class="text-xs text-gray-500">6 小時前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">生成月度分析報表</p>
+                                <p class="text-xs text-gray-500">1 天前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">發現爬蟲數據格式錯誤</p>
+                                <p class="text-xs text-gray-500">2 天前</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="mt-8 bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">導出分析報表</h3>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-wrap gap-4">
+                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition flex items-center">
+                        <i data-feather="download" class="w-4 h-4 mr-2"></i>
+                        導出 PDF
+                    </button>
+                    <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition flex items-center">
+                        <i data-feather="file-text" class="w-4 h-4 mr-2"></i>
+                        導出 Excel
+                    </button>
+                    <button class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition flex items-center">
+                        <i data-feather="image" class="w-4 h-4 mr-2"></i>
+                        導出圖表
+                    </button>
+                    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition flex items-center">
+                        <i data-feather="mail" class="w-4 h-4 mr-2"></i>
+                        郵件分享
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 數據分析儀表板腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化圖表
+            initializeCharts();
+
+            // 生成報表按鈕
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                const dataSource = document.getElementById('dataSource').value;
+                const timeRange = document.getElementById('timeRange').value;
+                const analysisType = document.getElementById('analysisType').value;
+
+                alert(`正在生成 ${dataSource} - ${timeRange} 的 ${analysisType} 報表...`);
+
+                // 在真實應用中，這裡會重建圖表和數據
+                setTimeout(() => {
+                    updateCharts();
+                    alert('報表生成完成！');
+                }, 2000);
+            });
+        });
+
+        function initializeCharts() {
+            // 數據增長趨勢圖
+            const growthCtx = document.getElementById('dataGrowthChart').getContext('2d');
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['第1周', '第2周', '第3周', '第4周', '第5周', '第6周', '第7周'],
+                    datasets: [{
+                        label: '數據量',
+                        data: [8500, 9200, 10100, 11800, 13200, 14900, 16500],
+                        borderColor: '#4F46E5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 數據來源分佈圖
+            const sourcesCtx = document.getElementById('dataSourcesChart').getContext('2d');
+            new Chart(sourcesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['電商平台', '新聞媒體', '社交平台', '論壇社區'],
+                    datasets: [{
+                        data: [35, 25, 20, 20],
+                        backgroundColor: [
+                            '#4F46E5',
+                            '#10B981',
+                            '#F59E0B',
+                            '#EF4444'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // 類別分析圖
+            const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+            new Chart(categoriesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['科技', '金融', '娛樂', '體育', '健康', '教育'],
+                    datasets: [{
+                        label: '記錄數',
+                        data: [4200, 3100, 2800, 2500, 2200, 1800],
+                        backgroundColor: '#4F46E5',
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 質量指標圖
+            const qualityCtx = document.getElementById('qualityChart').getContext('2d');
+            new Chart(qualityCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['完整性', '準確性', '及時性', '一致性', '唯一性'],
+                    datasets: [{
+                        label: '質量分數',
+                        data: [94, 88, 92, 96, 85],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        pointBackgroundColor: '#10B981',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#10B981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts() {
+            // 在真實應用中，這裡會根據新的參數重新渲染圖表
+            console.log('更新圖表數據...');
+
+            // 模擬更新指標
+            document.getElementById('totalRecords').textContent = (Math.floor(Math.random() * 10000) + 120000).toLocaleString();
+            document.getElementById('dataQuality').textContent = (90 + Math.random() * 8).toFixed(1) + '%';
+
+            // 更新關鍵字列表
+            updateKeywordAnalysis();
+        }
+
+        function updateKeywordAnalysis() {
+            const keywords = [
+                '人工智能', '機器學習', '大數據', '區塊鏈', '物聯網',
+                '雲計算', '5G', '量子計算', '元宇宙', '可持續發展'
+            ];
+
+            const keywordList = document.getElementById('keywordList');
+            keywordList.innerHTML = '';
+
+            keywords.slice(0, 5).forEach((keyword, index) => {
+                const frequency = Math.floor(Math.random() * 1000) + 500;
+                const percentage = 100 - index * 8;
+
+                const keywordDiv = document.createElement('div');
+                keywordDiv.className = 'flex items-center justify-between';
+                keywordDiv.innerHTML = `
+                    <span class="text-sm font-medium">${keyword}</span>
+                    <div class="flex items-center">
+                        <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                        <span class="text-xs text-gray-500">${frequency}</span>
+                    </div>
+                `;
+                keywordList.appendChild(keywordDiv);
+            });
+        }
+    </script>
+</body>
+</html>

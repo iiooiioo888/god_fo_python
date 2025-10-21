@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系統日誌 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="crawler-editor.html" class="hover:text-indigo-200 transition">爬虫管理</a>
+                <div class="dropdown relative">
+                    <button class="hover:text-indigo-200 transition dropdown-toggle">數據處理 ▼</button>
+                    <ul class="dropdown-menu absolute hidden bg-white text-gray-800 shadow-lg rounded-md py-2 mt-1 w-40">
+                        <li><a href="data-analytics.html" class="block px-4 py-2 hover:bg-indigo-100">數據分析</a></li>
+                        <li><a href="data-export.html" class="block px-4 py-2 hover:bg-indigo-100">數據導出</a></li>
+                        <li><a href="reports.html" class="block px-4 py-2 hover:bg-indigo-100">統計報表</a></li>
+                    </ul>
+                </div>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <div class="dropdown relative">
+                    <button class="hover:text-indigo-200 transition dropdown-toggle text-white font-semibold">系統管理 ▼</button>
+                    <ul class="dropdown-menu absolute hidden bg-white text-gray-800 shadow-lg rounded-md py-2 mt-1 w-40">
+                        <li><a href="user-management.html" class="block px-4 py-2 hover:bg-indigo-100">用戶管理</a></li>
+                        <li><a href="system-logs.html" class="block px-4 py-2 hover:bg-indigo-100">系統日誌</a></li>
+                        <li><a href="settings.html" class="block px-4 py-2 hover:bg-indigo-100">系統設定</a></li>
+                        <li><a href="portal.html" class="block px-4 py-2 hover:bg-indigo-100">功能導航</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">系統日誌</h2>
+            <p class="text-gray-600">查看系統運行日誌、錯誤記錄和操作歷史</p>
+        </div>
+
+        <!-- Log Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i data-feather="file-text" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">總日誌數</p>
+                        <h3 class="text-2xl font-bold text-blue-600" id="totalLogs">12,847</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i data-feather="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">錯誤日誌</p>
+                        <h3 class="text-2xl font-bold text-red-600" id="errorLogs">156</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i data-feather="alert-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">警告日誌</p>
+                        <h3 class="text-2xl font-bold text-yellow-600" id="warnLogs">89</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i data-feather="activity" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">今日日誌</p>
+                        <h3 class="text-2xl font-bold text-green-600" id="todayLogs">47</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Filter -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">日誌過濾</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">日誌級別</label>
+                        <select id="logLevel" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">全部級別</option>
+                            <option value="error">錯誤</option>
+                            <option value="warn">警告</option>
+                            <option value="info">資訊</option>
+                            <option value="debug">除錯</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">來源模組</label>
+                        <select id="logModule" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">全部模組</option>
+                            <option value="crawler">爬蟲引擎</option>
+                            <option value="database">資料庫</option>
+                            <option value="scheduler">排程器</option>
+                            <option value="api">API 服務</option>
+                            <option value="auth">認證系統</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">開始日期</label>
+                        <input type="date" id="startDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">結束日期</label>
+                        <input type="date" id="endDate" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button id="searchLogs" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition flex items-center justify-center">
+                            <i data-feather="search" class="w-4 h-4 mr-2"></i>
+                            搜索
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="autoRefresh" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">自動刷新增誌</span>
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">刷新間隔:</span>
+                            <select id="refreshInterval" class="text-sm border border-gray-300 rounded px-2 py-1">
+                                <option value="1000">1秒</option>
+                                <option value="5000" selected>5秒</option>
+                                <option value="10000">10秒</option>
+                                <option value="30000">30秒</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition text-sm">
+                            全部清除
+                        </button>
+                        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition text-sm flex items-center">
+                            <i data-feather="download" class="w-4 h-4 mr-1"></i>
+                            導出日誌
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Viewer -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium text-gray-900">日誌內容</h3>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">當前顯示:</span>
+                    <select id="logLimit" class="text-sm border border-gray-300 rounded px-2 py-1">
+                        <option value="50">最近50條</option>
+                        <option value="100" selected>最近100條</option>
+                        <option value="200">最近200條</option>
+                        <option value="500">最近500條</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bg-gray-900 text-green-400 font-mono text-sm p-6 max-h-96 overflow-y-auto" id="logContainer">
+                <!-- Log entries will be dynamically added here -->
+                <div class="log-entry error" data-level="error" data-module="database" data-timestamp="2023-12-01T14:30:15.123Z">
+[2023-12-01 14:30:15] ERROR [database] Connection timeout after 30 seconds
+  at DatabaseConnector.connect (/src/database.js:45:12)
+  at CrawlerScheduler.execute (/src/scheduler.js:112:8)
+  at ProcessManager.run (/src/process.js:67:3)
+  at main (/index.js:23:5)
+</div>
+
+                <div class="log-entry warn" data-level="warn" data-module="crawler" data-timestamp="2023-12-01T14:25:42.456Z">
+[2023-12-01 14:25:42] WARN [crawler] Rate limit exceeded for domain example.com (attempts: 25/60)
+  action: retry after 300 seconds
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="api" data-timestamp="2023-12-01T14:20:18.789Z">
+[2023-12-01 14:20:18] INFO [api] REST API server started on port 8080
+  endpoints: 12 active
+  health check: OK
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="scheduler" data-timestamp="2023-12-01T14:15:33.234Z">
+[2023-12-01 14:15:33] INFO [scheduler] Task 'news-crawler-daily' scheduled for execution
+  next run: 2023-12-02 08:00:00
+  priority: normal
+  executor: node
+</div>
+
+                <div class="log-entry debug" data-level="debug" data-module="auth" data-timestamp="2023-12-01T14:10:27.567Z">
+[2023-12-01 14:10:27] DEBUG [auth] JWT token validation
+  user: admin
+  token expires: 2023-12-01T18:10:27.567Z
+  permissions: ["read", "write", "admin"]
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="crawler" data-timestamp="2023-12-01T14:05:14.890Z">
+[2023-12-01 14:05:14] INFO [crawler] Crawler 'ecommerce-spider' completed successfully
+  duration: 245 seconds
+  pages scraped: 6847
+  data exported: 5234 records
+  efficiency: 98.2%
+</div>
+
+                <div class="log-entry error" data-level="error" data-module="crawler" data-timestamp="2023-12-01T14:00:22.123Z">
+[2023-12-01 14:00:22] ERROR [crawler] Page parsing failed
+  url: https://example.com/product/12345
+  error: Invalid HTML structure
+  retry count: 3/3
+  action: mark as failed
+</div>
+
+                <div class="log-entry warn" data-level="warn" data-module="scheduler" data-timestamp="2023-12-01T13:58:41.456Z">
+[2023-12-01 13:58:41] WARN [scheduler] Task timeout exceeded for 'social-media-crawler'
+  timeout: 900 seconds
+  actual duration: 956 seconds
+  action: force termination
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="database" data-timestamp="2023-12-01T13:52:33.789Z">
+[2023-12-01 13:52:33] INFO [database] Data migration completed
+  tables updated: 8
+  records processed: 154832
+  integrity check: PASSED
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="api" data-timestamp="2023-12-01T13:47:18.234Z">
+[2023-12-01 13:47:18] INFO [api] API request completed
+  method: POST
+  endpoint: /api/v1/crawlers
+  status: 201
+  duration: 145ms
+  user: admin
+</div>
+
+                <div class="log-entry debug" data-level="debug" data-module="crawler" data-timestamp="2023-12-01T13:42:55.567Z">
+[2023-12-01 13:42:55] DEBUG [crawler] Crawler configuration loaded
+  delay: 1000ms
+  concurrency: 5
+  user-agent: Mozilla/5.0 (compatible; WebCrawler/1.0)
+  rules: 42 active, 5 disabled
+</div>
+
+                <div class="log-entry warn" data-level="warn" data-module="crawler" data-timestamp="2023-12-01T13:38:12.890Z">
+[2023-12-01 13:38:12] WARN [crawler] High memory usage detected
+  usage: 78.5%
+  threshold: 75%
+  suggestion: consider increasing system memory or reducing concurrency
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="auth" data-timestamp="2023-12-01T13:35:47.123Z">
+[2023-12-01 13:35:47] INFO [auth] User authentication successful
+  username: admin
+  ip: 192.168.1.100
+  session created: session_67890abc
+</div>
+
+                <div class="log-entry info" data-level="info" data-module="scheduler" data-timestamp="2023-12-01T13:30:22.456Z">
+[2023-12-01 13:30:22] INFO [scheduler] Cron schedule updated
+  task: 'data-backup-daily'
+  cron: '0 2 * * *'
+  next run: 2023-12-02 02:00:00
+  timezone: UTC+8
+</div>
+            </div>
+
+            <!-- Log Controls -->
+            <div class="px-6 py-4 border-t border-gray-800 bg-gray-900 text-green-400">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-xs">總共顯示 15 條日誌</span>
+                        <button id="scrollToTop" class="text-xs underline hover:no-underline">
+                            回到頂部
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="pauseAutoRefresh" class="text-xs underline hover:no-underline">
+                            暫停自動刷新
+                        </button>
+                        <button class="text-xs underline hover:no-underline">
+                            ← 上一頁
+                        </button>
+                        <button class="text-xs underline hover:no-underline">
+                            下一頁 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Analysis Summary -->
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Error Distribution -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h4 class="font-medium text-gray-900">錯誤分佈</h4>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">資料庫連接</span>
+                            <span class="text-sm font-medium text-red-600">8 次</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">爬取超時</span>
+                            <span class="text-sm font-medium text-orange-600">6 次</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">API 異常</span>
+                            <span class="text-sm font-medium text-yellow-600">5 次</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">配置錯誤</span>
+                            <span class="text-sm font-medium text-blue-600">4 次</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Summary -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h4 class="font-medium text-gray-900">活躍模組</h4>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm flex items-center">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                爬蟲引擎
+                            </span>
+                            <span class="text-sm font-medium">45%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                API 服務
+                            </span>
+                            <span class="text-sm font-medium">28%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm flex items-center">
+                                <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                                排程器
+                            </span>
+                            <span class="text-sm font-medium">18%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm flex items-center">
+                                <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                                認證系統
+                            </span>
+                            <span class="text-sm font-medium">9%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h4 class="font-medium text-gray-900">系統健康狀況</h4>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
+                                <i data-feather="shield" class="w-10 h-10 text-green-600"></i>
+                            </div>
+                            <h5 class="font-medium text-gray-900">健康狀態</h5>
+                            <p class="text-sm text-green-600 font-medium">優良</p>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">系統正常運行</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 系統日誌管理頁面腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化下拉選單
+            initDropdowns();
+
+            // 設置默認日期範圍
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 7);
+
+            document.getElementById('startDate').valueAsDate = startDate;
+            document.getElementById('endDate').valueAsDate = endDate;
+
+            // 自動刷新功能
+            let autoRefreshTimer = null;
+            let isPaused = false;
+
+            function startAutoRefresh() {
+                if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+
+                const interval = parseInt(document.getElementById('refreshInterval').value);
+                if (!isPaused) {
+                    autoRefreshTimer = setInterval(() => {
+                        // 模擬新增日誌條目
+                        addNewLogEntry();
+                    }, interval);
+                }
+            }
+
+            function addNewLogEntry() {
+                // 隨機新增日誌條目
+                const levels = ['info', 'warn', 'error'];
+                const modules = ['crawler', 'api', 'database', 'scheduler', 'auth'];
+                const messages = [
+                    '任務執行完成',
+                    'API 請求處理',
+                    '資訊檢查',
+                    '連線逾時警告',
+                    '資料庫操作完成'
+                ];
+
+                const level = levels[Math.floor(Math.random() * levels.length)];
+                const module = modules[Math.floor(Math.random() * modules.length)];
+                const message = messages[Math.floor(Math.random() * messages.length)];
+
+                const now = new Date();
+                const timestamp = now.toISOString();
+                const timeString = now.toLocaleString();
+
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${level}`;
+                logEntry.setAttribute('data-level', level);
+                logEntry.setAttribute('data-module', module);
+                logEntry.setAttribute('data-timestamp', timestamp);
+
+                logEntry.innerHTML = `[${timeString}] ${level.toUpperCase()} [${module}] ${message}`;
+
+                // 添加到日誌容器頂部
+                const container = document.getElementById('logContainer');
+                container.insertBefore(logEntry, container.firstChild);
+
+                // 更新統計
+                updateLogStats();
+                updateLogEntryCount();
+            }
+
+            document.getElementById('autoRefresh').addEventListener('change', function() {
+                isPaused = !this.checked;
+                if (this.checked) {
+                    startAutoRefresh();
+                } else {
+                    if (autoRefreshTimer) {
+                        clearInterval(autoRefreshTimer);
+                    }
+                }
+            });
+
+            document.getElementById('refreshInterval').addEventListener('change', function() {
+                if (document.getElementById('autoRefresh').checked) {
+                    startAutoRefresh();
+                }
+            });
+
+            // 搜尋日誌
+            document.getElementById('searchLogs').addEventListener('click', function() {
+                filterLogs();
+            });
+
+            // 日誌過濾器
+            document.getElementById('logLevel').addEventListener('change', filterLogs);
+            document.getElementById('logModule').addEventListener('change', filterLogs);
+
+            function filterLogs() {
+                const levelFilter = document.getElementById('logLevel').value;
+                const moduleFilter = document.getElementById('logModule').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                const entries = document.querySelectorAll('.log-entry');
+                let visibleCount = 0;
+
+                entries.forEach(entry => {
+                    const level = entry.getAttribute('data-level');
+                    const module = entry.getAttribute('data-module');
+                    const timestamp = entry.getAttribute('data-timestamp');
+                    const entryDate = new Date(timestamp).toISOString().split('T')[0];
+
+                    let show = true;
+
+                    if (levelFilter !== 'all' && level !== levelFilter) show = false;
+                    if (moduleFilter !== 'all' && module !== moduleFilter) show = false;
+                    if (startDate && entryDate < startDate) show = false;
+                    if (endDate && entryDate > endDate) show = false;
+
+                    if (show) {
+                        entry.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        entry.style.display = 'none';
+                    }
+                });
+
+                updateVisibleCount(visibleCount);
+            }
+
+            function updateLogStats() {
+                const entries = document.querySelectorAll('.log-entry');
+                let errorCount = 0, warnCount = 0, infoCount = 0;
+
+                entries.forEach(entry => {
+                    const level = entry.getAttribute('data-level');
+                    if (level === 'error') errorCount++;
+                    else if (level === 'warn') warnCount++;
+                    else if (level === 'info') infoCount++;
+                });
+
+                document.getElementById('totalLogs').textContent = entries.length.toLocaleString();
+                document.getElementById('errorLogs').textContent = errorCount;
+                document.getElementById('warnLogs').textContent = warnCount;
+                document.getElementById('todayLogs').textContent = Math.floor(entries.length * 0.3);
+            }
+
+            function updateLogEntryCount() {
+                const entries = document.querySelectorAll('.log-entry');
+                let level = document.getElementById('logLevel').value;
+                let module = document.getElementById('logModule').value;
+                let count = entries.length;
+
+                if (level !== 'all') {
+                    count = document.querySelectorAll(`.log-entry[data-level="${level}"]`).length;
+                } else if (module !== 'all') {
+                    count = document.querySelectorAll(`.log-entry[data-module="${module}"]`).length;
+                }
+
+                // 更新顯示文字
+                const logLimit = document.getElementById('logLimit').value;
+                const displayText = `總共顯示 ${Math.min(count, logLimit)} 條日誌`;
+                document.querySelector('.log-controls span:first-child').textContent = displayText;
+            }
+
+            function updateVisibleCount(count) {
+                const displayText = `總共顯示 ${count} 條日誌`;
+                document.querySelector('.log-controls span:first-child').textContent = displayText;
+            }
+
+            // 回到頂部
+            document.getElementById('scrollToTop').addEventListener('click', function() {
+                document.getElementById('logContainer').scrollTop = 0;
+            });
+
+            // 暫停自動刷新
+            document.getElementById('pauseAutoRefresh').addEventListener('click', function() {
+                const autoRefresh = document.getElementById('autoRefresh');
+                const button = document.getElementById('pauseAutoRefresh');
+
+                if (autoRefresh.checked) {
+                    autoRefresh.checked = false;
+                    button.textContent = '恢復自動刷新';
+                    if (autoRefreshTimer) {
+                        clearInterval(autoRefreshTimer);
+                    }
+                } else {
+                    autoRefresh.checked = true;
+                    button.textContent = '暫停自動刷新';
+                    startAutoRefresh();
+                }
+            });
+
+            // 初始化
+            updateLogStats();
+            updateLogEntryCount();
+            startAutoRefresh();
+
+            // 每分鐘新增一條日誌（演示用）
+            setInterval(() => {
+                if (document.getElementById('autoRefresh').checked && !isPaused) {
+                    addNewLogEntry();
+                }
+            }, 60000);
+        });
+    </script>
+</body>
+</html>

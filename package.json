@@ -1,0 +1,44 @@
+{
+  "name": "webcrawler-commander",
+  "version": "1.0.0",
+  "description": "企業級爬蟲管理與數據分析系統",
+  "main": "src/pages/portal.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo '建置完成'",
+    "lint": "eslint js/ --ext .js",
+    "format": "prettier --write \"src/**/*.{html,js,css}\" \"*.{js,json}\"",
+    "test": "jest",
+    "clean": "rm -rf dist/"
+  },
+  "keywords": [
+    "crawler",
+    "web-scraping",
+    "data-analysis",
+    "enterprise",
+    "management-system"
+  ],
+  "author": "Jerry開發工作室",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.1.1",
+    "jest": "^29.7.0",
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/webcrawler-commander.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/webcrawler-commander/issues"
+  },
+  "homepage": "https://webcrawler-commander.com"
+}

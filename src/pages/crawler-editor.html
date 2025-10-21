@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爬蟲編輯器 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="#" class="hover:text-indigo-200 transition text-white font-semibold">爬蟲管理</a>
+                <a href="#queue" class="hover:text-indigo-200 transition">任務隊列</a>
+                <a href="#data" class="hover:text-indigo-200 transition">數據預覽</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <nav class="text-sm text-gray-600">
+                <a href="index.html" class="hover:text-indigo-600">首頁</a> >
+                <a href="index.html" class="hover:text-indigo-600">爬蟲管理</a> >
+                <span class="text-indigo-600 font-medium" id="page-title">新建爬蟲</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <form id="crawlerForm" class="bg-white rounded-lg shadow-md">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        <i data-feather="settings" class="inline w-5 h-5 mr-2"></i>
+                        <span id="form-title">爬蟲配置</span>
+                    </h2>
+                    <div class="flex space-x-3">
+                        <button type="button" id="testConnectionBtn" class="px-4 py-2 border border-blue-500 text-blue-600 rounded-md hover:bg-blue-50 transition">
+                            <i data-feather="activity" class="inline w-4 h-4 mr-1"></i>
+                            測試連線
+                        </button>
+                        <button type="button" id="saveDraftBtn" class="px-4 py-2 border border-gray-500 text-gray-600 rounded-md hover:bg-gray-50 transition">
+                            <i data-feather="save" class="inline w-4 h-4 mr-1"></i>
+                            儲存草稿
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Main Configuration -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Basic Information -->
+                        <section>
+                            <h3 class="text-lg font-medium text-gray-900 mb-6 border-b border-gray-200 pb-2">
+                                <i data-feather="info" class="inline w-4 h-4 mr-1"></i>
+                                基本信息
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">爬蟲名稱 *</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="crawlerName"
+                                        required
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        placeholder="輸入爬蟲名稱"
+                                        maxlength="100"
+                                    >
+                                    <p class="text-xs text-gray-500 mt-1">例如：京東商品爬蟲、微博資訊採集</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">分類標籤</label>
+                                    <select name="category" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="">選擇分類</option>
+                                        <option value="ecommerce">電商平台</option>
+                                        <option value="news">新聞媒體</option>
+                                        <option value="social">社交平台</option>
+                                        <option value="forum">論壇社區</option>
+                                        <option value="financial">金融數據</option>
+                                        <option value="research">科研數據</option>
+                                        <option value="other">其他</option>
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">描述說明</label>
+                                    <textarea
+                                        name="description"
+                                        rows="3"
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        placeholder="描述爬蟲的功能和目標"
+                                        maxlength="500"
+                                    ></textarea>
+                                    <p class="text-xs text-gray-500 mt-1">請簡要說明這個爬蟲的用途和數據來源</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Template Selection -->
+                        <section>
+                            <h3 class="text-lg font-medium text-gray-900 mb-6 border-b border-gray-200 pb-2">
+                                <i data-feather="file-text" class="inline w-4 h-4 mr-1"></i>
+                                模板選擇
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="template-card cursor-pointer p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-md transition" data-template="generic">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 mx-auto mb-3 bg-indigo-100 rounded-full flex items-center justify-center">
+                                                <i data-feather="globe" class="w-6 h-6 text-indigo-600"></i>
+                                            </div>
+                                            <h4 class="font-medium text-gray-900">通用模板</h4>
+                                            <p class="text-xs text-gray-600 mt-1">適用於大多數網站</p>
+                                        </div>
+                                    </div>
+                                    <div class="template-card cursor-pointer p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-md transition" data-template="ecommerce">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
+                                                <i data-feather="shopping-cart" class="w-6 h-6 text-green-600"></i>
+                                            </div>
+                                            <h4 class="font-medium text-gray-900">電商平台</h4>
+                                            <p class="text-xs text-gray-600 mt-1">商品資料爬取</p>
+                                        </div>
+                                    </div>
+                                    <div class="template-card cursor-pointer p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-md transition" data-template="news">
+                                        <div class="text-center">
+                                            <div class="w-12 h-12 mx-auto mb-3 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <i data-feather="file-text" class="w-6 h-6 text-blue-600"></i>
+                                            </div>
+                                            <h4 class="font-medium text-gray-900">新聞媒體</h4>
+                                            <p class="text-xs text-gray-600 mt-1">文章內容採集</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <button type="button" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                        查看更多模板…
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Target Configuration -->
+                        <section>
+                            <h3 class="text-lg font-medium text-gray-900 mb-6 border-b border-gray-200 pb-2">
+                                <i data-feather="target" class="inline w-4 h-4 mr-1"></i>
+                                目標配置
+                            </h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">起始 URL *</label>
+                                    <div class="flex space-x-2">
+                                        <input
+                                            type="url"
+                                            name="startUrl"
+                                            id="startUrl"
+                                            required
+                                            class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                            placeholder="https://example.com/products"
+                                        >
+                                        <button type="button" id="addUrlBtn" class="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                            <i data-feather="plus" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">輸入要爬取的起始網頁地址</p>
+                                </div>
+
+                                <!-- URL List -->
+                                <div id="urlList" class="hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">URL 列表</label>
+                                    <div id="urlItems" class="space-y-2 max-h-40 overflow-y-auto"></div>
+                                </div>
+
+                                <!-- Selectors Configuration -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">數據選擇器配置</label>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="checkbox" id="useSelectors" class="rounded border-gray-300 text-indigo-600">
+                                            <label for="useSelectors" class="text-sm text-gray-700">啟用自定義選擇器</label>
+                                        </div>
+                                        <div id="selectorsConfig" class="hidden space-y-3 pl-6 border-l-2 border-gray-200">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <input type="text" placeholder="標題選擇器 (CSS)" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                                                <input type="text" placeholder="內容選擇器 (CSS)" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <input type="text" placeholder="價格選擇器 (CSS)" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                                                <input type="text" placeholder="圖片選擇器 (CSS)" class="border border-gray-300 rounded px-3 py-2 text-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Scheduling -->
+                        <section>
+                            <h3 class="text-lg font-medium text-gray-900 mb-6 border-b border-gray-200 pb-2">
+                                <i data-feather="clock" class="inline w-4 h-4 mr-1"></i>
+                                排程設定
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">執行頻率</label>
+                                        <select name="frequency" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                            <option value="once">執行一次</option>
+                                            <option value="hourly">每小時</option>
+                                            <option value="daily">每日</option>
+                                            <option value="weekly">每週</option>
+                                            <option value="monthly">每月</option>
+                                            <option value="custom">自定義</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">優先級</label>
+                                        <select name="priority" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                            <option value="low">低</option>
+                                            <option value="normal" selected>普通</option>
+                                            <option value="high">高</option>
+                                            <option value="critical">關鍵</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <input type="checkbox" id="autoStart" name="autoStart" class="rounded border-gray-300 text-indigo-600">
+                                    <label for="autoStart" class="text-sm text-gray-700">保存後自動啟動</label>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <input type="checkbox" id="notifyOnComplete" name="notifyOnComplete" class="rounded border-gray-300 text-indigo-600" checked>
+                                    <label for="notifyOnComplete" class="text-sm text-gray-700">任務完成時發送通知</label>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-8">
+                        <!-- Crawler Status Badge -->
+                        <section class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 mb-4">狀態設定</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">爬蟲狀態</label>
+                                    <div class="flex space-x-2">
+                                        <label class="flex items-center">
+                                            <input type="radio" name="status" value="draft" class="text-indigo-600 focus:ring-indigo-500" checked>
+                                            <span class="ml-2 text-sm">草稿</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="status" value="ready" class="text-indigo-600 focus:ring-indigo-500">
+                                            <span class="ml-2 text-sm">就緒</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="radio" name="status" value="active" class="text-indigo-600 focus:ring-indigo-500">
+                                            <span class="ml-2 text-sm">運行中</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Advanced Settings -->
+                        <section class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 mb-4">進階設定</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">請求延遲 (ms)</label>
+                                    <input
+                                        type="number"
+                                        name="delay"
+                                        value="1000"
+                                        min="0"
+                                        max="10000"
+                                        step="100"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">最大並發請求</label>
+                                    <input
+                                        type="number"
+                                        name="maxConcurrency"
+                                        value="5"
+                                        min="1"
+                                        max="50"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">超時時間 (秒)</label>
+                                    <input
+                                        type="number"
+                                        name="timeout"
+                                        value="30"
+                                        min="5"
+                                        max="300"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">重試次數</label>
+                                    <input
+                                        type="number"
+                                        name="retryCount"
+                                        value="3"
+                                        min="0"
+                                        max="10"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">用戶代理</label>
+                                    <input
+                                        type="text"
+                                        name="userAgent"
+                                        value="WebCrawler Commander/1.0"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Data Storage -->
+                        <section class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 mb-4">數據存儲</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">存儲格式</label>
+                                    <select name="outputFormat" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="json">JSON</option>
+                                        <option value="csv">CSV</option>
+                                        <option value="xml">XML</option>
+                                        <option value="database">資料庫</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">輸出路徑</label>
+                                    <input
+                                        type="text"
+                                        name="outputPath"
+                                        placeholder="data/output.json"
+                                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    >
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="compressOutput" name="compressOutput" class="rounded border-gray-300 text-indigo-600">
+                                    <label for="compressOutput" class="ml-2 text-sm text-gray-700">壓縮輸出文件</label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Validation -->
+                        <section class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 mb-4">配置檢查</h4>
+                            <div id="validationStatus" class="space-y-2">
+                                <div class="flex items-center text-sm">
+                                    <i data-feather="check-circle" class="w-4 h-4 text-green-500 mr-2"></i>
+                                    <span class="text-green-700">基本信息完整</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <i data-feather="x-circle" class="w-4 h-4 text-red-500 mr-2"></i>
+                                    <span class="text-red-700">需要配置目標URL</span>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <i data-feather="alert-triangle" class="w-4 h-4 text-yellow-500 mr-2"></i>
+                                    <span class="text-yellow-700">建議設置選擇器</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex justify-between">
+                    <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                        <i data-feather="arrow-left" class="inline w-4 h-4 mr-1"></i>
+                        取消
+                    </button>
+                    <div class="flex space-x-3">
+                        <button type="button" id="previewBtn" class="px-4 py-2 border border-indigo-500 text-indigo-600 rounded-md hover:bg-indigo-50 transition">
+                            <i data-feather="eye" class="inline w-4 h-4 mr-1"></i>
+                            預覽
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
+                            <i data-feather="save" class="inline w-4 h-4 mr-1"></i>
+                            <span id="submitBtnText">創建爬蟲</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 爬蟲編輯器專用腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化 Feather 圖標
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+
+            // 模板選擇邏輯
+            const templateCards = document.querySelectorAll('.template-card');
+            templateCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    templateCards.forEach(c => c.classList.remove('border-indigo-500', 'ring-2', 'ring-indigo-200'));
+                    this.classList.add('border-indigo-500', 'ring-2', 'ring-indigo-200');
+
+                    const template = this.dataset.template;
+                    loadTemplate(template);
+                });
+            });
+
+            // URL管理
+            const urlList = [];
+            let urlCounter = 1;
+
+            document.getElementById('addUrlBtn').addEventListener('click', function() {
+                const urlInput = document.getElementById('startUrl');
+                const url = urlInput.value.trim();
+
+                if (url && isValidUrl(url)) {
+                    addUrlToList(url);
+                    urlInput.value = '';
+                } else {
+                    alert('請輸入有效的URL');
+                }
+            });
+
+            document.getElementById('startUrl').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('addUrlBtn').click();
+                }
+            });
+
+            // 選擇器配置展開/收起
+            document.getElementById('useSelectors').addEventListener('change', function() {
+                const selectorsConfig = document.getElementById('selectorsConfig');
+                if (this.checked) {
+                    selectorsConfig.classList.remove('hidden');
+                } else {
+                    selectorsConfig.classList.add('hidden');
+                }
+            });
+
+            // 測試連線功能
+            document.getElementById('testConnectionBtn').addEventListener('click', function() {
+                const url = document.getElementById('startUrl').value.trim();
+                if (!url) {
+                    alert('請先輸入起始URL');
+                    return;
+                }
+
+                const button = this;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i data-feather="loader" class="inline w-4 h-4 mr-1 animate-spin"></i>測試中...';
+                button.disabled = true;
+
+                // 模擬測試請求
+                setTimeout(function() {
+                    const success = Math.random() > 0.3; // 70% 成功率
+                    if (success) {
+                        alert('連線測試成功！網站響應正常。');
+                        button.innerHTML = '<i data-feather="check" class="inline w-4 h-4 mr-1 text-green-500"></i>連接正常';
+                    } else {
+                        alert('連線測試失敗。請檢查URL是否正確。');
+                        button.innerHTML = '<i data-feather="x" class="inline w-4 h-4 mr-1 text-red-500"></i>連接失敗';
+                    }
+                    feather.replace();
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        feather.replace();
+                    }, 2000);
+                }, 2000);
+            });
+
+            // 表單提交
+            document.getElementById('crawlerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const crawlerData = Object.fromEntries(formData.entries());
+
+                // 收集額外的數據
+                crawlerData.urls = urlList;
+                crawlerData.template = document.querySelector('.template-card.border-indigo-500')?.dataset.template || 'generic';
+
+                // 基本驗證
+                if (!crawlerData.name) {
+                    alert('請輸入爬蟲名稱');
+                    return;
+                }
+
+                if (urlList.length === 0 && !crawlerData.startUrl) {
+                    alert('請至少添加一個URL');
+                    return;
+                }
+
+                // 提交數據
+                console.log('準備創建爬蟲:', crawlerData);
+                alert(`爬蟲「${crawlerData.name}」已成功${document.getElementById('submitBtnText').textContent.includes('創建') ? '創建' : '更新'}！`);
+
+                // 在真實應用中，這裡會發送AJAX請求到後端
+                // window.location.href = 'index.html';
+            });
+        });
+
+        // 載入模板配置
+        function loadTemplate(template) {
+            const templates = {
+                generic: {
+                    delay: 1000,
+                    maxConcurrency: 5,
+                    timeout: 30,
+                    userAgent: 'WebCrawler Commander/1.0'
+                },
+                ecommerce: {
+                    delay: 2000,
+                    maxConcurrency: 3,
+                    timeout: 45,
+                    userAgent: 'Mozilla/5.0 (compatible; ECommerce Bot/1.0)',
+                    selectors: true
+                },
+                news: {
+                    delay: 1500,
+                    maxConcurrency: 4,
+                    timeout: 25,
+                    userAgent: 'Mozilla/5.0 (compatible; News Bot/1.0)'
+                }
+            };
+
+            const config = templates[template];
+            if (config) {
+                document.querySelector('input[name="delay"]').value = config.delay;
+                document.querySelector('input[name="maxConcurrency"]').value = config.maxConcurrency;
+                document.querySelector('input[name="timeout"]').value = config.timeout;
+                document.querySelector('input[name="userAgent"]').value = config.userAgent;
+
+                if (config.selectors) {
+                    document.getElementById('useSelectors').checked = true;
+                    document.getElementById('useSelectors').dispatchEvent(new Event('change'));
+                }
+            }
+        }
+
+        // 添加URL到列表
+        function addUrlToList(url) {
+            if (urlList.includes(url)) {
+                alert('此URL已存在');
+                return;
+            }
+
+            urlList.push(url);
+            updateUrlList();
+            document.getElementById('urlList').classList.remove('hidden');
+        }
+
+        // 更新URL列表顯示
+        function updateUrlList() {
+            const container = document.getElementById('urlItems');
+            container.innerHTML = '';
+
+            urlList.forEach((url, index) => {
+                const urlItem = document.createElement('div');
+                urlItem.className = 'flex items-center justify-between bg-white border border-gray-200 rounded p-3';
+                urlItem.innerHTML = `
+                    <span class="text-sm text-gray-700">${url}</span>
+                    <button type="button" onclick="removeUrl(${index})" class="text-red-500 hover:text-red-700">
+                        <i data-feather="x" class="w-4 h-4"></i>
+                    </button>
+                `;
+                container.appendChild(urlItem);
+            });
+            feather.replace();
+        }
+
+        // 移除URL
+        function removeUrl(index) {
+            urlList.splice(index, 1);
+            updateUrlList();
+            if (urlList.length === 0) {
+                document.getElementById('urlList').classList.add('hidden');
+            }
+        }
+
+        // URL驗證
+        function isValidUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

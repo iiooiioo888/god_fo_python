@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任務排程管理 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="crawler-editor.html" class="hover:text-indigo-200 transition">爬虫管理</a>
+                <div class="dropdown relative">
+                    <button class="hover:text-indigo-200 transition dropdown-toggle text-white font-semibold">任務排程 ▼</button>
+                    <ul class="dropdown-menu absolute hidden bg-white text-gray-800 shadow-lg rounded-md py-2 mt-1 w-48">
+                        <li><a href="task-scheduler.html" class="block px-4 py-2 hover:bg-indigo-100">排程管理</a></li>
+                        <li><a href="index.html" class="block px-4 py-2 hover:bg-indigo-100">任務隊列</a></li>
+                        <li><a href="system-logs.html" class="block px-4 py-2 hover:bg-indigo-100">運行日誌</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown relative">
+                    <button class="hover:text-indigo-200 transition dropdown-toggle text-white font-semibold">任務排程 ▼</button>
+                    <ul class="dropdown-menu absolute hidden bg-white text-gray-800 shadow-lg rounded-md py-2 mt-1 w-48">
+                        <li><a href="task-scheduler.html" class="block px-4 py-2 hover:bg-indigo-100">排程管理</a></li>
+                        <li><a href="#proxy-health" class="block px-4 py-2 hover:bg-indigo-100">代理池健康</a></li>
+                        <li><a href="#task-queue" class="block px-4 py-2 hover:bg-indigo-100">任務隊列</a></li>
+                        <li><a href="system-logs.html" class="block px-4 py-2 hover:bg-indigo-100">運行日誌</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown relative">
+                    <button class="hover:text-indigo-200 transition dropdown-toggle">數據處理 ▼</button>
+                    <ul class="dropdown-menu absolute hidden bg-white text-gray-800 shadow-lg rounded-md py-2 mt-1 w-40">
+                        <li><a href="data-analytics.html" class="block px-4 py-2 hover:bg-indigo-100">數據分析</a></li>
+                        <li><a href="data-export.html" class="block px-4 py-2 hover:bg-indigo-100">數據導出</a></li>
+                        <li><a href="reports.html" class="block px-4 py-2 hover:bg-indigo-100">統計報表</a></li>
+                        <li><a href="data-cleaner.html" class="block px-4 py-2 hover:bg-indigo-100">數據清理</a></li>
+                    </ul>
+                </div>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">任務排程管理</h2>
+            <p class="text-gray-600">設置自動化任務，定期執行爬蟲任務和數據處理</p>
+        </div>
+
+        <!-- Scheduler Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i data-feather="clock" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">活躍排程</p>
+                        <h3 class="text-2xl font-bold text-blue-600" id="activeSchedules">8</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i data-feather="play-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">今日執行</p>
+                        <h3 class="text-2xl font-bold text-green-600" id="todayExecutions">24</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                        <i data-feather="alert-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">失敗任務</p>
+                        <h3 class="text-2xl font-bold text-orange-600" id="failedTasks">2</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <i data-feather="calendar" class="w-6 h-6"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-gray-500">下次執行</p>
+                        <h3 class="text-lg font-bold text-purple-600" id="nextExecution">14:30</h3>
+                        <p class="text-xs text-gray-500 mt-1">新聞爬蟲</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Schedule Creation -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium text-gray-900">創建新排程</h3>
+                <button id="createScheduleBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition flex items-center">
+                    <i data-feather="plus" class="w-4 h-4 mr-2"></i>
+                    新建排程
+                </button>
+            </div>
+            <div class="p-6" id="scheduleFormContainer" style="display: none;">
+                <form id="scheduleForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">排程名稱 *</label>
+                            <input
+                                type="text"
+                                name="scheduleName"
+                                required
+                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="例如：每日新聞爬取"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">任務類型</label>
+                            <select name="taskType" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="crawler">爬蟲任務</option>
+                                <option value="export">數據導出</option>
+                                <option value="backup">數據備份</option>
+                                <option value="cleanup">數據清理</option>
+                                <option value="report">生成報表</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">執行頻率</label>
+                            <select name="frequency" id="frequency" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="hourly">每小時</option>
+                                <option value="daily">每日</option>
+                                <option value="weekly">每週</option>
+                                <option value="monthly">每月</option>
+                                <option value="custom">自定義 Cron</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">優先級</label>
+                            <select name="priority" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="low">低</option>
+                                <option value="normal" selected>普通</option>
+                                <option value="high">高</option>
+                                <option value="critical">關鍵</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Time Configuration -->
+                    <div id="timeConfig" class="border-t border-gray-200 pt-6">
+                        <h4 class="text-base font-medium text-gray-900 mb-4">時間設定</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">小時</label>
+                                <input
+                                    type="number"
+                                    name="hour"
+                                    min="0"
+                                    max="23"
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    placeholder="9"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">分鐘</label>
+                                <input
+                                    type="number"
+                                    name="minute"
+                                    min="0"
+                                    max="59"
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    placeholder="0"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">週幾</label>
+                                <select name="weekday" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="*">每天</option>
+                                    <option value="1">星期一</option>
+                                    <option value="2">星期二</option>
+                                    <option value="3">星期三</option>
+                                    <option value="4">星期四</option>
+                                    <option value="5">星期五</option>
+                                    <option value="6">星期六</option>
+                                    <option value="0">星期日</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">狀態</label>
+                                <select name="enabled" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="true">啟用</option>
+                                    <option value="false">停用</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Cron -->
+                    <div id="cronConfig" class="border-t border-gray-200 pt-6" style="display: none;">
+                        <h4 class="text-base font-medium text-gray-900 mb-4">自定義 Cron 表達式</h4>
+                        <div class="space-y-3">
+                            <input
+                                type="text"
+                                name="cronExpression"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                                placeholder="0 9 * * * (每日上午9點)"
+                            >
+                            <p class="text-sm text-gray-600">
+                                Cron 格式: 分鐘 小時 日期 月份 週幾<br>
+                                例如: <code class="bg-gray-100 px-1 py-0.5 rounded">0 9 * * 1-5</code> 表示週一到週五上午9點
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end pt-6 border-t border-gray-200">
+                        <button type="button" id="cancelSchedule" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition mr-3">
+                            取消
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
+                            創建排程
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Schedule List -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Active Schedules -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-lg font-medium text-gray-900">活躍排程</h3>
+                        <div class="flex space-x-3">
+                            <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option>全部任務</option>
+                                <option>爬蟲任務</option>
+                                <option>數據處理</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">任務名稱</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">類型</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">頻率</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">下次執行</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">狀態</th>
+                                    <th class="text-left py-3 px-4 font-medium text-gray-900">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleTable">
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <i data-feather="globe" class="w-4 h-4 text-blue-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">每日新聞爬取</p>
+                                                <p class="text-xs text-gray-600">爬取熱門新聞</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">爬蟲任務</span>
+                                    </td>
+                                    <td class="py-4 px-4">每日 08:00</td>
+                                    <td class="py-4 px-4 text-indigo-600 font-medium">14:30</td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">運行中</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-1">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-xs" title="執行">▶</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-xs" title="編輯">✎</button>
+                                            <button class="text-red-500 hover:text-red-700 text-xs" title="停用">⏸</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                                                <i data-feather="download" class="w-4 h-4 text-yellow-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">每週數據導出</p>
+                                                <p class="text-xs text-gray-600">產生數據報表</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">數據處理</span>
+                                    </td>
+                                    <td class="py-4 px-4">每週日 02:00</td>
+                                    <td class="py-4 px-4">4天後</td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">運行中</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-1">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-xs" title="執行">▶</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-xs" title="編輯">✎</button>
+                                            <button class="text-red-500 hover:text-red-700 text-xs" title="停用">⏸</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                                <i data-feather="database" class="w-4 h-4 text-purple-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">數據清理任務</p>
+                                                <p class="text-xs text-gray-600">清理過期數據</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">維護任務</span>
+                                    </td>
+                                    <td class="py-4 px-4">每日 01:00</td>
+                                    <td class="py-4 px-4">明天 01:00</td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">運行中</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-1">
+                                            <button class="text-indigo-600 hover:text-indigo-800 text-xs" title="執行">▶</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-xs" title="編輯">✎</button>
+                                            <button class="text-red-500 hover:text-red-700 text-xs" title="停用">⏸</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                                <i data-feather="shield" class="w-4 h-4 text-red-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">安全掃描任務</p>
+                                                <p class="text-xs text-gray-600">檢查系統安全</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">安全任務</span>
+                                    </td>
+                                    <td class="py-4 px-4">每小時</td>
+                                    <td class="py-4 px-4">16:00</td>
+                                    <td class="py-4 px-4">
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">已停用</span>
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex space-x-1">
+                                            <button class="text-gray-500 hover:text-gray-700 text-xs" title="啟用">▶</button>
+                                            <button class="text-gray-500 hover:text-gray-700 text-xs" title="編輯">✎</button>
+                                            <button class="text-green-500 hover:text-green-700 text-xs" title="刪除">✕</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+                <!-- Execution History -->
+                <section class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h4 class="font-medium text-gray-900">近期執行</h4>
+                    </div>
+                    <div class="p-6 max-h-64 overflow-y-auto">
+                        <div class="space-y-4" id="executionHistory">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">新聞爬取完成</p>
+                                        <p class="text-xs text-gray-500">2 分鐘前</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-green-600 font-medium">成功</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">數據清理完成</p>
+                                        <p class="text-xs text-gray-500">1 小時前</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-green-600 font-medium">成功</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">電商數據導出</p>
+                                        <p class="text-xs text-gray-500">3 小時前</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-red-600 font-medium">失敗</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">備份任務完成</p>
+                                        <p class="text-xs text-gray-500">昨天 23:00</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-green-600 font-medium">成功</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Schedule Types -->
+                <section class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h4 class="font-medium text-gray-900">排程類型分佈</h4>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm flex items-center">
+                                    <span class="w-3 h-3 bg-blue-500 rounded mr-2"></span>
+                                    爬蟲任務
+                                </span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 50%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">4</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm flex items-center">
+                                    <span class="w-3 h-3 bg-green-500 rounded mr-2"></span>
+                                    數據處理
+                                </span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">2</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm flex items-center">
+                                    <span class="w-3 h-3 bg-orange-500 rounded mr-2"></span>
+                                    維護任務
+                                </span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-orange-500 h-2 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">1</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm flex items-center">
+                                    <span class="w-3 h-3 bg-red-500 rounded mr-2"></span>
+                                    安全任務
+                                </span>
+                                <div class="flex items-center">
+                                    <div class="w-20 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-red-500 h-2 rounded-full" style="width: 10%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium">1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Actions -->
+                <section class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h4 class="font-medium text-gray-900">快速操作</h4>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            <button class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition text-sm flex items-center justify-center">
+                                <i data-feather="play" class="w-4 h-4 mr-2"></i>
+                                啟動所有排程
+                            </button>
+                            <button class="w-full px-4 py-2 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-md transition text-sm flex items-center justify-center">
+                                <i data-feather="pause" class="w-4 h-4 mr-2"></i>
+                                暫停所有排程
+                            </button>
+                            <button class="w-full px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md transition text-sm flex items-center justify-center">
+                                <i data-feather="refresh-cw" class="w-4 h-4 mr-2"></i>
+                                重新載入配置
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Proxy Pool Health Management -->
+        <div id="proxy-health" class="bg-white rounded-lg shadow mt-8">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                    <i data-feather="shield" class="w-5 h-5 mr-2 text-indigo-600"></i>
+                    代理池健康監控
+                </h3>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">總代理數: <strong id="proxyTotal">12</strong></span>
+                    <button id="refreshProxies" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm transition flex items-center">
+                        <i data-feather="refresh-cw" class="w-4 h-4 mr-1"></i>
+                        刷新狀態
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <span class="ml-2 text-sm font-medium text-green-900">健康代理</span>
+                            </div>
+                            <span class="text-lg font-bold text-green-900" id="proxyHealthy">8</span>
+                        </div>
+                        <div class="mt-2 text-xs text-green-700">評分 > 0.7</div>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <span class="ml-2 text-sm font-medium text-yellow-900">暖身代理</span>
+                            </div>
+                            <span class="text-lg font-bold text-yellow-900" id="proxyWarm">3</span>
+                        </div>
+                        <div class="mt-2 text-xs text-yellow-700">評分 0.4-0.7</div>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <span class="ml-2 text-sm font-medium text-red-900">冷凍代理</span>
+                            </div>
+                            <span class="text-lg font-bold text-red-900" id="proxyCold">1</span>
+                        </div>
+                        <div class="mt-2 text-xs text-red-700">評分 < 0.4</div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">代理地址</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">健康評分</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">延遲(ms)</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">最後檢查</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">使用率</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-900">狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proxyTable">
+                            <tr>
+                                <td class="py-3 px-4 font-mono">192.168.1.100:8080</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                            <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">0.95</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">12ms</td>
+                                <td class="py-3 px-4 text-gray-600">2秒前</td>
+                                <td class="py-3 px-4">85%</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">健康</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-mono">10.0.0.5:3128</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                            <div class="bg-green-500 h-2 rounded-full" style="width: 87%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">0.87</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">28ms</td>
+                                <td class="py-3 px-4 text-gray-600">5秒前</td>
+                                <td class="py-3 px-4">62%</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">健康</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-mono">proxy.example.com:8080</td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 65%"></div>
+                                        </div>
+                                        <span class="text-sm font-medium">0.65</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">156ms</td>
+                                <td class="py-3 px-4 text-gray-600">1分鐘前</td>
+                                <td class="py-3 px-4">34%</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">暖身</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex justify-between items-center">
+                    <div class="text-sm text-gray-600">
+                        <p>健康度評分算法: <strong class="text-indigo-600">0.6×成功率 + 0.3×延遲因子 + 0.1×新鮮度</strong></p>
+                        <p class="mt-1">失敗3次將自動隔離30分鐘，高評分代理優先輪換</p>
+                    </div>
+                    <button class="px-4 py-2 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-md transition text-sm">
+                        管理代理池
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script>
+        // 代理池健康度評分系統
+        class ProxyHealthMonitor {
+            constructor() {
+                this.proxyPool = this.initializeProxyPool();
+                this.monitoringInterval = null;
+                this.updateUIBound = this.updateUI.bind(this);
+            }
+
+            initializeProxyPool() {
+                return [
+                    { ip: '192.168.1.100', port: 8080, score: 0.95, latency: 12, lastCheck: Date.now(), usages: 85 },
+                    { ip: '10.0.0.5', port: 3128, score: 0.87, latency: 28, lastCheck: Date.now(), usages: 62 },
+                    { ip: 'proxy.example.com', port: 8080, score: 0.65, latency: 156, lastCheck: Date.now() - 60000, usages: 34 },
+                    { ip: '203.0.113.1', port: 3128, score: 0.23, latency: 567, lastCheck: Date.now() - 30000, usages: 12 },
+                ];
+            }
+
+            startMonitoring() {
+                this.updateUI();
+                this.monitoringInterval = setInterval(this.updateUIBound, 5000);
+                this.simulateDynamicUpdates();
+            }
+
+            stopMonitoring() {
+                if (this.monitoringInterval) {
+                    clearInterval(this.monitoringInterval);
+                }
+            }
+
+            getHealthStatus(score) {
+                if (score > 0.7) return { label: '健康', class: 'bg-green-100 text-green-800', color: 'green' };
+                if (score > 0.4) return { label: '暖身', class: 'bg-yellow-100 text-yellow-800', color: 'yellow' };
+                return { label: '冷凍', class: 'bg-red-100 text-red-800', color: 'red' };
+            }
+
+            updateUI() {
+                const proxyTable = document.getElementById('proxyTable');
+                const now = Date.now();
+
+                proxyTable.innerHTML = this.proxyPool.map(proxy => {
+                    const status = this.getHealthStatus(proxy.score);
+                    const lastCheckSeconds = Math.floor((now - proxy.lastCheck) / 1000);
+                    const lastCheckText = lastCheckSeconds < 60 ? lastCheckSeconds + '秒前' : Math.floor(lastCheckSeconds / 60) + '分鐘前';
+
+                    return '<tr>' +
+                        '<td class="py-3 px-4 font-mono">' + proxy.ip + ':' + proxy.port + '</td>' +
+                        '<td class="py-3 px-4">' +
+                            '<div class="flex items-center">' +
+                                '<div class="w-16 bg-gray-200 rounded-full h-2 mr-2">' +
+                                    '<div class="bg-' + status.color + '-500 h-2 rounded-full" style="width: ' + (proxy.score * 100) + '%"></div>' +
+                                '</div>' +
+                                '<span class="text-sm font-medium">' + proxy.score.toFixed(2) + '</span>' +
+                            '</div>' +
+                        '</td>' +
+                        '<td class="py-3 px-4">' + proxy.latency + 'ms</td>' +
+                        '<td class="py-3 px-4 text-gray-600">' + lastCheckText + '</td>' +
+                        '<td class="py-3 px-4">' + proxy.usages + '%</td>' +
+                        '<td class="py-3 px-4">' +
+                            '<span class="px-2 py-1 ' + status.class + ' text-xs rounded-full">' + status.label + '</span>' +
+                        '</td>' +
+                    '</tr>';
+                }).join('');
+
+                document.getElementById('proxyTotal').textContent = this.proxyPool.length;
+                document.getElementById('proxyHealthy').textContent = this.proxyPool.filter(p => p.score > 0.7).length;
+                document.getElementById('proxyWarm').textContent = this.proxyPool.filter(p => p.score > 0.4 && p.score <= 0.7).length;
+                document.getElementById('proxyCold').textContent = this.proxyPool.filter(p => p.score <= 0.4).length;
+            }
+
+            simulateDynamicUpdates() {
+                setInterval(() => {
+                    this.proxyPool.forEach(proxy => {
+                        const change = (Math.random() - 0.5) * 0.1;
+                        proxy.score = Math.max(0.1, Math.min(1.0, proxy.score + change));
+                        proxy.latency = Math.max(10, Math.floor(proxy.latency + (Math.random() - 0.5) * 20));
+                        proxy.lastCheck = Date.now();
+                        proxy.usages = Math.max(0, Math.min(100, proxy.usages + (Math.random() - 0.5) * 10));
+                    });
+                    this.updateUI();
+                }, 10000);
+            }
+        }
+
+        // 任務排程管理頁面腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化下拉選單
+            initDropdowns();
+
+            // 初始化代理健康度監控
+            const proxyMonitor = new ProxyHealthMonitor();
+            proxyMonitor.startMonitoring();
+
+            // 清理資源
+            window.addEventListener('beforeunload', () => {
+                proxyMonitor.stopMonitoring();
+            });
+
+            document.getElementById('refreshProxies').addEventListener('click', function() {
+                this.querySelector('i').classList.add('animate-spin');
+                setTimeout(() => {
+                    this.querySelector('i').classList.remove('animate-spin');
+                    proxyMonitor.updateUI();
+                }, 1000);
+            });
+
+            // 切換頻率配置
+            document.getElementById('frequency').addEventListener('change', function() {
+                const timeConfig = document.getElementById('timeConfig');
+                const cronConfig = document.getElementById('cronConfig');
+
+                if (this.value === 'custom') {
+                    timeConfig.style.display = 'none';
+                    cronConfig.style.display = 'block';
+                } else {
+                    timeConfig.style.display = 'block';
+                    cronConfig.style.display = 'none';
+                }
+            });
+
+            // 新建排程按鈕
+            document.getElementById('createScheduleBtn').addEventListener('click', function() {
+                const formContainer = document.getElementById('scheduleFormContainer');
+                const isVisible = formContainer.style.display !== 'none';
+
+                if (isVisible) {
+                    formContainer.style.display = 'none';
+                    this.querySelector('i').setAttribute('data-feather', 'plus');
+                } else {
+                    formContainer.style.display = 'block';
+                    this.querySelector('i').setAttribute('data-feather', 'minus');
+                }
+                feather.replace();
+            });
+
+            // 取消創建排程
+            document.getElementById('cancelSchedule').addEventListener('click', function() {
+                document.getElementById('scheduleFormContainer').style.display = 'none';
+                document.getElementById('createScheduleBtn').querySelector('i').setAttribute('data-feather', 'plus');
+                document.getElementById('scheduleForm').reset();
+                feather.replace();
+            });
+
+            // 提交排程表單
+            document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+                const scheduleData = Object.fromEntries(formData.entries());
+
+                alert(`排程 "${scheduleData.scheduleName}" 已成功創建！\n類型: ${scheduleData.taskType}\n頻率: ${scheduleData.frequency}`);
+
+                // 添加到排程列表
+                addScheduleToTable(scheduleData);
+
+                // 重置並隱藏表單
+                this.reset();
+                document.getElementById('scheduleFormContainer').style.display = 'none';
+                document.getElementById('timeConfig').style.display = 'block';
+                document.getElementById('cronConfig').style.display = 'none';
+                document.getElementById('createScheduleBtn').querySelector('i').setAttribute('data-feather', 'plus');
+                feather.replace();
+
+                // 更新統計
+                updateSchedulerStats();
+            });
+
+            // 功能按鈕事件
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[title="執行"]')) {
+                    e.preventDefault();
+
+                    // 找出最高分的健康代理
+                    const bestProxy = proxyMonitor.proxyPool
+                        .filter(p => p.score > 0.7)
+                        .sort((a, b) => b.score - a.score)[0];
+
+                    alert('立即執行此任務...\n\n' +
+                        (bestProxy ? `將使用最佳代理: ${bestProxy.ip} (評分: ${bestProxy.score.toFixed(2)})` : '無健康代理可用'));
+                } else if (e.target.matches('[title="編輯"]')) {
+                    e.preventDefault();
+                    alert('編輯任務設定...');
+                } else if (e.target.matches('[title="停用"]')) {
+                    e.preventDefault();
+                    e.target.closest('tr').querySelector('td:nth-child(5) .rounded-full').className = 'px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full';
+                    e.target.closest('tr').querySelector('td:nth-child(5) .rounded-full').textContent = '已停用';
+                    e.target.setAttribute('title', '啟用');
+                    e.target.innerHTML = '▶';
+                    updateSchedulerStats();
+                } else if (e.target.matches('[title="啟用"]')) {
+                    e.preventDefault();
+                    e.target.closest('tr').querySelector('td:nth-child(5) .rounded-full').className = 'px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full';
+                    e.target.closest('tr').querySelector('td:nth-child(5) .rounded-full').textContent = '運行中';
+                    e.target.setAttribute('title', '停用');
+                    e.target.innerHTML = '⏸';
+                    updateSchedulerStats();
+                } else if (e.target.matches('[title="刪除"]')) {
+                    e.preventDefault();
+                    if (confirm('確定要刪除此排程嗎？')) {
+                        e.target.closest('tr').remove();
+                        updateSchedulerStats();
+                    }
+                }
+            });
+
+            // 初始化統計
+            updateSchedulerStats();
+
+            // 模擬下一執行時間更新
+            setInterval(() => {
+                const now = new Date();
+                const nextHour = new Date(now);
+                nextHour.setHours(now.getHours() + 1, 0, 0, 0);
+                const timeString = nextHour.toLocaleTimeString('zh-CN', { hour12: false }).substring(0, 5);
+                document.getElementById('nextExecution').textContent = timeString;
+            }, 60000);
+        });
+
+        function addScheduleToTable(scheduleData) {
+            const table = document.getElementById('scheduleTable');
+
+            const icons = {
+                'crawler': '<i data-feather="globe" class="w-4 h-4 text-blue-600"></i>',
+                'export': '<i data-feather="download" class="w-4 h-4 text-green-600"></i>',
+                'backup': '<i data-feather="database" class="w-4 h-4 text-yellow-600"></i>',
+                'cleanup': '<i data-feather="trash-2" class="w-4 h-4 text-red-600"></i>',
+                'report': '<i data-feather="file-text" class="w-4 h-4 text-purple-600"></i>'
+            };
+
+            const typeLabels = {
+                'crawler': '爬蟲任務',
+                'export': '數據處理',
+                'backup': '維護任務',
+                'cleanup': '維護任務',
+                'report': '數據處理'
+            };
+
+            const typeClasses = {
+                'crawler': 'bg-blue-100 text-blue-800',
+                'export': 'bg-green-100 text-green-800',
+                'backup': 'bg-orange-100 text-orange-800',
+                'cleanup': 'bg-orange-100 text-orange-800',
+                'report': 'bg-green-100 text-green-800'
+            };
+
+            const taskType = scheduleData.taskType;
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML =
+                '<td class="py-4 px-4">' +
+                    '<div class="flex items-center">' +
+                        '<div class="w-8 h-8 bg-' + (taskType === 'crawler' ? 'blue' : taskType === 'export' ? 'green' : 'orange') + '-100 rounded-full flex items-center justify-center mr-3">' +
+                            (icons[taskType] || '<i data-feather="settings" class="w-4 h-4 text-gray-600"></i>') +
+                        '</div>' +
+                        '<div>' +
+                            '<p class="font-medium text-gray-900">' + scheduleData.scheduleName + '</p>' +
+                            '<p class="text-xs text-gray-600">自定義任務</p>' +
+                        '</div>' +
+                    '</div>' +
+                '</td>' +
+                '<td class="py-4 px-4">' +
+                    '<span class="px-2 py-1 ' + (typeClasses[taskType] || 'bg-gray-100 text-gray-800') + ' text-xs rounded-full">' + (typeLabels[taskType] || taskType) + '</span>' +
+                '</td>' +
+                '<td class="py-4 px-4">' + (scheduleData.frequency === 'custom' ? '自定義' : scheduleData.frequency) + '</td>' +
+                '<td class="py-4 px-4 text-indigo-600 font-medium">待計算</td>' +
+                '<td class="py-4 px-4">' +
+                    '<span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">運行中</span>' +
+                '</td>' +
+                '<td class="py-4 px-4">' +
+                    '<div class="flex space-x-1">' +
+                        '<button class="text-indigo-600 hover:text-indigo-800 text-xs" title="執行">▶</button>' +
+                        '<button class="text-gray-500 hover:text-gray-700 text-xs" title="編輯">✎</button>' +
+                        '<button class="text-red-500 hover:text-red-700 text-xs" title="停用">⏸</button>' +
+                    '</div>' +
+                '</td>';
+
+            table.appendChild(newRow);
+            feather.replace();
+        }
+
+        function updateSchedulerStats() {
+            const scheduleTable = document.getElementById('scheduleTable');
+            const rows = scheduleTable.querySelectorAll('tr');
+            let activeCount = 0;
+            rows.forEach(row => {
+                const status = row.querySelector('td:nth-child(5) .rounded-full');
+                if (status && status.textContent === '運行中') {
+                    activeCount++;
+                }
+            });
+
+            document.getElementById('activeSchedules').textContent = activeCount;
+        }
+    </script>
+</body>
+</html>
