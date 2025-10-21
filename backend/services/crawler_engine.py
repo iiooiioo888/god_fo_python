@@ -39,6 +39,9 @@ from bs4 import BeautifulSoup
 
 from ..utils.config_manager import get_config_manager
 from ..utils.logger_service import get_logger
+from ..utils.error_handler import get_error_handler, with_error_handling, RecoveryStrategy, RecoveryConfig, ErrorContext
+from ..utils.performance_monitor import get_performance_monitor, performance_monitor, benchmark_operation
+from ..utils.audit_logger import get_audit_logger, audit_log, AuditLevel, AuditCategory
 
 
 class CrawlProtocol(Enum):
@@ -264,6 +267,11 @@ class IntelligentCrawler:
         self.config_manager = config_manager or get_config_manager()
         self.logger = get_logger(__name__)
 
+        # 初始化統一框架組件
+        self.error_handler = get_error_handler(__name__)
+        self.performance_monitor = get_performance_monitor(__name__)
+        self.audit_logger = get_audit_logger()
+
         # 初始化組件
         self.ua_pool = UserAgentPool()
         self.robots_parser = RobotsTxtParser()
@@ -288,8 +296,77 @@ class IntelligentCrawler:
         # 配置快取
         self._crawler_config = None
 
+        # 配置錯誤恢復策略
+        self._setup_error_recovery_configs()
+
+        # 設置性能基準
+        self._setup_performance_benchmarks()
+
         self.logger.info("intelligent_crawler_initialized")
 
+    def _setup_error_recovery_configs(self):
+        """設置錯誤恢復配置"""
+        # HTTP請求錯誤恢復策略
+        http_error_config = RecoveryConfig(
+            strategy=RecoveryStrategy.RETRY,
+            max_retries=5,
+            retry_delay=2.0,
+            exponential_backoff=True
+        )
+        self.error_handler.register_recovery_config("http_request", http_error_config)
+
+        # 網路連接錯誤恢復策略
+        network_error_config = RecoveryConfig(
+            strategy=RecoveryStrategy.FALLBACK,
+            fallback_function=self._fallback_network_request,
+            max_retries=2
+        )
+        self.error_handler.register_recovery_config("network_error", network_error_config)
+
+        # SSL證書錯誤恢復策略
+        ssl_error_config = RecoveryConfig(
+            strategy=RecoveryStrategy.SKIP,
+            max_retries=1
+        )
+        self.error_handler.register_recovery_config("ssl_error", ssl_error_config)
+
+    def _setup_performance_benchmarks(self):
+        """設置性能基準"""
+        # 請求響應時間基準
+        self.performance_monitor.set_benchmark(
+            "crawl_response_time_ms",
+            2000.0,  # 2秒响應時間
+            tolerance_percent=100,
+            environment="production"
+        )
+
+        # 請求成功率基準
+        self.performance_monitor.set_benchmark(
+            "crawl_success_rate",
+            95.0,  # 95% 成功率
+            tolerance_percent=10,
+            environment="production"
+        )
+
+        # 併發請求數基準
+        self.performance_monitor.set_benchmark(
+            "active_connections",
+            50.0,  # 最大50個活躍連接
+            tolerance_percent=20,
+            environment="production"
+        )
+
+    def _fallback_network_request(self, error_details) -> None:
+        """網路請求備用策略"""
+        # 在網路完全失敗時的備用策略
+        self.logger.warning("using_fallback_network_strategy",
+                           original_error=error_details.message)
+        # 可以實現代理切換或其他備用邏輯
+
+    @performance_monitor
+    @benchmark_operation("crawl_operation", expected_max_time_ms=5000)
+    @with_audit_trail("web_crawling")
+    @with_error_handling("http_request")
     async def crawl(self, config: CrawlConfig) -> CrawlResult:
         """
         執行爬取任務
@@ -302,6 +379,22 @@ class IntelligentCrawler:
         """
         start_time = time.time()
         self.stats["requests_total"] += 1
+
+        # 記錄審計事件
+        audit_log(
+            level=AuditLevel.ACCESS,
+            category=AuditCategory.DATA_ACCESS,
+            action="web_crawl_attempt",
+            actor="crawler_engine",
+            target=config.url,
+            result="STARTED",
+            details={
+                "method": config.method,
+                "proxy": bool(config.proxy),
+                "ssl_verify": config.verify_ssl,
+                "respect_robots": config.respect_robots_txt
+            }
+        )
 
         try:
             # 驗證配置
@@ -329,6 +422,21 @@ class IntelligentCrawler:
             result.response_time = elapsed
             result.success = True
 
+            # 記錄成功審計事件
+            audit_log(
+                level=AuditLevel.ACCESS,
+                category=AuditCategory.DATA_ACCESS,
+                action="web_crawl_success",
+                actor="crawler_engine",
+                target=config.url,
+                result="SUCCESS",
+                details={
+                    "status_code": result.status_code,
+                    "response_time_ms": round(elapsed * 1000, 2),
+                    "content_length": len(result.content)
+                }
+            )
+
             self.logger.debug("crawl_success",
                             url=config.url,
                             status=result.status_code,
@@ -339,6 +447,21 @@ class IntelligentCrawler:
         except Exception as e:
             self.stats["requests_failed"] += 1
             elapsed = time.time() - start_time
+
+            # 記錄失敗審計事件
+            audit_log(
+                level=AuditLevel.SECURITY,
+                category=AuditCategory.SECURITY_EVENT,
+                action="web_crawl_failed",
+                actor="crawler_engine",
+                target=config.url,
+                result="FAILED",
+                details={
+                    "error_type": type(e).__name__,
+                    "error_message": str(e),
+                    "response_time_ms": round(elapsed * 1000, 2)
+                }
+            )
 
             self.logger.warning("crawl_failed",
                               url=config.url,
