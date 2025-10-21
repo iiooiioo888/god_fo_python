@@ -15,6 +15,7 @@ import json
 import hashlib
 import threading
 import asyncio
+import functools
 from typing import Dict, List, Optional, Any, Union, Callable, Type
 from datetime import datetime, timedelta
 from enum import Enum

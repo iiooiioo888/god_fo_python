@@ -10,7 +10,7 @@ module.exports = {
     '**/__tests__/**/*.js',
     '**/*.test.js',
   ],
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@js/(.*)$': '<rootDir>/js/$1',
     '^@assets/(.*)$': '<rootDir>/assets/$1',

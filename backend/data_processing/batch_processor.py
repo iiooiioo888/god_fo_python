@@ -32,7 +32,7 @@ from ..utils.config_manager import get_config_manager
 from ..utils.logger_service import get_logger
 from ..utils.error_handler import get_error_handler, with_error_handling, RecoveryStrategy, RecoveryConfig, ErrorContext
 from ..utils.performance_monitor import get_performance_monitor, performance_monitor, benchmark_operation
-from ..utils.audit_logger import get_audit_logger, audit_log, AuditLevel, AuditCategory
+from ..utils.audit_logger import get_audit_logger, audit_log, AuditLevel, AuditCategory, with_audit_trail
 
 from .data_processor import DataRecord, ProcessingResult, DataQualityMetrics
 
