@@ -28,7 +28,7 @@ sys.path.insert(0, backend_dir)
 root_dir = os.path.dirname(backend_dir)
 sys.path.insert(0, root_dir)
 
-from utils.config_manager import init_config_manager, get_config_manager
+from utils.config_manager import init_config_manager, get_config_manager, ConfigurationError
 from utils.logger_service import init_logger_service, get_logger
 
 import uvicorn
@@ -72,7 +72,7 @@ def create_application() -> FastAPI:
     # 確保配置管理器已初始化 (解決重載問題)
     try:
         config = get_config_manager()
-    except ConfigurationError:
+    except (ConfigurationError, NameError):  # 捕获可能的异常
         # 在子進程中重新初始化
         config_manager = init_config_manager(
             config_dir=os.path.join(os.path.dirname(__file__), "config"),
