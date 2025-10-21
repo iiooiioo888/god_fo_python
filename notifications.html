@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知中心 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="#crawler" class="hover:text-indigo-200 transition">爬蟲管理</a>
+                <a href="#queue" class="hover:text-indigo-200 transition">任務隊列</a>
+                <a href="#data" class="hover:text-indigo-200 transition">數據預覽</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition text-white font-semibold">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">通知中心</h2>
+                <p class="text-gray-600">查看系統通知和重要事件</p>
+            </div>
+            <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                <button class="px-4 py-2 text-gray-600 hover:text-gray-800 transition" onclick="markAllAsRead()">
+                    <i data-feather="check" class="w-4 h-4 inline mr-1"></i>
+                    全部標為已讀
+                </button>
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
+                    <i data-feather="settings" class="w-4 h-4 inline mr-1"></i>
+                    通知設定
+                </button>
+            </div>
+        </div>
+
+        <!-- Notification Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">未讀通知</p>
+                        <h3 class="text-2xl font-bold text-red-600" id="unread-count">7</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i data-feather="bell" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">今日總計</p>
+                        <h3 class="text-2xl font-bold" id="today-count">23</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i data-feather="calendar" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">重要通知</p>
+                        <h3 class="text-2xl font-bold text-orange-600" id="important-count">3</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                        <i data-feather="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">系統警告</p>
+                        <h3 class="text-2xl font-bold text-yellow-600" id="warning-count">1</h3>
+                    </div>
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i data-feather="shield" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Filters -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">通知過濾</h3>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all">全部通知</option>
+                            <option value="unread">未讀通知</option>
+                            <option value="important">重要通知</option>
+                            <option value="system">系統消息</option>
+                            <option value="task">任務相關</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="all-time">全部時間</option>
+                            <option value="today">今天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                        </select>
+                    </div>
+                    <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md transition">
+                        <i data-feather="search" class="w-4 h-4 inline mr-1"></i>
+                        搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">通知列表</h3>
+            </div>
+            <div class="divide-y divide-gray-200" id="notifications-list">
+                <!-- Critical System Error -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item unread" data-priority="critical">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <i data-feather="x-circle" class="w-5 h-5 text-red-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-900">系統連接錯誤</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">重要</span>
+                                    <span class="text-sm text-gray-500">2023-12-01 14:30</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mt-1">數據庫連接失敗。系統正在嘗試自動重連，請關注恢復情況。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">查看詳情</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700">忽略</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Completed -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item unread" data-priority="normal">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i data-feather="check-circle" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-900">爬蟲任務完成</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">任務</span>
+                                    <span class="text-sm text-gray-500">2023-12-01 13:15</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mt-1">"電商商品抓取"任務已成功完成，共處理 1,247 條數據記錄。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">查看結果</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700">標為已讀</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item unread" data-priority="warning">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i data-feather="alert-triangle" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-900">系統資源警告</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">警告</span>
+                                    <span class="text-sm text-gray-500">2023-12-01 12:45</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mt-1">系統 CPU 使用率已超過 85%，建議檢查運行中的爬蟲任務。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">查看監控</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700" onclick="reduceCpuLoad()">降低負載</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Update -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item unread" data-priority="info">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i data-feather="info" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-900">系統更新可用</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">信息</span>
+                                    <span class="text-sm text-gray-500">2023-12-01 11:20</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mt-1">WebCrawler Commander v1.2.0 現已可用，包含性能優化和新功能。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">立即更新</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700">稍後提醒</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Crawler Created -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item unread" data-priority="normal">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                <i data-feather="plus" class="w-5 h-5 text-indigo-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-900">新爬蟲創建成功</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">創建</span>
+                                    <span class="text-sm text-gray-500">2023-12-01 10:30</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 mt-1">"社交媒體監控"爬蟲已成功創建並已啟動運行。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">查看配置</button>
+                                <button class="text-sm text-gray-500 hover:text-gray-700">停止運行</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Export Completed -->
+                <div class="p-6 hover:bg-gray-50 transition notification-item read" data-priority="normal">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                                <i data-feather="download" class="w-5 h-5 text-gray-600"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-medium text-gray-500">數據導出完成</h4>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">已讀</span>
+                                    <span class="text-sm text-gray-400">2023-12-01 09:15</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-500 mt-1">新聞數據導出任務已完成，共導出 5,432 條記錄。</p>
+                            <div class="mt-3 flex items-center space-x-4">
+                                <button class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">下載文件</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More -->
+            <div class="px-6 py-4 border-t border-gray-200 text-center">
+                <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition">
+                    <i data-feather="more-horizontal" class="w-4 h-4 inline mr-1"></i>
+                    加載更多通知
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 通知系統專用腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 標記通知為已讀
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.notification-item')) {
+                    const item = e.target.closest('.notification-item');
+                    markAsRead(item);
+                }
+
+                // 處理按鈕點擊
+                if (e.target.matches('button:has-text("標為已讀")') ||
+                    e.target.parentElement.matches('button:has-text("標為已讀")')) {
+                    const item = e.target.closest('.notification-item');
+                    markAsRead(item);
+                }
+            });
+        });
+
+        function markAsRead(notificationItem) {
+            if (notificationItem.classList.contains('unread')) {
+                notificationItem.classList.remove('unread');
+                notificationItem.classList.add('read');
+
+                // 更新樣式
+                const title = notificationItem.querySelector('h4');
+                if (title) {
+                    title.classList.remove('text-gray-900');
+                    title.classList.add('text-gray-500');
+                }
+
+                const badge = notificationItem.querySelector('.rounded-full:not(.bg-gray-100)');
+                if (badge && !badge.textContent.includes('已讀')) {
+                    badge.classList.remove('bg-red-100', 'bg-yellow-100', 'bg-blue-100', 'bg-green-100', 'bg-indigo-100');
+                    badge.classList.add('bg-gray-100');
+                }
+
+                const status = notificationItem.querySelector('span:first-child');
+                if (status) {
+                    status.classList.remove('text-red-800', 'text-yellow-800', 'text-blue-800', 'text-green-800', 'text-indigo-800');
+                    status.classList.add('text-gray-800');
+                    status.textContent = '已讀';
+                }
+
+                // 更新計數
+                updateNotificationCounts();
+            }
+        }
+
+        function markAllAsRead() {
+            const unreadItems = document.querySelectorAll('.notification-item.unread');
+            unreadItems.forEach(item => markAsRead(item));
+        }
+
+        function updateNotificationCounts() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            const unreadElement = document.getElementById('unread-count');
+            if (unreadElement) {
+                unreadElement.textContent = unreadCount;
+            }
+        }
+
+        function reduceCpuLoad() {
+            alert('正在嘗試降低系統負載...');
+
+            // 模擬降低負載的請求
+            setTimeout(function() {
+                alert('CPU 負載已優化。系統將監控性能如出現波動將自動調整。');
+            }, 2000);
+        }
+
+        // 初始化通知統計
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNotificationCounts();
+        });
+    </script>
+</body>
+</html>

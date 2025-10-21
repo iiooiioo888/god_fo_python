@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系統設定 | WebCrawler Commander</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:text-indigo-200 transition">
+                    <i data-feather="globe" class="w-6 h-6"></i>
+                    <h1 class="text-xl font-bold">爬爬总控台</h1>
+                </a>
+            </div>
+            <div id="nav-menu" class="hidden md:flex space-x-6">
+                <a href="index.html" class="hover:text-indigo-200 transition">儀表盤</a>
+                <a href="#crawler" class="hover:text-indigo-200 transition">爬蟲管理</a>
+                <a href="#queue" class="hover:text-indigo-200 transition">任務隊列</a>
+                <a href="#data" class="hover:text-indigo-200 transition">數據預覽</a>
+                <a href="api-docs.html" class="hover:text-indigo-200 transition">API文檔</a>
+                <a href="notifications.html" class="hover:text-indigo-200 transition">通知中心</a>
+                <a href="settings.html" class="hover:text-indigo-200 transition text-white font-semibold">系統設定</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="relative">
+                    <img id="user-avatar" src="https://static.photos/people/200x200/10" alt="User" class="w-8 h-8 rounded-full cursor-pointer">
+                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">個人中心</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">系統設定</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">退出登錄</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">系統設定</h2>
+            <p class="text-gray-600">配置您的爬蟲系統參數和偏好設定</p>
+        </div>
+
+        <!-- Settings Tabs -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex">
+                    <button
+                        onclick="showSettingsTab('general')"
+                        id="tab-general"
+                        class="tab-button px-6 py-3 text-gray-500 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-300 transition"
+                    >
+                        通用設定
+                    </button>
+                    <button
+                        onclick="showSettingsTab('crawler')"
+                        id="tab-crawler"
+                        class="tab-button px-6 py-3 text-gray-500 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-300 transition"
+                    >
+                        爬蟲參數
+                    </button>
+                    <button
+                        onclick="showSettingsTab('monitoring')"
+                        id="tab-monitoring"
+                        class="tab-button px-6 py-3 text-gray-500 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-300 transition"
+                    >
+                        監控設定
+                    </button>
+                    <button
+                        onclick="showSettingsTab('security')"
+                        id="tab-security"
+                        class="tab-button px-6 py-3 text-gray-500 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-300 transition"
+                    >
+                        安全設定
+                    </button>
+                </nav>
+            </div>
+
+            <!-- General Settings -->
+            <div id="settings-general" class="tab-content p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">通用設定</h3>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">系統語言</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="zh-CN">中文 (簡體)</option>
+                                <option value="zh-TW">中文 (繁體)</option>
+                                <option value="en-US">English</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">時區</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Asia/Shanghai">Asia/Shanghai (GMT+8)</option>
+                                <option value="Asia/Taipei">Asia/Taipei (GMT+8)</option>
+                                <option value="UTC">UTC</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用自動更新檢查</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用夜間模式</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crawler Settings -->
+            <div id="settings-crawler" class="tab-content p-6 hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">爬蟲參數設定</h3>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">默認請求延遲 (ms)</label>
+                            <input type="number" value="1000" min="0" max="10000"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">最大並發請求數</label>
+                            <input type="number" value="5" min="1" max="50"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">超時時間 (秒)</label>
+                            <input type="number" value="30" min="5" max="300"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">重試次數</label>
+                            <input type="number" value="3" min="0" max="10"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">User-Agent</label>
+                        <textarea rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  placeholder="WebCrawler/1.0 (+https://github.com/your-repo/robot.txt)">WebCrawler Commander/1.0 (+http://localhost:8000/)</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitoring Settings -->
+            <div id="settings-monitoring" class="tab-content p-6 hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">監控設定</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用實時資源監控</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用錯誤日誌記錄</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用性能指標收集</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">監控檢查間隔 (秒)</label>
+                            <input type="number" value="30" min="5" max="600"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-7g00 mb-2">日誌保留天數</label>
+                            <input type="number" value="30" min="1" max="365"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div id="settings-security" class="tab-content p-6 hidden">
+                <h3 class="text-lg font-medium text-gray-900 mb-6">安全設定</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">啟用 HTTPS</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" checked>
+                            <span class="ml-2 text-sm text-gray-700">強制密碼複雜度檢查</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <span class="ml-2 text-sm text-gray-700">啟用雙因素認證</span>
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">會話超時 (分鐘)</label>
+                            <input type="number" value="60" min="5" max="1440"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">密碼最長有效期 (天)</label>
+                            <input type="number" value="90" min="7" max="365"
+                                   class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-4">
+            <button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
+                重置為默認值
+            </button>
+            <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
+                保存設定
+            </button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 設定頁面專用腳本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化預設活躍標籤
+            showSettingsTab('general');
+        });
+
+        function showSettingsTab(tabName) {
+            // 隱藏所有標籤內容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // 移除所有標籤按鈕的活躍狀態
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('border-indigo-500', 'text-indigo-600');
+                button.classList.add('text-gray-500');
+            });
+
+            // 顯示選定的標籤內容
+            const activeContent = document.getElementById(`settings-${tabName}`);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+
+            // 設定活躍標籤按鈕
+            const activeButton = document.getElementById(`tab-${tabName}`);
+            if (activeButton) {
+                activeButton.classList.remove('text-gray-500');
+                activeButton.classList.add('border-indigo-500', 'text-indigo-600');
+            }
+        }
+
+        // 保存設定功能
+        function saveSettings() {
+            // 收集表單數據
+            const settings = {
+                general: {
+                    language: document.querySelector('#settings-general select').value,
+                    timezone: document.querySelector('#settings-general select:nth-child(2)').value,
+                    autoUpdate: document.querySelector('#settings-general input[type="checkbox"]').checked,
+                    darkMode: document.querySelector('#settings-general input[type="checkbox"]:nth-child(2)').checked
+                }
+            };
+
+            // 保存到 localStorage
+            localStorage.setItem('crawlerSettings', JSON.stringify(settings));
+
+            // 顯示成功消息
+            alert('設定已保存！');
+
+            // 重新載入頁面應用新設定
+            if (settings.general.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // 綁定保存按鈕事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveButton = document.querySelector('button:has-text("保存設定")') ||
+                              document.querySelector('.flex.justify-end button:last-child');
+            if (saveButton) {
+                saveButton.addEventListener('click', saveSettings);
+            }
+        });
+    </script>
+</body>
+</html>
