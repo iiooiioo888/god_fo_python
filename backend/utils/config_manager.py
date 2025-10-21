@@ -284,7 +284,7 @@ class ConfigValidator(BaseModel):
     # 系統基礎配置
     app_name: str = Field(default="WebCrawler Commander", min_length=1)
     version: str = Field(default="1.0.0")
-    environment: str = Field(default="development", regex="^(development|testing|staging|production)$")
+    environment: str = Field(default="development", pattern="^(development|testing|staging|production)$")
 
     # 服務器配置
     server_host: str = Field(default="0.0.0.0")
@@ -317,7 +317,7 @@ class ConfigValidator(BaseModel):
     security_jwt_expiration: int = Field(default=3600, ge=300)
 
     # 日誌配置
-    logging_level: str = Field(default="INFO", regex="^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$")
+    logging_level: str = Field(default="INFO", pattern="^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$")
     logging_file_path: Optional[Path] = None
     logging_max_file_size: str = Field(default="10 MB")
     logging_backup_count: int = Field(default=5, ge=1)
@@ -596,18 +596,30 @@ class ConfigManager:
         result = config.copy()
 
         for field_path in encrypted_fields:
-            encrypted_value = self.get(field_path, None)
+            # 直接從配置字典獲取值，避免遞歸調用
+            keys = field_path.split('.')
+            encrypted_value = self._get_nested_value(config, keys)
             if encrypted_value and isinstance(encrypted_value, str):
                 try:
                     # 嘗試解密
                     if encrypted_value.startswith('encrypted:'):
                         decrypted = self.encryption.decrypt(encrypted_value[10:])
-                        self._set_nested_value(result, field_path.split('.'), decrypted)
+                        self._set_nested_value(result, keys, decrypted)
                 except Exception:
                     # 如果解密失敗，保留原值但記錄警告
                     self.logger.warning("config_decryption_failed", field=field_path)
 
         return result
+
+    def _get_nested_value(self, config: Dict[str, Any], keys: List[str]) -> Any:
+        """獲取嵌套字典值"""
+        value = config
+        try:
+            for key in keys:
+                value = value[key]
+            return value
+        except (KeyError, TypeError):
+            return None
 
     def _validate_config(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """驗證配置"""

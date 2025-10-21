@@ -29,7 +29,8 @@ from dataclasses import dataclass, field
 
 import structlog
 from structlog.processors import JSONRenderer, TimeStamper, format_exc_info
-from structlog.stdlib import LogRecord, BoundLoggerLazyProxy
+from logging import LogRecord
+from structlog.stdlib import BoundLogger
 from structlog.threadlocal import wrap_dict
 
 from .config_manager import get_config_manager, ConfigManager
@@ -272,6 +273,9 @@ class FileLogHandler(BaseLogHandler):
 
     def _parse_size(self, size_str: str) -> int:
         """解析文件大小字符串"""
+        if not isinstance(size_str, str):
+            size_str = str(size_str)
+
         size_str = size_str.upper().strip()
         units = {
             'B': 1,
@@ -282,13 +286,19 @@ class FileLogHandler(BaseLogHandler):
 
         for unit, multiplier in units.items():
             if size_str.endswith(unit):
-                number = float(size_str[:-len(unit)].strip())
-                return int(number * multiplier)
+                try:
+                    number_str = size_str[:-len(unit)].strip()
+                    number = float(number_str)
+                    return int(number * multiplier)
+                except ValueError as e:
+                    print(f"解析文件大小失敗: '{size_str}', number_str: '{number_str}', error: {e}", file=__import__('sys').stderr)
+                    break
 
         # 默認按字節處理
         try:
             return int(float(size_str))
         except ValueError:
+            print(f"無法解析文件大小字符串: '{size_str}'，使用默認值10MB", file=__import__('sys').stderr)
             return 10 * 1024 * 1024  # 默認10MB
 
 
@@ -472,11 +482,11 @@ class LoggerService:
                 # 配置structlog
                 self._configure_structlog(service_config)
 
-                # 創建處理器
-                self._create_handlers(log_config)
-
                 # 創建根logger
                 self.logger = structlog.get_logger()
+
+                # 創建處理器
+                self._create_handlers(log_config)
 
                 self._initialized = True
 
@@ -576,7 +586,7 @@ class LoggerService:
                 import sys
                 print(f"創建{name} handler失敗: {e}", file=sys.stderr)
 
-    def get_logger(self, name: str = None) -> BoundLoggerLazyProxy:
+    def get_logger(self, name: str = None) -> BoundLogger:
         """獲取logger實例"""
         if not self._initialized:
             self.initialize()
@@ -675,7 +685,7 @@ def get_logger_service() -> LoggerService:
     return _logger_service
 
 
-def get_logger(name: str = None) -> BoundLoggerLazyProxy:
+def get_logger(name: str = None) -> BoundLogger:
     """便捷函數：獲取logger實例"""
     return get_logger_service().get_logger(name)
 

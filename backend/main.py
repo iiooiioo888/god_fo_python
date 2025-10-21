@@ -22,7 +22,11 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 # 添加backend目錄到Python路徑
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, backend_dir)
+# 確保根目錄也在路徑中（用於其他模塊找到backend）
+root_dir = os.path.dirname(backend_dir)
+sys.path.insert(0, root_dir)
 
 from utils.config_manager import init_config_manager, get_config_manager
 from utils.logger_service import init_logger_service, get_logger
@@ -65,9 +69,25 @@ def create_application() -> FastAPI:
     """創建FastAPI應用"""
     global app
 
-    # 獲取配置
-    config = get_config_manager()
-    logger = get_logger(__name__)
+    # 確保配置管理器已初始化 (解決重載問題)
+    try:
+        config = get_config_manager()
+    except ConfigurationError:
+        # 在子進程中重新初始化
+        config_manager = init_config_manager(
+            config_dir=os.path.join(os.path.dirname(__file__), "config"),
+            environment=os.getenv("WEBCRAWLER_ENV"),
+            enable_hot_reload=False  # 子進程中關閉熱重載
+        )
+        config = config_manager
+
+    # 確保日誌服務已初始化
+    try:
+        logger = get_logger(__name__)
+    except RuntimeError:
+        # 初始化日誌服務
+        logger_service = init_logger_service(config)
+        logger = get_logger(__name__)
 
     # 創建FastAPI應用
     app = FastAPI(
@@ -233,7 +253,7 @@ def main():
 
         # 使用uvicorn啟動服務器
         uvicorn.run(
-            "main:create_application",
+            f"{os.path.basename(backend_dir)}.main:create_application",
             factory=True,
             host=host,
             port=port,
