@@ -191,7 +191,10 @@ def create_application() -> FastAPI:
         )
 
     # 在此處添加API路由器
-    # 例如：
+    from .routers.dashboard_router import router as dashboard_router
+    app.include_router(dashboard_router)
+
+    # 其他路由器將來可以添加在這裡
     # app.include_router(crawler_router, prefix="/api/crawlers", tags=["crawlers"])
     # app.include_router(data_router, prefix="/api/data", tags=["data"])
 

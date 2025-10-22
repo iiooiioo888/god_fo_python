@@ -3,10 +3,13 @@
 // 資源監控工具模組
 // 處理系統資源監控和動態數據更新
 
+import { DashboardService } from '../services/dashboard-service.js';
+
 export class ResourceMonitor {
   constructor() {
-    this.updateInterval = 3000; // 3秒更新一次
+    this.updateInterval = 5000; // 5秒更新一次
     this.intervalId = null;
+    this.api = new DashboardService();
   }
 
   // 開始監控
@@ -24,70 +27,115 @@ export class ResourceMonitor {
   }
 
   // 更新資源統計
-  updateStats() {
-    this.updateCPUStats();
-    this.updateMemoryStats();
-    this.updateNetworkStats();
-    this.updateDiskStats();
+  async updateStats() {
+    try {
+      const resourceStats = await this.api.getResourceStats();
+      this.updateResourceDisplays(resourceStats);
+    } catch (error) {
+      console.error('Error updating resource stats:', error);
+      // 如果API調用失敗，暫時停止更新
+      this.stop();
+    }
+  }
+
+  // 更新資源顯示
+  updateResourceDisplays(stats) {
+    this.updateCPUStats(stats.cpu);
+    this.updateMemoryStats(stats.memory);
+    this.updateNetworkStats(stats.network);
+    this.updateDiskStats(stats.disk);
   }
 
   // 更新 CPU 統計
-  updateCPUStats() {
-    const cpuElements = document.querySelectorAll('[style*="width: 64%"]');
-    cpuElements.forEach(el => {
-      const cpuPercent = this.getRandomValue(50, 80);
-      el.style.width = `${cpuPercent}%`;
+  updateCPUStats(cpuData) {
+    const cpuPercent = Math.round(cpuData.usage);
 
-      const label = el.closest('.border').querySelector('span.text-sm.font-medium');
-      if (label) {
-        label.textContent = `${cpuPercent.toFixed(0)}%`;
+    // 找到CPU區塊
+    const resourceBlocks = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+    if (resourceBlocks.length >= 4) {
+      const cpuBlock = resourceBlocks[0]; // CPU 是第一個
+
+      // 更新進度條
+      const cpuProgressEl = cpuBlock.querySelector('.bg-purple-600');
+      if (cpuProgressEl) {
+        cpuProgressEl.style.width = `${cpuPercent}%`;
       }
-    });
+
+      // 更新標籤
+      const cpuLabelEl = cpuBlock.querySelector('span.text-sm.font-medium');
+      if (cpuLabelEl) {
+        cpuLabelEl.textContent = `${cpuPercent}%`;
+      }
+    }
   }
 
   // 更新記憶體統計
-  updateMemoryStats() {
-    const memoryElements = document.querySelectorAll('[style*="width: 40%"]');
-    memoryElements.forEach(el => {
-      const memoryPercent = this.getRandomValue(25, 50);
-      el.style.width = `${memoryPercent}%`;
+  updateMemoryStats(memoryData) {
+    const memoryPercent = Math.round(memoryData.usage);
 
-      const label = el.closest('.border').querySelector('span.text-sm.font-medium');
-      if (label) {
-        const memoryGB = (8 * memoryPercent / 100).toFixed(1);
-        label.textContent = `${memoryGB}/8 GB`;
+    // 找到記憶體區塊
+    const resourceBlocks = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+    if (resourceBlocks.length >= 4) {
+      const memoryBlock = resourceBlocks[1]; // 記憶體是第二個
+
+      // 更新進度條
+      const memoryProgressEl = memoryBlock.querySelector('.bg-blue-600');
+      if (memoryProgressEl) {
+        memoryProgressEl.style.width = `${memoryPercent}%`;
       }
-    });
+
+      // 更新標籤
+      const memoryLabelEl = memoryBlock.querySelector('span.text-sm.font-medium');
+      if (memoryLabelEl) {
+        memoryLabelEl.textContent = memoryData.details;
+      }
+    }
   }
 
   // 更新網路統計
-  updateNetworkStats() {
-    const networkElements = document.querySelectorAll('[style*="width: 75%"]');
-    networkElements.forEach(el => {
-      const networkPercent = this.getRandomValue(60, 90);
-      el.style.width = `${networkPercent}%`;
+  updateNetworkStats(networkData) {
+    const networkPercent = Math.round(networkData.usage);
 
-      const label = el.closest('.border').querySelector('span.text-sm.font-medium');
-      if (label) {
-        const networkMB = (2 * networkPercent / 100).toFixed(1);
-        label.textContent = `${networkMB} MB/s`;
+    // 找到網路區塊
+    const resourceBlocks = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+    if (resourceBlocks.length >= 4) {
+      const networkBlock = resourceBlocks[2]; // 網路是第三個
+
+      // 更新進度條
+      const networkProgressEl = networkBlock.querySelector('.bg-yellow-600');
+      if (networkProgressEl) {
+        networkProgressEl.style.width = `${networkPercent}%`;
       }
-    });
+
+      // 更新標籤
+      const networkLabelEl = networkBlock.querySelector('span.text-sm.font-medium');
+      if (networkLabelEl) {
+        networkLabelEl.textContent = networkData.details;
+      }
+    }
   }
 
   // 更新磁碟統計
-  updateDiskStats() {
-    const diskElements = document.querySelectorAll('[style*="width: 24%"]');
-    diskElements.forEach(el => {
-      const diskPercent = this.getRandomValue(20, 30);
-      el.style.width = `${diskPercent}%`;
+  updateDiskStats(diskData) {
+    const diskPercent = Math.round(diskData.usage);
 
-      const label = el.closest('.border').querySelector('span.text-sm.font-medium');
-      if (label) {
-        const diskGB = (500 * diskPercent / 100).toFixed(0);
-        label.textContent = `${diskGB}/500 GB`;
+    // 找到磁碟區塊
+    const resourceBlocks = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+    if (resourceBlocks.length >= 4) {
+      const diskBlock = resourceBlocks[3]; // 磁碟是第四個
+
+      // 更新進度條
+      const diskProgressEl = diskBlock.querySelector('.bg-green-600');
+      if (diskProgressEl) {
+        diskProgressEl.style.width = `${diskPercent}%`;
       }
-    });
+
+      // 更新標籤
+      const diskLabelEl = diskBlock.querySelector('span.text-sm.font-medium');
+      if (diskLabelEl) {
+        diskLabelEl.textContent = diskData.details;
+      }
+    }
   }
 
   // 生成隨機值 (介於 min 和 max 之間)

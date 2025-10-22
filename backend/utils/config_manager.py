@@ -367,13 +367,17 @@ class ConfigManager:
     def __init__(self,
                  config_dir: Union[str, Path] = "config",
                  environment: str = None,
-                 encryption_key: Optional[str] = None):
+                 encryption_key: Optional[str] = None,
+                 watch_exclude: Optional[List[str]] = None):
         self.config_dir = Path(config_dir)
         self.environment = environment or os.getenv("WEBCRAWLER_ENV", "development")
         self.logger = structlog.get_logger(__name__)
 
         # 初始化加密提供者
         self.encryption = FernetEncryptionProvider(encryption_key)
+
+        # 監視排除模式
+        self._watch_exclude = watch_exclude or ["logs", "__pycache__", "*.tmp", "*.bak"]
 
         # 配置源列表 (按優先級排序)
         self.sources: List[ConfigSource] = []
@@ -686,7 +690,7 @@ class ConfigManager:
             from watchfiles import awatch
 
             async def watch_task():
-                async for changes in awatch(*file_paths):
+                async for changes in awatch(*file_paths, ignore_patterns=self._watch_exclude):
                     for change_type, path in changes:
                         if change_type.name in ('modified', 'created'):
                             on_change(path)
@@ -741,7 +745,8 @@ _config_manager: Optional[ConfigManager] = None
 def init_config_manager(config_dir: Union[str, Path] = "config",
                        environment: str = None,
                        encryption_key: Optional[str] = None,
-                       enable_hot_reload: bool = True) -> ConfigManager:
+                       enable_hot_reload: bool = True,
+                       watch_exclude: Optional[List[str]] = None) -> ConfigManager:
     """
     初始化全域配置管理器
 
@@ -756,7 +761,7 @@ def init_config_manager(config_dir: Union[str, Path] = "config",
     """
     global _config_manager
 
-    _config_manager = ConfigManager(config_dir, environment, encryption_key)
+    _config_manager = ConfigManager(config_dir, environment, encryption_key, watch_exclude)
 
     if enable_hot_reload:
         _config_manager.enable_hot_reload()
