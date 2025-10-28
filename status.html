@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜像状态监控中心 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">📊</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">镜像状态监控中心</h1>
+                    <p class="text-xl text-gray-400 mt-2">实时监控数据源健康状态，可用性与性能指标</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                专业的数据源监控平台，提供实时状态追踪、异常告警和性能分析，为你的数据采集保驾护航
+            </p>
+        </div>
+    </header>
+
+    <!-- Quick Stats -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-blue-400 mb-1" id="total-sources">42</div>
+                    <div class="text-sm text-gray-400">监控数据源</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-green-400 mb-1" id="online-count">40</div>
+                    <div class="text-sm text-gray-400">在线可用</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-yellow-400 mb-1" id="warning-count">2</div>
+                    <div class="text-sm text-gray-400">警告状态</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-red-400 mb-1" id="error-count">0</div>
+                    <div class="text-sm text-gray-400">异常离线</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Monitoring Dashboard -->
+    <section class="py-12 bg-gradient-to-br from-gray-900/80 to-black/80">
+        <div class="container mx-auto px-4">
+
+            <!-- Control Panel -->
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 mb-8 border border-gray-700">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <span class="text-lg font-semibold">监控面板</span>
+                        <div class="flex gap-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                <span class="text-sm text-green-400">实时监控</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="refreshStatus()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                            <i data-feather="refresh-ccw" class="w-4 h-4"></i>
+                            刷新状态
+                        </button>
+                        <select id="auto-refresh" onchange="toggleAutoRefresh()" class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white">
+                            <option value="0">手动刷新</option>
+                            <option value="30">每30秒刷新</option>
+                            <option value="60">每1分钟刷新</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Cards Grid -->
+            <div id="status-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+                <!-- Status cards will be populated by JavaScript -->
+            </div>
+
+            <!-- Recent Alerts -->
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <i data-feather="alert-triangle" class="text-yellow-400"></i>
+                    最近警报
+                </h3>
+                <div id="alerts-list" class="space-y-3">
+                    <!-- Alerts will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Analysis -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">性能分析报告</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Response Time Chart -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="trending-up" class="text-blue-400"></i>
+                        响应时间分布 (最近24小时)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="text-sm text-gray-400">平均响应时间: <span class="text-green-400">287ms</span></div>
+                        <div class="text-sm text-gray-400">最佳响应时间: <span class="text-green-400">156ms</span></div>
+                        <div class="text-sm text-gray-400">最差响应时间: <span class="text-yellow-400">689ms</span></div>
+                        <div class="mt-6">
+                            <!-- Simple bar chart representation -->
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-400">< 200ms</span>
+                                    <div class="flex-1 mx-4 bg-gray-700 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <span class="text-gray-300">75%</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-400">200-500ms</span>
+                                    <div class="flex-1 mx-4 bg-gray-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                    <span class="text-gray-300">20%</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-400">> 500ms</span>
+                                    <div class="flex-1 mx-4 bg-gray-700 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 5%"></div>
+                                    </div>
+                                    <span class="text-gray-300">5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Uptime Analysis -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="calendar" class="text-purple-400"></i>
+                        可用率统计 (最近30天)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="text-sm text-gray-400">总可用率: <span class="text-green-400">98.7%</span></div>
+                        <div class="text-sm text-gray-400">计划维护时间: <span class="text-blue-400">2.3小时</span></div>
+                        <div class="text-sm text-gray-400">意外宕机时间: <span class="text-red-400">1.2小时</span></div>
+                        <div class="mt-6">
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-4 h-4 bg-green-500 rounded"></div>
+                                    <span class="text-sm text-gray-300">连续稳定运行</span>
+                                    <span class="text-sm text-green-400 ml-auto">25天</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-4 h-4 bg-yellow-500 rounded"></div>
+                                    <span class="text-sm text-gray-300">响应时间预警</span>
+                                    <span class="text-sm text-yellow-400 ml-auto">3天</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-4 h-4 bg-red-500 rounded"></div>
+                                    <span class="text-sm text-gray-300">服务异常中断</span>
+                                    <span class="text-sm text-red-400 ml-auto">0天</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Status Monitoring System
+        let sourcesData = [
+            {
+                name: "Unsplash API",
+                url: "unsplash.com/api",
+                status: "online",
+                category: "图片",
+                responseTime: 245,
+                lastChecked: "2024-01-15 10:30:22",
+                uptime: "99.8%",
+                location: "🇺🇸 北美"
+            },
+            {
+                name: "Pexels API",
+                url: "pexels.com/api",
+                status: "online",
+                category: "视频",
+                responseTime: 187,
+                lastChecked: "2024-01-15 10:30:18",
+                uptime: "99.9%",
+                location: "🇺🇸 北美"
+            },
+            {
+                name: "Pixabay API",
+                url: "pixabay.com/api",
+                status: "warning",
+                category: "图片",
+                responseTime: 512,
+                lastChecked: "2024-01-15 10:30:15",
+                uptime: "98.7%",
+                location: "🇩🇪 德国",
+                issue: "响应时间增加"
+            },
+            {
+                name: "NASA Images",
+                url: "images.nasa.gov",
+                status: "online",
+                category: "图片",
+                responseTime: 334,
+                lastChecked: "2024-01-15 10:30:12",
+                uptime: "100.0%",
+                location: "🇺🇸 北美"
+            },
+            {
+                name: "YouTube Data API",
+                url: "youtube.com/api",
+                status: "warning",
+                category: "视频",
+                responseTime: 678,
+                lastChecked: "2024-01-15 10:30:08",
+                uptime: "97.5%",
+                location: "🇺🇸 北美",
+                issue: "速率限制临近"
+            },
+            {
+                name: "Getty Images API",
+                url: "gettyimages.com/api",
+                status: "online",
+                category: "图片",
+                responseTime: 298,
+                lastChecked: "2024-01-15 10:30:05",
+                uptime: "99.2%",
+                location: "🇺🇸 北美"
+            }
+        ];
+
+        let alertsData = [
+            {
+                type: "warning",
+                message: "Pixabay API 响应时间增加至512ms",
+                source: "Pixabay API",
+                time: "2024-01-15 10:45:30",
+                severity: "medium"
+            },
+            {
+                type: "warning",
+                message: "YouTube API 速率限制警告",
+                source: "YouTube Data API",
+                time: "2024-01-15 10:42:15",
+                severity: "high"
+            },
+            {
+                type: "info",
+                message: "所有数据源状态检查完成",
+                source: "系统",
+                time: "2024-01-15 10:30:30",
+                severity: "low"
+            }
+        ];
+
+        let autoRefreshInterval = null;
+
+        // Render status monitoring
+        function renderStatusMonitoring() {
+            renderStatusStats();
+            renderStatusGrid();
+            renderAlerts();
+        }
+
+        function renderStatusStats() {
+            const total = sourcesData.length;
+            const online = sourcesData.filter(s => s.status === 'online').length;
+            const warning = sourcesData.filter(s => s.status === 'warning').length;
+            const error = total - online - warning;
+
+            document.getElementById('total-sources').textContent = total;
+            document.getElementById('online-count').textContent = online;
+            document.getElementById('warning-count').textContent = warning;
+            document.getElementById('error-count').textContent = error;
+        }
+
+        function renderStatusGrid() {
+            const container = document.getElementById('status-grid');
+            container.innerHTML = '';
+
+            sourcesData.forEach(source => {
+                const statusColor = statusColors[source.status];
+                const categoryColor = categoryColors[source.category];
+
+                const cardHtml = `
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-5 border ${statusBorderColors[source.status]} transition-all duration-300 hover:scale-105">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">${source.name}</h4>
+                                <p class="text-sm text-gray-400 break-all">${source.url}</p>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${categoryBadgeColors[source.category]}">
+                                ${source.category}
+                            </span>
+                        </div>
+
+                        <div class="space-y-3 mb-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">状态:</span>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-${statusColors[source.status]}-500 rounded-full ${source.status === 'online' ? 'animate-pulse' : ''}"></div>
+                                    <span class="text-sm text-${statusColors[source.status]}-400 font-medium">${statusText[source.status]}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">响应时间:</span>
+                                <span class="text-sm text-white font-medium">${source.responseTime}ms</span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">可用率:</span>
+                                <span class="text-sm text-green-400 font-medium">${source.uptime}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-300">位置:</span>
+                                <span class="text-sm text-white">${source.location}</span>
+                            </div>
+                        </div>
+
+                        ${source.issue ? `
+                        <div class="mb-4 p-3 bg-yellow-900/20 border border-yellow-600/30 rounded-lg">
+                            <p class="text-sm text-yellow-300">${source.issue}</p>
+                        </div>
+                        ` : ''}
+
+                        <div class="text-xs text-gray-500">
+                            最后检查: ${source.lastChecked}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function renderAlerts() {
+            const container = document.getElementById('alerts-list');
+            container.innerHTML = '';
+
+            if (alertsData.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-4">暂无警报</p>';
+                return;
+            }
+
+            alertsData.forEach(alert => {
+                const typeIcon = {
+                    warning: 'alert-triangle',
+                    error: 'alert-circle',
+                    info: 'info'
+                }[alert.type] || 'info';
+
+                const typeColor = {
+                    warning: 'text-yellow-400',
+                    error: 'text-red-400',
+                    info: 'text-blue-400'
+                }[alert.type] || 'text-blue-400';
+
+                const severityBg = {
+                    high: 'bg-red-900/20 border-l-4 border-red-500',
+                    medium: 'bg-yellow-900/20 border-l-4 border-yellow-500',
+                    low: 'bg-blue-900/20 border-l-4 border-blue-500'
+                }[alert.severity] || 'bg-gray-900/20 border-l-4 border-gray-500';
+
+                const alertHtml = `
+                    <div class="${severityBg} rounded-lg p-4 border border-gray-600/30">
+                        <div class="flex items-start gap-3">
+                            <i data-feather="${typeIcon}" class="w-5 h-5 mt-0.5 ${typeColor} flex-shrink-0"></i>
+                            <div class="flex-1">
+                                <p class="text-sm text-white font-medium mb-1">${alert.message}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-400">${alert.source}</span>
+                                    <span class="text-xs text-gray-500">${alert.time}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += alertHtml;
+            });
+
+            feather.replace();
+        }
+
+        // Status constants
+        const statusColors = {
+            online: 'green',
+            warning: 'yellow',
+            error: 'red'
+        };
+
+        const statusBorderColors = {
+            online: 'border-green-500/30',
+            warning: 'border-yellow-500/30',
+            error: 'border-red-500/30'
+        };
+
+        const statusText = {
+            online: '在线',
+            warning: '警告',
+            error: '离线'
+        };
+
+        const categoryColors = {
+            图片: 'blue',
+            视频: 'purple',
+            GIF: 'pink'
+        };
+
+        const categoryBadgeColors = {
+            图片: 'bg-blue-900/30 text-blue-400',
+            视频: 'bg-purple-900/30 text-purple-400',
+            GIF: 'bg-pink-900/30 text-pink-400'
+        };
+
+        // Control functions
+        function refreshStatus() {
+            // Simulate refreshing data
+            // In a real app, this would fetch fresh data from server
+            renderStatusMonitoring();
+
+            // Show success feedback
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i data-feather="check" class="w-4 h-4"></i> 已刷新';
+            button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            button.classList.add('bg-green-600', 'hover:bg-green-700');
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                feather.replace();
+            }, 2000);
+        }
+
+        function toggleAutoRefresh() {
+            const select = document.getElementById('auto-refresh');
+            const interval = parseInt(select.value);
+
+            // Clear existing interval
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+
+            // Set new interval if selected
+            if (interval > 0) {
+                autoRefreshInterval = setInterval(() => {
+                    renderStatusMonitoring();
+                }, interval * 1000);
+            }
+        }
+
+        // Initialize monitoring system
+        renderStatusMonitoring();
+
+        // Simulate real-time updates (optional for demo)
+        setInterval(() => {
+            // Random status fluctuation for demo
+            sourcesData.forEach(source => {
+                if (Math.random() < 0.1) { // 10% chance to change status
+                    const statuses = ['online', 'warning'];
+                    const currentIndex = statuses.indexOf(source.status);
+                    const newIndex = (currentIndex + 1) % statuses.length;
+                    source.status = statuses[newIndex];
+
+                    if (source.status === 'warning') {
+                        // Add an alert for warning status
+                        alertsData.unshift({
+                            type: "warning",
+                            message: `${source.name} 状态变更为警告`,
+                            source: source.name,
+                            time: new Date().toLocaleString('zh-CN'),
+                            severity: "medium"
+                        });
+                        alertsData = alertsData.slice(0, 10); // Keep only last 10 alerts
+                    }
+                }
+
+                // Update response time slightly
+                source.responseTime += Math.floor(Math.random() * 20 - 10);
+                source.responseTime = Math.max(100, source.responseTime); // Min 100ms
+            });
+
+            renderStatusMonitoring();
+        }, 30000); // Update every 30 seconds
+    </script>
+</body>
+</html>

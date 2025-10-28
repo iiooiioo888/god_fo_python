@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜链 - 数据流水线 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+    <style>
+      main {
+        pointer-events: none;
+        opacity: 0.5;
+        user-select: none;
+      }
+      main::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(107, 114, 128, 0.1);
+        z-index: 10;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main class="relative">
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">🚧</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">镜链 - 正在施工</h1>
+                    <p class="text-xl text-gray-400 mt-2">可视化数据流水线 - 开发中...</p>
+                </div>
+            </div>
+            <div class="inline-block bg-yellow-900/30 border border-yellow-500/50 rounded-lg px-6 py-4 mx-auto">
+                <div class="flex items-center gap-3 text-yellow-400">
+                    <i data-feather="hard-hat" class="w-6 h-6"></i>
+                    <div>
+                        <div class="font-semibold text-lg">功能开发中</div>
+                        <div class="text-sm">镜链模块正在全力开发中，敬请期待真正可用的可视化数据流水线系统</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pipeline Stats -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-400 mb-1">892</div>
+                    <div class="text-sm text-gray-400">活跃流水线</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-green-400 mb-1">45.2M</div>
+                    <div class="text-sm text-gray-400">每日处理数据</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-yellow-400 mb-1">99.7%</div>
+                    <div class="text-sm text-gray-400">执行成功率</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-purple-400 mb-1">3.2M</div>
+                    <div class="text-sm text-gray-400">累计节省时间</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Builder -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">流水线构建器</h2>
+
+            <!-- Pipeline Canvas -->
+            <div class="bg-gray-900 rounded-xl p-8 mb-8">
+                <div class="flex flex-wrap justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">可视化设计面板</h3>
+                    <div class="flex gap-4">
+                        <button onclick="clearPipeline()" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                            <i data-feather="trash-2"></i>
+                            清空
+                        </button>
+                        <button onclick="savePipeline()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                            <i data-feather="save"></i>
+                            保存
+                        </button>
+                        <button onclick="runPipeline()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                            <i data-feather="play"></i>
+                            执行
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pipeline Canvas Area -->
+                <div class="border-2 border-dashed border-gray-600 rounded-lg" style="height: 600px;">
+                    <div id="pipeline-canvas" class="w-full h-full relative">
+                        <!-- Start Node (Example) -->
+                        <div class="absolute top-8 left-8 bg-blue-600 rounded-full w-16 h-16 flex items-center justify-center text-white font-bold cursor-pointer hover:bg-blue-700 transition-colors" 
+                             data-type="start" draggable="true">
+                            <i data-feather="play" class="w-6 h-6"></i>
+                        </div>
+
+                        <!-- Example Connection Line -->
+                        <svg class="absolute inset-0 pointer-events-none" style="z-index: 1;">
+                            <path d="M 80 56 Q 120 56 120 76 L 120 200" 
+                                  stroke="#60a5fa" stroke-width="3" fill="none" 
+                                  marker-end="url(#arrowhead)"/>
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                                        refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="flex justify-center mt-6">
+                    <p class="text-gray-400 text-sm">拖拽左侧节点到面板中开始构建流水线</p>
+                </div>
+            </div>
+
+            <!-- Node Palette -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Data Sources -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="database" class="text-blue-400"></i>
+                        数据源
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-blue-900/30 transition-colors draggable-node" 
+                             data-node-type="web-scraper">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="globe" class="text-blue-400 w-4 h-4"></i>
+                                <span class="text-sm">网页采集器</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-blue-900/30 transition-colors draggable-node" 
+                             data-node-type="api-connector">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="zap" class="text-green-400 w-4 h-4"></i>
+                                <span class="text-sm">API连接器</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-blue-900/30 transition-colors draggable-node" 
+                             data-node-type="file-reader">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="file-text" class="text-purple-400 w-4 h-4"></i>
+                                <span class="text-sm">文件读取器</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-blue-900/30 transition-colors draggable-node" 
+                             data-node-type="database-query">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="server" class="text-orange-400 w-4 h-4"></i>
+                                <span class="text-sm">数据库查询</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Nodes -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="cpu" class="text-green-400"></i>
+                        处理节点
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-green-900/30 transition-colors draggable-node" 
+                             data-node-type="data-cleaner">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="filter" class="text-green-400 w-4 h-4"></i>
+                                <span class="text-sm">数据清洗</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-green-900/30 transition-colors draggable-node" 
+                             data-node-type="ai-analyzer">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="brain" class="text-purple-400 w-4 h-4"></i>
+                                <span class="text-sm">AI分析</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-green-900/30 transition-colors draggable-node" 
+                             data-node-type="transformer">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="shuffle" class="text-blue-400 w-4 h-4"></i>
+                                <span class="text-sm">格式转换</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-green-900/30 transition-colors draggable-node" 
+                             data-node-type="aggregator">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="plus-circle" class="text-yellow-400 w-4 h-4"></i>
+                                <span class="text-sm">数据聚合</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logic Nodes -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="git-branch" class="text-yellow-400"></i>
+                        逻辑控制
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-yellow-900/30 transition-colors draggable-node" 
+                             data-node-type="condition">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="git-branch" class="text-yellow-400 w-4 h-4"></i>
+                                <span class="text-sm">条件判断</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-yellow-900/30 transition-colors draggable-node" 
+                             data-node-type="loop">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="repeat" class="text-orange-400 w-4 h-4"></i>
+                                <span class="text-sm">循环处理</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-yellow-900/30 transition-colors draggable-node" 
+                             data-node-type="splitter">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="more-horizontal" class="text-purple-400 w-4 h-4"></i>
+                                <span class="text-sm">数据拆分</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-yellow-900/30 transition-colors draggable-node" 
+                             data-node-type="merger">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="arrow-right" class="text-green-400 w-4 h-4"></i>
+                                <span class="text-sm">数据合并</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Nodes -->
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="upload" class="text-red-400"></i>
+                        输出节点
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-red-900/30 transition-colors draggable-node" 
+                             data-node-type="file-writer">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="save" class="text-red-400 w-4 h-4"></i>
+                                <span class="text-sm">文件写入</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-red-900/30 transition-colors draggable-node" 
+                             data-node-type="database-writer">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="database" class="text-blue-400 w-4 h-4"></i>
+                                <span class="text-sm">数据库存储</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-red-900/30 transition-colors draggable-node" 
+                             data-node-type="api-sender">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="send" class="text-green-400 w-4 h-4"></i>
+                                <span class="text-sm">API发送</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-700/50 rounded-lg cursor-pointer hover:bg-red-900/30 transition-colors draggable-node" 
+                             data-node-type="webhook">
+                            <div class="flex items-center gap-3">
+                                <i data-feather="webhook" class="text-purple-400 w-4 h-4"></i>
+                                <span class="text-sm">Webhook</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Examples -->
+    <section class="py-12 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">经典流水线模板</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Web Scraping Pipeline -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="globe" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">网页数据采集流水线</h3>
+                            <p class="text-gray-400">完整的网页爬虫自动化流程</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Pipeline Steps -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                            <div class="flex-1">
+                                <div class="font-medium">网页采集器</div>
+                                <div class="text-sm text-gray-400">获取目标网页内容</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据清洗</div>
+                                <div class="text-sm text-gray-400">移除HTML标签，标准化格式</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                            <div class="flex-1">
+                                <div class="font-medium">AI结构化</div>
+                                <div class="text-sm text-gray-400">智能提取关键信息字段</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据库存储</div>
+                                <div class="text-sm text-gray-400">保存到结构化数据库</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
+                            <div class="flex-1">
+                                <div class="font-medium">质检报告</div>
+                                <div class="text-sm text-gray-400">生成处理结果报告</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="loadTemplate('web-scraping')" class="mt-6 w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
+                        加载此模板
+                    </button>
+                </div>
+
+                <!-- API Integration Pipeline -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="zap" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">API数据集成流水线</h3>
+                            <p class="text-gray-400">多源API数据汇聚处理流程</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Pipeline Steps -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                            <div class="flex-1">
+                                <div class="font-medium">多API连接器</div>
+                                <div class="text-sm text-gray-400">并行调用多个数据API</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据标准化</div>
+                                <div class="text-sm text-gray-400">统一数据格式和字段名称</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据融合</div>
+                                <div class="text-sm text-gray-400">关联整合来自多源的数据</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                            <div class="flex-1">
+                                <div class="font-medium">质量验证</div>
+                                <div class="text-sm text-gray-400">数据完整性和准确性检查</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
+                            <div class="flex-1">
+                                <div class="font-medium">推送通知</div>
+                                <div class="text-sm text-gray-400">实时推送数据更新结果</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="loadTemplate('api-integration')" class="mt-6 w-full px-4 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition-colors">
+                        加载此模板
+                    </button>
+                </div>
+
+                <!-- File Processing Pipeline -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="file-text" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">文件处理流水线</h3>
+                            <p class="text-gray-400">批量文件清洗转换流程</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Pipeline Steps -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                            <div class="flex-1">
+                                <div class="font-medium">文件监控</div>
+                                <div class="text-sm text-gray-400">监测指定目录新文件</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                            <div class="flex-1">
+                                <div class="font-medium">格式识别</div>
+                                <div class="text-sm text-gray-400">自动识别文件类型和编码</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                            <div class="flex-1">
+                                <div class="font-medium">内容提取</div>
+                                <div class="text-sm text-gray-400">提取结构化和非结构化数据</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据转换</div>
+                                <div class="text-sm text-gray-400">转换为目标格式和结构</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
+                            <div class="flex-1">
+                                <div class="font-medium">归档存储</div>
+                                <div class="text-sm text-gray-400">按规则分类存储处理结果</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="loadTemplate('file-processing')" class="mt-6 w-full px-4 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-colors">
+                        加载此模板
+                    </button>
+                </div>
+
+                <!-- AI Analysis Pipeline -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="brain" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">AI分析流水线</h3>
+                            <p class="text-gray-400">智能化数据处理与洞察</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Pipeline Steps -->
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                            <div class="flex-1">
+                                <div class="font-medium">数据准备</div>
+                                <div class="text-sm text-gray-400">清理和预处理输入数据</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                            <div class="flex-1">
+                                <div class="font-medium">模式识别</div>
+                                <div class="text-sm text-gray-400">识别数据中的模式和规律</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                            <div class="flex-1">
+                                <div class="font-medium">智能分类</div>
+                                <div class="text-sm text-gray-400">自动分类和内容标记</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                            <div class="flex-1">
+                                <div class="font-medium">洞察生成</div>
+                                <div class="text-sm text-gray-400">生成业务洞察和建议</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">5</div>
+                            <div class="flex-1">
+                                <div class="font-medium">报告输出</div>
+                                <div class="text-sm text-gray-400">生成可视化分析报告</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="loadTemplate('ai-analysis')" class="mt-6 w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-medium transition-colors">
+                        加载此模板
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Monitoring -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">流水线监控中心</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Active Pipelines -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="play-circle" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">活跃流水线</h3>
+                            <p class="text-gray-400 text-sm">当前运行中的流水线</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-green-900/20 rounded-lg">
+                            <div>
+                                <div class="font-medium">电商数据采集</div>
+                                <div class="text-sm text-gray-400">运行时间: 2h 34m</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-green-400 font-medium">运行中</div>
+                                <div class="text-sm text-gray-400">98%</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-blue-900/20 rounded-lg">
+                            <div>
+                                <div class="font-medium">新闻聚合处理</div>
+                                <div class="text-sm text-gray-400">运行时间: 45m</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-blue-400 font-medium">运行中</div>
+                                <div class="text-sm text-gray-400">73%</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-yellow-900/20 rounded-lg">
+                            <div>
+                                <div class="font-medium">用户行为分析</div>
+                                <div class="text-sm text-gray-400">等待中</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-yellow-400 font-medium">排队中</div>
+                                <div class="text-sm text-gray-400">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="bar-chart-3" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">性能指标</h3>
+                            <p class="text-gray-400 text-sm">流水线执行统计</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">平均执行时间</span>
+                            <span class="text-blue-400 font-medium">2.3分钟</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">数据处理量</span>
+                            <span class="text-green-400 font-medium">12.8GB/天</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">成功率</span>
+                            <span class="text-green-400 font-medium">99.7%</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">资源利用率</span>
+                            <span class="text-yellow-400 font-medium">68%</span>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">并发处理数</span>
+                            <span class="text-purple-400 font-medium">45个</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="alert-triangle" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">最近告警</h3>
+                            <p class="text-gray-400 text-sm">异常事件监控</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-3 bg-red-900/20 border border-red-500/30 rounded-lg">
+                            <div class="flex items-start gap-3">
+                                <i data-feather="x-circle" class="text-red-400 w-4 h-4 mt-0.5"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-red-400 text-sm">API连接超时</div>
+                                    <div class="text-xs text-gray-400">电商数据采集流水线</div>
+                                    <div class="text-xs text-gray-500">2分钟前</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+                            <div class="flex items-start gap-3">
+                                <i data-feather="alert-circle" class="text-yellow-400 w-4 h-4 mt-0.5"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-yellow-400 text-sm">处理速度减慢</div>
+                                    <div class="text-xs text-gray-400">新闻聚合处理</div>
+                                    <div class="text-xs text-gray-500">15分钟前</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
+                            <div class="flex items-start gap-3">
+                                <i data-feather="check-circle" class="text-green-400 w-4 h-4 mt-0.5"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-green-400 text-sm">流水线恢复正常</div>
+                                    <div class="text-xs text-gray-400">用户分析流水线</div>
+                                    <div class="text-xs text-gray-500">1小时前</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Pipeline Builder Variables
+        let pipelineNodes = [];
+        let pipelineConnections = [];
+
+        // Initialize Pipeline Canvas
+        function initializePipeline() {
+            const canvas = document.getElementById('pipeline-canvas');
+
+            // Setup drag and drop for nodes
+            const draggableNodes = document.querySelectorAll('.draggable-node');
+
+            draggableNodes.forEach(node => {
+                node.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.dataset.nodeType);
+                });
+            });
+
+            // Setup canvas drop zone
+            canvas.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('bg-blue-900/20');
+            });
+
+            canvas.addEventListener('dragleave', function(e) {
+                this.classList.remove('bg-blue-900/20');
+            });
+
+            canvas.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('bg-blue-900/20');
+
+                const nodeType = e.dataTransfer.getData('text/plain');
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                addNodeToCanvas(nodeType, x, y);
+            });
+
+            // Initialize drag and drop
+            draggableNodes.forEach(node => {
+                node.draggable = true;
+            });
+        }
+
+        // Add node to canvas
+        function addNodeToCanvas(nodeType, x, y) {
+            const canvas = document.getElementById('pipeline-canvas');
+
+            // Create node element
+            const nodeElement = document.createElement('div');
+            nodeElement.className = 'absolute bg-purple-600 rounded-lg px-3 py-2 text-white text-sm cursor-move shadow-lg';
+            nodeElement.style.left = (x - 50) + 'px';
+            nodeElement.style.top = (y - 15) + 'px';
+            nodeElement.draggable = true;
+
+            // Get node info
+            const nodeInfo = getNodeInfoByType(nodeType);
+            nodeElement.innerHTML = `<i data-feather="${nodeInfo.icon}" class="w-4 h-4 inline mr-2"></i>${nodeInfo.label}`;
+
+            // Add drag handlers for repositioning
+            nodeElement.addEventListener('dragstart', function(e) {
+                e.dataTransfer.effectAllowed = 'move';
+                this.style.opacity = '0.5';
+            });
+
+            nodeElement.addEventListener('dragend', function(e) {
+                this.style.opacity = '1';
+            });
+
+            canvas.appendChild(nodeElement);
+            feather.replace();
+        }
+
+        // Get node information
+        function getNodeInfoByType(nodeType) {
+            const nodeTypes = {
+                'web-scraper': { icon: 'globe', label: '网页采集器', color: 'blue' },
+                'api-connector': { icon: 'zap', label: 'API连接器', color: 'green' },
+                'file-reader': { icon: 'file-text', label: '文件读取器', color: 'purple' },
+                'database-query': { icon: 'server', label: '数据库查询', color: 'orange' },
+                'data-cleaner': { icon: 'filter', label: '数据清洗', color: 'green' },
+                'ai-analyzer': { icon: 'brain', label: 'AI分析', color: 'purple' },
+                'transformer': { icon: 'shuffle', label: '格式转换', color: 'blue' },
+                'aggregator': { icon: 'plus-circle', label: '数据聚合', color: 'yellow' },
+                'condition': { icon: 'git-branch', label: '条件判断', color: 'yellow' },
+                'loop': { icon: 'repeat', label: '循环处理', color: 'orange' },
+                'splitter': { icon: 'more-horizontal', label: '数据拆分', color: 'purple' },
+                'merger': { icon: 'arrow-right', label: '数据合并', color: 'green' },
+                'file-writer': { icon: 'save', label: '文件写入', color: 'red' },
+                'database-writer': { icon: 'database', label: '数据库存储', color: 'blue' },
+                'api-sender': { icon: 'send', label: 'API发送', color: 'green' },
+                'webhook': { icon: 'webhook', label: 'Webhook', color: 'purple' }
+            };
+            return nodeTypes[nodeType] || { icon: 'circle', label: '未知节点', color: 'gray' };
+        }
+
+        // Pipeline operations
+        function clearPipeline() {
+            const canvas = document.getElementById('pipeline-canvas');
+            const nodes = canvas.querySelectorAll('div:not(:first-child)');
+            nodes.forEach(node => node.remove());
+        }
+
+        function savePipeline() {
+            // Show success message
+            showNotification('流水线已保存', 'success');
+        }
+
+        function runPipeline() {
+            // Show execution message
+            showNotification('开始执行流水线...', 'info');
+
+            // Simulate execution with progress
+            setTimeout(() => {
+                showNotification('流水线执行完成', 'success');
+            }, 2000);
+        }
+
+        // Load template
+        function loadTemplate(templateId) {
+            showNotification(`正在加载 ${templateId} 模板...`, 'info');
+
+            // Clear current pipeline
+            clearPipeline();
+
+            // Load template nodes based on template type
+            setTimeout(() => {
+                showNotification(`${templateId} 模板已加载`, 'success');
+            }, 1000);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg text-white z-50 transition-all transform translate-x-full`;
+
+            // Set colors based on type
+            switch(type) {
+                case 'success':
+                    notification.className += ' bg-green-600';
+                    break;
+                case 'error':
+                    notification.className += ' bg-red-600';
+                    break;
+                case 'warning':
+                    notification.className += ' bg-yellow-600';
+                    break;
+                default:
+                    notification.className += ' bg-blue-600';
+            }
+
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePipeline();
+        });
+    </script>
+</body>
+</html>

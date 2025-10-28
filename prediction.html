@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜像预言 - 智能预测系统 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">🔮</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">镜像预言</h1>
+                    <p class="text-xl text-gray-400 mt-2">智能预测系统 - 洞察数据未来</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                通过AI深度学习算法预测数据源趋势，反爬策略变化，提前预警潜在风险，确保您的爬虫项目稳定运行
+            </p>
+        </div>
+    </header>
+
+    <!-- Stats Dashboard -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-green-400 mb-1">91%</div>
+                    <div class="text-sm text-gray-400">预测准确率</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-400 mb-1">150+</div>
+                    <div class="text-sm text-gray-400">监控数据源</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-yellow-400 mb-1">342</div>
+                    <div class="text-sm text-gray-400">风险预警</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-purple-400 mb-1">60天</div>
+                    <div class="text-sm text-gray-400">前瞻预测</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Categories -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">预测功能模块</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Quality Prediction -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="trending-up" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">数据质量趋势</h3>
+                            <p class="text-gray-400">预测数据源质量变化趋势</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-700/50 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-300">Unsplash API</span>
+                                <span class="text-sm text-green-400 font-medium">质量 ↑</span>
+                            </div>
+                            <p class="text-xs text-gray-400">预期下月质量评分: 9.1 → 9.3</p>
+                        </div>
+
+                        <div class="p-4 bg-gray-700/50 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-300">Pexels API</span>
+                                <span class="text-sm text-yellow-400 font-medium">质量 →</span>
+                            </div>
+                            <p class="text-xs text-gray-400">质量保持稳定: 8.9</p>
+                        </div>
+
+                        <div class="p-4 bg-gray-700/50 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-300">YouTube API</span>
+                                <span class="text-sm text-red-400 font-medium">质量 ↓</span>
+                            </div>
+                            <p class="text-xs text-gray-400">预期下月质量评分: 8.7 → 8.4</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anti-Crawler Prediction -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="shield" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">反爬预警分析</h3>
+                            <p class="text-gray-400">检测网站反爬策略变化</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-feather="alert-triangle" class="text-red-400 w-4 h-4"></i>
+                                <span class="text-sm font-medium text-red-400">高风险预警</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Twitter 预计本周升级验证码系统</p>
+                        </div>
+
+                        <div class="p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-feather="alert-circle" class="text-yellow-400 w-4 h-4"></i>
+                                <span class="text-sm font-medium text-yellow-400">中等预警</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Instagram 正在调整频率限制</p>
+                        </div>
+
+                        <div class="p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-feather="check-circle" class="text-green-400 w-4 h-4"></i>
+                                <span class="text-sm font-medium text-green-400">风险稳定</span>
+                            </div>
+                            <p class="text-xs text-gray-300">GitHub 反爬规则无显著变化</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="target" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">风险评估模型</h3>
+                            <p class="text-gray-400">量化项目风险评估</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-blue-400">总体风险评级</span>
+                                <span class="px-2 py-1 bg-blue-900/50 text-blue-400 rounded text-xs">中-低</span>
+                            </div>
+                            <div class="text-xs text-gray-300 space-y-1">
+                                <div>• 数据确性：高 (88%)</div>
+                                <div>• 法律风险：中等 (45%)</div>
+                                <div>• 技术复杂度：低 (22%)</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-purple-900/20 border border-purple-500/30 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-purple-400">建议行动</span>
+                            </div>
+                            <div class="text-xs text-gray-300 space-y-1">
+                                <div>• 实施备用数据源计划</div>
+                                <div>• 定期监控质量变化</div>
+                                <div>• 准备反爬策略调整</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Calculator -->
+    <section class="py-12 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">智能风险预测器</h2>
+
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <!-- Input Form -->
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">输入预测参数</h3>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">数据源网址</label>
+                                    <input type="url" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400" placeholder="https://example.com/api">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">历史数据量</label>
+                                    <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                                        <option>< 10万条</option>
+                                        <option>10-100万条</option>
+                                        <option>100-1000万条</option>
+                                        <option>> 1000万条</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">网站复杂度</label>
+                                    <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                                        <option>静态网站</option>
+                                        <option>动态网站</option>
+                                        <option>SPA应用</option>
+                                        <option>复杂企业级应用</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">上次维护时间</label>
+                                    <input type="date" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                                </div>
+
+                                <button onclick="calculatePrediction()" class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                                    <i data-feather="brain"></i>
+                                    开始预测分析
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Prediction Results -->
+                        <div id="prediction-results">
+                            <h3 class="text-xl font-bold mb-4">预测分析结果</h3>
+
+                            <div class="space-y-6">
+                                <!-- Quality Score -->
+                                <div class="p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i data-feather="trending-up" class="text-green-400 w-5 h-5"></i>
+                                        <span class="font-medium text-green-400">数据质量预测</span>
+                                    </div>
+                                    <div class="text-sm text-gray-300">
+                                        预期未来30天平均质量评分：<span class="text-green-400 font-bold">8.9</span>
+                                    </div>
+                                    <div class="text-xs text-gray-400 mt-1">基于历史趋势和当前状态预测</div>
+                                </div>
+
+                                <!-- Anti-crawler Risk -->
+                                <div class="p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i data-feather="shield" class="text-yellow-400 w-5 h-5"></i>
+                                        <span class="font-medium text-yellow-400">反爬风险评估</span>
+                                    </div>
+                                    <div class="text-sm text-gray-300">
+                                        被检测概率：<span class="text-yellow-400 font-bold">23%</span>
+                                        <span class="text-gray-400">(中等风险)</span>
+                                    </div>
+                                    <div class="text-xs text-gray-400 mt-1">建议: 实施随机延时和IP轮换</div>
+                                </div>
+
+                                <!-- Maintenance Prediction -->
+                                <div class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i data-feather="calendar" class="text-blue-400 w-5 h-5"></i>
+                                        <span class="font-medium text-blue-400">维护周期预测</span>
+                                    </div>
+                                    <div class="text-sm text-gray-300">
+                                        下次维护时间：<span class="text-blue-400 font-bold">约45天后</span>
+                                    </div>
+                                    <div class="text-xs text-gray-400 mt-1">置信度: 78%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historical Analytics -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">历史预测验证</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Accuracy Chart -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-lg font-bold mb-4">预测准确率趋势</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-300">本月准确率</span>
+                            <span class="text-green-400 font-bold">91.2%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-300">上月准确率</span>
+                            <span class="text-green-400">89.8%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-300">上季度平均</span>
+                            <span class="text-green-400">87.3%</span>
+                        </div>
+                        <div class="text-center mt-4">
+                            <div class="inline-flex items-center gap-1 text-green-400">
+                                <i data-feather="trending-up" class="w-4 h-4"></i>
+                                <span class="text-sm font-medium">上升 1.4%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Trends -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-lg font-bold mb-4">风险预警事件</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 text-sm">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <span class="text-gray-300 flex-1">成功预警反爬更新</span>
+                            <span class="text-green-400">12次</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <span class="text-gray-300 flex-1">质量下降风险提示</span>
+                            <span class="text-yellow-400">8次</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-sm">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-gray-300 flex-1">正向预测校准</span>
+                            <span class="text-blue-400">156次</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-4">
+                            数据来源于过去3个月的监控记录
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Stories -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-lg font-bold mb-4">成功案例</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-green-900/20 border border-green-500/30 rounded">
+                            <div class="text-sm font-medium text-green-400 mb-1">电商数据采集预警</div>
+                            <div class="text-xs text-gray-300">
+                                提前3天预警反爬升级，成功调整策略，保持99.2%可用率
+                            </div>
+                        </div>
+                        <div class="p-3 bg-blue-900/20 border border-blue-500/30 rounded">
+                            <div class="text-sm font-medium text-blue-400 mb-1">新闻聚合系统优化</div>
+                            <div class="text-xs text-gray-300">
+                                预测API质量下降趋势，提前切换备用数据源，减少中断时间85%
+                            </div>
+                        </div>
+                        <div class="p-3 bg-purple-900/20 border border-purple-500/30 rounded">
+                            <div class="text-sm font-medium text-purple-400 mb-1">金融数据监控</div>
+                            <div class="text-xs text-gray-300">
+                                准确预测接口更新周期，为客户提供最佳维护窗口
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        function calculatePrediction() {
+            // Simulate prediction calculation
+            const results = document.getElementById('prediction-results');
+
+            // Show loading state
+            results.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">预测分析结果</h3>
+                <div class="flex items-center justify-center py-8">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p class="text-gray-400">正在进行深度预测分析...</p>
+                    </div>
+                </div>
+            `;
+
+            // Simulate API delay
+            setTimeout(() => {
+                results.innerHTML = `
+                    <h3 class="text-xl font-bold mb-4">预测分析结果</h3>
+                    <div class="space-y-6">
+                        <!-- Quality Score -->
+                        <div class="p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i data-feather="trending-up" class="text-green-400 w-5 h-5"></i>
+                                <span class="font-medium text-green-400">数据质量预测</span>
+                            </div>
+                            <div class="text-sm text-gray-300">
+                                预期未来30天平均质量评分：<span class="text-green-400 font-bold">${(Math.random() * 0.5 + 8.5).toFixed(1)}</span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-1">基于历史趋势和当前状态预测，置信度: ${Math.floor(Math.random() * 20 + 80)}%</div>
+                        </div>
+
+                        <!-- Anti-crawler Risk -->
+                        <div class="p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i data-feather="shield" class="text-yellow-400 w-5 h-5"></i>
+                                <span class="font-medium text-yellow-400">反爬风险评估</span>
+                            </div>
+                            <div class="text-sm text-gray-300">
+                                被检测概率：<span class="text-yellow-400 font-bold">${Math.floor(Math.random() * 30 + 15)}%</span>
+                                <span class="text-gray-400">(中等风险)</span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-1">建议实施随机延时、多IP轮换和User-Agent伪装</div>
+                        </div>
+
+                        <!-- Maintenance Prediction -->
+                        <div class="p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i data-feather="calendar" class="text-blue-400 w-5 h-5"></i>
+                                <span class="font-medium text-blue-400">维护周期预测</span>
+                            </div>
+                            <div class="text-sm text-gray-300">
+                                下次维护时间：<span class="text-blue-400 font-bold">约${Math.floor(Math.random() * 60 + 30)}天后</span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-1">基于历史维护周期和更新频率分析</div>
+                        </div>
+
+                        <!-- Action Recommendations -->
+                        <div class="p-4 bg-purple-900/20 border border-purple-500/30 rounded-lg">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i data-feather="lightbulb" class="text-purple-400 w-5 h-5"></i>
+                                <span class="font-medium text-purple-400">推荐行动方案</span>
+                            </div>
+                            <div class="text-sm text-gray-300 space-y-1">
+                                <div>• 设置二级监控频率，关注质量变化</div>
+                                <div>• 准备备用数据源切换策略</div>
+                                <div>• 优化请求频率和Session管理</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                feather.replace();
+            }, 2000);
+        }
+
+        // Initialize
+        feather.replace();
+    </script>
+</body>
+</html>

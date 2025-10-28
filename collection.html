@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万花筒 - 数据集合 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">🌀</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">万花筒 - 数据集合</h1>
+                    <p class="text-xl text-gray-400 mt-2">将相关数据源组合成有意义的主题集合</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                通过智能算法将零散的数据源重新组织，形成专题性的数据集合，便于按需采集和专题研究
+            </p>
+        </div>
+    </header>
+
+    <!-- Quick Stats -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-blue-400 mb-1">156</div>
+                    <div class="text-sm text-gray-400">数据集合</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-green-400 mb-1">42</div>
+                    <div class="text-sm text-gray-400">专题类别</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-purple-400 mb-1">8.9K</div>
+                    <div class="text-sm text-gray-400">数据集下载量</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">95%</div>
+                    <div class="text-sm text-gray-400">数据完整度</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Navigation -->
+    <section class="py-8 bg-gray-900/50 sticky top-0 z-10 border-b border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap gap-4 justify-center mb-6">
+                <button class="category-btn active px-4 py-2 bg-blue-600 text-white rounded-lg" data-category="all">全部集合</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="news">新闻媒体</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="tech">科技产品</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="finance">金融经济</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="entertainment">娱乐休闲</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="education">教育学习</button>
+                <button class="category-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="research">科研数据</button>
+            </div>
+
+            <!-- Create Collection Button -->
+            <div class="flex justify-center">
+                <button onclick="openCreateModal()" class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg font-medium transition-all flex items-center gap-2">
+                    <i data-feather="plus-circle"></i>
+                    创建新集合
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Grid -->
+    <section class="py-12 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="collections-grid">
+                <!-- Collections will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommended Collections -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">推荐集合</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Featured Collection 1 -->
+                <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-6 border border-blue-500/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="globe" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">全球疫情数据集成</h3>
+                            <span class="text-sm text-gray-300 bg-blue-900/30 px-2 py-1 rounded">新闻媒体</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">整合WHO、世界各国卫生部门、新闻媒体的疫情数据，提供全面的疫情追踪和分析基础数据。</p>
+                    <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                        <span>包含 156 个数据源</span>
+                        <span>可视化评分: 9.2</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors flex-1">
+                            查看详情
+                        </button>
+                        <button class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition-colors">
+                            下载全集
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Collection 2 -->
+                <div class="bg-gradient-to-r from-green-900/50 to-teal-900/50 rounded-xl p-6 border border-green-500/30">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="cpu" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">AI技术发展数据库</h3>
+                            <span class="text-sm text-gray-300 bg-green-900/30 px-2 py-1 rounded">科技产品</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-4">涵盖AI论文、专利、产品发布、市场数据等多维度技术发展信息，为研究人员提供全面的技术追踪基础。</p>
+                    <div class="flex justify-between items-center text-sm text-gray-400 mb-4">
+                        <span>包含 89 个数据源</span>
+                        <span>可视化评分: 9.5</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition-colors flex-1">
+                            查看详情
+                        </button>
+                        <button class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition-colors">
+                            下载全集
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Collection Modal -->
+    <div id="create-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center px-4">
+            <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                    <h3 class="text-xl font-semibold">创建新数据集合</h3>
+                    <button onclick="closeCreateModal()" class="text-gray-400 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="create-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">集合名称</label>
+                                <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="输入集合名称">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">专题类别</label>
+                                <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">选择类别</option>
+                                    <option value="news">新闻媒体</option>
+                                    <option value="tech">科技产品</option>
+                                    <option value="finance">金融经济</option>
+                                    <option value="entertainment">娱乐休闲</option>
+                                    <option value="education">教育学习</option>
+                                    <option value="research">科研数据</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">集合描述</label>
+                            <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="详细描述这个数据集合的目的和特点"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">数据源范围描述</label>
+                            <textarea class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="2" placeholder="描述要包含的数据源类型和范围（例如：科技新闻网站、学术论文数据库等）"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">预计数据源数量</label>
+                                <input type="number" min="1" max="1000" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="10-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">数据更新频率</label>
+                                <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>实时</option>
+                                    <option>每日</option>
+                                    <option>每周</option>
+                                    <option>每月</option>
+                                    <option>按需</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">使用许可</label>
+                                <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>公共使用</option>
+                                    <option>学术研究</option>
+                                    <option>商业使用</option>
+                                    <option>私有</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">关键词标签（用逗号分隔）</label>
+                            <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="例如：新闻,媒体,疫情,数据">
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors flex-1">
+                                创建集合
+                            </button>
+                            <button type="button" onclick="closeCreateModal()" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition-colors flex-1">
+                                取消
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Sample collections data
+        const collectionsData = [
+            {
+                id: 1,
+                name: "全球财经新闻集成",
+                category: "finance",
+                description: "汇聚Bloomberg、Reuters、CNBC等主流财经媒体的实时新闻数据",
+                sources: 89,
+                downloads: 2450,
+                rating: 9.3,
+                updated: "2024-01-15",
+                tags: ["财经", "新闻", "实时"]
+            },
+            {
+                id: 2,
+                name: "科技产品数据库",
+                category: "tech",
+                description: "苹果、谷歌、微软等科技公司的产品规格、价格和发布信息",
+                sources: 156,
+                downloads: 3890,
+                rating: 8.9,
+                updated: "2024-01-14",
+                tags: ["科技", "产品", "规格"]
+            },
+            {
+                id: 3,
+                name: "教育资源汇总",
+                category: "education",
+                description: "Coursera、edX、Udemy等在线教育平台的课程数据和用户评价",
+                sources: 67,
+                downloads: 1230,
+                rating: 9.1,
+                updated: "2024-01-16",
+                tags: ["教育", "课程", "在线"]
+            },
+            {
+                id: 4,
+                name: "娱乐产业资讯",
+                category: "entertainment",
+                description: "电影票房、音乐排行、游戏发行等娱乐产业数据整合",
+                sources: 134,
+                downloads: 2100,
+                rating: 8.7,
+                updated: "2024-01-13",
+                tags: ["娱乐", "电影", "音乐"]
+            },
+            {
+                id: 5,
+                name: "科研论文数据库",
+                category: "research",
+                description: "arXiv、Google Scholar等学术论文仓库的高质量索引数据",
+                sources: 45,
+                downloads: 890,
+                rating: 9.6,
+                updated: "2024-01-15",
+                tags: ["科研", "论文", "学术"]
+            },
+            {
+                id: 6,
+                name: "ESG投资数据集",
+                category: "finance",
+                description: "环境、社会、治理投资相关的企业评级和持续数据",
+                sources: 78,
+                downloads: 1670,
+                rating: 8.8,
+                updated: "2024-01-12",
+                tags: ["ESG", "投资", "可持续发展"]
+            }
+        ];
+
+        // Function to render collections
+        function renderCollections(collections = collectionsData) {
+            const grid = document.getElementById('collections-grid');
+            grid.innerHTML = '';
+
+            collections.forEach(collection => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all hover:scale-105';
+
+                const categoryColors = {
+                    news: 'bg-blue-900/30 text-blue-400',
+                    tech: 'bg-green-900/30 text-green-400',
+                    finance: 'bg-yellow-900/30 text-yellow-400',
+                    entertainment: 'bg-purple-900/30 text-purple-400',
+                    education: 'bg-teal-900/30 text-teal-400',
+                    research: 'bg-indigo-900/30 text-indigo-400'
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="database" class="text-white w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-1">${collection.name}</h3>
+                            <span class="text-xs px-2 py-1 rounded ${categoryColors[collection.category]}">
+                                ${collection.category === 'finance' ? '金融经济' :
+                                  collection.category === 'tech' ? '科技产品' :
+                                  collection.category === 'news' ? '新闻媒体' :
+                                  collection.category === 'entertainment' ? '娱乐休闲' :
+                                  collection.category === 'education' ? '教育学习' : '科研数据'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-sm mb-4 line-clamp-2">${collection.description}</p>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm text-gray-400">
+                            <span>数据源：</span>
+                            <span>${collection.sources}个</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-400">
+                            <span>下载量：</span>
+                            <span>${collection.downloads.toLocaleString()}</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-400">
+                            <span>评分：</span>
+                            <span class="text-yellow-400">${collection.rating} ★</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium text-sm transition-colors">
+                            查看详情
+                        </button>
+                        <button class="flex-1 px-3 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium text-sm transition-colors">
+                            下载
+                        </button>
+                    </div>
+
+                    <div class="text-xs text-gray-500 mt-2">
+                        更新日期：${collection.updated}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            feather.replace();
+        }
+
+        // Filter collections by category
+        function filterCollections(category) {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+
+            // Set active button
+            const activeBtn = document.querySelector(`[data-category="${category}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-blue-600', 'text-white');
+            }
+
+            // Filter collections
+            let filteredCollections;
+            if (category === 'all') {
+                filteredCollections = collectionsData;
+            } else {
+                filteredCollections = collectionsData.filter(col => col.category === category);
+            }
+
+            renderCollections(filteredCollections);
+        }
+
+        // Modal functions
+        function openCreateModal() {
+            document.getElementById('create-modal').classList.remove('hidden');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('create-modal').classList.add('hidden');
+        }
+
+        // Event listeners
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterCollections(btn.dataset.category);
+            });
+        });
+
+        // Form submission
+        document.getElementById('create-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Show success message (in a real app, this would send data to server)
+            alert('数据集合已创建！我们将在24小时内为您处理和索引相关数据源。');
+
+            closeCreateModal();
+            this.reset();
+        });
+
+        // Initialize
+        renderCollections();
+        feather.replace();
+    </script>
+</body>
+</html>

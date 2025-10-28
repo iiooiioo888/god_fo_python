@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜界 - 数据源镜像平台</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 bg-gradient-to-r from-gray-900 to-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">镜像工坊 - 工具集成平台</h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                提供各类辅助爬虫开发的实用工具，代码共享与协作平台
+            </p>
+        </div>
+    </header>
+
+    <!-- Tool Categories -->
+    <section class="py-8 bg-gray-900/50 sticky top-0 z-10 border-b border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button class="tool-category active px-4 py-2 bg-blue-600 text-white rounded-lg" data-category="all">全部工具</button>
+                <button class="tool-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="scrapers">爬虫工具</button>
+                <button class="tool-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="parsers">解析器</button>
+                <button class="tool-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="proxies">代理工具</button>
+                <button class="tool-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="analyzers">分析工具</button>
+                <button class="tool-category px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors" onclick="openAnalyzer()" data-category="mirroranalyzer">照妖镜分析</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Creation Section -->
+    <section class="py-12 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">工具广场</h2>
+                <button onclick="openShareModal()" class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg font-medium transition-all flex items-center gap-2">
+                    <i data-feather="plus"></i>
+                    分享工具
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tools-grid">
+                <!-- Tool cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Share Tool Modal -->
+    <div id="share-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center px-4">
+            <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                    <h3 class="text-xl font-semibold">分享你的工具</h3>
+                    <button onclick="closeShareModal()" class="text-gray-400 hover:text-white">
+                        <i data-feather="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="share-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">工具名称</label>
+                                <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="输入工具名称">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">工具类别</label>
+                                <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">选择类别</option>
+                                    <option value="scrapers">爬虫工具</option>
+                                    <option value="parsers">解析器</option>
+                                    <option value="proxies">代理工具</option>
+                                    <option value="analyzers">分析工具</option>
+                                    <option value="">其他</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">工具描述</label>
+                            <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="详细描述你的工具功能和用途"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">代码分享（可选）</label>
+                            <textarea class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none font-mono text-sm" rows="5" placeholder="// 粘贴你的代码片段或GitHub链接"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">标签（用逗号分隔）</label>
+                            <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="Python, 爬虫, 免费" id="tool-tags-input">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">开源协议</label>
+                            <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>MIT License</option>
+                                <option>Apache License 2.0</option>
+                                <option>GPL v3</option>
+                                <option>BSD License</option>
+                                <option>私有</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-4 pt-4">
+                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                分享工具
+                            </button>
+                            <button type="button" onclick="closeShareModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                取消
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mirror Analyzer Modal -->
+    <div id="analyzer-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center px-4 py-8">
+            <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                    <h3 class="text-2xl font-semibold flex items-center gap-2">
+                        <span class="text-purple-400">🐛</span>照妖镜 - 目标网站分析器
+                    </h3>
+                    <button onclick="closeAnalyzer()" class="text-gray-400 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="p-6" id="analyzer-content">
+                    <div id="analyzer-input">
+                        <div class="mb-6">
+                            <label class="block text-lg font-medium text-gray-300 mb-3">请输入目标网站 URL</label>
+                            <div class="flex gap-4">
+                                <input type="url" id="analyze-url" class="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" placeholder="https://example.com" value="https://news.ycombinator.com/">
+                                <button onclick="startAnalysis()" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                                    <i data-feather="search"></i>开始分析
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-400">
+                            <i data-feather="info" class="inline mr-2 h-4 w-4"></i>
+                            分析将检测网站架构、技术栈、反爬虫机制等信息
+                        </div>
+                    </div>
+
+                    <div id="analysis-results" class="hidden">
+                        <!-- Analysis Results will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-blue-400 mb-2">200+</div>
+                    <div class="text-gray-400">工具收藏</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-green-400 mb-2">50+</div>
+                    <div class="text-gray-400">贡献者</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-purple-400 mb-2">15K+</div>
+                    <div class="text-gray-400">下载次数</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-yellow-400 mb-2">4.8</div>
+                    <div class="text-gray-400">平均评分</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <custom-footer></custom-footer>
+
+</main>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Sample tools data
+        let toolsData = [
+            {
+                name: "Scrapy Spider Template",
+                description: "专业的Scrapy爬虫模板，支持分布式部署和中间件配置",
+                category: "scrapers",
+                tags: ["Python", "Scrapy", "分布式"],
+                author: "技术专家",
+                rating: 4.8,
+                downloads: 1250,
+                license: "MIT",
+                createdDate: "2024-01-15",
+                codeSnippet: `import scrapy\n\nclass MySpider(scrapy.Spider):\n    name = 'example'\n    start_urls = ['http://example.com']\n\n    def parse(self, response):\n        yield response.css('title::text').get()`
+            },
+            {
+                name: "BeautifulSoup Parser",
+                description: "轻量级HTML解析器，支持多编码和异常处理",
+                category: "parsers",
+                tags: ["Python", "BS4", "HTML"],
+                author: "数据分析师",
+                rating: 4.6,
+                downloads: 890,
+                license: "Apache 2.0",
+                createdDate: "2024-01-20",
+                codeSnippet: `from bs4 import BeautifulSoup\n\nsoup = BeautifulSoup(html, 'html.parser')\nelement = soup.find('div', class_='content')`
+            },
+            {
+                name: "Proxy Rotator",
+                description: "智能代理轮换器，支持IP池管理和服务检测",
+                category: "proxies",
+                tags: ["代理", "IP池", "轮换"],
+                author: "网络工程师",
+                rating: 4.7,
+                downloads: 654,
+                license: "GPL v3",
+                createdDate: "2024-01-25",
+                codeSnippet: `class ProxyManager:\n    def __init__(self):\n        self.proxies = self.load_proxies()\n\n    def get_proxy(self):\n        return random.choice(self.proxies)`
+            },
+            {
+                name: "Anti-Bot Detector",
+                description: "反爬虫检测工具，识别各种机器人特征",
+                category: "analyzers",
+                tags: ["反爬", "检测", "安全"],
+                author: "安全专家",
+                rating: 4.9,
+                downloads: 432,
+                license: "MIT",
+                createdDate: "2024-02-01",
+                codeSnippet: `def detect_bot(headers, user_agent):\n    bot_indicators = ['bot', 'crawler', 'scraper']\n    return any(indicator in user_agent.lower() for indicator in bot_indicators)`
+            },
+            {
+                name: "Selenium Browser Controller",
+                description: "Chrome/Selenium自动化控制，支持头部修改和渲染",
+                category: "scrapers",
+                tags: ["Selenium", "Chrome", "渲染"],
+                author: "前端工程师",
+                rating: 4.5,
+                downloads: 738,
+                license: "BSD",
+                createdDate: "2024-02-05",
+                codeSnippet: `from selenium import webdriver\n\ndriver = webdriver.Chrome()\ndriver.get('https://example.com')\ntitle = driver.title\ndriver.quit()`
+            },
+            {
+                name: "Request Rate Limiter",
+                description: "智能请求频率限制器，支持分布式限流",
+                category: "proxies",
+                tags: ["限流", "分布式", "Redis"],
+                author: "后端开发者",
+                rating: 4.4,
+                downloads: 567,
+                license: "MIT",
+                createdDate: "2024-02-10",
+                codeSnippet: `import redis\n\nr = redis.Redis()\ndecor = {'REQUEST_LIMIT': 100}\n\n@rate_limit(**decor)\ndef my_request(url):\n    response = requests.get(url)\n    return response.content`
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        // Modal functions
+        function openShareModal() {
+            document.getElementById('share-modal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('share-modal').classList.add('hidden');
+            document.getElementById('share-form').reset();
+        }
+
+        // Category filtering
+        document.querySelectorAll('.tool-category').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tool-category').forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+                document.querySelectorAll('.tool-category').forEach(btn => btn.classList.add('bg-gray-700', 'hover:bg-gray-600'));
+                this.classList.add('active', 'bg-blue-600', 'text-white');
+                this.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+
+                currentCategory = this.dataset.category;
+                renderTools();
+            });
+        });
+
+        // Form submission
+        document.getElementById('share-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Get tags array
+            const tagsInput = document.getElementById('tool-tags-input').value;
+            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+
+            const newTool = {
+                name: data['工具名称'] || data.name,
+                description: data['工具描述'] || data.description,
+                category: data['工具类别'] || data.category,
+                tags: tags,
+                author: '匿名',
+                rating: 0,
+                downloads: 0,
+                license: data['开源协议'] || data.license || 'MIT',
+                createdDate: new Date().toISOString().split('T')[0],
+                codeSnippet: data['代码分享'] || data.codeSnippet || ''
+            };
+
+            // Add to data array
+            toolsData.push(newTool);
+
+            // Render updated list
+            renderTools();
+
+            // Close modal
+            closeShareModal();
+
+            // Show success message
+            alert('工具分享成功！');
+        });
+
+        // Render tools list
+        function renderTools() {
+            const container = document.getElementById('tools-grid');
+            container.innerHTML = '';
+
+            const filteredTools = currentCategory === 'all' ?
+                toolsData :
+                toolsData.filter(tool => tool.category === currentCategory);
+
+            filteredTools.forEach(tool => {
+                const tagsHtml = tool.tags.map(tag => {
+                    const bgClass = tag.includes('Python') ? 'bg-blue-900/30 text-blue-400' :
+                                  tag.includes('JavaScript') ? 'bg-yellow-900/30 text-yellow-400' :
+                                  tag.includes('代理') ? 'bg-green-900/30 text-green-400' :
+                                  tag.includes('反爬') ? 'bg-red-900/30 text-red-400' :
+                                  'bg-gray-900/30 text-gray-400';
+                    return `<span class="px-3 py-1 ${bgClass} rounded-full text-sm">${tag}</span>`;
+                }).join(' ');
+
+                const starsHtml = generateStars(tool.rating);
+
+                const toolHtml = `
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold">${tool.name}</h3>
+                            <div class="flex items-center gap-1">${starsHtml}</div>
+                        </div>
+                        <p class="text-gray-400 mb-4">${tool.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-${getCategoryColor(tool.category)}-900/30 text-${getCategoryColor(tool.category)}-400 rounded text-xs">${getCategoryName(tool.category)}</span>
+                            ${tagsHtml}
+                        </div>
+                        <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                            <span><i data-feather="user" class="inline mr-1 h-3 w-3"></i>${tool.author}</span>
+                            <span><i data-feather="download" class="inline mr-1 h-3 w-3"></i>${tool.downloads}</span>
+                            <span>${tool.license}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400">${tool.createdDate}</span>
+                            <button onclick="viewTool('${tool.name}')" class="text-blue-400 hover:text-blue-300 flex items-center">
+                                查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += toolHtml;
+            });
+
+            // Re-initiate feather icons
+            feather.replace();
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i data-feather="star" class="inline h-4 w-4 fill-current text-yellow-400"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i data-feather="star" class="inline h-4 w-4 text-yellow-400"></i>';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                stars += '<i data-feather="star" class="inline h-4 w-4 text-gray-500"></i>';
+            }
+            return stars;
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                scrapers: 'blue',
+                parsers: 'green',
+                proxies: 'purple',
+                analyzers: 'red'
+            };
+            return colors[category] || 'gray';
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                scrapers: '爬虫',
+                parsers: '解析器',
+                proxies: '代理',
+                analyzers: '分析'
+            };
+            return names[category] || '其他';
+        }
+
+        function viewTool(toolName) {
+            const tool = toolsData.find(t => t.name === toolName);
+            if (tool) {
+                // In a real app, this would navigate to a detail page
+                alert(`工具: ${tool.name}\n描述: ${tool.description}\n评级: ${tool.rating}/5.0\n下载量: ${tool.downloads}`);
+            }
+        }
+
+        // Mirror Analyzer functions
+        function openAnalyzer() {
+            const modal = document.getElementById('analyzer-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeAnalyzer() {
+            const modal = document.getElementById('analyzer-modal');
+            modal.classList.add('hidden');
+            const resultsDiv = document.getElementById('analysis-results');
+            resultsDiv.classList.add('hidden');
+            const inputDiv = document.getElementById('analyzer-input');
+            inputDiv.classList.remove('hidden');
+        }
+
+        function startAnalysis() {
+            const url = document.getElementById('analyze-url').value;
+            if (!url) {
+                alert('请输入有效的URL');
+                return;
+            }
+
+            const inputDiv = document.getElementById('analyzer-input');
+            const resultsDiv = document.getElementById('analysis-results');
+
+            inputDiv.classList.add('hidden');
+            resultsDiv.classList.remove('hidden');
+
+            // Show loading
+            resultsDiv.innerHTML = `
+                <div class="flex items-center justify-center py-8">
+                    <div class="flex items-center gap-3">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                        <span class="text-lg">正在分析目标网站...</span>
+                    </div>
+                </div>
+            `;
+
+            // Simulate analysis delay
+            setTimeout(() => {
+                showAnalysisResults(url);
+            }, 2000);
+        }
+
+        function showAnalysisResults(url) {
+            const resultsDiv = document.getElementById('analysis-results');
+
+            // Mock analysis results based on URL
+            let analysisResults;
+            if (url.includes('news.ycombinator.com')) {
+                analysisResults = {
+                    difficulty: '低',
+                    tech: 'React, Next.js',
+                    protection: '查询参数验证, 轻微速率限制',
+                    contentType: '动态内容',
+                    robots: '允许大部分内容',
+                    lastUpdate: '2024-01-15',
+                    antiBotScore: 2 // 1-10 scale
+                };
+            } else if (url.includes('cloudflare')) {
+                analysisResults = {
+                    difficulty: '高',
+                    tech: 'Cloudflare CDN',
+                    protection: '5秒盾, WAF, 速率限制, 浏览器指纹',
+                    contentType: '静态内容',
+                    robots: '部分限制',
+                    lastUpdate: '2024-01-10',
+                    antiBotScore: 9
+                };
+            } else {
+                analysisResults = {
+                    difficulty: '中',
+                    tech: '未知',
+                    protection: '基本速率限制',
+                    contentType: '混合内容',
+                    robots: '标准配置',
+                    lastUpdate: '未知',
+                    antiBotScore: 5
+                };
+            }
+
+            const difficultyColor = {
+                '低': 'text-green-400',
+                '中': 'text-yellow-400',
+                '高': 'text-red-400'
+            };
+
+            const antiBotBar = (score) => {
+                const percentage = (score / 10) * 100;
+                return `<div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                    <div class="bg-gradient-to-r from-green-500 to-red-500 h-2 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                </div>
+                <div class="flex justify-between text-sm text-gray-400">
+                    <span>弱</span>
+                    <span class="text-white font-medium">${score}/10</span>
+                    <span>强</span>
+                </div>`;
+            };
+
+            resultsDiv.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Target URL Summary -->
+                    <div class="bg-gray-700/50 rounded-xl p-6">
+                        <h4 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                            <i data-feather="target" class="text-purple-400"></i>
+                            分析目标
+                        </h4>
+                        <p class="text-gray-300 text-lg break-all">${url}</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="px-3 py-1 bg-purple-900/30 text-purple-400 rounded-full text-sm">爬取难度: <span class="${difficultyColor[analysisResults.difficulty]} font-bold">${analysisResults.difficulty}</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Technical Stack -->
+                        <div class="bg-gray-700/50 rounded-xl p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="cpu" class="text-blue-400"></i>
+                                技术栈分析
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-300">前端框架:</span>
+                                    <span class="text-white font-medium">${analysisResults.tech}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-300">内容类型:</span>
+                                    <span class="text-white font-medium">${analysisResults.contentType}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-300">robots.txt:</span>
+                                    <span class="text-white font-medium">${analysisResults.robots}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anti-bot Protection -->
+                        <div class="bg-gray-700/50 rounded-xl p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="shield" class="text-green-400"></i>
+                                反爬虫级别
+                            </h4>
+                            ${antiBotBar(analysisResults.antiBotScore)}
+                            <div class="mt-4 text-sm text-gray-300">
+                                <p><strong>检测到的保护:</strong></p>
+                                <p class="mt-2">${analysisResults.protection}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Protection Analysis -->
+                    <div class="bg-gray-700/50 rounded-xl p-6">
+                        <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i data-feather="zap" class="text-yellow-400"></i>
+                            详细分析报告
+                        </h4>
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="font-medium text-white mb-2">推荐爬取策略:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-gray-300 ml-4">
+                                    <li>使用适当的请求延迟 (建议: 1-3秒)</li>
+                                    <li>模拟真实用户行为 (点击、滚动)</li>
+                                    <li>${analysisResults.difficulty === '高' ? '考虑使用代理IP轮换' : '标准User-Agent即可'}</li>
+                                    <li>定期检测网站更新和保护变化</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-medium text-white mb-2">潜在风险提示:</h5>
+                                <ul class="list-disc list-inside space-y-1 text-gray-300 ml-4">
+                                    <li>${analysisResults.difficulty === '高' ? '高风险防护，建议谨慎操作' : '防护级别适中，可控风险'}</li>
+                                    <li>注意网站服务条款和使用限制</li>
+                                    <li>建议设置合理的数据获取频率</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 pt-4">
+                        <button onclick="downloadReport()" class="flex-1 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                            <i data-feather="download"></i>
+                            下载分析报告
+                        </button>
+                        <button onclick="closeAnalyzer()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                            <i data-feather="x"></i>
+                            关闭分析器
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Re-initialize feather icons
+            feather.replace();
+        }
+
+        function downloadReport() {
+            // In a real app, this would generate a PDF report
+            alert('分析报告下载功能正在开发中\\n当前只能查看页面结果');
+        }
+
+        // Initialize
+        renderTools();
+
+        // Note: Vanta.js globe effect removed since it's no longer needed for this page
+    </script>
+</body>
+</html>

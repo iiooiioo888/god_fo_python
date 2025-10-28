@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能镜灵 - AI助手 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header Section -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">🤖</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">智能镜灵</h1>
+                    <p class="text-xl text-gray-400 mt-2">您的AI编程助手</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                专业的爬虫开发助手，支持自然语言提问、代码生成、问题诊断和个性化学习推荐
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Chat Interface -->
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl min-h-[600px] border border-gray-700">
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="h-[500px] overflow-y-auto p-6 space-y-4">
+                <!-- Initial welcome message -->
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-feather="bot" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-purple-400">镜灵</h3>
+                                <span class="text-xs text-gray-500">几秒前</span>
+                            </div>
+                            <p class="text-gray-300">
+                                您好！我是镜界平台的智能助手镜灵。我可以帮您：
+                            </p>
+                            <ul class="text-gray-300 mt-2 space-y-1">
+                                <li>• 分析数据集采集需求</li>
+                                <li>• 生成Python爬虫代码</li>
+                                <li>• 诊断代码中的问题</li>
+                                <li>• 推荐最佳实践和工具</li>
+                                <li>• 提供学习路径指导</li>
+                            </ul>
+                            <p class="text-gray-300 mt-2">
+                                请告诉我您需要什么帮助，或者直接问我问题！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t border-gray-700 p-4">
+                <!-- Quick Suggestions -->
+                <div id="quick-suggestions" class="flex flex-wrap gap-2 mb-4">
+                    <button onclick="sendQuickQuestion('如何编写第一个爬虫？')" class="px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg text-sm text-gray-300 transition-colors">
+                        如何编写第一个爬虫？
+                    </button>
+                    <button onclick="sendQuickQuestion('分析这个网站的最佳策略')" class="px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg text-sm text-gray-300 transition-colors">
+                        分析网站的最佳策略
+                    </button>
+                    <button onclick="sendQuickQuestion('处理反爬虫机制的方法')" class="px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg text-sm text-gray-300 transition-colors">
+                        处理反爬虫机制
+                    </button>
+                    <button onclick="sendQuickQuestion('推荐学习资料')" class="px-3 py-1 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg text-sm text-gray-300 transition-colors">
+                        推荐学习资料
+                    </button>
+                </div>
+
+                <!-- Input Form -->
+                <form id="chat-form" class="flex gap-4">
+                    <div class="flex-1 relative">
+                        <input
+                            type="text"
+                            id="message-input"
+                            placeholder="请问您想了解什么关于数据采集的问题..."
+                            class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400"
+                            required
+                        >
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-2">
+                            <button type="button" onclick="showCodeEditor()" class="text-gray-400 hover:text-white transition-colors" title="代码模式">
+                                <i data-feather="code" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-colors flex items-center gap-2">
+                        <i data-feather="send" class="w-5 h-5"></i>
+                        发送
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-feather="lightbulb" class="text-yellow-400 w-6 h-6"></i>
+                    <h3 class="text-xl font-semibold">智能建议</h3>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    镜灵可以根据您的项目自动推荐最佳的数据采集策略和工具选择。
+                </p>
+            </div>
+
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-feather="code" class="text-green-400 w-6 h-6"></i>
+                    <h3 class="text-xl font-semibold">代码生成</h3>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    自动生成高质量的爬虫代码，支持多种编程语言和框架。
+                </p>
+            </div>
+
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-feather="zap" class="text-blue-400 w-6 h-6"></i>
+                    <h3 class="text-xl font-semibold">问题诊断</h3>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    快速定位和解决爬虫代码中的bug和性能问题。
+                </p>
+            </div>
+        </div>
+
+        <!-- Code Editor Modal -->
+        <div id="code-editor-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+            <div class="min-h-screen flex items-center justify-center px-4">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-hidden">
+                    <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                        <h3 class="text-xl font-semibold flex items-center gap-2">
+                            <i data-feather="code" class="text-green-400 w-6 h-6"></i>
+                            代码编辑器
+                        </h3>
+                        <button onclick="closeCodeEditor()" class="text-gray-400 hover:text-white">
+                            <i data-feather="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <textarea id="code-textarea" class="w-full h-80 bg-gray-900 border border-gray-600 rounded-lg font-mono text-green-400 p-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="粘贴您的代码进行分析或提问..."></textarea>
+                        <div class="flex gap-4 mt-4">
+                            <button onclick="analyzeCode()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
+                                分析代码
+                            </button>
+                            <button onclick="closeCodeEditor()" class="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg font-medium transition-colors">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // AI Response data
+        const aiResponses = {
+            '如何编写第一个爬虫？': `让我为您创建一个简单的Python爬虫示例！
+
+\`\`\`python
+import requests
+from bs4 import BeautifulSoup
+
+def simple_crawler():
+    url = "https://example.com"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        title = soup.find('title').get_text()
+        
+        print(f"页面标题: {title}")
+        return title
+        
+    except Exception as e:
+        print(f"出现错误: {e}")
+        return None
+\`专题
+
+**步骤说明：**
+1. 导入必要的库（requests和BeautifulSoup）
+2. 设置用户代理头以避免被封
+3. 发送HTTP请求并检查响应
+4. 解析HTML内容
+5. 提取所需的元素
+
+**安全建议：**
+- 遵守网站robots.txt文件
+- 添加适当的延迟请求
+- 设置合理的超时时间
+- 不要过于频繁地访问同一网站`,
+
+            '分析这个网站的最佳策略': `要分析一个网站的数据采集策略，需要考虑以下几个方面：
+
+**1. 网站信息收集**
+- 确定网站类型（静态/动态/SPA）
+- 检查robots.txt和sitemap.xml
+- 分析网站结构和导航
+
+**2. 기술栈识别**
+- 使用开发者工具检查技术栈
+- 分析页面源代码
+- 检查API端点
+
+**3. 反爬虫机制检测**
+- 检查JavaScript渲染页面
+- API频率限制检查
+- 验证码和身份验证要求
+
+**4. 数据提取策略**
+- **静态页面**：直接使用requests + BeautifulSoup
+- **动态页面**：考虑使用Selenium或Playwright
+- **API数据**：优先API调用而非页面抓取
+
+**推荐工具组合：**
+- 基础分析：Requests + BeautifulSoup
+- JavaScript渲染：Selenium + ChromeDriver  
+- 数据存储：SQLite/PostgreSQL
+- 异步处理：aiohttp + asyncio
+
+**最佳实践：**
+- 设置合理的请求间隔（1-3秒）
+- 随机化User-Agent
+- 实现重试机制
+- 监控和日志记录`,
+
+            '处理反爬虫机制的方法': `处理反爬虫机制需要根据具体情况选择合适的技术方案：
+
+**常见反爬虫类型及解决方法：**
+
+**1. User-Agent检测**
+\`\`\`python
+user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    # 添加更多UA字符串
+]
+
+headers = {'User-Agent': random.choice(user_agents)}
+\`\`\`
+
+**2. IP频率限制**
+- 使用代理IP轮换
+- 分布式部署多个IP
+- 设置请求间隔延迟
+
+**3. JavaScript渲染内容**
+\`\`\`python
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.add_argument('--headless')  # 无界面模式
+driver = webdriver.Chrome(options=options)
+
+driver.get(url)
+content = driver.page_source
+driver.quit()
+\`\`\`
+
+**4. CAPTCHA验证码**
+- 使用付费验证码识别服务
+- 手动输入解决（小规模使用）
+- 寻找绕过验证码的API端点
+
+**5. Cookies和Session管理**
+- 使用requests.Session保存登录状态
+- 自动处理cookie刷新
+
+**高级策略：**
+- 模拟真实用户行为（点击、滚动、停顿）
+- 使用指纹伪装技术
+- 分布式爬取架构
+- 云端基础设施部署
+
+**重要提醒：**
+✨ 所有行为必须遵守法律和网站服务条款
+🔒 建议在开发环境进行充分测试
+⚠️ 考虑使用官方API替代爬虫`,
+
+            '推荐学习资料': `以下是我为您整理的数据采集学习路线和推荐资源：
+
+**🎓 学习路线：**
+
+**阶段1：基础知识 (1-2周)**
+- 学习Python基础语法
+- HTTP协议和Web基础
+- HTML/CSS/JS基础知识
+
+**阶段2：爬虫基础 (2-4周)**
+- requests库使用
+- BeautifulSoup解析HTML
+- 基础数据存储（CSV/JSON）
+
+**阶段3：高级技术 (4-6周)**
+- Selenium自动化测试
+- Scrapy框架开发
+- 数据库存储（SQLite/PostgreSQL）
+- API开发和调用
+
+**阶段4：专业提升 (持续学习)**
+- 分布式爬虫
+- 反爬虫技术
+- 大数据处理
+- 机器学习应用
+
+**📚 推荐资源：**
+
+**在线课程：**
+- 「Python Web Crawler」Udemy课程 ⭐⭐⭐⭐⭐
+- 「数据采集与分析」coursera专项课程
+- 「Scrapy框架实战」Pluralsight
+
+**书籍推荐：**
+- 《Python网络编程》第3版
+- 《BeautifulSoup爬虫实战》
+- 《数据采集：HTML、CSS、JavaScript逆向工程》
+
+**常用工具：**
+- **抓包分析：** Fiddler/Charles/Wireshark
+- **浏览器插件：** Web Scraper/XPath Helper
+- **代码编辑器：** VS Code/PyCharm
+- **文档工具：** Postman/Insomnia
+
+**网站资源：**
+- 📖 Docs: requests.readthedocs.com
+- 🔧 GitHub: 镜界工坊开源项目
+- 📱 社区: 镜厅技术讨论区
+
+**实践建议：**
+- 从简单静态网站开始练手
+- 建立自己的工具库
+- 参与开源项目贡献
+- 关注法律法规更新
+
+有针对性的学习计划建议吗？我可以根据您的具体情况调整推荐内容！`
+        };
+
+        // Chat functions
+        function sendMessage(message) {
+            // Add user message
+            addMessage(message, 'user');
+
+            // Simulate AI thinking delay
+            setTimeout(() => {
+                let response = generateAIResponse(message);
+                addMessage(response, 'ai');
+            }, 1000 + Math.random() * 2000); // Random delay 1-3 seconds
+        }
+
+        function addMessage(text, type) {
+            const messagesDiv = document.getElementById('chat-messages');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex gap-4 items-start';
+
+            if (type === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex-1 ml-0">
+                        <div class="bg-purple-900/20 rounded-lg p-4 border border-purple-600/30 max-w-md ml-auto">
+                            <div class="flex items-center gap-2 mb-2 justify-end">
+                                <span class="text-xs text-gray-500">几秒前</span>
+                                <h3 class="font-semibold text-purple-400">您</h3>
+                            </div>
+                            <p class="text-white text-right">${text}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-feather="bot" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-purple-400">镜灵</h3>
+                                <span class="text-xs text-gray-500">几秒前</span>
+                            </div>
+                            <div class="prose prose-invert max-w-none">${text}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            feather.replace();
+        }
+
+        function generateAIResponse(message) {
+            // Check for exact matches in predefined responses
+            for (const [question, response] of Object.entries(aiResponses)) {
+                if (message.includes(question.replace('？', '')) || message.includes(question)) {
+                    return `<div class="space-y-4">${response.split('\n').map(line => {
+                        if (line.startsWith('```')) {
+                            return `<pre class="bg-black p-4 rounded-lg overflow-x-auto"><code class="text-green-400">${line.slice(3).trim()}</code></pre>`;
+                        }
+                        return line ? `<p>${line}</p>` : '';
+                    }).join('')}</div>`;
+                }
+            }
+
+            // Fallback general responses based on keywords
+            if (message.includes('爬虫') || message.includes('spider')) {
+                return `关于爬虫开发，我建议先了解目标网站的结构，然后选择合适的工具和技术方案。可以参考我们的「照妖镜」工具进行网站分析。
+
+需要帮助编写具体的爬虫代码吗？我可以为您生成适合的解决方案！`;
+            }
+
+            if (message.includes('错误') || message.includes('bug')) {
+                return `遇到代码问题了？请告诉我具体的错误信息，我会帮您分析并提供解决方案。
+
+**建议提供的信息：**
+- 错误消息的完整内容
+- 问题出现的代码片段
+- 使用的环境和技术栈
+
+这样我可以更准确地帮您定位和解决问题。`;
+            }
+
+            if (message.includes('API') || message.includes('接口')) {
+                return `API开发是爬虫的重要组成部分！
+
+**关键点：**
+- 🏗️ RESTful设计原则
+- 🔐 身份验证和权限控制
+- 📊 数据序列化和响应格式
+- 🚀 性能优化和缓存策略
+- 🛡️ 安全保护和限制
+
+需要我帮您设计或审查API接口吗？`;
+            }
+
+            // Default response
+            return `这是一个很有趣的问题！作为镜界平台的AI助手，我专注于数据采集和爬虫开发相关的问题。
+
+我可以帮您：
+- 📝 分析数据采集需求
+- ⚙️ 生成爬虫代码
+- 🔍 网站技术栈分析  
+- 🐛 诊断代码问题
+- 📚 推荐学习资源
+
+请问您想要了解什么具体的方面呢？`;
+        }
+
+        function sendQuickQuestion(question) {
+            document.getElementById('message-input').value = question;
+            sendMessage(question);
+        }
+
+        // Form submission
+        document.getElementById('chat-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = document.getElementById('message-input').value.trim();
+            if (message) {
+                sendMessage(message);
+                this.reset();
+                document.getElementById('quick-suggestions').classList.add('hidden');
+            }
+        });
+
+        // Code editor functions
+        function showCodeEditor() {
+            document.getElementById('code-editor-modal').classList.remove('hidden');
+        }
+
+        function closeCodeEditor() {
+            document.getElementById('code-editor-modal').classList.add('hidden');
+            document.getElementById('code-textarea').value = '';
+        }
+
+        function analyzeCode() {
+            const code = document.getElementById('code-textarea').value.trim();
+            if (code) {
+                const message = `请分析这段代码：\n\n\`\`\`\n${code}\n\`\`\`\n\n这个代码可能有什么问题或改进建议吗？`;
+                sendMessage(message);
+                closeCodeEditor();
+            }
+        }
+
+        // Initialize
+        // Note: Theme toggle functionality would need additional implementation
+    </script>
+</body>
+</html>

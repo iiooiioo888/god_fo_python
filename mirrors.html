@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜库 - 数据源仓库 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    </head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+    
+    <!-- Header -->
+    <header class="pt-32 pb-16 bg-gradient-to-r from-gray-900 to-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">镜库 - 数据源仓库</h1>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                收藏各类图片、视频数据源，结构化提交模板，智能标签系统
+            </p>
+        </div>
+    </header>
+    
+    <!-- Search and Filters -->
+    <section class="py-8 bg-gray-900/50 sticky top-0 z-10 backdrop-blur-sm border-b border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div class="flex gap-4 items-center flex-1">
+                    <div class="relative flex-1 max-w-md">
+                        <input type="text" placeholder="搜索数据源..." class="w-full px-4 py-3 pl-12 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="search-input">
+                        <i data-feather="search" class="absolute left-4 top-3.5 text-gray-500"></i>
+                    </div>
+                    <select class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="type-filter">
+                        <option>全部类型</option>
+                        <option>图片</option>
+                        <option>视频</option>
+                        <option>GIF</option>
+                    </select>
+                    <select class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="status-filter">
+                        <option>全部状态</option>
+                        <option>🟢 镜像清晰</option>
+                        <option>🟡 镜像模糊</option>
+                        <option>🔴 镜面破碎</option>
+                    </select>
+                    <button class="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors" onclick="applyFilters()">
+                        筛选
+                    </button>
+                </div>
+                <button class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg font-medium transition-all flex items-center gap-2" onclick="openSubmitModal()">
+                    <i data-feather="plus"></i>
+                    提交数据源
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Modal -->
+    <div id="submit-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center px-4">
+            <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl">
+                <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                    <h3 class="text-xl font-semibold">提交新数据源</h3>
+                    <button onclick="closeSubmitModal()" class="text-gray-400 hover:text-white">
+                        <i data-feather="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form id="submit-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">数据源名称</label>
+                                <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入数据源名称">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">数据类型</label>
+                                <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>请选择类型</option>
+                                    <option>图片</option>
+                                    <option>视频</option>
+                                    <option>GIF</option>
+                                    <option>其他</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">数据源 URL</label>
+                            <input type="url" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="https://example.com/downloads">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">描述</label>
+                            <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="请描述数据源的特性和使用方法"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">标签 (用逗号分隔)</label>
+                            <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="免费商用, API, 高质量" id="tags-input">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">当前状态</label>
+                            <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>🟢 镜像清晰</option>
+                                <option>🟡 镜像模糊</option>
+                                <option>🔴 镜面破碎</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-4 pt-4">
+                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                提交数据源
+                            </button>
+                            <button type="button" onclick="closeSubmitModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                取消
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mirror List -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Mirror Item 1 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Unsplash 高清图片库</h3>
+                        <span class="status-indicator status-clear">🟢 清晰</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">高质量免费商用图片源，支持API调用</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">图片</span>
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-sm">免费商用</span>
+                        <span class="px-3 py-1 bg-purple-900/30 text-purple-400 rounded-full text-sm">API</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-15 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mirror Item 2 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-yellow-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Pexels 视频素材库</h3>
+                        <span class="status-indicator status-fuzzy">🟡 模糊</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">免费4K视频素材，定期更新</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">视频</span>
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-sm">免费商用</span>
+                        <span class="px-3 py-1 bg-yellow-900/30 text-yellow-400 rounded-full text-sm">需登录</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-10 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mirror Item 3 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-red-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">某社交平台图片源</h3>
+                        <span class="status-indicator status-broken">🔴 破碎</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">已启用高级反爬机制，需特殊处理</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">图片</span>
+                        <span class="px-3 py-1 bg-red-900/30 text-red-400 rounded-full text-sm">高难度</span>
+                        <span class="px-3 py-1 bg-orange-900/30 text-orange-400 rounded-full text-sm">参数加密</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-05 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mirror Item 4 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">NASA 图像数据库</h3>
+                        <span class="status-indicator status-clear">🟢 清晰</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">公开领域天文图像，超高分辨率</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">图片</span>
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-sm">公共领域</span>
+                        <span class="px-3 py-1 bg-purple-900/30 text-purple-400 rounded-full text-sm">API</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-18 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mirror Item 5 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-green-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Pixabay 多媒体库</h3>
+                        <span class="status-indicator status-updated">🔵 更新</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">近期调整API接口，需更新配置</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">图片</span>
+                        <span class="px-3 py-1 bg-purple-900/30 text-purple-400 rounded-full text-sm">视频</span>
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-sm">免费商用</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-20 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mirror Item 6 -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-semibold">Getty Images 商业库</h3>
+                        <span class="status-indicator status-clear">🟢 清晰</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">高端商业图片，付费使用</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">图片</span>
+                        <span class="px-3 py-1 bg-red-900/30 text-red-400 rounded-full text-sm">付费</span>
+                        <span class="px-3 py-1 bg-orange-900/30 text-orange-400 rounded-full text-sm">需认证</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="calendar" class="inline mr-1"></i> 2023-10-12 更新
+                        </div>
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                            查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-12 flex justify-center">
+                <nav class="flex items-center gap-2">
+                    <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">上一页</a>
+                    <a href="#" class="px-4 py-2 bg-blue-600 rounded-lg">1</a>
+                    <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">2</a>
+                    <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">3</a>
+                    <span class="px-4 py-2 text-gray-500">...</span>
+                    <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">10</a>
+                    <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">下一页</a>
+                </nav>
+            </div>
+        </div>
+    </section>
+    
+    <custom-footer></custom-footer>
+
+</main>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Sample data
+        let mirrorData = [
+            {
+                name: "Unsplash 高清图片库",
+                description: "高质量免费商用图片源，支持API调用",
+                type: "图片",
+                status: "🟢 镜像清晰",
+                tags: ["图片", "免费商用", "API"],
+                date: "2023-10-15"
+            },
+            {
+                name: "Pexels 视频素材库",
+                description: "免费4K视频素材，定期更新",
+                type: "视频",
+                status: "🟡 镜像模糊",
+                tags: ["视频", "免费商用", "需登录"],
+                date: "2023-10-10"
+            },
+            {
+                name: "某社交平台图片源",
+                description: "已启用高级反爬机制，需特殊处理",
+                type: "图片",
+                status: "🔴 镜面破碎",
+                tags: ["图片", "高难度", "参数加密"],
+                date: "2023-10-05"
+            },
+            {
+                name: "NASA 图像数据库",
+                description: "公开领域天文图像，超高分辨率",
+                type: "图片",
+                status: "🟢 镜像清晰",
+                tags: ["图片", "公共领域", "API"],
+                date: "2023-10-18"
+            },
+            {
+                name: "Pixabay 多媒体库",
+                description: "近期调整API接口，需更新配置",
+                type: "图片",
+                status: "🔵 更新",
+                tags: ["图片", "视频", "免费商用"],
+                date: "2023-10-20"
+            },
+            {
+                name: "Getty Images 商业库",
+                description: "高端商业图片，付费使用",
+                type: "图片",
+                status: "🟢 镜像清晰",
+                tags: ["图片", "付费", "需认证"],
+                date: "2023-10-12"
+            }
+        ];
+
+        // Modal functions
+        function openSubmitModal() {
+            document.getElementById('submit-modal').classList.remove('hidden');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submit-modal').classList.add('hidden');
+            document.getElementById('submit-form').reset();
+        }
+
+        // Form submission
+        document.getElementById('submit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Get tags array
+            const tagsInput = document.getElementById('tags-input').value;
+            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+
+            const newMirror = {
+                name: data['数据源名称'] || data['name'],
+                description: data['描述'] || data['description'],
+                type: data['数据类型'] || data.type,
+                status: data['当前状态'] || data.status,
+                tags: tags,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            // Add to data array
+            mirrorData.push(newMirror);
+
+            // Render updated list
+            renderMirrorList();
+
+            // Close modal
+            closeSubmitModal();
+
+            // Show success message
+            alert('数据源提交成功！');
+        });
+
+        // Filter and search functionality
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const typeFilter = document.getElementById('type-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            const filteredData = mirrorData.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm) ||
+                                   item.description.toLowerCase().includes(searchTerm) ||
+                                   item.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                const matchesType = typeFilter === '全部类型' || item.type === typeFilter;
+                const matchesStatus = statusFilter === '全部状态' || item.status === statusFilter;
+
+                return matchesSearch && matchesType && matchesStatus;
+            });
+
+            renderMirrorList(filteredData);
+        }
+
+        // Real-time search
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            applyFilters();
+        });
+
+        document.getElementById('type-filter').addEventListener('change', applyFilters);
+        document.getElementById('status-filter').addEventListener('change', applyFilters);
+
+        // Render mirror list
+        function renderMirrorList(data = mirrorData) {
+            const container = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+            container.innerHTML = '';
+
+            data.forEach(item => {
+                const statusClass = item.status.includes('🟢') ? 'hover:border-green-500' :
+                                  item.status.includes('🟡') ? 'hover:border-yellow-500' :
+                                  item.status.includes('🔴') ? 'hover:border-red-500' :
+                                  'hover:border-blue-500';
+
+                const tagsHtml = item.tags.map(tag => {
+                    const bgClass = tag.includes('免费') ? 'bg-green-900/30 text-green-400' :
+                                  tag.includes('付费') ? 'bg-red-900/30 text-red-400' :
+                                  tag.includes('API') ? 'bg-purple-900/30 text-purple-400' :
+                                  tag.includes('高清') ? 'bg-blue-900/30 text-blue-400' :
+                                  'bg-gray-900/30 text-gray-400';
+                    return `<span class="px-3 py-1 ${bgClass} rounded-full text-sm">${tag}</span>`;
+                }).join(' ');
+
+                const itemHtml = `
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 ${statusClass} transition-all duration-300 card-hover">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold">${item.name}</h3>
+                            <span class="status-indicator">${item.status}</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">${item.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${tagsHtml}
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-500">
+                                <i data-feather="calendar" class="inline mr-1"></i> ${item.date} 更新
+                            </div>
+                            <button class="text-blue-400 hover:text-blue-300 flex items-center">
+                                查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += itemHtml;
+            });
+
+            // Re-initiate feather icons
+            feather.replace();
+        }
+
+        // Initialize
+        renderMirrorList();
+    </script>
+</body>
+</html>

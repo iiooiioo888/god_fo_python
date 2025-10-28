@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜阵 - 分布式爬虫集群 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="text-6xl">🌐</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">镜阵</h1>
+                    <p class="text-xl text-gray-400 mt-2">分布式爬虫集群 - 强大大规模采集</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+                构建分布式爬虫集群，实现大规模数据采集，提供智能任务调度、负载均衡、容错处理和全球节点部署
+            </p>
+        </div>
+    </header>
+
+    <!-- Cluster Stats -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-2xl font-bold text-blue-400 mb-1">2.3M</div>
+                    <div class="text-sm text-gray-400">活跃节点</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-2xl font-bold text-green-400 mb-1">89.7%</div>
+                    <div class="text-sm text-gray-400">集群可用性</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-2xl font-bold text-purple-400 mb-1">1.2B</div>
+                    <div class="text-sm text-gray-400">日采集容量</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="text-2xl font-bold text-yellow-400 mb-1">127</div>
+                    <div class="text-sm text-gray-400">国家覆盖</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Architecture -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">集群架构图</h2>
+
+            <!-- Architecture Visualization -->
+            <div class="bg-gray-900 rounded-xl p-8 mb-8">
+                <div class="relative">
+                    <!-- Control Center -->
+                    <div class="flex justify-center mb-8">
+                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-center min-w-[200px]">
+                            <div class="text-2xl mb-2">🎯</div>
+                            <div class="font-bold text-lg">控制中心</div>
+                            <div class="text-sm opacity-90">任务调度与协调</div>
+                        </div>
+                    </div>
+
+                    <!-- Arrows -->
+                    <svg class="absolute inset-0 pointer-events-none" style="height: 400px;">
+                        <!-- First level arrows -->
+                        <path d="M 300 150 Q 300 130 300 110"
+                              stroke="#60a5fa" stroke-width="2" fill="none"
+                              marker-end="url(#blue-arrow)"
+                              class="animate-pulse"/>
+                        <path d="M 500 150 Q 500 130 500 110"
+                              stroke="#60a5fa" stroke-width="2" fill="none"
+                              marker-end="url(#blue-arrow)"
+                              class="animate-pulse"/>
+
+                        <!-- Second level arrows -->
+                        <path d="M 150 280 Q 150 260 150 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 0.5s"/>
+                        <path d="M 250 280 Q 250 260 250 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 1s"/>
+                        <path d="M 350 280 Q 350 260 350 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 1.5s"/>
+                        <path d="M 450 280 Q 450 260 450 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 2s"/>
+                        <path d="M 550 280 Q 550 260 550 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 2.5s"/>
+                        <path d="M 650 280 Q 650 260 650 240"
+                              stroke="#34d399" stroke-width="2" fill="none"
+                              marker-end="url(#green-arrow)"
+                              class="animate-pulse" style="animation-delay: 3s"/>
+
+                        <!-- Markers -->
+                        <defs>
+                            <marker id="blue-arrow" markerWidth="10" markerHeight="7"
+                                    refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa"/>
+                            </marker>
+                            <marker id="green-arrow" markerWidth="10" markerHeight="7"
+                                    refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+                            </marker>
+                        </defs>
+                    </svg>
+
+                    <!-- Global Nodes -->
+                    <div class="grid grid-cols-3 gap-6 mb-8" style="margin-top: 100px;">
+                        <div class="bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg p-4 text-center">
+                            <div class="text-xl mb-2">🌍</div>
+                            <div class="font-bold">美国集群</div>
+                            <div class="text-sm">120个节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg p-4 text-center">
+                            <div class="text-xl mb-2">🇪🇺</div>
+                            <div class="font-bold">欧洲集群</div>
+                            <div class="text-sm">85个节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg p-4 text-center">
+                            <div class="text-xl mb-2">🌏</div>
+                            <div class="font-bold">亚洲集群</div>
+                            <div class="text-sm">156个节点</div>
+                        </div>
+                    </div>
+
+                    <!-- Regional Nodes -->
+                    <div class="grid grid-cols-6 gap-4">
+                        <div class="bg-gradient-to-r from-yellow-600 to-orange-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🏖️</div>
+                            <div class="font-semibold text-xs">大洋洲</div>
+                            <div class="text-xs opacity-90">32节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🗽</div>
+                            <div class="font-semibold text-xs">美洲</div>
+                            <div class="text-xs opacity-90">67节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-pink-600 to-rose-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🌍</div>
+                            <div class="font-semibold text-xs">非洲</div>
+                            <div class="text-xs opacity-90">43节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-600 to-teal-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🕌</div>
+                            <div class="font-semibold text-xs">中东</div>
+                            <div class="text-xs opacity-90">28节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🎯</div>
+                            <div class="font-semibold text-xs">东欧</div>
+                            <div class="text-xs opacity-90">52节点</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-lg p-3 text-center">
+                            <div class="text-sm mb-1">🏔️</div>
+                            <div class="font-semibold text-xs">南极</div>
+                            <div class="text-xs opacity-90">8节点</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8">
+                    <p class="text-gray-400 text-sm">实时连接状态 | 负荷均衡调度 | 智能容错切换</p>
+                </div>
+            </div>
+
+            <!-- Cluster Features -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Task Scheduling -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="calendar" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">智能任务调度</h3>
+                            <p class="text-gray-400 text-sm">高效分配资源</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">负载均衡</span>
+                                <p class="text-sm text-gray-400">动态调整任务分配，确保集群效率最大化</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">优先级队列</span>
+                                <p class="text-sm text-gray-400">支持不同的任务优先级，保证重要任务及时执行</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">智能调度算法</span>
+                                <p class="text-sm text-gray-400">基于AI的调度优化，预测和调整任务执行策略</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Load Balancing -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="arrow-right-circle" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">负载均衡与容错</h3>
+                            <p class="text-gray-400 text-sm">7×24稳定运行</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">多级容错机制</span>
+                                <p class="text-sm text-gray-400">节点故障自动检测和切换，保证服务连续性</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">弹性伸缩</span>
+                                <p class="text-sm text-gray-400">根据负载自动调整节点数量，资源利用最优化</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">健康监控</span>
+                                <p class="text-sm text-gray-400">实时监控集群状态，提前预警潜在问题</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Global Deployment -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <i data-feather="globe" class="text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">全球节点部署</h3>
+                            <p class="text-gray-400 text-sm">覆盖全球网络</p>
+                        </div>
+                    </div>
+
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">网络优化调度</span>
+                                <p class="text-sm text-gray-400">根据地理位置选择最佳节点，降低网络延迟</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">合规性保障</span>
+                                <p class="text-sm text-gray-400">遵守各地区法律法规，确保数据安全合规</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                            <div class="flex-1">
+                                <span class="font-medium">CDN加速</span>
+                                <p class="text-sm text-gray-400">利用全球CDN网络，加速数据传输和处理</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Management -->
+    <section class="py-12 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">集群管理面板</h2>
+
+            <!-- Management Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button onclick="showTab('overview')" class="tab-button active px-6 py-3 bg-blue-600 text-white rounded-lg font-medium transition-colors">
+                    <i data-feather="eye" class="inline mr-2"></i>总览监控
+                </button>
+                <button onclick="showTab('nodes')" class="tab-button px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors">
+                    <i data-feather="server" class="inline mr-2"></i>节点管理
+                </button>
+                <button onclick="showTab('tasks')" class="tab-button px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
+                    <i data-feather="check-circle" class="inline mr-2"></i>任务分布
+                </button>
+                <button onclick="showTab('alerts')" class="tab-button px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
+                    <i data-feather="alert-triangle" class="inline mr-2"></i>告警中心
+                </button>
+            </div>
+
+            <!-- Management Content -->
+            <div class="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <!-- CPU Usage -->
+                        <div class="bg-gray-700/50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-sm text-gray-400">CPU负载</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-xs text-green-400">正常</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-blue-400 mb-2">68%</div>
+                            <div class="text-xs text-gray-400">平均负载: 62%</div>
+                        </div>
+
+                        <!-- Memory Usage -->
+                        <div class="bg-gray-700/50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-sm text-gray-400">内存占用</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                    <span class="text-xs text-yellow-400">中等</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-green-400 mb-2">4.2GB</div>
+                            <div class="text-xs text-gray-400">总容量: 8GB</div>
+                        </div>
+
+                        <!-- Network IO -->
+                        <div class="bg-gray-700/50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-sm text-gray-400">网络吞吐</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    <span class="text-xs text-blue-400">良好</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-purple-400 mb-2">1.8Gbps</div>
+                            <div class="text-xs text-gray-400">峰值: 2.1Gbps</div>
+                        </div>
+
+                        <!-- Success Rate -->
+                        <div class="bg-gray-700/50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-sm text-gray-400">成功率</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-xs text-green-400">优秀</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-bold text-green-400 mb-2">99.7%</div>
+                            <div class="text-xs text-gray-400">今日完成: 98.2%</div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Cluster Load Chart -->
+                        <div class="bg-gray-700/50 rounded-lg p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="activity" class="text-blue-400"></i>
+                                集群负载趋势
+                            </h4>
+                            <div class="h-48 flex items-center justify-center bg-gray-800/50 rounded">
+                                <div class="text-center text-gray-400">
+                                    <i data-feather="bar-chart-3" class="w-12 h-12 mb-2 mx-auto opacity-50"></i>
+                                    <div>实时负载图表</div>
+                                    <div class="text-sm">CPU/内存/网络使用情况</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Success Rate -->
+                        <div class="bg-gray-700/50 rounded-lg p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="check-circle" class="text-green-400"></i>
+                                任务成功率统计
+                            </h4>
+                            <div class="h-48 flex items-center justify-center bg-gray-800/50 rounded">
+                                <div class="text-center text-gray-400">
+                                    <i data-feather="pie-chart" class="w-12 h-12 mb-2 mx-auto opacity-50"></i>
+                                    <div>成功率统计</div>
+                                    <div class="text-sm">24小时任务成功趋势</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nodes Tab -->
+                <div id="nodes-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Node 1 -->
+                        <div class="bg-gray-700/50 rounded-lg p-4 border border-green-500/30">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium">节点 #US-001</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-xs text-green-400">在线</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-400">
+                                <div class="flex justify-between">
+                                    <span>位置:</span>
+                                    <span class="text-white">美国西部</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>CPU:</span>
+                                    <span class="text-blue-400">45%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>任务数:</span>
+                                    <span class="text-green-400">127</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>响应时间:</span>
+                                    <span class="text-yellow-400">23ms</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Node 2 -->
+                        <div class="bg-gray-700/50 rounded-lg p-4 border border-yellow-500/30">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium">节点 #EU-045</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                    <span class="text-xs text-yellow-400">警告</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-400">
+                                <div class="flex justify-between">
+                                    <span>位置:</span>
+                                    <span class="text-white">德国法兰克福</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>CPU:</span>
+                                    <span class="text-red-400">89%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>任务数:</span>
+                                    <span class="text-orange-400">203</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>响应时间:</span>
+                                    <span class="text-red-400">145ms</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Node 3 -->
+                        <div class="bg-gray-700/50 rounded-lg p-4 border border-blue-500/30">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium">节点 #AS-089</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    <span class="text-xs text-blue-400">正常</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-400">
+                                <div class="flex justify-between">
+                                    <span>位置:</span>
+                                    <span class="text-white">新加坡</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>CPU:</span>
+                                    <span class="text-green-400">32%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>任务数:</span>
+                                    <span class="text-purple-400">89</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>响应时间:</span>
+                                    <span class="text-green-400">12ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Node Actions -->
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <button class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition-colors">
+                            <i data-feather="plus" class="inline mr-2 w-4 h-4"></i>
+                            添加节点
+                        </button>
+                        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors">
+                            <i data-feather="refresh-cw" class="inline mr-2 w-4 h-4"></i>
+                            重新平衡负载
+                        </button>
+                        <button class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded font-medium transition-colors">
+                            <i data-feather="settings" class="inline mr-2 w-4 h-4"></i>
+                            节点配置
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tasks Tab -->
+                <div id="tasks-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Task Distribution -->
+                        <div class="bg-gray-700/50 rounded-lg p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="pie-chart" class="text-purple-400"></i>
+                                任务分布情况
+                            </h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                                        <span>网页爬取任务</span>
+                                    </div>
+                                    <span class="font-medium">45%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 bg-green-500 rounded"></div>
+                                        <span>API数据采集</span>
+                                    </div>
+                                    <span class="font-medium">28%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 bg-yellow-500 rounded"></div>
+                                        <span>文件下载任务</span>
+                                    </div>
+                                    <span class="font-medium">17%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 bg-purple-500 rounded"></div>
+                                        <span>其他任务类型</span>
+                                    </div>
+                                    <span class="font-medium">10%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Queue -->
+                        <div class="bg-gray-700/50 rounded-lg p-6">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="clock" class="text-orange-400"></i>
+                                任务队列状态
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-green-900/20 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">正在执行</div>
+                                        <div class="text-sm text-gray-400">当前处理的任务</div>
+                                    </div>
+                                    <span class="text-lg font-bold text-green-400">1,247</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-blue-900/20 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">队列等待</div>
+                                        <div class="text-sm text-gray-400">待处理的作业</div>
+                                    </div>
+                                    <span class="text-lg font-bold text-blue-400">523</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-yellow-900/20 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">优先队列</div>
+                                        <div class="text-sm text-gray-400">高优先级任务</div>
+                                    </div>
+                                    <span class="text-lg font-bold text-yellow-400">89</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Tab -->
+                <div id="alerts-tab" class="tab-content hidden">
+                    <div class="space-y-4">
+                        <!-- Alert 1 -->
+                        <div class="border border-yellow-500/50 rounded-lg p-4 bg-yellow-900/10">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="alert-triangle" class="text-yellow-400 w-6 h-6"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <h5 class="font-medium text-yellow-400">节点负载过高</h5>
+                                        <span class="text-xs text-gray-400">2024-01-28 15:30:23</span>
+                                    </div>
+                                    <p class="text-gray-300 text-sm mt-1">
+                                        节点 #EU-045 的 CPU 使用率已连续5分钟超过90%，建议进行负载均衡。
+                                    </p>
+                                    <div class="mt-3 flex gap-2">
+                                        <button class="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-xs font-medium transition-colors">
+                                            负载均衡
+                                        </button>
+                                        <button class="px-3 py-1 bg-gray-600 hover:bg-gray-700 rounded text-xs font-medium transition-colors">
+                                            忽略
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alert 2 -->
+                        <div class="border border-green-500/50 rounded-lg p-4 bg-green-900/10">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="check-circle" class="text-green-400 w-6 h-6"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <h5 class="font-medium text-green-400">任务完成</h5>
+                                        <span class="text-xs text-gray-400">2024-01-28 14:45:12</span>
+                                    </div>
+                                    <p class="text-gray-300 text-sm mt-1">
+                                        批量新闻采集任务已完成，处理记录 12,847 条，成功率 98.7%。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alert 3 -->
+                        <div class="border border-blue-500/50 rounded-lg p-4 bg-blue-900/10">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0">
+                                    <i data-feather="info" class="text-blue-400 w-6 h-6"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between">
+                                        <h5 class="font-medium text-blue-400">新节点上线</h5>
+                                        <span class="text-xs text-gray-400">2024-01-28 13:20:05</span>
+                                    </div>
+                                    <p class="text-gray-300 text-sm mt-1">
+                                        新节点 #AS-090 (新加坡) 已成功加入集群，当前负载 15%。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Deployment -->
+    <section class="py-12 bg-gray-800/50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 text-center">集群部署方案</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Cloud Deployment -->
+                <div class="bg-gradient-to-br from-blue-900/50 to-blue-800/50 rounded-xl p-6 text-center border border-blue-500/30">
+                    <div class="text-4xl mb-4">☁️</div>
+                    <h3 class="text-xl font-semibold mb-3">云上部署</h3>
+                    <p class="text-gray-300 mb-6">使用AWS、Azure、GCP等云服务商，快速弹性扩展，全球节点布局</p>
+
+                    <ul class="text-left space-y-2 mb-6">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            <span class="text-sm">按需扩展</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            <span class="text-sm">全球CDN</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            <span class="text-sm">自动备份</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            <span class="text-sm">服务保障</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors">
+                        云部署指南
+                    </button>
+                </div>
+
+                <!-- Hybrid Deployment -->
+                <div class="bg-gradient-to-br from-purple-900/50 to-purple-800/50 rounded-xl p-6 text-center border border-purple-500/30">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h3 class="text-xl font-semibold mb-3">混合部署</h3>
+                    <p class="text-gray-300 mb-6">云服务结合私有节点，平衡成本和性能，满足合规要求</p>
+
+                    <ul class="text-left space-y-2 mb-6">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span class="text-sm">成本优化</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span class="text-sm">数据合规</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span class="text-sm">灵活扩展</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
+                            <span class="text-sm">安全隔离</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded font-medium transition-colors">
+                        混合方案详解
+                    </button>
+                </div>
+
+                <!-- On-Premise Deployment -->
+                <div class="bg-gradient-to-br from-green-900/50 to-green-800/50 rounded-xl p-6 text-center border border-green-500/30">
+                    <div class="text-4xl mb-4">🏢</div>
+                    <h3 class="text-xl font-semibold mb-3">本地部署</h3>
+                    <p class="text-gray-300 mb-6">完全私有化部署，适合企业内部需求，数据完全可控</p>
+
+                    <ul class="text-left space-y-2 mb-6">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                            <span class="text-sm">完全私有</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                            <span class="text-sm">离线运行</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                            <span class="text-sm">定制配置</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                            <span class="text-sm">企业合规</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition-colors">
+                        本地部署文档
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Tab switching functionality
+        function showTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.add('hidden'));
+
+            // Remove active from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active', 'bg-blue-600', 'bg-green-600', 'bg-purple-600', 'bg-red-600'));
+
+            // Show selected tab content
+            const selectedTab = document.getElementById(tabId + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.remove('hidden');
+            }
+
+            // Activate selected tab button
+            const selectedButton = document.querySelector(`[onclick="showTab('${tabId}')"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('active');
+                selectedButton.classList.add('bg-blue-600');
+            }
+        }
+
+        // Smooth scroll for back to top
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize performance charts (placeholder)
+        function updateCharts() {
+            // In a real implementation, this would update actual charts
+            console.log('Updating performance charts...');
+        }
+
+        // Auto-refresh management data every 30 seconds
+        setInterval(function() {
+            updateCharts();
+        }, 30000);
+
+        // Simulate real-time updates
+        setInterval(function() {
+            const cpuLoad = document.querySelector('.tab-content:not(.hidden) div:first-child div:nth-child(3)');
+            if (cpuLoad) {
+                const currentLoad = parseInt(cpuLoad.textContent);
+                const variation = (Math.random() - 0.5) * 10;
+                cpuLoad.textContent = Math.max(0, Math.min(100, currentLoad + variation)).toFixed(0) + '%';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
