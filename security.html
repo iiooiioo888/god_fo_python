@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜盾 - 安全与合规中心 | 镜界</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2 flex items-center">
+                <i class="fas fa-shield-alt text-blue-600 mr-3"></i>
+                镜盾 - 安全与合规中心
+            </h1>
+            <p class="text-gray-600 text-lg">保障数据采集的法律合规性与安全合规性</p>
+        </div>
+
+        <!-- Security Dashboard Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Legal Risk Score -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-600">法律风险评分</h3>
+                        <p id="legal-risk-score" class="text-2xl font-bold text-green-600">95</p>
+                    </div>
+                    <div class="p-3 bg-green-100 rounded-full">
+                        <i class="fas fa-balance-scale text-green-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">低风险</span>
+                        <span class="text-gray-500">高风险</span>
+                    </div>
+                    <div class="bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-green-500 h-2 rounded-full w-[95%]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright Compliance -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-600">版权合规度</h3>
+                        <p id="copyright-compliance" class="text-2xl font-bold text-blue-600">92%</p>
+                    </div>
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i class="fas fa-copyright text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-blue-500 h-2 rounded-full w-[92%]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Score -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-600">安全评分</h3>
+                        <p id="security-score" class="text-2xl font-bold text-orange-600">87</p>
+                    </div>
+                    <div class="p-3 bg-orange-100 rounded-full">
+                        <i class="fas fa-lock text-orange-600"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-orange-500 h-2 rounded-full w-[87%]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Events -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-600">审计事件</h3>
+                        <p id="audit-events" class="text-2xl font-bold text-purple-600">24</p>
+                    </div>
+                    <div class="p-3 bg-purple-100 rounded-full">
+                        <i class="fas fa-clipboard-check text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="mt-2 text-sm text-gray-500">
+                    最近24小时
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Security Tools Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Legal Risk Scanner -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                    <i class="fas fa-search text-red-500 mr-2"></i>
+                    法律风险扫描器
+                </h2>
+                <div class="mb-4">
+                    <textarea
+                        id="legal-scan-input"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        rows="4"
+                        placeholder="输入数据源URL或页面内容进行法律风险评估..."
+                    ></textarea>
+                </div>
+                <div class="flex gap-3 mb-4">
+                    <button id="scan-url-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-globe mr-2"></i>扫描URL
+                    </button>
+                    <button id="scan-content-btn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg flex items-center">
+                        <i class="fas fa-file-alt mr-2"></i>分析内容
+                    </button>
+                </div>
+                <div id="legal-scan-result" class="hidden">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2">扫描结果</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">法律风险等级</span>
+                                <span id="risk-level" class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">低风险</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">合规评分</span>
+                                <span id="compliance-score" class="text-bold text-2xl">95</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright Compliance Checker -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                    <i class="fas fa-copyright text-blue-500 mr-2"></i>
+                    版权合规检查
+                </h2>
+                <div class="mb-4">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-600 mb-2">拖拽文件至此处或点击上传</p>
+                        <input type="file" id="copyright-file-input" multiple class="hidden" accept="image/*,video/*,*.pdf">
+                        <button id="browse-files-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">浏览文件</button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">内容分类</label>
+                    <select id="content-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="auto">自动检测</option>
+                        <option value="image">图像</option>
+                        <option value="video">视频</option>
+                        <option value="document">文档</option>
+                        <option value="code">代码</option>
+                    </select>
+                </div>
+                <button id="check-copyright-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-search mr-2"></i>开始版权检查
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Reports & Logs -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Compliance Report -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                    <i class="fas fa-chart-bar text-green-500 mr-2"></i>
+                    合规报告
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-800">GDPR合规性</p>
+                            <p class="text-sm text-gray-500">欧盟通用数据保护条例</p>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">合规</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-800">著作权保护</p>
+                            <p class="text-sm text-gray-500">数字内容版权验证</p>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">良好</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-800">网络安全</p>
+                            <p class="text-sm text-gray-500">数据传输与存储安全</p>
+                        </div>
+                        <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded text-sm">需改进</span>
+                    </div>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg mt-4">
+                        生成完整报告
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security Audit Log -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold mb-4 flex items-center">
+                    <i class="fas fa-history text-orange-500 mr-2"></i>
+                    安全审计日志
+                </h2>
+                <div class="space-y-3 max-h-80 overflow-y-auto">
+                    <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-shield-check text-green-500 mt-1"></i>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">访问控制验证</p>
+                            <p class="text-xs text-gray-500">2025-10-28 11:20:15</p>
+                            <p class="text-xs text-gray-600">用户成功通过权限验证</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-exclamation-triangle text-yellow-500 mt-1"></i>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">合规扫描告警</p>
+                            <p class="text-xs text-gray-500">2025-10-28 11:15:32</p>
+                            <p class="text-xs text-gray-600">检测到可能的用户数据收集不合规</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-lock text-blue-500 mt-1"></i>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">数据加密启用</p>
+                            <p class="text-xs text-gray-500">2025-10-28 11:10:45</p>
+                            <p class="text-xs text-gray-600">数据传输通道加密已激活</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-file-signature text-green-500 mt-1"></i>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">版权验证完成</p>
+                            <p class="text-xs text-gray-500">2025-10-28 11:05:12</p>
+                            <p class="text-xs text-gray-600">已验证的内容版权所有权</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="view-all-logs-btn" class="w-full bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg mt-4">
+                    查看完整日志
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-6 flex items-center">
+                <i class="fas fa-cogs text-gray-600 mr-2"></i>
+                安全策略设置
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="space-y-3">
+                    <h3 class="font-semibold text-gray-800">数据加密</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">传输加密（TLS/SSL）</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">存储加密</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">端到端加密</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="font-semibold text-gray-800">访问控制</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">两因素认证</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">IP访问限制</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">角色基访问控制</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="font-semibold text-gray-800">审计监控</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">操作日志记录</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" checked class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">实时监控告警</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span class="ml-2 text-sm">合规审计报告</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                    保存设置
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Mock data - In real implementation, this would connect to backend APIs
+        let legalRiskScore = 95;
+        let copyrightCompliance = 92;
+        let securityScore = 87;
+
+        function updateDashboard() {
+            document.getElementById('legal-risk-score').textContent = legalRiskScore;
+            document.getElementById('copyright-compliance').textContent = copyrightCompliance + '%';
+            document.getElementById('security-score').textContent = securityScore;
+        }
+
+        // Legal Risk Scanner
+        document.getElementById('scan-url-btn').addEventListener('click', function() {
+            const input = document.getElementById('legal-scan-input').value.trim();
+            if (!input) {
+                alert('请输入URL或内容');
+                return;
+            }
+
+            // Mock scanning
+            const riskLevel = legalRiskScore > 80 ? '低风险' : legalRiskScore > 60 ? '中风险' : '高风险';
+            const riskColor = legalRiskScore > 80 ? 'green' : legalRiskScore > 60 ? 'yellow' : 'red';
+
+            const resultDiv = document.getElementById('legal-scan-result');
+            document.getElementById('risk-level').innerHTML = `<span class="px-2 py-1 bg-${riskColor}-100 text-${riskColor}-800 rounded text-sm">${riskLevel}</span>`;
+            document.getElementById('compliance-score').textContent = legalRiskScore;
+            resultDiv.classList.remove('hidden');
+
+            // Update metrics
+            legalRiskScore = Math.min(100, legalRiskScore + 1);
+            updateDashboard();
+        });
+
+        document.getElementById('scan-content-btn').addEventListener('click', function() {
+            const input = document.getElementById('legal-scan-input').value.trim();
+            if (!input) {
+                alert('请输入URL或内容');
+                return;
+            }
+
+            // Similar logic
+            document.getElementById('scan-url-btn').click();
+        });
+
+        // File upload for copyright check
+        document.getElementById('browse-files-btn').addEventListener('click', function() {
+            document.getElementById('copyright-file-input').click();
+        });
+
+        document.getElementById('copyright-file-input').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileList = Array.from(files).map(f => f.name).join(', ');
+                document.querySelector('#copyright-file-input').parentElement.innerHTML =
+                    `<p class="text-gray-600">${files.length} 个文件已选择: ${fileList}</p>`;
+            }
+        });
+
+        document.getElementById('check-copyright-btn').addEventListener('click', function() {
+            const files = document.getElementById('copyright-file-input').files;
+            if (files.length === 0) {
+                alert('请先选择文件');
+                return;
+            }
+
+            // Mock copyright check
+            alert('版权检查完成！所有文件均通过版权合规验证。');
+        });
+
+        // View all logs button
+        document.getElementById('view-all-logs-btn').addEventListener('click', function() {
+            alert('完整审计日志功能将在后端API集成后实现');
+        });
+
+        // Initialize dashboard on page load
+        updateDashboard();
+
+    </script>
+</body>
+</html>

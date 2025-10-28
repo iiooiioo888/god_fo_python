@@ -1,273 +1,198 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>镜厅 - 社区交流 | 镜界</title>
+    <title>镜厅 - 技术社区 | 镜界</title>
+    <meta name="description" content="数据源开发技术讨论社区，分享经验、解决问题、协作开发">
+    <meta name="keywords" content="社区,论坛,技术讨论,数据源,爬虫,协作">
+    <meta name="author" content="镜界平台">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Libraries -->
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <!-- Component System -->
+    <script src="components/template-processor.js"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
     <custom-navbar></custom-navbar>
 
-<main>
-
-    <!-- Header -->
-    <header class="pt-32 pb-16 bg-gradient-to-r from-gray-900 to-gray-800">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">镜厅 - 社区交流</h1>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                技术讨论和经验分享的社区空间，连接开发者与爬虫爱好者
-            </p>
-        </div>
-    </header>
-
-    <!-- Quick Stats -->
-    <section class="py-8 bg-gray-900/50">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <div class="text-2xl font-bold text-blue-400 mb-1">1,234</div>
-                    <div class="text-sm text-gray-400">话题讨论</div>
-                </div>
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <div class="text-2xl font-bold text-green-400 mb-1">567</div>
-                    <div class="text-sm text-gray-400">活跃用户</div>
-                </div>
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <div class="text-2xl font-bold text-purple-400 mb-1">89</div>
-                    <div class="text-sm text-gray-400">专家大咖</div>
-                </div>
-                <div class="bg-gray-800/50 rounded-xl p-4">
-                    <div class="text-2xl font-bold text-yellow-400 mb-1">4.8</div>
-                    <div class="text-sm text-gray-400">社区评分</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Community Navigation -->
-    <section class="py-8 bg-gray-900/50 sticky top-0 z-10 border-b border-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-wrap gap-4 justify-center">
-                <button class="forum-category active px-4 py-2 bg-blue-600 text-white rounded-lg" data-category="hot">热门话题</button>
-                <button class="forum-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="tech">技术求助</button>
-                <button class="forum-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="share">代码分享</button>
-                <button class="forum-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="news">行业资讯</button>
-                <button class="forum-category px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-category="general">综合讨论</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- New Post Section -->
-    <section class="py-12 bg-gray-900">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold">社区广场</h2>
-                <button onclick="openNewPostModal()" class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg font-medium transition-all flex items-center gap-2">
-                    <i data-feather="plus"></i>
-                    发布新话题
-                </button>
-            </div>
-
-            <div class="space-y-6" id="posts-container">
-                <!-- Posts will be populated by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- New Post Modal -->
-    <div id="new-post-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
-        <div class="min-h-screen flex items-center justify-center px-4">
-            <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div class="flex justify-between items-center p-6 border-b border-gray-700">
-                    <h3 class="text-xl font-semibold">发布新话题</h3>
-                    <button onclick="closeNewPostModal()" class="text-gray-400 hover:text-white">
-                        <i data-feather="x" class="w-5 h-5"></i>
+    <div class="min-h-screen">
+        <!-- Page Header -->
+        <header class="pt-32 pb-16 bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-4">
+                    <i data-feather="message-square" class="text-purple-400"></i>
+                    镜厅 - 技术社区
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    连接志同道合的开发者，分享经验、解决问题、协作创新
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                    <a href="#categories" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-all transform hover:scale-105">
+                        开始探索
+                    </a>
+                    <button onclick="createNewPost()" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-all transform hover:scale-105 flex items-center gap-2">
+                        <i data-feather="edit"></i>发布新帖
                     </button>
                 </div>
-                <div class="p-6">
-                    <form id="new-post-form" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">话题标题</label>
-                                <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="简明扼要的标题">
+            </div>
+        </header>
+
+        <!-- Community Stats -->
+        <section class="py-12 bg-gray-900/50">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 text-center border border-blue-500/30 hover:border-blue-500/50 transition-all duration-300">
+                        <div class="text-3xl font-bold text-blue-400 mb-2" id="total-members">2847</div>
+                        <div class="text-sm text-gray-400">社区成员</div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 text-center border border-green-500/30 hover:border-green-500/50 transition-all duration-300">
+                        <div class="text-3xl font-bold text-green-400 mb-2" id="total-posts">12543</div>
+                        <div class="text-sm text-gray-400">讨论帖</div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 text-center border border-purple-500/30 hover:border-purple-500/50 transition-all duration-300">
+                        <div class="text-3xl font-bold text-purple-400 mb-2" id="total-replies">89123</div>
+                        <div class="text-sm text-gray-400">回复总数</div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 text-center border border-yellow-500/30 hover:border-yellow-500/50 transition-all duration-300">
+                        <div class="text-3xl font-bold text-yellow-400 mb-2" id="online-users">156</div>
+                        <div class="text-sm text-gray-400">在线用户</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Content -->
+        <section class="py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <!-- Quick Categories -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="layout" class="text-blue-400"></i>
+                                快速导航
+                            </h3>
+                            <div class="space-y-2" id="categories">
+                                <a href="#" onclick="switchCategory('all')" class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all category-link active">
+                                    全部讨论
+                                </a>
+                                <a href="#" onclick="switchCategory('tech-help')" class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all category-link">
+                                    技术求助
+                                </a>
+                                <a href="#" onclick="switchCategory('code-share')" class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all category-link">
+                                    代码分享
+                                </a>
+                                <a href="#" onclick="switchCategory('experience')" class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-blue-600/20 hover:text-blue-400 transition-all category-link">
+                                    经验分享
+                                </a>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="lg:col-span-3">
+
+                        <!-- Search and Filter -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 mb-6">
+                            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                                <div class="flex-1 flex gap-4">
+                                    <div class="relative flex-1 max-w-md">
+                                        <input type="text" placeholder="搜索讨论..." class="w-full px-4 py-3 pl-12 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" id="search-input">
+                                        <i data-feather="search" class="absolute left-4 top-3.5 text-gray-500"></i>
+                                    </div>
+                                    <select class="px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="sort-select">
+                                        <option>最新发布</option>
+                                        <option>热门程度</option>
+                                        <option>最多回复</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Posts List -->
+                        <div class="space-y-6" id="posts-list">
+                            <!-- Posts will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="mt-12 flex justify-center">
+                            <nav class="flex items-center gap-2">
+                                <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">上一页</a>
+                                <a href="#" class="px-4 py-2 bg-blue-600 rounded-lg">1</a>
+                                <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">2</a>
+                                <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">...</a>
+                                <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">10</a>
+                                <a href="#" class="px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">下一页</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create New Post Modal -->
+        <div id="new-post-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+            <div class="min-h-screen flex items-center justify-center px-4 py-8">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg sm:max-w-xl md:max-w-2xl">
+                    <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                        <h3 class="text-xl font-semibold">发布新讨论</h3>
+                        <button onclick="closeNewPostModal()" class="text-gray-400 hover:text-white">
+                            <i data-feather="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <form id="new-post-form" class="space-y-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">分区分类</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">分类</label>
                                 <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="">选择分区</option>
-                                    <option value="tech">技术求助</option>
-                                    <option value="share">代码分享</option>
-                                    <option value="news">行业资讯</option>
-                                    <option value="general">综合讨论</option>
+                                    <option value="">选择分类</option>
+                                    <option value="tech-help">技术求助</option>
+                                    <option value="code-share">代码分享</option>
+                                    <option value="experience">经验分享</option>
+                                    <option value="data-sources">数据源讨论</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">话题内容</label>
-                            <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="6" placeholder="详细描述你的问题或分享想法..."></textarea>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">标签（可选）</label>
-                                <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="Web爬虫, Python" id="post-tags-input">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">标题</label>
+                                <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入讨论标题">
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">优先级</label>
-                                <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option>普通</option>
-                                    <option>求助</option>
-                                    <option>分享</option>
-                                    <option>重要</option>
-                                </select>
-                            </div>
-                            <div class="flex items-end">
-                                <label class="flex items-center space-x-2 text-sm text-gray-300">
-                                    <input type="checkbox" class="w-4 h-4 bg-gray-700 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500">
-                                    <span>匿名发布</span>
-                                </label>
-                            </div>
-                        </div>
 
-                        <div class="flex gap-4 pt-4">
-                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
-                                发布话题
-                            </button>
-                            <button type="button" onclick="closeNewPostModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
-                                取消
-                            </button>
-                        </div>
-                    </form>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">内容</label>
+                                <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="6" placeholder="详细描述你的问题或分享你的经验..."></textarea>
+                            </div>
+
+                            <div class="flex gap-4 pt-4">
+                                <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                    发布讨论
+                                </button>
+                                <button type="button" onclick="closeNewPostModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                                    取消
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sidebar - Community Leaders & Rules -->
-    <section class="py-12 bg-gray-900/50">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Community Rules -->
-                <div class="lg:col-span-1">
-                    <div class="bg-gray-800/50 rounded-xl p-6 sticky top-4">
-                        <h3 class="text-xl font-semibold mb-4">社区守则</h3>
-                        <ul class="space-y-3 text-sm text-gray-400">
-                            <li class="flex items-start gap-2">
-                                <i data-feather="check-circle" class="text-green-400 w-4 h-4 mt-0.5 flex-shrink-0"></i>
-                                文明礼貌，不发表骚扰性言论
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-feather="check-circle" class="text-green-400 w-4 h-4 mt-0.5 flex-shrink-0"></i>
-                                分享技术知识，帮助他人成长
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-feather="check-circle" class="text-green-400 w-4 h-4 mt-0.5 flex-shrink-0"></i>
-                                遵守法律法规，不讨论非法内容
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-feather="check-circle" class="text-green-400 w-4 h-4 mt-0.5 flex-shrink-0"></i>
-                                尊重知识产权，不侵权他人版权
-                            </li>
-                        </ul>
-
-                        <div class="mt-6 pt-4 border-t border-gray-700">
-                            <h4 class="text-lg font-semibold mb-3">社区活动</h4>
-                            <div class="space-y-2">
-                                <div class="text-sm text-gray-400">
-                                    <span class="text-yellow-400">📅</span> 周末线上技术分享会
-                                </div>
-                                <div class="text-sm text-gray-400">
-                                    <span class="text-blue-400">🏆</span> 代码优化大赛进行中
-                                </div>
-                                <div class="text-sm text-gray-400">
-                                    <span class="text-green-400">👥</span> 新人见面会活跃中
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Content Area -->
-                <div class="lg:col-span-2">
-                    <div class="space-y-6">
-                        <!-- Community Leaders -->
-                        <div class="bg-gray-800/50 rounded-xl p-6">
-                            <h3 class="text-xl font-semibold mb-4">社区领袖</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="flex items-center gap-3 p-4 bg-gray-700/50 rounded-lg">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                        <span class="text-white font-bold">王</span>
-                                    </div>
-                                    <div>
-                                        <div class="font-semibold">爬虫专家王老师</div>
-                                        <div class="text-sm text-gray-400">反爬技术研究者</div>
-                                        <div class="text-xs text-gray-500">解答问题: 156</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3 p-4 bg-gray-700/50 rounded-lg">
-                                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
-                                        <span class="text-white font-bold">李</span>
-                                    </div>
-                                    <div>
-                                        <div class="font-semibold">网络速率狂魔</div>
-                                        <div class="text-sm text-gray-400">分布式爬虫专家</div>
-                                        <div class="text-xs text-gray-500">分享工具: 89</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recent Activity -->
-                        <div class="bg-gray-800/50 rounded-xl p-6">
-                            <h3 class="text-xl font-semibold mb-4">近期活跃</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between py-2 border-b border-gray-700">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-xs">张</div>
-                                        <div>
-                                            <div class="text-sm">新用户张三加入社区</div>
-                                            <div class="text-xs text-gray-500">2小时前</div>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs bg-green-900/30 text-green-400 px-2 py-1 rounded">新用户</span>
-                                </div>
-                                <div class="flex items-center justify-between py-2 border-b border-gray-700">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-xs">陈</div>
-                                        <div>
-                                            <div class="text-sm">发布了《Scrapy高级技巧分享》</div>
-                                            <div class="text-xs text-gray-500">4小时前</div>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs bg-purple-900/30 text-purple-400 px-2 py-1 rounded">分享</span>
-                                </div>
-                                <div class="flex items-center justify-between py-2">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-xs">赵</div>
-                                        <div>
-                                            <div class="text-sm">求助：反爬虫绕过方法</div>
-                                            <div class="text-xs text-gray-500">6小时前</div>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs bg-red-900/30 text-red-400 px-2 py-1 rounded">求助</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <custom-footer></custom-footer>
-
-</main>
 
     <script src="components/navbar.js"></script>
     <script src="components/footer.js"></script>
@@ -275,104 +200,155 @@
     <script>
         feather.replace();
 
-        // Sample posts data
-        let forumPosts = [
+        // Simplified community data for component demo
+        let posts = [
             {
                 id: 1,
-                title: "求助：如何绕过Cloudflare的5秒盾？",
-                content: "最近在抓取一些网站数据时遇到Cloudflare的5秒验证机制，请问有哪些有效的绕过方法？",
-                category: "tech",
-                author: "爬虫新手",
-                avatar: "新",
-                timestamp: "2024-01-15 14:30",
-                replies: 8,
-                views: 156,
-                votes: 12,
-                tags: ["Cloudflare", "反爬", "5秒盾"],
-                priority: "求助",
-                isHot: false
+                title: "如何绕过Cloudflare的高级反爬虫保护？",
+                content: "最近遇到一个网站使用了Cloudflare的最高防护等级，常规的代理IP和User-Agent轮换都已经无效了...",
+                category: "tech-help",
+                time: "2024-10-28 14:30",
+                likes: 25,
+                replies: 12,
+                author: "爬虫新人"
             },
             {
                 id: 2,
-                title: "分享：基于Scrapy的分布式爬虫架构设计",
-                content: "分享一套完整的分布式Scrapy架构，包含任务调度、去重、高并发处理等特性...",
-                category: "share",
-                author: "资深开发者",
-                avatar: "资",
-                timestamp: "2024-01-15 10:15",
-                replies: 15,
-                views: 320,
-                votes: 28,
-                tags: ["Scrapy", "分布式", "架构"],
-                priority: "分享",
-                isHot: true
+                title: "分享一个高效的分布式爬虫框架",
+                content: "开发了一个基于Redis队列的分布式爬虫框架，支持动态IP池、自动重试、监控面板等功能...",
+                category: "code-share",
+                time: "2024-10-28 12:15",
+                likes: 45,
+                replies: 23,
+                author: "架构师"
             },
             {
                 id: 3,
-                title: "行业新闻：LinkedIn加强反爬虫措施",
-                content: "LinkedIn最近宣布将加强对自动化工具的检测，包括更严格的验证码和行为分析...",
-                category: "news",
-                author: "行业分析师",
-                avatar: "行",
-                timestamp: "2024-01-14 16:45",
-                replies: 22,
-                views: 482,
-                votes: 15,
-                tags: ["LinkedIn", "反爬", "行业新闻"],
-                priority: "重要",
-                isHot: false
-            },
-            {
-                id: 4,
-                title: "讨论：API爬取还是网页解析更好？",
-                content: "在数据采集时，总是在API和HTML解析中犹豫，什么时候该选择哪种方式呢？",
-                category: "general",
-                author: "数据工程师",
-                avatar: "数",
-                timestamp: "2024-01-14 12:20",
-                replies: 31,
-                views: 678,
-                votes: 45,
-                tags: ["API", "HTML", "讨论"],
-                priority: "普通",
-                isHot: true
-            },
-            {
-                id: 5,
-                title: "工具分享：智能代理IP轮换器",
-                content: "开源了一个基于Redis的代理IP智能管理系统，支持自动检测和质量评分...",
-                category: "share",
-                author: "开源贡献者",
-                avatar: "开",
-                timestamp: "2024-01-13 09:30",
-                replies: 12,
-                views: 234,
-                votes: 19,
-                tags: ["代理IP", "开源", "Redis"],
-                priority: "分享",
-                isHot: false
-            },
-            {
-                id: 6,
-                title: "紧急求助：数据被封IP怎么办？",
-                content: "爬取过程中突然被目标网站封禁IP地址，尝试了多种VPN都无效，有没有应急解决方案？",
-                category: "tech",
-                author: "紧急求救",
-                avatar: "紧",
-                timestamp: "2024-01-15 15:45",
-                replies: 7,
-                views: 98,
-                votes: 8,
-                tags: ["IP封禁", "VPN", "应急"],
-                priority: "求助",
-                isHot: false
+                title: "十年爬虫经验总结：最有效的反检测策略",
+                content: "从事爬虫开发已经有十年了，想和大家分享一些经过时间检验的实用策略...",
+                category: "experience",
+                time: "2024-10-28 10:45",
+                likes: 89,
+                replies: 34,
+                author: "数据专家"
             }
         ];
 
-        let currentCategory = 'hot';
+        let currentCategory = 'all';
 
-        // Modal functions
-        function openNewPostModal() {
+        // Initialize community
+        function initCommunity() {
+            renderPosts();
+            updateCommunityStats();
+        }
+
+        // Render posts list using simplified format
+        function renderPosts() {
+            const postsContainer = document.getElementById('posts-list');
+            let filteredPosts = posts;
+
+            if (currentCategory !== 'all') {
+                filteredPosts = posts.filter(post => post.category === currentCategory);
+            }
+
+            // Sort by likes descending
+            filteredPosts.sort((a, b) => b.likes - a.likes);
+
+            postsContainer.innerHTML = filteredPosts.length === 0 ?
+                '<div class="text-center py-12 text-gray-400">该分类暂无讨论</div>' :
+                filteredPosts.map(post => createPostElement(post)).join('');
+
+            feather.replace();
+        }
+
+        function createPostElement(post) {
+            const categoryLabels = {
+                'tech-help': '技术求助',
+                'code-share': '代码分享',
+                'experience': '经验分享',
+                'data-sources': '数据源讨论'
+            };
+
+            const categoryColors = {
+                'tech-help': 'text-red-400',
+                'code-share': 'text-blue-400',
+                'experience': 'text-green-400',
+                'data-sources': 'text-purple-400'
+            };
+
+            const timeAgo = formatTimeAgo(post.time);
+
+            return `
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-white font-medium text-sm">${post.author.charAt(0)}</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="font-medium text-white">${post.author}</span>
+                                <span class="px-2 py-1 bg-gray-600 text-gray-300 text-xs rounded-full ${categoryColors[post.category]}">${categoryLabels[post.category]}</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-white mb-2">${post.title}</h3>
+                            <p class="text-gray-300 mb-3 text-sm">${post.content.substring(0, 120)}${post.content.length > 120 ? '...' : ''}</p>
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4 text-sm text-gray-400">
+                                    <span>${timeAgo}</span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="likePost(${post.id})" class="flex items-center gap-1 text-gray-400 hover:text-red-400 transition-colors">
+                                        <i data-feather="heart" class="w-4 h-4"></i>
+                                        <span>${post.likes}</span>
+                                    </button>
+                                    <button onclick="viewPost(${post.id})" class="flex items-center gap-1 text-gray-400 hover:text-blue-400 transition-colors">
+                                        <i data-feather="message-circle" class="w-4 h-4"></i>
+                                        <span>${post.replies}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Utility functions
+        function formatTimeAgo(timeString) {
+            const time = new Date(timeString);
+            const now = new Date();
+            const diffInMs = now - time;
+            const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            const diffInDays = Math.floor(diffInHours / 24);
+
+            if (diffInMinutes < 60) {
+                return `${diffInMinutes}分钟前`;
+            } else if (diffInHours < 24) {
+                return `${diffInHours}小时前`;
+            } else {
+                return `${diffInDays}天前`;
+            }
+        }
+
+        function updateCommunityStats() {
+            document.getElementById('total-members').textContent = '2847';
+            document.getElementById('total-posts').textContent = posts.length.toString();
+            document.getElementById('total-replies').textContent = posts.reduce((sum, post) => sum + post.replies, 0).toString();
+            document.getElementById('online-users').textContent = '156';
+        }
+
+        // Event handlers
+        function switchCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-link').forEach(link => {
+                link.classList.remove('active', 'bg-blue-600', 'text-blue-400');
+            });
+            document.querySelector('[onclick="switchCategory(\'' + category + '\')"]').classList.add('active', 'bg-blue-600', 'text-blue-400');
+            renderPosts();
+        }
+
+        function createNewPost() {
             document.getElementById('new-post-modal').classList.remove('hidden');
         }
 
@@ -381,155 +357,70 @@
             document.getElementById('new-post-form').reset();
         }
 
-        // Category filtering
-        document.querySelectorAll('.forum-category').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.forum-category').forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
-                document.querySelectorAll('.forum-category').forEach(btn => btn.classList.add('bg-gray-700', 'hover:bg-gray-600'));
-                this.classList.add('active', 'bg-blue-600', 'text-white');
-                this.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+        function viewPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                showToast('查看: ' + post.title, 'info');
+            }
+        }
 
-                currentCategory = this.dataset.category;
+        function likePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
                 renderPosts();
-            });
+                showToast('已点赞', 'success');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const postsContainer = document.getElementById('posts-list');
+
+            if (searchTerm === '') {
+                renderPosts();
+                return;
+            }
+
+            const filteredPosts = posts.filter(post =>
+                post.title.toLowerCase().includes(searchTerm) ||
+                post.content.toLowerCase().includes(searchTerm)
+            );
+
+            postsContainer.innerHTML = filteredPosts.length === 0 ?
+                '<div class="text-center py-12 text-gray-400">未找到相关讨论</div>' :
+                filteredPosts.map(post => createPostElement(post)).join('');
+
+            feather.replace();
         });
 
         // Form submission
         document.getElementById('new-post-form').addEventListener('submit', function(e) {
             e.preventDefault();
+
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData);
 
-            // Get tags array
-            const tagsInput = document.getElementById('post-tags-input').value;
-            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
-
             const newPost = {
-                id: forumPosts.length + 1,
-                title: data['话题标题'] || data.title,
-                content: data['话题内容'] || data.content,
-                category: data['分区分类'] || data.category,
-                author: '新用户',
-                avatar: '新',
-                timestamp: new Date().toLocaleString('zh-CN'),
+                id: Date.now(),
+                title: data.标题,
+                content: data.内容,
+                category: data.分类,
+                time: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                likes: 0,
                 replies: 0,
-                views: 0,
-                votes: 0,
-                tags: tags,
-                priority: data.priority || '普通',
-                isHot: false
+                author: '社区成员'
             };
 
-            // Add to data array
-            forumPosts.unshift(newPost); // Add to beginning
-
-            // Render updated list
+            posts.unshift(newPost);
             renderPosts();
-
-            // Close modal
             closeNewPostModal();
-
-            // Show success message
-            alert('话题发布成功！');
+            showToast('讨论已发布！', 'success');
         });
 
-        // Render posts list
-        function renderPosts() {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = '';
-
-            let filteredPosts = forumPosts;
-
-            if (currentCategory === 'hot') {
-                // Show hot posts based on votes/views
-                filteredPosts = forumPosts.filter(post => post.isHot || (post.replies > 10 || post.votes > 10));
-            } else {
-                filteredPosts = forumPosts.filter(post => post.category === currentCategory);
-            }
-
-            filteredPosts.forEach(post => {
-                const priorityColor = {
-                    '求助': 'text-red-400 bg-red-900/30',
-                    '分享': 'text-green-400 bg-green-900/30',
-                    '重要': 'text-yellow-400 bg-yellow-900/30',
-                    '普通': 'text-gray-400 bg-gray-900/30'
-                }[post.priority] || 'text-gray-400 bg-gray-900/30';
-
-                const tagsHtml = post.tags.map(tag => {
-                    const bgClass = tag.includes('Python') ? 'bg-blue-900/30 text-blue-400' :
-                                  tag.includes('API') ? 'bg-purple-900/30 text-purple-400' :
-                                  tag.includes('反爬') ? 'bg-red-900/30 text-red-400' :
-                                  'bg-gray-900/30 text-gray-400';
-                    return `<span class="px-3 py-1 ${bgClass} rounded-full text-sm">${tag}</span>`;
-                }).join(' ');
-
-                const postHtml = `
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-blue-500 transition-all duration-300">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="flex gap-4 items-center mb-3">
-                                <div class="w-8 h-8 bg-${getCategoryColor(post.category)}-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                    ${post.avatar}
-                                </div>
-                                <div>
-                                    <div class="font-semibold">${post.author}</div>
-                                    <div class="text-sm text-gray-400">${post.timestamp}</div>
-                                </div>
-                            </div>
-                            <span class="px-2 py-1 ${priorityColor} rounded text-xs">${post.priority}</span>
-                        </div>
-
-                        <h3 class="text-xl font-semibold mb-3">${post.title}</h3>
-                        <p class="text-gray-300 mb-4 line-clamp-2">${post.content}</p>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${tagsHtml}
-                        </div>
-
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-700">
-                            <div class="flex items-center gap-6 text-sm text-gray-400">
-                                <span class="flex items-center gap-1">
-                                    <i data-feather="message-circle" class="h-4 w-4"></i>
-                                    ${post.replies} 回复
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-feather="eye" class="h-4 w-4"></i>
-                                    ${post.views} 查看
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-feather="heart" class="h-4 w-4"></i>
-                                    ${post.votes} 赞
-                                </span>
-                            </div>
-                            <button onclick="viewPost(${post.id})" class="text-blue-400 hover:text-blue-300 flex items-center">
-                                查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += postHtml;
-            });
-
-            // Re-initiate feather icons
-            feather.replace();
-        }
-
-        function getCategoryColor(category) {
-            const colors = {
-                tech: 'red',
-                share: 'green',
-                news: 'blue',
-                general: 'purple'
-            };
-            return colors[category] || 'gray';
-        }
-
-        function viewPost(postId) {
-            // In a real app, this would navigate to post detail page
-            alert(`查看话题详情 (ID: ${postId})`);
-        }
-
         // Initialize
-        renderPosts();
+        document.addEventListener('DOMContentLoaded', initCommunity);
     </script>
 </body>
 </html>

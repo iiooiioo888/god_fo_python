@@ -1,0 +1,178 @@
+<!-- Modal Components -->
+
+<!-- Base Modal Structure -->
+<div id="{{ MODAL_ID }}" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 {{ MODAL_VISIBILITY_CLASS }}">
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-{{ MODAL_SIZE }} max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h3 class="text-xl font-semibold">{{ MODAL_TITLE }}</h3>
+                <button onclick="{{ MODAL_CLOSE_HANDLER }}" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                {{ MODAL_CONTENT }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Modal -->
+<div id="submit-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg sm:max-w-xl md:max-w-2xl">
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h3 class="text-xl font-semibold">提交新数据源</h3>
+                <button onclick="closeSubmitModal()" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="submit-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">数据源名称</label>
+                            <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入数据源名称">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">数据类型</label>
+                            <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>请选择类型</option>
+                                <option>图片</option>
+                                <option>视频</option>
+                                <option>GIF</option>
+                                <option>其他</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">数据源 URL</label>
+                        <input type="url" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="https://example.com/downloads">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">描述</label>
+                        <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="请描述数据源的特性和使用方法"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">标签 (用逗号分隔)</label>
+                        <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="免费商用, API, 高质量" id="tags-input">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">当前状态</label>
+                        <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>🟢 镜像清晰</option>
+                            <option>🟡 镜像模糊</option>
+                            <option>🔴 镜面破碎</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                            提交数据源
+                        </button>
+                        <button type="button" onclick="closeSubmitModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+                            取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div id="detail-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <div>
+                    <h3 class="text-2xl font-semibold" id="detail-title">数据源详情</h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span id="detail-status" class="status-indicator status-clear">🟢 清晰</span>
+                        <span class="text-sm text-gray-400" id="detail-type">图片</span>
+                    </div>
+                </div>
+                <button onclick="closeDetailModal()" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Main Info -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3">描述</h4>
+                            <p class="text-gray-300 leading-relaxed" id="detail-description"></p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3">标签</h4>
+                            <div class="flex flex-wrap gap-2" id="detail-tags"></div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold mb-3">使用示例</h4>
+                            <div class="bg-gray-900 rounded-lg p-4">
+                                <pre class="text-green-400 text-sm overflow-x-auto" id="detail-example"><code>// 使用示例代码将会在这里显示</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <!-- Stats -->
+                        <div class="bg-gray-900/50 rounded-lg p-4">
+                            <h4 class="text-lg font-semibold mb-4">统计数据</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-400">总下载量</span>
+                                    <span class="text-lg font-semibold text-blue-400" id="detail-downloads"></span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-400">月下载量</span>
+                                    <span class="text-lg font-semibold text-green-400" id="detail-monthly"></span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-400">收藏次数</span>
+                                    <span class="text-lg font-semibold text-purple-400" id="detail-favorites"></span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-400">用户评分</span>
+                                    <div class="flex items-center gap-1">
+                                        <div class="flex">
+                                            <span id="detail-rating"></span>
+                                        </div>
+                                        <span class="text-sm text-gray-400 ml-1" id="detail-reviews-count"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col gap-3">
+                            <button class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2" onclick="downloadData()">
+                                <i data-feather="download"></i>
+                                下载数据
+                            </button>
+                            <button id="favorite-btn" class="w-full bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2" onclick="toggleFavorite()">
+                                <i data-feather="heart"></i>
+                                添加收藏
+                            </button>
+                            <button class="w-full bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2" onclick="shareData()">
+                                <i data-feather="share-2"></i>
+                                分享
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

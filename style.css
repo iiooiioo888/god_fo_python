@@ -1,151 +1,37 @@
-/* Shared styles across all pages */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* ================================
+   MAIN STYLESHEET - 主样式文件
+   CSS已被重构为模块化设计
+   ================================ */
 
-:root {
-  --primary-color: #3b82f6;
-  --secondary-color: #8b5cf6;
-  --accent-color: #10b981;
-  --dark-bg: #0f172a;
-  --darker-bg: #020617;
-}
+/* Core Modular CSS Architecture */
 
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--darker-bg);
-    color: #f1f5f9;
-    scroll-behavior: smooth;
-}
+/* 1. 變數定義 - CSS Variables */
+@import url('./styles/variables.css');
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
+/* 2. 基礎樣式 - Base Styles */
+@import url('./styles/base.css');
 
-::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
-}
+/* 3. 佈局系統 - Layout & Grid */
+@import url('./styles/layout.css');
 
-::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-}
+/* 4. UI組件 - Components */
+@import url('./styles/components.css');
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
-}
+/* 5. 動畫效果 - Animations */
+@import url('./styles/animations.css');
 
-/* Gradient text utility */
-.gradient-text {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+/* 6. 實用工具 - Utility Classes */
+@import url('./styles/utilities.css');
 
-/* Card hover effects */
-.card-hover {
-    transition: all 0.3s ease;
-}
+/* 7. 無障礙支持 - Accessibility */
+@import url('./styles/accessibility.css');
 
-.card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-}
+/* ================================
+   LEGACY SUPPORT - 向后兼容
+   ================================ */
 
-/* Button styles */
-.btn-primary {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
+/* 保留一些舊的類別以確保向後兼容 */
+/* 如果需要清理這些舊的樣式，可以在將來移除 */
 
-.btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateY(-2px);
-}
-
-/* Section spacing */
-.section-padding {
-    padding: 100px 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .section-padding {
-        padding: 60px 0;
-    }
-    
-    h1 {
-        font-size: 2.5rem !important;
-    }
-    
-    h2 {
-        font-size: 2rem !important;
-    }
-}
-
-/* Animation utilities */
-.fade-in {
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Status indicators */
-.status-indicator {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.status-clear {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-}
-
-.status-fuzzy {
-    background-color: rgba(245, 158, 11, 0.15);
-    color: #f59e0b;
-}
-
-.status-broken {
-    background-color: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-}
-
-.status-updated {
-    background-color: rgba(96, 165, 250, 0.15);
-    color: #60a5fa;
-}
+/* Legacy gradient text (if still used) */
+/* .old-gradient-text will be removed in v2 */

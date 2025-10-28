@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息中心 - 通知管理 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 bg-gradient-to-r from-blue-900 to-purple-900">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">消息中心</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                及时获取数据源更新、社区动态、系统通知等重要信息
+            </p>
+        </div>
+    </header>
+
+    <!-- Notifications Content -->
+    <section class="py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap gap-4 mb-8 border-b border-gray-700 pb-4">
+                <button onclick="switchTab('all')" class="filter-tab active px-6 py-2 bg-blue-600 text-white rounded-lg">
+                    全部消息
+                </button>
+                <button onclick="switchTab('system')" class="filter-tab px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    系统通知
+                </button>
+                <button onclick="switchTab('community')" class="filter-tab px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    社区动态
+                </button>
+                <button onclick="switchTab('updates')" class="filter-tab px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    更新提醒
+                </button>
+            </div>
+
+            <!-- Mark All Read -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="text-gray-400">
+                    <span id="unread-count">3</span> 条未读消息
+                </div>
+                <button onclick="markAllRead()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition-colors">
+                    全部标为已读
+                </button>
+            </div>
+
+            <!-- Notifications List -->
+            <div id="notifications-list" class="space-y-4">
+                <!-- System Notification -->
+                <div class="notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 unread">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <i data-feather="info" class="text-blue-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h4 class="text-lg font-semibold">系统维护通知</h4>
+                                <span class="px-2 py-1 bg-red-900/30 text-red-400 rounded-full text-xs">系统</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs text-gray-400">2023-10-28 22:35</span>
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mb-3">尊敬的用户，镜界将于今晚23:00-24:00进行系统维护升级，届时可能影响部分功能使用。我们将尽快完成维护，为您带来更好的使用体验。</p>
+                            <div class="flex gap-3">
+                                <button onclick="dismissNotification('sys-1')" class="text-gray-400 hover:text-white text-sm">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Notification -->
+                <div class="notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 unread">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                                <i data-feather="message-circle" class="text-green-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h4 class="text-lg font-semibold">您的评论收到回复</h4>
+                                <span class="px-2 py-1 bg-green-900/30 text-green-400 rounded-full text-xs">社区</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs text-gray-400">2023-10-28 21:15</span>
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mb-3">数据爱好者在对"Unsplash 高清图片库"的评论中回复了您："很感谢您的分享！我发现这个API接口文档写得很详细，用起来特别顺手。"</p>
+                            <div class="flex gap-3">
+                                <button onclick="viewRelated('mirror-1')" class="text-blue-400 hover:text-blue-300 text-sm">查看原帖</button>
+                                <button onclick="dismissNotification('comm-1')" class="text-gray-400 hover:text-white text-sm">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Notification -->
+                <div class="notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 unread">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                <i data-feather="refresh-cw" class="text-yellow-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h4 class="text-lg font-semibold">数据源更新提醒</h4>
+                                <span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 rounded-full text-xs">更新</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs text-gray-400">2023-10-28 19:30</span>
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mb-3">您收藏的"Pexels 视频素材库"发布了新版本更新！修复了部分移动端兼容性问题，并新增了高级搜索功能。现在支持按分辨率和时长筛选，更好地满足您的需求。</p>
+                            <div class="flex gap-3">
+                                <button onclick="viewRelated('mirror-2')" class="text-blue-400 hover:text-blue-300 text-sm">查看详情</button>
+                                <button onclick="dismissNotification('upd-1')" class="text-gray-400 hover:text-white text-sm">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Read Notification -->
+                <div class="notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 opacity-75">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                <i data-feather="star" class="text-purple-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h4 class="text-lg font-semibold">恭喜获得成就</h4>
+                                <span class="px-2 py-1 bg-purple-900/30 text-purple-400 rounded-full text-xs">成就</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs text-gray-400">2023-10-28 15:45</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mb-3">🎉 恭喜您解锁了"新手收藏家"成就！您已收藏了10个优质数据源，继续保持数据探索的精神哦~</p>
+                            <div class="flex gap-3">
+                                <button onclick="viewAchievements()" class="text-purple-400 hover:text-purple-300 text-sm">查看成就</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Notification (Read) -->
+                <div class="notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 opacity-75">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-gray-500/20 rounded-full flex items-center justify-center">
+                                <i data-feather="settings" class="text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h4 class="text-lg font-semibold">新功能上线</h4>
+                                <span class="px-2 py-1 bg-gray-900/30 text-gray-400 rounded-full text-xs">功能</span>
+                                <div class="ml-auto flex items-center gap-2">
+                                    <span class="text-xs text-gray-400">2023-10-27 10:00</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mb-3">镜界现已支持个人中心功能！您可以在这里查看个人统计数据、活动记录、设置偏好等。快去体验一下吧！</p>
+                            <div class="flex gap-3">
+                                <button onclick="navigateTo('/profile.html')" class="text-blue-400 hover:text-blue-300 text-sm">查看个人中心</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-12">
+                <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-feather="bell-off" class="w-8 h-8 text-gray-500"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-400 mb-2">暂无通知</h3>
+                <p class="text-gray-500">当前没有新消息通知</p>
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-8">
+                <button class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors">
+                    加载更多消息
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Notification System
+        let notifications = [
+            {
+                id: 'sys-1',
+                type: 'system',
+                icon: 'info',
+                iconColor: 'blue',
+                title: '系统维护通知',
+                content: '尊敬的用户，镜界将于今晚23:00-24:00进行系统维护升级，届时可能影响部分功能使用。我们将尽快完成维护，为您带来更好的使用体验。',
+                timestamp: '2023-10-28 22:35',
+                read: false,
+                category: 'system'
+            },
+            {
+                id: 'comm-1',
+                type: 'community',
+                icon: 'message-circle',
+                iconColor: 'green',
+                title: '您的评论收到回复',
+                content: '数据爱好者在对"Unsplash 高清图片库"的评论中回复了您："很感谢您的分享！我发现这个API接口文档写得很详细，用起来特别顺手。"',
+                timestamp: '2023-10-28 21:15',
+                read: false,
+                category: 'community'
+            },
+            {
+                id: 'upd-1',
+                type: 'updates',
+                icon: 'refresh-cw',
+                iconColor: 'yellow',
+                title: '数据源更新提醒',
+                content: '您收藏的"Pexels 视频素材库"发布了新版本更新！修复了部分移动端兼容性问题，并新增了高级搜索功能。现在支持按分辨率和时长筛选，更好地满足您的需求。',
+                timestamp: '2023-10-28 19:30',
+                read: false,
+                category: 'updates'
+            },
+            {
+                id: 'ach-1',
+                type: 'achievement',
+                icon: 'star',
+                iconColor: 'purple',
+                title: '恭喜获得成就',
+                content: '🎉 恭喜您解锁了"新手收藏家"成就！您已收藏了10个优质数据源，继续保持数据探索的精神哦~',
+                timestamp: '2023-10-28 15:45',
+                read: true,
+                category: 'achievement'
+            },
+            {
+                id: 'feat-1',
+                type: 'feature',
+                icon: 'settings',
+                iconColor: 'gray',
+                title: '新功能上线',
+                content: '镜界现已支持个人中心功能！您可以在这里查看个人统计数据、活动记录、设置偏好等。快去体验一下吧！',
+                timestamp: '2023-10-27 10:00',
+                read: true,
+                category: 'system'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        // Initialize
+        function initNotifications() {
+            renderNotifications();
+            updateUnreadCount();
+        }
+
+        function switchTab(tab) {
+            currentFilter = tab;
+
+            // Update tab styles
+            document.querySelectorAll('.filter-tab').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+            });
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active', 'bg-blue-600', 'text-white');
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.remove('bg-gray-700', 'hover:bg-gray-600');
+
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notifications-list');
+            let filteredNotifications = notifications;
+
+            if (currentFilter !== 'all') {
+                filteredNotifications = notifications.filter(n => {
+                    if (currentFilter === 'system') return n.category === 'system';
+                    if (currentFilter === 'community') return n.category === 'community';
+                    if (currentFilter === 'updates') return n.category === 'updates';
+                    return true;
+                });
+            }
+
+            container.innerHTML = '';
+
+            filteredNotifications.forEach(notification => {
+                const notificationElement = createNotificationElement(notification);
+                container.appendChild(notificationElement);
+            });
+
+            // Show empty state if no notifications
+            document.getElementById('empty-state').classList.toggle('hidden', filteredNotifications.length > 0);
+        }
+
+        function createNotificationElement(notification) {
+            const notificationDiv = document.createElement('div');
+            notificationDiv.className = `notification-card bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 ${notification.read ? 'opacity-75' : 'unread'}`;
+            notificationDiv.innerHTML = `
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-${notification.iconColor}-500/20 rounded-full flex items-center justify-center">
+                            <i data-feather="${notification.icon}" class="text-${notification.iconColor}-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-2">
+                            <h4 class="text-lg font-semibold">${notification.title}</h4>
+                            <span class="px-2 py-1 bg-${notification.iconColor}-900/30 text-${notification.iconColor}-400 rounded-full text-xs capitalize">${getCategoryLabel(notification.category)}</span>
+                            <div class="ml-auto flex items-center gap-2">
+                                <span class="text-xs text-gray-400">${notification.timestamp}</span>
+                                ${!notification.read ? '<div class="w-2 h-2 bg-blue-400 rounded-full"></div>' : ''}
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-3">${notification.content}</p>
+                        <div class="flex gap-3">
+                            ${getNotificationActions(notification)}
+                            <button onclick="dismissNotification('${notification.id}')" class="text-gray-400 hover:text-white text-sm">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add feather icons after creation
+            setTimeout(() => { feather.replace(); }, 10);
+
+            return notificationDiv;
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {
+                'system': '系统',
+                'community': '社区',
+                'updates': '更新',
+                'achievement': '成就'
+            };
+            return labels[category] || category;
+        }
+
+        function getNotificationActions(notification) {
+            switch(notification.category) {
+                case 'community':
+                    return '<button onclick="viewRelated(\'mirror-1\')" class="text-blue-400 hover:text-blue-300 text-sm">查看原帖</button>';
+                case 'updates':
+                    return '<button onclick="viewRelated(\'mirror-2\')" class="text-blue-400 hover:text-blue-300 text-sm">查看详情</button>';
+                case 'achievement':
+                    return '<button onclick="viewAchievements()" class="text-purple-400 hover:text-purple-300 text-sm">查看成就</button>';
+                case 'feature':
+                    return '<button onclick="navigateTo(\'/profile.html\')" class="text-blue-400 hover:text-blue-300 text-sm">查看个人中心</button>';
+                default:
+                    return '';
+            }
+        }
+
+        function dismissNotification(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                notification.read = true;
+                renderNotifications();
+                updateUnreadCount();
+            }
+        }
+
+        function markAllRead() {
+            notifications.forEach(n => n.read = true);
+            renderNotifications();
+            updateUnreadCount();
+            showToast('全部消息已标为已读', 'success');
+        }
+
+        function updateUnreadCount() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            document.getElementById('unread-count').textContent = unreadCount;
+        }
+
+        function viewRelated(itemId) {
+            // Navigate to the related item (mirror, etc.)
+            if (itemId.includes('mirror')) {
+                // Extract mirror ID and navigate
+                const mirrorId = itemId.split('-')[1];
+                navigateTo('/mirrors.html');
+                setTimeout(() => openDetailModal(mirrorId), 500);
+            }
+        }
+
+        function viewAchievements() {
+            // Navigate to profile and switch to overview tab
+            navigateTo('/profile.html');
+        }
+
+        // Initialize notifications
+        document.addEventListener('DOMContentLoaded', function() {
+            initNotifications();
+        });
+    </script>
+</body>
+</html>

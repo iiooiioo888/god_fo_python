@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Dynamic Title (Page specific) -->
+    <title>{{ PAGE_TITLE }}</title>
+    <meta name="description" content="{{ PAGE_DESCRIPTION }}">
+    <meta name="keywords" content="{{ PAGE_KEYWORDS }}">
+    <meta name="author" content="镜界平台">
+
+    <!-- Unified Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ PAGE_ICON }}</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ PAGE_ICON }}</text></svg>">
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <!-- Page-specific Head Content (Optional) -->
+    {{ PAGE_HEAD }}
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <!-- Navigation -->
+    <custom-navbar></custom-navbar>
+
+    <!-- Main Content Container -->
+    <div class="min-h-screen">
+        {{ PAGE_CONTENT }}
+    </div>
+
+    <!-- Footer -->
+    <custom-footer></custom-footer>
+
+    <!-- Global Scripts -->
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Page-specific Scripts (Optional) -->
+    {{ PAGE_SCRIPTS }}
+</body>
+</html>

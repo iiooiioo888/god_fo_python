@@ -1,6 +1,7 @@
 // Shared JavaScript across all pages
 document.addEventListener('DOMContentLoaded', function() {
     initRouter();
+    initAuthSystem();
 
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -65,7 +66,7 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// Format large numbers
+ // Format large numbers
 function formatNumber(num) {
     if (num >= 1000000) {
         return (num / 1000000).toFixed(1) + 'M';
@@ -75,6 +76,316 @@ function formatNumber(num) {
     }
     return num.toString();
 }
+
+// Authentication System
+function initAuthSystem() {
+    // Check if user is logged in
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    updateNavAuthState(currentUser);
+
+    // Create auth modal
+    createAuthModal();
+}
+
+function createAuthModal() {
+    const modalHTML = `
+        <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+            <div class="min-h-screen flex items-center justify-center px-4">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-sm sm:max-w-md">
+                    <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                        <h3 class="text-xl font-semibold" id="auth-title">登录镜界</h3>
+                        <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white">
+                            <i data-feather="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <!-- Tabs -->
+                        <div class="flex mb-6">
+                            <button onclick="switchAuthTab('login')" id="login-tab" class="flex-1 py-2 px-4 text-center border-b-2 border-blue-500 text-blue-400 font-medium">登录</button>
+                            <button onclick="switchAuthTab('register')" id="register-tab" class="flex-1 py-2 px-4 text-center border-b-2 border-transparent text-gray-400 hover:text-white transition-colors">注册</button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div id="login-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">邮箱或用户名</label>
+                                <input type="text" id="login-email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入邮箱或用户名">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
+                                <input type="password" id="login-password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入密码">
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="w-4 h-4 bg-gray-700 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-300">记住我</span>
+                                </label>
+                                <a href="#" class="text-blue-400 hover:text-blue-300">忘记密码？</a>
+                            </div>
+                            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg font-medium transition-colors">
+                                登录
+                            </button>
+                        </div>
+
+                        <!-- Register Form -->
+                        <div id="register-form" class="space-y-4 hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
+                                <input type="text" id="register-username" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入用户名">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
+                                <input type="email" id="register-email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入邮箱">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
+                                <input type="password" id="register-password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入密码（至少6位）">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">确认密码</label>
+                                <input type="password" id="register-confirm-password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请再次输入密码">
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="agree-terms" class="w-4 h-4 bg-gray-700 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500">
+                                <label for="agree-terms" class="ml-2 text-sm text-gray-300">
+                                    我同意 <a href="#" class="text-blue-400 hover:text-blue-300">用户协议</a> 和 <a href="#" class="text-blue-400 hover:text-blue-300">隐私政策</a>
+                                </label>
+                            </div>
+                            <button onclick="register()" class="w-full bg-green-600 hover:bg-green-700 px-4 py-3 rounded-lg font-medium transition-colors">
+                                注册账户
+                            </button>
+                        </div>
+
+                        <!-- Social Login -->
+                        <div class="mt-6">
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-gray-600"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm">
+                                    <span class="px-2 bg-gray-800 text-gray-400">或</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 grid grid-cols-2 gap-3">
+                                <button onclick="socialLogin('github')" class="flex justify-center items-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                                    <i data-feather="github" class="w-4 h-4 mr-2"></i>
+                                    GitHub
+                                </button>
+                                <button onclick="socialLogin('google')" class="flex justify-center items-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                    </svg>
+                                    Google
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Error Message -->
+                        <div id="auth-error" class="mt-4 p-3 bg-red-900/30 border border-red-500/50 rounded-lg hidden">
+                            <div class="flex items-center">
+                                <i data-feather="alert-circle" class="text-red-400 w-4 h-4 mr-2"></i>
+                                <span class="text-red-400 text-sm" id="auth-error-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Functions for auth system
+function openAuthModal(mode) {
+    document.getElementById('auth-modal').classList.remove('hidden');
+    document.getElementById('auth-error').classList.add('hidden');
+    switchAuthTab(mode);
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+    document.getElementById('auth-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    // Reset forms
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('register-username').value = '';
+    document.getElementById('register-email').value = '';
+    document.getElementById('register-password').value = '';
+    document.getElementById('register-confirm-password').value = '';
+    document.getElementById('agree-terms').checked = false;
+}
+
+function switchAuthTab(mode) {
+    const loginTab = document.getElementById('login-tab');
+    const registerTab = document.getElementById('register-tab');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const authTitle = document.getElementById('auth-title');
+
+    if (mode === 'login') {
+        loginTab.classList.remove('border-transparent', 'text-gray-400');
+        loginTab.classList.add('border-blue-500', 'text-blue-400');
+        registerTab.classList.remove('border-blue-500', 'text-blue-400');
+        registerTab.classList.add('border-transparent', 'text-gray-400');
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        authTitle.textContent = '登录镜界';
+    } else {
+        registerTab.classList.remove('border-transparent', 'text-gray-400');
+        registerTab.classList.add('border-blue-500', 'text-blue-400');
+        loginTab.classList.remove('border-blue-500', 'text-blue-400');
+        loginTab.classList.add('border-transparent', 'text-gray-400');
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        authTitle.textContent = '注册账户';
+    }
+}
+
+function login() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    if (!email || !password) {
+        showAuthError('请填写所有必填字段');
+        return;
+    }
+
+    // Simple login simulation (in real app, this would be API call)
+    const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+    const user = users.find(u => (u.email === email || u.username === email) && u.password === password);
+
+    if (user) {
+        // Login successful
+        const currentUser = { username: user.username, email: user.email, avatar: user.avatar };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateNavAuthState(currentUser);
+        closeAuthModal();
+        showToast('登录成功！', 'success');
+    } else {
+        showAuthError('用户名或密码错误');
+    }
+}
+
+function register() {
+    const username = document.getElementById('register-username').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-confirm-password').value;
+    const agreeTerms = document.getElementById('agree-terms').checked;
+
+    // Validation
+    if (!username || !email || !password) {
+        showAuthError('请填写所有必填字段');
+        return;
+    }
+
+    if (password.length < 6) {
+        showAuthError('密码至少需要6个字符');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showAuthError('两次输入的密码不匹配');
+        return;
+    }
+
+    if (!agreeTerms) {
+        showAuthError('请同意用户协议和隐私政策');
+        return;
+    }
+
+    // Check if user already exists
+    const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+    if (users.find(u => u.email === email)) {
+        showAuthError('此邮箱已被注册');
+        return;
+    }
+
+    // Register user
+    const newUser = {
+        username: username,
+        email: email,
+        password: password, // In real app, this should be hashed
+        avatar: `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>`,
+        registeredAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+    // Auto login
+    const currentUser = { username: newUser.username, email: newUser.email, avatar: newUser.avatar };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    updateNavAuthState(currentUser);
+
+    closeAuthModal();
+    showToast('注册成功，欢迎加入镜界！', 'success');
+}
+
+function socialLogin(provider) {
+    showToast(`${provider} 登录功能正在开发中...`, 'info');
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    updateNavAuthState(null);
+    toggleUserMenu(); // Close dropdown
+    showToast('已退出登录', 'info');
+}
+
+function updateNavAuthState(user) {
+    const authButtons = document.getElementById('auth-buttons');
+    const userMenu = document.getElementById('user-menu');
+
+    if (user) {
+        // Show user menu
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'block';
+        // Update avatar if needed
+    } else {
+        // Show auth buttons
+        authButtons.style.display = 'flex';
+        userMenu.style.display = 'none';
+    }
+}
+
+function toggleUserMenu() {
+    const dropdown = document.getElementById('user-dropdown');
+    dropdown.classList.toggle('show');
+}
+
+function showAuthError(message) {
+    const errorDiv = document.getElementById('auth-error');
+    const errorText = document.getElementById('auth-error-text');
+    errorText.textContent = message;
+    errorDiv.classList.remove('hidden');
+}
+
+// Close auth modal when clicking outside
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'auth-modal') {
+        closeAuthModal();
+    }
+});
+
+// Close user menu when clicking outside
+document.addEventListener('click', function(e) {
+    const userMenu = document.getElementById('user-menu');
+    const userDropdown = document.getElementById('user-dropdown');
+    const userAvatar = document.querySelector('.user-avatar');
+
+    if (userMenu && !userMenu.contains(e.target)) {
+        userDropdown.classList.remove('show');
+    }
+});
 
 // Debounce function for search inputs
 function debounce(func, wait) {
@@ -96,7 +407,10 @@ function initRouter() {
         '/': 'index.html',
         '/mirrors.html': 'mirrors.html',
         '/tools.html': 'tools.html',
-        '/community.html': 'community.html'
+        '/community.html': 'community.html',
+        '/profile.html': 'profile.html',
+        '/workflow.html': 'workflow.html',
+        '/notifications': 'notifications.html'
     };
 
     // Page content cache

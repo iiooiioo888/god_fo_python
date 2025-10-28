@@ -1,0 +1,339 @@
+/* ================================
+   ACCESSIBILITY - 无障碍访问和特殊支持
+   ================================ */
+
+/* Screen Reader Only Content */
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.visually-hidden {
+  @extend .sr-only;
+}
+
+.sr-only:focus {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: normal;
+  width: auto;
+}
+
+/* Focus Management */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.focus-ring {
+  transition: box-shadow var(--transition-fast);
+}
+
+.focus-ring:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --gray-100: #ffffff;
+    --gray-200: #f8f9fa;
+    --gray-300: #e9ecef;
+    --gray-400: #dee2e6;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+  }
+
+  .glass {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+  }
+
+  .gradient-text {
+    background: none;
+    color: var(--gray-100);
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fade-in, .fade-in-up, .fade-in-down,
+  .fade-in-left, .fade-in-right {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .bounce-in {
+    animation: none;
+  }
+
+  .pulse-subtle, .pulse-gentle, .pulse-strong {
+    animation: none;
+  }
+
+  .spin, .spin-slow, .spin-reverse {
+    animation: none;
+  }
+
+  .hover-lift:hover, .hover-scale:hover, .hover-rotate:hover {
+    transform: none;
+  }
+
+  .reveal-on-scroll, .reveal-from-left, .reveal-from-right {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .loading-dots::after {
+    animation: none;
+    content: '...';
+  }
+
+  .loading-shimmer {
+    animation: none;
+    background: var(--gray-700);
+  }
+
+  .gradient-text-animated {
+    animation: none;
+  }
+}
+
+/* Color Blindness Support */
+@media (prefers-color-scheme: dark) {
+  /* Enhanced contrast for dark mode */
+  .btn-primary {
+    filter: brightness(1.1);
+  }
+
+  .text-primary {
+    color: #60a5fa; /* Lighter blue for better visibility */
+  }
+
+  .text-secondary {
+    color: #a855f7; /* Lighter purple */
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dark-bg: #020617;
+    --darker-bg: #000000;
+  }
+
+  body {
+    background-color: var(--darker-bg);
+    color: var(--gray-100);
+  }
+}
+
+/* Light Mode Support (if needed) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --gray-100: #1f2937;
+    --gray-200: #111827;
+    --gray-800: #f9fafb;
+    --gray-900: #ffffff;
+  }
+
+  body {
+    background-color: var(--gray-900);
+    color: var(--gray-100);
+  }
+
+  .glass {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Forced Colors Mode (Windows High Contrast) */
+@media (forced-colors: active) {
+  :root {
+    --primary-color: ButtonText;
+    --secondary-color: ButtonText;
+    --accent-color: Highlight;
+  }
+
+  .btn-primary {
+    background: ButtonFace;
+    border: 1px solid ButtonText;
+    color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .gradient-text {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* Large Pointer Support */
+@media (pointer: coarse) {
+  /* Touch devices */
+  .btn-primary,
+  .btn-secondary,
+  .btn-primary-enhanced {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .modal-close,
+  .tab-button,
+  .dropdown-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Fine Pointer Support */
+@media (pointer: fine) {
+  /* Mouse devices */
+  .hover-lift,
+  .card-hover {
+    cursor: pointer;
+  }
+}
+
+/* Monochrome Display Support */
+@media (monochrome) {
+  .gradient-text,
+  .gradient-text-animated {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .glass {
+    background: var(--gray-800);
+    backdrop-filter: none;
+    border: 1px solid var(--gray-600);
+  }
+}
+
+/* Low Bandwidth/Network Optimization */
+@media (prefers-reduced-data) {
+  .bg-grid-pattern {
+    background-image: none;
+  }
+
+  .glass {
+    backdrop-filter: none;
+    background: rgba(15, 23, 42, 0.9);
+  }
+}
+
+/* Large Text Support */
+@media (prefers-color-scheme: dark) and (min-resolution: 2dppx) {
+  .text-xs {
+    font-size: 0.875rem; /* Slightly larger on high DPI screens */
+  }
+
+  .text-sm {
+    font-size: 1rem;
+  }
+}
+
+/* Speech Synthesis Support */
+/* These classes can be used for screen readers */
+.speak-none {
+  speak: none;
+}
+
+.speak-normal {
+  speak: normal;
+}
+
+.speak-spell-out {
+  speak: spell-out;
+}
+
+/* Skip Links for Keyboard Navigation */
+.skip-link {
+  background: var(--primary-color);
+  color: white;
+  left: -999px;
+  padding: var(--space-sm) var(--space-lg);
+  position: absolute;
+  text-decoration: none;
+  top: -999px;
+  z-index: 9999;
+}
+
+.skip-link:focus {
+  left: 6px;
+  top: 7px;
+}
+
+/* Focus Trap Utilities for Modals */
+.focus-trap:focus-within * {
+  outline: none;
+}
+
+.focus-trap:focus-within .modal-content {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ARIA Live Regions */
+.live-region {
+  position: absolute;
+  left: -10000px;
+  top: -10000px; /* Keep it off-screen */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.live-region[aria-live] {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* Print Accessibility */
+@media print {
+  .sr-only {
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    clip: auto !important;
+    clip-path: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  .glass {
+    background: white;
+    backdrop-filter: none;
+    border: 1px solid black;
+    color: black;
+  }
+}

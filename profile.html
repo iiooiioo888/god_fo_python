@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 用户管理 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center gap-6">
+                <img src="" alt="用户头像" class="w-20 h-20 rounded-full border-4 border-blue-500" id="profile-avatar">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2" id="profile-username">用户名</h1>
+                    <p class="text-gray-400 mb-4" id="profile-email">user@example.com</p>
+                    <div class="flex gap-4">
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">
+                            <i data-feather="calendar" class="inline mr-1"></i>
+                            会员 <span id="member-days">30</span> 天
+                        </span>
+                        <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full text-sm">
+                            <i data-feather="star" class="inline mr-1"></i>
+                            信誉良好
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Stats -->
+    <section class="py-8 bg-gray-900/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-blue-400 mb-1" id="stats-downloads">0</div>
+                    <div class="text-sm text-gray-400">下载次数</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-green-400 mb-1" id="stats-favorites">0</div>
+                    <div class="text-sm text-gray-400">收藏数据</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-yellow-400 mb-1" id="stats-reviews">0</div>
+                    <div class="text-sm text-gray-400">评论次数</div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-purple-400 mb-1" id="stats-contributions">0</div>
+                    <div class="text-sm text-gray-400">贡献数据</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activity Charts -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Activity Chart -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="bar-chart-3" class="text-blue-400"></i>
+                        活动统计
+                    </h3>
+                    <div id="activity-chart" style="height: 300px;"></div>
+                </div>
+
+                <!-- Category Usage -->
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <i data-feather="pie-chart" class="text-green-400"></i>
+                        数据类型偏好
+                    </h3>
+                    <div id="category-chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Tabs -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <!-- Tab Navigation -->
+            <div class="flex flex-wrap gap-4 mb-8 border-b border-gray-700 pb-4">
+                <button onclick="switchTab('overview')" class="tab-btn active px-4 py-2 bg-blue-600 text-white rounded-lg" data-tab="overview">
+                    总览
+                </button>
+                <button onclick="switchTab('favorites')" class="tab-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-tab="favorites">
+                    我的收藏
+                </button>
+                <button onclick="switchTab('downloads')" class="tab-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-tab="downloads">
+                    下载历史
+                </button>
+                <button onclick="switchTab('reviews')" class="tab-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-tab="reviews">
+                    我的评论
+                </button>
+                <button onclick="switchTab('settings')" class="tab-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" data-tab="settings">
+                    设置
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tab-content">
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Recent Activity -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="activity" class="text-blue-400"></i>
+                                最近活动
+                            </h4>
+                            <div class="space-y-4" id="recent-activity">
+                                <div class="text-gray-400 text-center py-8">暂无活动记录</div>
+                            </div>
+                        </div>
+
+                        <!-- Achievements -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                            <h4 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i data-feather="award" class="text-yellow-400"></i>
+                                成就徽章
+                            </h4>
+                            <div class="grid grid-cols-3 gap-4" id="achievements">
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-feather="download" class="text-gray-400"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-400">首次下载</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-feather="heart" class="text-gray-400"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-400">收藏达人</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <i data-feather="message-square" class="text-gray-400"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-400">社区贡献</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Favorites Tab -->
+                <div id="favorites-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="favorites-list">
+                        <div class="text-gray-400 text-center py-8 col-span-full">您还没有收藏任何数据源</div>
+                    </div>
+                </div>
+
+                <!-- Downloads Tab -->
+                <div id="downloads-tab" class="tab-content hidden">
+                    <div class="space-y-4" id="downloads-list">
+                        <div class="text-gray-400 text-center py-8">暂无下载记录</div>
+                    </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div id="reviews-tab" class="tab-content hidden">
+                    <div class="space-y-4" id="reviews-list">
+                        <div class="text-gray-400 text-center py-8">暂无评论记录</div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings-tab" class="tab-content hidden">
+                    <div class="max-w-2xl mx-auto space-y-6">
+                        <!-- Profile Settings -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                            <h4 class="text-lg font-semibold mb-4">个人资料设置</h4>
+                            <form class="space-y-4" id="profile-form">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
+                                        <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" id="settings-username">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
+                                        <input type="email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" id="settings-email">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">个人简介</label>
+                                    <textarea class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="介绍一下自己..." id="settings-bio"></textarea>
+                                </div>
+                                <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
+                                    保存更改
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Privacy Settings -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                            <h4 class="text-lg font-semibold mb-4">隐私设置</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">公开收藏列表</div>
+                                        <div class="text-sm text-gray-400">其他用户可以查看您的收藏</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" id="public-favorites">
+                                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">显示下载历史</div>
+                                        <div class="text-sm text-gray-400">在个人资料中显示下载统计</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" id="show-downloads" checked>
+                                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium">接收通知</div>
+                                        <div class="text-sm text-gray-400">接收平台更新和新功能通知</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" id="receive-notifications" checked>
+                                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Actions -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-red-500/30">
+                            <h4 class="text-lg font-semibold mb-4 text-red-400">危险操作</h4>
+                            <div class="space-y-4">
+                                <button class="w-full px-4 py-3 bg-yellow-600 hover:bg-yellow-700 rounded-lg font-medium transition-colors">
+                                    导出数据
+                                </button>
+                                <button class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors">
+                                    删除账户
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Profile data and functionality
+        let currentUser = null;
+        let userStats = {
+            downloads: 0,
+            favorites: 0,
+            reviews: 0,
+            contributions: 0
+        };
+
+        // Initialize profile
+        function initProfile() {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                // Redirect to login if not logged in
+                showToast('请先登录', 'warning');
+                setTimeout(() => window.location.href = '/', 1000);
+                return;
+            }
+
+            // Load user data
+            loadUserData();
+            updateProfileDisplay();
+            initCharts();
+        }
+
+        function loadUserData() {
+            // Load user interactions from localStorage
+            const userInteractions = JSON.parse(localStorage.getItem('userInteractions')) || {};
+            const userFavorites = JSON.parse(localStorage.getItem('userFavorites')) || [];
+
+            // Calculate stats
+            userStats.favorites = userFavorites.length;
+            userStats.downloads = Object.values(userInteractions).filter(i => i.downloaded).length;
+            userStats.reviews = Object.values(userInteractions).filter(i => i.reviewed).length;
+            // Mock contributions for now
+            userStats.contributions = Math.floor(Math.random() * 10);
+        }
+
+        function updateProfileDisplay() {
+            if (!currentUser) return;
+
+            document.getElementById('profile-avatar').src = currentUser.avatar;
+            document.getElementById('profile-username').textContent = currentUser.username;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('member-days').textContent = calculateMemberDays();
+
+            document.getElementById('stats-downloads').textContent = userStats.downloads;
+            document.getElementById('stats-favorites').textContent = userStats.favorites;
+            document.getElementById('stats-reviews').textContent = userStats.reviews;
+            document.getElementById('stats-contributions').textContent = userStats.contributions;
+        }
+
+        function calculateMemberDays() {
+            // Mock member days calculation
+            return Math.floor(Math.random() * 365) + 1;
+        }
+
+        function initCharts() {
+            // Activity Chart
+            const activityChart = echarts.init(document.getElementById('activity-chart'));
+            const activityOption = {
+                tooltip: { trigger: 'axis' },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    axisLabel: { color: '#9ca3af' }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: { color: '#9ca3af' }
+                },
+                series: [{
+                    name: '活动次数',
+                    type: 'line',
+                    data: [12, 25, 18, 31, 28, 15, 22],
+                    smooth: true,
+                    lineStyle: { color: '#3b82f6' },
+                    itemStyle: { color: '#3b82f6' }
+                }]
+            };
+            activityChart.setOption(activityOption);
+
+            // Category Chart
+            const categoryChart = echarts.init(document.getElementById('category-chart'));
+            const categoryOption = {
+                tooltip: { trigger: 'item' },
+                series: [{
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 35, name: '图片', itemStyle: { color: '#3b82f6' } },
+                        { value: 25, name: '视频', itemStyle: { color: '#10b981' } },
+                        { value: 20, name: '工具', itemStyle: { color: '#f59e0b' } },
+                        { value: 12, name: '文档', itemStyle: { color: '#8b5cf6' } },
+                        { value: 8, name: '其他', itemStyle: { color: '#ef4444' } }
+                    ],
+                    label: {
+                        show: true,
+                        color: '#9ca3af'
+                    }
+                }]
+            };
+            categoryChart.setOption(categoryOption);
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active', 'bg-blue-600', 'text-white');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.remove('bg-gray-700', 'hover:bg-gray-600');
+        }
+
+        // Form handlers
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Save profile changes
+            showToast('个人资料已保存', 'success');
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initProfile();
+        });
+
+        // Responsive chart handling
+        window.addEventListener('resize', function() {
+            if (typeof echarts !== 'undefined') {
+                echarts.getInstanceByDom(document.getElementById('activity-chart')).resize();
+                echarts.getInstanceByDom(document.getElementById('category-chart')).resize();
+            }
+        });
+    </script>
+</body>
+</html>

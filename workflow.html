@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜流 - 工作流自动化 | 镜界</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <custom-navbar></custom-navbar>
+
+<main>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 bg-gradient-to-r from-blue-900 via-purple-900 to-pink-900">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-4">
+                <i data-feather="zap" class="text-yellow-400"></i>
+                镜流 - 可视化工作流引擎
+            </h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                n8n-inspired 工作流设计，拖拽式打造自动化流程，连接各类服务与API
+            </p>
+        </div>
+    </header>
+
+    <!-- Workflow Canvas -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+
+            <!-- Toolbar -->
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 mb-6 border border-gray-700">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <h3 class="text-lg font-semibold">工作流设计器</h3>
+                        <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full text-sm">自动保存</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="newWorkflow()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition-colors">
+                            新建工作流
+                        </button>
+                        <button onclick="saveWorkflow()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
+                            保存工作流
+                        </button>
+                        <button onclick="runWorkflow()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-colors">
+                            执行工作流
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Canvas Area -->
+            <div class="grid grid-cols-12 gap-6">
+
+                <!-- Node Palette -->
+                <div class="col-span-3">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+                        <div class="p-4 border-b border-gray-700">
+                            <h4 class="font-semibold flex items-center gap-2">
+                                <i data-feather="box" class="text-blue-400 w-4 h-4"></i>
+                                节点面板
+                            </h4>
+                        </div>
+                        <div class="p-4 max-h-96 overflow-y-auto">
+
+                            <!-- Input Nodes -->
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-400 mb-2">输入节点</h5>
+                                <div class="space-y-2">
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="schedule" draggable="true">
+                                        <div class="w-8 h-8 bg-green-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="clock" class="w-4 h-4 text-green-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">定时触发器</div>
+                                            <div class="text-xs text-gray-400">定时执行任务</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="webhook" draggable="true">
+                                        <div class="w-8 h-8 bg-blue-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="globe" class="w-4 h-4 text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">Webhook触发</div>
+                                            <div class="text-xs text-gray-400">API调用触发</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="file-watch" draggable="true">
+                                        <div class="w-8 h-8 bg-purple-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="folder" class="w-4 h-4 text-purple-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">文件监控</div>
+                                            <div class="text-xs text-gray-400">NAS新文件触发</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Processing Nodes -->
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-400 mb-2">处理节点</h5>
+                                <div class="space-y-2">
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="image-processor" draggable="true">
+                                        <div class="w-8 h-8 bg-orange-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="image" class="w-4 h-4 text-orange-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">图片处理</div>
+                                            <div class="text-xs text-gray-400">AI增强处理</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="data-extractor" draggable="true">
+                                        <div class="w-8 h-8 bg-cyan-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="download" class="w-4 h-4 text-cyan-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">数据提取</div>
+                                            <div class="text-xs text-gray-400">从数据源提取</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="filter" draggable="true">
+                                        <div class="w-8 h-8 bg-yellow-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="filter" class="w-4 h-4 text-yellow-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">筛选过滤</div>
+                                            <div class="text-xs text-gray-400">质量预处理</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Output Nodes -->
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-400 mb-2">输出节点</h5>
+                                <div class="space-y-2">
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="database" draggable="true">
+                                        <div class="w-8 h-8 bg-red-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="database" class="w-4 h-4 text-red-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">数据库存储</div>
+                                            <div class="text-xs text-gray-400">保存到数据库</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="notification" draggable="true">
+                                        <div class="w-8 h-8 bg-indigo-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="bell" class="w-4 h-4 text-indigo-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">推送通知</div>
+                                            <div class="text-xs text-gray-400">邮件/短信/推送</div>
+                                        </div>
+                                    </div>
+                                    <div class="node-item flex items-center gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/80 transition-colors cursor-grab" data-type="api-output" draggable="true">
+                                        <div class="w-8 h-8 bg-pink-500/20 rounded flex items-center justify-center">
+                                            <i data-feather="send" class="w-4 h-4 text-pink-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-sm">API输出</div>
+                                            <div class="text-xs text-gray-400">发送到外部API</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="col-span-9">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 relative overflow-hidden" style="height: 600px;">
+                        <div id="workflow-canvas" class="w-full h-full relative bg-gray-900/30 bg-grid-pattern">
+                            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gray-900/10 pointer-events-none"></div>
+
+                            <!-- Empty State -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i data-feather="plus-circle" class="w-16 h-16 text-gray-600 mb-4"></i>
+                                    <h4 class="text-lg font-medium text-gray-400 mb-2">开始构建工作流</h4>
+                                    <p class="text-sm text-gray-500">从左侧拖拽节点到这里开始创建流程</p>
+                                </div>
+                            </div>
+
+                            <!-- Active Canvas Content -->
+                            <div id="canvas-content" class="hidden relative w-full h-full">
+                                <!-- Nodes will be rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Mini Map -->
+                        <div class="absolute bottom-4 right-4 w-32 h-24 bg-gray-700/80 rounded-lg border border-gray-600">
+                            <div class="p-2">
+                                <div class="text-xs text-gray-400 mb-1">小地图</div>
+                                <div class="bg-gray-600 w-full h-full rounded border border-gray-500"></div>
+                            </div>
+                        </div>
+
+                        <!-- Zoom Controls -->
+                        <div class="absolute top-4 right-4 flex flex-col gap-2">
+                            <button onclick="zoomIn()" class="w-8 h-8 bg-gray-700/80 hover:bg-gray-600/80 rounded flex items-center justify-center">
+                                <i data-feather="plus" class="w-4 h-4"></i>
+                            </button>
+                            <div class="text-xs text-center text-gray-400 py-1">100%</div>
+                            <button onclick="zoomOut()" class="w-8 h-8 bg-gray-700/80 hover:bg-gray-600/80 rounded flex items-center justify-center">
+                                <i data-feather="minus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Properties Panel (Collapsible) -->
+                    <div class="mt-4 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+                        <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+                            <h4 class="font-semibold flex items-center gap-2">
+                                <i data-feather="settings" class="text-blue-400 w-4 h-4"></i>
+                                工作流配置
+                            </h4>
+                            <button onclick="toggleProperties()" class="text-gray-400 hover:text-white">
+                                <i data-feather="chevron-up" class="w-4 h-4" id="properties-toggle"></i>
+                            </button>
+                        </div>
+                        <div id="properties-content" class="p-4 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">工作流名称</label>
+                                    <input type="text" placeholder="请输入工作流名称" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-300 mb-2">触发频率</label>
+                                    <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option>手动执行</option>
+                                        <option>每5分钟</option>
+                                        <option>每小时</option>
+                                        <option>每天</option>
+                                        <option>每周</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">工作流描述</label>
+                                <textarea placeholder="描述这个工作流的功能和用途" rows="3" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Workflow Templates -->
+            <div class="mt-12 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-xl font-semibold flex items-center gap-2">
+                        <i data-feather="file-text" class="text-green-400"></i>
+                        工作流模板
+                    </h4>
+                    <button onclick="loadMoreTemplates()" class="text-sm text-blue-400 hover:text-blue-300">
+                        查看更多模板
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 stagger-fade" id="template-grid">
+
+                    <!-- Template 1: Photo Auto Processing -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-green-500/50" onclick="loadTemplate('photo-processing')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="image" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-green-400 mb-1 group-hover:text-green-300 transition-colors">照片自动处理流水线</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">NAS新照片自动AI增强处理，智能分类存储</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-green-900/30 text-green-400 rounded">文件监控</span>
+                            <span class="px-2 py-1 bg-orange-900/30 text-orange-400 rounded">AI处理</span>
+                            <span class="px-2 py-1 bg-purple-900/30 text-purple-400 rounded">智能分类</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.9 (89使用)</span>
+                            <span>🕒 2分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 2: Data Collection Automation -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-blue-500/50" onclick="loadTemplate('data-collection')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="database" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-blue-400 mb-1 group-hover:text-blue-300 transition-colors">数据收集自动化</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">定时从多数据源采集，自动质量筛选</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-blue-900/30 text-blue-400 rounded">定时触发</span>
+                            <span class="px-2 py-1 bg-cyan-900/30 text-cyan-400 rounded">API采集</span>
+                            <span class="px-2 py-1 bg-red-900/30 text-red-400 rounded">质量过滤</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.7 (156使用)</span>
+                            <span>🕒 5分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 3: Alert Notification System -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-yellow-500/50" onclick="loadTemplate('alert-system')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="bell" class="w-5 h-5 text-yellow-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-yellow-400 mb-1 group-hover:text-yellow-300 transition-colors">告警通知系统</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">监控异常自动发告警，支持多渠道通知</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 rounded">状态监控</span>
+                            <span class="px-2 py-1 bg-indigo-900/30 text-indigo-400 rounded">条件判断</span>
+                            <span class="px-2 py-1 bg-pink-900/30 text-pink-400 rounded">多渠道推送</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.8 (203使用)</span>
+                            <span>🕒 3分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 4: Content Analysis Pipeline -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-purple-500/50" onclick="loadTemplate('content-analysis')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="search" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-purple-400 mb-1 group-hover:text-purple-300 transition-colors">智能内容分析</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">AI自动分析内容，生成标签和摘要</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-purple-900/30 text-purple-400 rounded">内容分析</span>
+                            <span class="px-2 py-1 bg-pink-900/30 text-pink-400 rounded">智能标签</span>
+                            <span class="px-2 py-1 bg-blue-900/30 text-blue-400 rounded">摘要生成</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.6 (78使用)</span>
+                            <span>🕒 8分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 5: Batch Processing Queue -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-cyan-500/50" onclick="loadTemplate('batch-processing')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="layers" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-cyan-400 mb-1 group-hover:text-cyan-300 transition-colors">批量处理队列</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">高效处理批量任务，支持进度监控</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-cyan-900/30 text-cyan-400 rounded">队列管理</span>
+                            <span class="px-2 py-1 bg-orange-900/30 text-orange-400 rounded">批量处理</span>
+                            <span class="px-2 py-1 bg-green-900/30 text-green-400 rounded">进度监控</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.5 (124使用)</span>
+                            <span>🕒 4分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 6: Media Processing Hub -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-red-500/50" onclick="loadTemplate('media-processing')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="video" class="w-5 h-5 text-red-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-red-400 mb-1 group-hover:text-red-300 transition-colors">多媒体处理中心</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">视频、图片、音频的统一AI处理平台</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-red-900/30 text-red-400 rounded">多媒体处理</span>
+                            <span class="px-2 py-1 bg-indigo-900/30 text-indigo-400 rounded">格式转换</span>
+                            <span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 rounded">质量压缩</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.7 (95使用)</span>
+                            <span>🕒 10分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 7: Backup Automation -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-indigo-500/50" onclick="loadTemplate('backup-automation')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="hard-drive" class="w-5 h-5 text-indigo-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-indigo-400 mb-1 group-hover:text-indigo-300 transition-colors">自动备份系统</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">智能备份策略，多平台同步支持</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-indigo-900/30 text-indigo-400 rounded">智能备份</span>
+                            <span class="px-2 py-1 bg-blue-900/30 text-blue-400 rounded">云同步</span>
+                            <span class="px-2 py-1 bg-green-900/30 text-green-400 rounded">版本控制</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.9 (187使用)</span>
+                            <span>🕒 6分钟搭建</span>
+                        </div>
+                    </div>
+
+                    <!-- Template 8: Report Generation -->
+                    <div class="group bg-gray-900/50 rounded-lg p-4 hover-lift transition-all duration-300 cursor-pointer border border-transparent hover:border-pink-500/50" onclick="loadTemplate('report-generation')">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+                                <i data-feather="file-text" class="w-5 h-5 text-pink-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="font-medium text-pink-400 mb-1 group-hover:text-pink-300 transition-colors">智能报表生成</h5>
+                                <p class="text-xs text-gray-400 line-clamp-2">自动聚合数据，生成可视化分析报告</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1 text-xs">
+                            <span class="px-2 py-1 bg-pink-900/30 text-pink-400 rounded">数据聚合</span>
+                            <span class="px-2 py-1 bg-purple-900/30 text-purple-400 rounded">可视化图表</span>
+                            <span class="px-2 py-1 bg-cyan-900/30 text-cyan-400 rounded">自动导出</span>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-700 flex items-center justify-between text-xs text-gray-500">
+                            <span>⭐ 4.6 (68使用)</span>
+                            <span>🕒 7分钟搭建</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Load More Button -->
+                <div class="mt-6 text-center">
+                    <button onclick="loadMoreTemplates()" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg font-medium transition-all duration-300 transform hover:scale-105">
+                        📚 发现更多工作流模板
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Workflow Engine
+        let canvas = null;
+        let nodes = [];
+        let connections = [];
+        let isDragging = false;
+        let draggedNode = null;
+        let dragOffset = { x: 0, y: 0 };
+        let zoom = 1;
+        let panOffset = { x: 0, y: 0 };
+        let nodeIdCounter = 0;
+
+        // Initialize workflow canvas
+        function initWorkflowCanvas() {
+            canvas = document.getElementById('workflow-canvas');
+
+            // Setup drag and drop for nodes from palette
+            const nodeItems = document.querySelectorAll('.node-item[draggable="true"]');
+            nodeItems.forEach(item => {
+                item.addEventListener('dragstart', handleNodeDragStart);
+            });
+
+            // Setup canvas drop zone
+            canvas.addEventListener('dragover', handleCanvasDragOver);
+            canvas.addEventListener('drop', handleCanvasDrop);
+
+            // Setup canvas interactions
+            canvas.addEventListener('mousedown', handleCanvasMouseDown);
+            canvas.addEventListener('mousemove', handleCanvasMouseMove);
+            canvas.addEventListener('mouseup', handleCanvasMouseUp);
+            canvas.addEventListener('wheel', handleCanvasWheel);
+
+            // Load saved workflow if exists
+            loadSavedWorkflow();
+        }
+
+        function handleNodeDragStart(e) {
+            const nodeType = e.target.closest('.node-item').dataset.type;
+            e.dataTransfer.setData('text/plain', nodeType);
+            e.dataTransfer.effectAllowed = 'copy';
+        }
+
+        function handleCanvasDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+
+        function handleCanvasDrop(e) {
+            e.preventDefault();
+
+            const nodeType = e.dataTransfer.getData('text/plain');
+            if (!nodeType) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left - panOffset.x) / zoom;
+            const y = (e.clientY - rect.top - panOffset.y) / zoom;
+
+            addNodeToCanvas(nodeType, x, y);
+            showCanvasContent();
+        }
+
+        function addNodeToCanvas(nodeType, x, y) {
+            const nodeId = ++nodeIdCounter;
+            const nodeData = getNodeTemplate(nodeType);
+            nodeData.id = nodeId;
+            nodeData.x = x;
+            nodeData.y = y;
+
+            nodes.push(nodeData);
+            renderNode(nodeData);
+        }
+
+        function getNodeTemplate(nodeType) {
+            const templates = {
+                'schedule': {
+                    type: 'schedule',
+                    name: '定时触发器',
+                    icon: 'clock',
+                    iconColor: '#10b981',
+                    inputs: [],
+                    outputs: [{ name: '触发', type: 'trigger' }],
+                    config: {
+                        scheduleType: 'interval',
+                        interval: 'hours',
+                        value: 1
+                    }
+                },
+                'webhook': {
+                    type: 'webhook',
+                    name: 'Webhook触发',
+                    icon: 'globe',
+                    iconColor: '#3b82f6',
+                    inputs: [],
+                    outputs: [{ name: '请求', type: 'data' }],
+                    config: {
+                        path: '/webhook',
+                        method: 'POST'
+                    }
+                },
+                'file-watch': {
+                    type: 'file-watch',
+                    name: '文件监控',
+                    icon: 'folder',
+                    iconColor: '#8b5cf6',
+                    inputs: [],
+                    outputs: [{ name: '文件', type: 'file' }],
+                    config: {
+                        watchPath: '/nas/photos',
+                        fileExtensions: ['jpg', 'png', 'gif']
+                    }
+                },
+                'image-processor': {
+                    type: 'image-processor',
+                    name: '图片处理',
+                    icon: 'image',
+                    iconColor: '#f59e0b',
+                    inputs: [{ name: '图片', type: 'file' }],
+                    outputs: [{ name: '处理后', type: 'file' }],
+                    config: {
+                        operation: 'enhance',
+                        quality: 'high'
+                    }
+                },
+                'data-extractor': {
+                    type: 'data-extractor',
+                    name: '数据提取',
+                    icon: 'download',
+                    iconColor: '#06b6d4',
+                    inputs: [{ name: 'URL', type: 'string' }],
+                    outputs: [{ name: '数据', type: 'data' }],
+                    config: {
+                        dataType: 'json',
+                        headers: {}
+                    }
+                },
+                'filter': {
+                    type: 'filter',
+                    name: '筛选过滤',
+                    icon: 'filter',
+                    iconColor: '#eab308',
+                    inputs: [{ name: '输入', type: 'data' }],
+                    outputs: [
+                        { name: '通过', type: 'data' },
+                        { name: '失败', type: 'data' }
+                    ],
+                    config: {
+                        conditionType: 'size',
+                        minSize: 100,
+                        maxSize: 10000
+                    }
+                },
+                'database': {
+                    type: 'database',
+                    name: '数据库存储',
+                    icon: 'database',
+                    iconColor: '#ef4444',
+                    inputs: [{ name: '数据', type: 'data' }],
+                    outputs: [{ name: 'ID', type: 'string' }],
+                    config: {
+                        table: 'processed_images',
+                        connectionString: ''
+                    }
+                },
+                'notification': {
+                    type: 'notification',
+                    name: '推送通知',
+                    icon: 'bell',
+                    iconColor: '#6366f1',
+                    inputs: [{ name: '消息', type: 'string' }],
+                    outputs: [],
+                    config: {
+                        type: 'email',
+                        recipients: []
+                    }
+                },
+                'api-output': {
+                    type: 'api-output',
+                    name: 'API输出',
+                    icon: 'send',
+                    iconColor: '#ec4899',
+                    inputs: [{ name: '数据', type: 'data' }],
+                    outputs: [{ name: '响应', type: 'data' }],
+                    config: {
+                        url: '',
+                        method: 'POST',
+                        headers: {}
+                    }
+                }
+            };
+
+            return JSON.parse(JSON.stringify(templates[nodeType]));
+        }
+
+        function renderNode(nodeData) {
+            const canvasContent = document.getElementById('canvas-content');
+            const nodeElement = document.createElement('div');
+
+            nodeElement.className = 'workflow-node absolute bg-gray-800 border-2 border-gray-600 rounded-lg p-3 cursor-move select-none';
+            nodeElement.id = `node-${nodeData.id}`;
+            nodeElement.style.left = `${nodeData.x - 75}px`;
+            nodeElement.style.top = `${nodeData.y - 40}px`;
+
+            nodeElement.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-${getColorFromHex(nodeData.iconColor).split('-')[0]}-500/20 rounded flex items-center justify-center">
+                        <i data-feather="${nodeData.icon}" class="w-3 h-3" style="color: ${nodeData.iconColor}"></i>
+                    </div>
+                    <span class="text-sm font-medium">${nodeData.name}</span>
+                </div>
+                <div class="node-ports">
+                    ${renderNodePorts(nodeData)}
+                </div>
+            `;
+
+            // Add event listeners
+            nodeElement.addEventListener('mousedown', (e) => handleNodeMouseDown(e, nodeData.id));
+            nodeElement.addEventListener('dblclick', () => editNodeConfig(nodeData.id));
+
+            canvasContent.appendChild(nodeElement);
+            feather.replace();
+        }
+
+        function getColorFromHex(hex) {
+            const colorMap = {
+                '#10b981': 'green',
+                '#3b82f6': 'blue',
+                '#8b5cf6': 'purple',
+                '#f59e0b': 'orange',
+                '#06b6d4': 'cyan',
+                '#eab308': 'yellow',
+                '#ef4444': 'red',
+                '#6366f1': 'indigo',
+                '#ec4899': 'pink'
+            };
+            return colorMap[hex] || 'gray';
+        }
+
+        function renderNodePorts(nodeData) {
+            let html = '';
+
+            // Input ports (left side)
+            nodeData.inputs.forEach((input, index) => {
+                html += `
+                    <div class="input-port absolute left-0 top-2" style="top: ${32 + index * 24}px">
+                        <div class="port-connector w-3 h-3 bg-${getColorFromHex(nodeData.iconColor).split('-')[0]}-400 rounded-full border-2 border-gray-800 cursor-pointer" data-node="${nodeData.id}" data-port="${input.name}" data-type="input"></div>
+                    </div>
+                `;
+            });
+
+            // Output ports (right side)
+            nodeData.outputs.forEach((output, index) => {
+                html += `
+                    <div class="output-port absolute right-0 top-2" style="top: ${32 + index * 24}px">
+                        <div class="port-connector w-3 h-3 bg-${getColorFromHex(nodeData.iconColor).split('-')[0]}-400 rounded-full border-2 border-gray-800 cursor-pointer" data-node="${nodeData.id}" data-port="${output.name}" data-type="output"></div>
+                    </div>
+                `;
+            });
+
+            return html;
+        }
+
+        function handleCanvasMouseDown(e) {
+            if (e.target === canvas) {
+                // Pan canvas
+                isDragging = true;
+                canvas.style.cursor = 'grabbing';
+            }
+        }
+
+        function handleCanvasMouseMove(e) {
+            if (isDragging) {
+                if (draggedNode) {
+                    // Move node
+                    const rect = canvas.getBoundingClientRect();
+                    const x = (e.clientX - rect.left - dragOffset.x) / zoom;
+                    const y = (e.clientY - rect.top - dragOffset.y) / zoom;
+
+                    draggedNode.element.style.left = `${x - 75}px`;
+                    draggedNode.element.style.top = `${y - 40}px`;
+
+                    draggedNode.data.x = x;
+                    draggedNode.data.y = y;
+                } else {
+                    // Pan canvas
+                    panOffset.x += e.movementX / zoom;
+                    panOffset.y += e.movementY / zoom;
+                    updateCanvasTransform();
+                }
+            }
+        }
+
+        function handleCanvasMouseUp(e) {
+            isDragging = false;
+            draggedNode = null;
+            canvas.style.cursor = 'default';
+            updateCanvasTransform();
+        }
+
+        function handleNodeMouseDown(e, nodeId) {
+            if (e.target.classList.contains('port-connector')) {
+                // Handle port click for connections
+                handlePortClick(e.target, nodeId);
+                return;
+            }
+
+            e.stopPropagation();
+            draggedNode = {
+                element: e.currentTarget,
+                data: nodes.find(n => n.id === nodeId),
+                offset: {
+                    x: e.offsetX,
+                    y: e.offsetY
+                }
+            };
+            dragOffset = { x: e.offsetX, y: e.offsetY };
+            isDragging = true;
+        }
+
+        function handleCanvasWheel(e) {
+            e.preventDefault();
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            zoom *= zoomFactor;
+            zoom = Math.max(0.1, Math.min(2, zoom));
+            updateCanvasTransform();
+
+            // Update zoom display
+            document.querySelector('.text-center.text-gray-400.py-1').textContent = `${Math.round(zoom * 100)}%`;
+        }
+
+        function updateCanvasTransform() {
+            const canvasContent = document.getElementById('canvas-content');
+            canvasContent.style.transform = `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`;
+        }
+
+        function handlePortClick(portElement, nodeId) {
+            const portType = portElement.dataset.type;
+            const portName = portElement.dataset.port;
+
+            if (portType === 'output') {
+                // Start connection from output
+                startConnection(portElement, nodeId, portName);
+            }
+        }
+
+        function startConnection(fromPort, fromNodeId, fromPortName) {
+            // Create temporary connection line
+            showToast('连接功能开发中...', 'info');
+        }
+
+        function showCanvasContent() {
+            document.querySelector('.text-center').classList.add('hidden');
+            document.getElementById('canvas-content').classList.remove('hidden');
+        }
+
+        function updateCanvasTransform() {
+            const canvasContent = document.getElementById('canvas-content');
+            canvasContent.style.transform = `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`;
+        }
+
+        // Toolbar functions
+        function newWorkflow() {
+            if (nodes.length > 0) {
+                if (!confirm('确定要创建新工作流吗？未保存的更改将会丢失。')) return;
+            }
+
+            nodes = [];
+            connections = [];
+            document.getElementById('canvas-content').innerHTML = '';
+            document.getElementById('canvas-content').classList.add('hidden');
+            document.querySelector('.text-center').classList.remove('hidden');
+
+            // Reset form
+            document.querySelector('[placeholder="请输入工作流名称"]').value = '';
+            document.querySelector('[placeholder="请描述这个工作流的功能和用途"]').value = '';
+
+            showToast('新工作流已创建', 'success');
+        }
+
+        function saveWorkflow() {
+            const workflowName = document.querySelector('[placeholder="请输入工作流名称"]').value || '未命名工作流';
+            const description = document.querySelector('[placeholder="请描述这个工作流的功能和用途"]').value || '';
+
+            const workflowData = {
+                name: workflowName,
+                description: description,
+                nodes: nodes,
+                connections: connections,
+                zoom: zoom,
+                panOffset: panOffset,
+                savedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('currentWorkflow', JSON.stringify(workflowData));
+            showToast(`工作流 "${workflowName}" 已保存`, 'success');
+        }
+
+        function runWorkflow() {
+            if (nodes.length === 0) {
+                showToast('请先创建工作流节点', 'warning');
+                return;
+            }
+
+            // Validate workflow
+            const triggerNodes = nodes.filter(n => ['schedule', 'webhook', 'file-watch'].includes(n.type));
+            if (triggerNodes.length === 0) {
+                showToast('工作流需要至少一个触发器节点', 'warning');
+                return;
+            }
+
+            showToast('正在执行工作流...', 'info');
+
+            // Simulate workflow execution
+            setTimeout(() => {
+                showToast('工作流执行完成！', 'success');
+            }, 2000);
+        }
+
+        function zoomIn() {
+            zoom *= 1.1;
+            zoom = Math.min(2, zoom);
+            updateCanvasTransform();
+            updateZoomDisplay();
+        }
+
+        function zoomOut() {
+            zoom *= 0.9;
+            zoom = Math.max(0.1, zoom);
+            updateCanvasTransform();
+            updateZoomDisplay();
+        }
+
+        function updateZoomDisplay() {
+            document.querySelector('.text-center.text-gray-400.py-1').textContent = `${Math.round(zoom * 100)}%`;
+        }
+
+        function toggleProperties() {
+            const content = document.getElementById('properties-content');
+            const toggle = document.getElementById('properties-toggle');
+            content.classList.toggle('hidden');
+            toggle.setAttribute('data-feather', content.classList.contains('hidden') ? 'chevron-down' : 'chevron-up');
+            feather.replace();
+        }
+
+        function editNodeConfig(nodeId) {
+            const node = nodes.find(n => n.id === nodeId);
+            if (!node) return;
+
+            // Open configuration modal (simplified)
+            const configText = JSON.stringify(node.config, null, 2);
+            alert(`节点配置 (${node.name}):\n\n${configText}`);
+        }
+
+        function loadSavedWorkflow() {
+            const savedWorkflow = JSON.parse(localStorage.getItem('currentWorkflow'));
+            if (!savedWorkflow) return;
+
+            // Load workflow data
+            nodes = savedWorkflow.nodes || [];
+            connections = savedWorkflow.connections || [];
+            zoom = savedWorkflow.zoom || 1;
+            panOffset = savedWorkflow.panOffset || { x: 0, y: 0 };
+
+            // Load form data
+            document.querySelector('[placeholder="请输入工作流名称"]').value = savedWorkflow.name || '';
+            document.querySelector('[placeholder="请描述这个工作流的功能和用途"]').value = savedWorkflow.description || '';
+
+            // Render nodes
+            if (nodes.length > 0) {
+                showCanvasContent();
+                nodes.forEach(node => renderNode(node));
+            }
+
+            updateCanvasTransform();
+            updateZoomDisplay();
+        }
+
+        // Template loading functions
+        function loadPhotoProcessingTemplate() {
+            // Create a pre-built photo processing workflow
+            const templateNodes = [
+                getNodeTemplate('file-watch'),
+                getNodeTemplate('image-processor'),
+                getNodeTemplate('database'),
+                getNodeTemplate('notification')
+            ];
+
+            // Position nodes
+            templateNodes[0].x = 200; templateNodes[0].y = 100;
+            templateNodes[0].name = '照片监控';
+            templateNodes[0].config.watchPath = '/nas/photos';
+
+            templateNodes[1].x = 400; templateNodes[1].y = 100;
+            templateNodes[1].name = 'AI增强';
+            templateNodes[1].config.operation = 'enhance';
+
+            templateNodes[2].x = 600; templateNodes[2].y = 100;
+            templateNodes[2].name = '数据库保存';
+
+            templateNodes[3].x = 800; templateNodes[3].y = 100;
+            templateNodes[3].name = '完成通知';
+
+            // Load nodes
+            nodes = templateNodes.map(node => {
+                node.id = ++nodeIdCounter;
+                renderNode(node);
+                return node;
+            });
+
+            showCanvasContent();
+            showToast('照片处理模板已加载！', 'success');
+        }
+
+        // Template loading functions
+        function loadTemplate(templateType) {
+            const templates = {
+                'photo-processing': {
+                    name: '照片自动处理流水线',
+                    description: 'NAS新照片自动AI增强处理，智能分类存储',
+                    nodes: [
+                        { type: 'file-watch', x: 200, y: 150, name: '照片监控' },
+                        { type: 'image-processor', x: 450, y: 150, name: 'AI增强' },
+                        { type: 'database', x: 700, y: 150, name: '数据库保存' },
+                        { type: 'notification', x: 950, y: 150, name: '完成通知' }
+                    ]
+                },
+                'data-collection': {
+                    name: '数据收集自动化',
+                    description: '定时从多数据源采集，自动质量筛选',
+                    nodes: [
+                        { type: 'schedule', x: 200, y: 150, name: '定时触发器' },
+                        { type: 'data-extractor', x: 450, y: 150, name: '数据提取' },
+                        { type: 'filter', x: 700, y: 150, name: '质量过滤' },
+                        { type: 'database', x: 950, y: 150, name: '存档数据' }
+                    ]
+                },
+                'alert-system': {
+                    name: '告警通知系统',
+                    description: '监控异常自动发告警，支持多渠道通知',
+                    nodes: [
+                        { type: 'schedule', x: 200, y: 150, name: '状态检查' },
+                        { type: 'data-extractor', x: 450, y: 200, name: '监控数据' },
+                        { type: 'filter', x: 700, y: 200, name: '异常检测' },
+                        { type: 'notification', x: 950, y: 200, name: '告警通知' }
+                    ]
+                }
+            };
+
+            const template = templates[templateType];
+            if (!template) return;
+
+            // Clear current workflow
+            if (nodes.length > 0) {
+                if (!confirm('确定要加载模板吗？会替换当前的工作流。')) return;
+            }
+
+            // Reset canvas
+            nodes = [];
+            connections = [];
+            document.getElementById('canvas-content').innerHTML = '';
+
+            // Load template nodes
+            template.nodes.forEach(nodeTemplate => {
+                const nodeId = ++nodeIdCounter;
+                const nodeData = getNodeTemplate(nodeTemplate.type);
+                nodeData.id = nodeId;
+                nodeData.x = nodeTemplate.x;
+                nodeData.y = nodeTemplate.y;
+                nodeData.name = nodeTemplate.name;
+
+                nodes.push(nodeData);
+                renderNode(nodeData);
+            });
+
+            // Update form
+            document.querySelector('[placeholder="请输入工作流名称"]').value = template.name;
+            document.querySelector('[placeholder="请描述这个工作流的功能和用途"]').value = template.description;
+
+            showCanvasContent();
+            showToast(`模板 "${template.name}" 已加载！`, 'success');
+        }
+
+        function loadMoreTemplates() {
+            showToast('更多模板正在开发中...', 'info');
+        }
+
+        // Add event listeners for templates
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize canvas
+            initWorkflowCanvas();
+        });
+
+    </script>
+</body>
+</html>
