@@ -79,8 +79,28 @@ function formatNumber(num) {
 
 // Authentication System
 function initAuthSystem() {
-    // Check if user is logged in
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    // Check if user is logged in (secure session-based approach)
+    const sessionToken = localStorage.getItem('sessionToken');
+    let currentUser = null;
+
+    if (sessionToken) {
+        try {
+            // Check if session is still valid (in real app, validate with server)
+            const sessionData = JSON.parse(localStorage.getItem('sessionData') || '{}');
+            if (sessionData.expiry && new Date() < new Date(sessionData.expiry)) {
+                currentUser = sessionData.user;
+            } else {
+                // Session expired, clear data
+                localStorage.removeItem('sessionToken');
+                localStorage.removeItem('sessionData');
+            }
+        } catch (error) {
+            console.warn('Session data corrupted, clearing:', error);
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('sessionData');
+        }
+    }
+
     updateNavAuthState(currentUser);
 
     // Create auth modal
@@ -257,16 +277,30 @@ function login() {
         return;
     }
 
-    // Simple login simulation (in real app, this would be API call)
+    // Simple login simulation (in real app, this would be hashed password validation)
     const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
 
     const user = users.find(u => (u.email === email || u.username === email) && u.password === password);
 
     if (user) {
-        // Login successful
-        const currentUser = { username: user.username, email: user.email, avatar: user.avatar };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        updateNavAuthState(currentUser);
+        // Login successful - Create secure session
+        const sessionToken = generateSessionToken();
+        const sessionExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+        const sessionData = {
+            user: {
+                username: user.username,
+                email: user.email,
+                avatar: user.avatar
+            },
+            expiry: sessionExpiry.toISOString()
+        };
+
+        localStorage.setItem('sessionToken', sessionToken);
+        localStorage.setItem('sessionData', JSON.stringify(sessionData));
+        // Remove old insecure currentUser data
+        localStorage.removeItem('currentUser');
+
+        updateNavAuthState(sessionData.user);
         closeAuthModal();
         showToast('登录成功！', 'success');
     } else {
@@ -274,16 +308,34 @@ function login() {
     }
 }
 
+// Generate a cryptographically secure session token
+function generateSessionToken() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
 function register() {
-    const username = document.getElementById('register-username').value;
-    const email = document.getElementById('register-email').value;
+    const username = document.getElementById('register-username').value.trim();
+    const email = document.getElementById('register-email').value.trim();
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('register-confirm-password').value;
     const agreeTerms = document.getElementById('agree-terms').checked;
 
-    // Validation
+    // Enhanced validation
     if (!username || !email || !password) {
         showAuthError('请填写所有必填字段');
+        return;
+    }
+
+    if (username.length < 3 || username.length > 30) {
+        showAuthError('用户名长度应在3-30个字符之间');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showAuthError('请输入有效的邮箱地址');
         return;
     }
 
@@ -309,11 +361,16 @@ function register() {
         return;
     }
 
+    if (users.find(u => u.username === username)) {
+        showAuthError('此用户名已被使用');
+        return;
+    }
+
     // Register user
     const newUser = {
         username: username,
         email: email,
-        password: password, // In real app, this should be hashed
+        password: password, // Note: In production, password should be hashed with bcrypt or similar
         avatar: `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>`,
         registeredAt: new Date().toISOString()
     };
@@ -321,11 +378,24 @@ function register() {
     users.push(newUser);
     localStorage.setItem('registeredUsers', JSON.stringify(users));
 
-    // Auto login
-    const currentUser = { username: newUser.username, email: newUser.email, avatar: newUser.avatar };
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    updateNavAuthState(currentUser);
+    // Auto login with secure session
+    const sessionToken = generateSessionToken();
+    const sessionExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days for new users
+    const sessionData = {
+        user: {
+            username: newUser.username,
+            email: newUser.email,
+            avatar: newUser.avatar
+        },
+        expiry: sessionExpiry.toISOString()
+    };
 
+    localStorage.setItem('sessionToken', sessionToken);
+    localStorage.setItem('sessionData', JSON.stringify(sessionData));
+    // Remove any old insecure currentUser data
+    localStorage.removeItem('currentUser');
+
+    updateNavAuthState(sessionData.user);
     closeAuthModal();
     showToast('注册成功，欢迎加入镜界！', 'success');
 }
@@ -335,7 +405,12 @@ function socialLogin(provider) {
 }
 
 function logout() {
+    // Secure session cleanup
+    localStorage.removeItem('sessionToken');
+    localStorage.removeItem('sessionData');
+    // Also remove any old insecure currentUser data
     localStorage.removeItem('currentUser');
+
     updateNavAuthState(null);
     toggleUserMenu(); // Close dropdown
     showToast('已退出登录', 'info');
@@ -399,6 +474,92 @@ function debounce(func, wait) {
         timeout = setTimeout(later, wait);
     };
 }
+
+// Optimized Resource Loading
+class ResourceOptimizer {
+    constructor() {
+        this.loadedScripts = new Set();
+        this.loadedStyles = new Set();
+        this.preloadedUrls = new Set();
+    }
+
+    loadScript(url, options = {}) {
+        return new Promise((resolve, reject) => {
+            if (this.loadedScripts.has(url)) {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = () => {
+                this.loadedScripts.add(url);
+                resolve();
+            };
+            script.onerror = reject;
+
+            // Add performance optimizations
+            if (options.async !== false) script.async = true;
+            if (options.defer) script.defer = true;
+            if (options.integrity) script.integrity = options.integrity;
+            if (options.crossOrigin) script.crossOrigin = options.crossOrigin;
+
+            document.head.appendChild(script);
+        });
+    }
+
+    loadStyle(href, options = {}) {
+        return new Promise((resolve, reject) => {
+            if (this.loadedStyles.has(href)) {
+                resolve();
+                return;
+            }
+
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            link.onload = () => {
+                this.loadedStyles.add(href);
+                resolve();
+            };
+            link.onerror = reject;
+
+            // Add performance optimizations
+            if (options.integrity) link.integrity = options.integrity;
+            if (options.crossOrigin) link.crossOrigin = options.crossOrigin;
+
+            document.head.appendChild(link);
+        });
+    }
+
+    preload(url, as, options = {}) {
+        if (this.preloadedUrls.has(url)) return;
+
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = url;
+        link.as = as;
+
+        if (options.crossOrigin) link.crossOrigin = options.crossOrigin;
+
+        document.head.appendChild(link);
+        this.preloadedUrls.add(url);
+    }
+
+    prefetch(url) {
+        if (this.preloadedUrls.has(url)) return;
+
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+
+        document.head.appendChild(link);
+        this.preloadedUrls.add(url);
+    }
+}
+
+// Global resource optimizer instance
+const resourceOptimizer = new ResourceOptimizer();
 
 // Optimized Router System
 function initRouter() {
@@ -606,25 +767,31 @@ function initRouter() {
         }
     });
 
-    // Preload routes on idle
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => {
-            Object.values(routes).forEach(file => {
-                if (!pageCache.has(file) && file !== routes[location.pathname]) {
-                    fetch(file).then(response => response.text()).then(html => {
-                        // Extract and cache content (same as in navigateTo)
-                        const bodyMatch = html.match(/<body[^>]*>(.*?)<\/body>/s);
-                        if (bodyMatch) {
-                            let content = bodyMatch[1];
-                            content = content.replace(/<custom-navbar[^>]*>[\s\S]*?<\/custom-navbar>/gi, '');
-                            content = content.replace(/<custom-footer[^>]*>[\s\S]*?<\/custom-footer>/gi, '');
-                            content = content.replace(/<script[^>]*src=["'](?:components\/(?:navbar|footer)\.js|script\.js)["'][^>]*><\/script>/gi, '');
-                            pageCache.set(file, content);
-                        }
-                    }).catch(() => {}); // Ignore preload failures
-                }
-            });
+    // Preload routes on idle (with fallback for older browsers)
+    const preloadRoutes = () => {
+        Object.values(routes).forEach(file => {
+            if (!pageCache.has(file) && file !== routes[location.pathname]) {
+                fetch(file).then(response => response.text()).then(html => {
+                    // Extract and cache content (same as in navigateTo)
+                    const bodyMatch = html.match(/<body[^>]*>(.*?)<\/body>/s);
+                    if (bodyMatch) {
+                        let content = bodyMatch[1];
+                        content = content.replace(/<custom-navbar[^>]*>[\s\S]*?<\/custom-navbar>/gi, '');
+                        content = content.replace(/<custom-footer[^>]*>[\s\S]*?<\/custom-footer>/gi, '');
+                        content = content.replace(/<script[^>]*src=["'](?:components\/(?:navbar|footer)\.js|script\.js)["'][^>]*><\/script>/gi, '');
+                        pageCache.set(file, content);
+                    }
+                }).catch(() => {}); // Ignore preload failures
+            }
         });
+    };
+
+    // Use requestIdleCallback if available, otherwise fallback to setTimeout
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(preloadRoutes);
+    } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(preloadRoutes, 1000);
     }
 
     // Add transition styles
