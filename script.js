@@ -639,9 +639,14 @@ function initRouter() {
                 content = html;
             }
 
-            // Clean content (remove navbar, footer, scripts that are already loaded)
+            // Clean content (remove navbar, footer, main wrapper, scripts that are already loaded)
             content = content.replace(/<custom-navbar[^>]*>[\s\S]*?<\/custom-navbar>/gi, '');
             content = content.replace(/<custom-footer[^>]*>[\s\S]*?<\/custom-footer>/gi, '');
+            content = content.replace(/<main[^>]*>[\s\S]*?<\/main>/gi, (match) => {
+                // Extract content inside main tags
+                const mainMatch = match.match(/<main[^>]*>([\s\S]*?)<\/main>/);
+                return mainMatch ? mainMatch[1] : '';
+            });
             content = content.replace(/<script[^>]*src=["'](?:components\/(?:navbar|footer)\.js|script\.js)["'][^>]*><\/script>/gi, '');
             // Also remove inline scripts that might interfere
             content = content.replace(/<script[^>]*feather\.replace\(\)[^>]*<\/script>/gi, '');
@@ -778,6 +783,11 @@ function initRouter() {
                         let content = bodyMatch[1];
                         content = content.replace(/<custom-navbar[^>]*>[\s\S]*?<\/custom-navbar>/gi, '');
                         content = content.replace(/<custom-footer[^>]*>[\s\S]*?<\/custom-footer>/gi, '');
+                        content = content.replace(/<main[^>]*>[\s\S]*?<\/main>/gi, (match) => {
+                            // Extract content inside main tags
+                            const mainMatch = match.match(/<main[^>]*>([\s\S]*?)<\/main>/);
+                            return mainMatch ? mainMatch[1] : '';
+                        });
                         content = content.replace(/<script[^>]*src=["'](?:components\/(?:navbar|footer)\.js|script\.js)["'][^>]*><\/script>/gi, '');
                         pageCache.set(file, content);
                     }
