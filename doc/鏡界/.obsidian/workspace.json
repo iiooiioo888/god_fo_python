@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6b824e867ce69563",
+        "id": "20c27f164116a769",
         "type": "tabs",
         "children": [
           {
-            "id": "ba4515b71a075a16",
+            "id": "5bfd31c425a4ce1d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ch1/ch1-2-詳細功能清单.md",
+                "file": "qwer_v4 copy.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ch1-2-詳細功能清单"
+              "title": "qwer_v4 copy"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 253.5069465637207
+    "width": 200
   },
   "right": {
     "id": "fac0e06aa6ec06f6",
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ch1/ch1-2-詳細功能清单.md",
+                "file": "ch3/ch3-code-examples/ch3-code-01-health-monitor.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "ch1-2-詳細功能清单 的反向連結"
+              "title": "ch3-code-01-health-monitor 的反向連結"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ch1/ch1-2-詳細功能清单.md",
+                "file": "ch3/ch3-code-examples/ch3-code-01-health-monitor.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "ch1-2-詳細功能清单 的對外連結"
+              "title": "ch3-code-01-health-monitor 的對外連結"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ch1/ch1-2-詳細功能清单.md",
+                "file": "qwer_v4 copy.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "ch1-2-詳細功能清单 的大綱"
+              "title": "qwer_v4 copy 的大綱"
             }
           },
           {
@@ -170,7 +170,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 636.5
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -185,44 +185,44 @@
       "markdown-importer:開啟 Markdown 格式轉換器": false
     }
   },
-  "active": "ba4515b71a075a16",
+  "active": "5bfd31c425a4ce1d",
   "lastOpenFiles": [
-    "ch1/ch1-1-模块概述.md",
-    "ch1/ch1-3-技术架构.md",
-    "ch1/ch1-2-詳細功能清单.md",
-    "ch1/ch1-index.md",
-    "ch1/ch1.md",
-    "ch1/CH1-COMPLETION-REPORT.md",
-    "ch1/CH1-RENAME-PROGRESS.md",
-    "ch1/QUICK-REFERENCE.md",
-    "ch1/MANUAL-RENAME-GUIDE.md",
-    "ch1/README-CH1-SPLIT.md",
-    "ch1/ch1-8-安全考虑.md",
-    "_backup_legacy/ch1/ch1-8.md",
-    "_backup_legacy/ch1/ch1-1.md",
-    "ch9/ch9-1-模块概述.md",
-    "_backup_legacy/ch9/ch9-7.md",
-    "_backup_legacy/ch9/ch9-6.md",
-    "_backup_legacy/ch9/ch9-4.md",
-    "_backup_legacy/ch9/ch9-5.md",
-    "_backup_legacy/ch9/ch9-3.md",
-    "_backup_legacy/ch9/ch9-2.md",
-    "_backup_legacy/ch9/ch9-1.md",
+    "ch9/ch9-10-最佳實踐指南.md",
+    "ch9/ch9-code-examples/ch9-code-03-api-examples.md",
+    "ch3/ch3-1-模块概述.md",
+    "ch9/ch9-code-examples/ch9-code-02-database-schema.md",
+    "ch9/ch9-code-examples/ch9-code-01-deployment-service.md",
+    "ch9/ch9-code-examples",
+    "ch8/ch8-10-最佳實踐指南.md",
+    "ch8/ch8-code-examples/ch8-code-03-api-examples.md",
+    "ch8/ch8-code-examples/ch8-code-02-database-schema.md",
+    "ch8/ch8-code-examples/ch8-code-01-cluster-manager.md",
+    "ch8/ch8-code-examples",
+    "ch7/ch7-10-最佳實踐指南.md",
+    "ch7/ch7-code-examples/ch7-code-03-api-examples.md",
+    "ch7/ch7-code-examples/ch7-code-02-database-schema.md",
+    "ch7/ch7-code-examples/ch7-code-01-compliance-engine.md",
+    "ch7/ch7-code-examples",
+    "ch6/ch6-10-最佳實踐指南.md",
+    "ch6/ch6-code-examples/ch6-code-03-api-examples.md",
+    "ch6/ch6-code-examples/ch6-code-02-database-schema.md",
+    "ch6/ch6-code-examples/ch6-code-01-llm-integration.md",
+    "ch6/ch6-code-examples",
+    "ch5/ch5-10-最佳實踐指南.md",
+    "ch5/ch5-code-examples/ch5-code-03-api-examples.md",
+    "ch5/ch5-code-examples/ch5-code-02-database-schema.md",
+    "ch5/ch5-code-examples/ch5-code-01-media-processor.md",
+    "ch5/ch5-code-examples",
+    "ch4/ch4-10-最佳實踐指南.md",
+    "ch4/ch4-code-examples/ch4-code-04-api-examples.md",
+    "ch4/ch4-code-examples/ch4-code-03-database-schema.md",
+    "ch4/ch4-code-examples/ch4-code-02-service-integration.md",
+    "ch4/ch4-code-examples/ch4-code-01-workflow-engine.md",
+    "ch4/ch4-code-examples",
+    "ch3/ch3-code-examples",
+    "ch2/ch2-code-examples",
+    "ch1/ch1-code-examples",
     "_backup_legacy/ch9",
-    "_backup_legacy/ch8/ch8-8.md",
-    "_backup_legacy/ch8/ch8-9.md",
-    "_backup_legacy/ch8/ch8-3.md",
-    "_backup_legacy/ch8/ch8-6.md",
-    "_backup_legacy/ch8/ch8-7.md",
-    "_backup_legacy/ch8",
-    "_backup_legacy/ch7",
-    "_backup_legacy/ch6",
-    "_backup_legacy/ch5",
-    "_backup_legacy/ch1",
-    "_backup_legacy",
-    "fast_rename.py",
-    "AUTO-COMPLETE-CHAPTERS.py",
-    "ch9",
     "未命名.canvas"
   ]
 }

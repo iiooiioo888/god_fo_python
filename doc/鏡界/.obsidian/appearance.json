@@ -1,4 +1,6 @@
 {
-  "baseFontSize": 19,
-  "baseFontSizeAction": true
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "theme": "obsidian",
+  "accentColor": ""
 }
