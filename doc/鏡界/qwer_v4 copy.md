@@ -1,362 +1,362 @@
-# 镜界平台终极技术规格说明书（模块级深度实现）
+# 镜界平台终极技術规格說明书（模組级深度實現）
 
 ## 目录
 
-### 1. 数据源注册中心 (Data Source Registry)
-- [1.1 模块概述](#11-模块概述)
-- [1.2 详细功能清单](#12-详细功能清单)
+### 1. 資料源註冊中心 (Data Source Registry)
+- [1.1 模組概述](#11-模組概述)
+- [1.2 詳細功能清單](#12-詳細功能清單)
   - [1.2.1 核心功能](#121-核心功能)
   - [1.2.2 高级功能](#122-高级功能)
-- [1.3 技术架构](#13-技术架构)
-  - [1.3.1 架构图](#131-架构图)
-  - [1.3.2 服务边界与交互](#132-服务边界与交互)
-- [1.4 核心组件详细实现](#14-核心组件详细实现)
-  - [1.4.1 元数据管理服务](#141-元数据管理服务)
-  - [1.4.2 搜索服务](#142-搜索服务)
-  - [1.4.3 分类管理服务](#143-分类管理服务)
-- [1.5 数据模型详细定义](#15-数据模型详细定义)
-  - [1.5.1 数据源核心表](#151-数据源核心表)
-  - [1.5.2 数据源版本表](#152-数据源版本表)
-  - [1.5.3 分类表](#153-分类表)
-- [1.6 API详细规范](#16-api详细规范)
-  - [1.6.1 数据源管理API](#161-数据源管理api)
-  - [1.6.2 搜索API](#162-搜索api)
-- [1.7 性能优化策略](#17-性能优化策略)
-  - [1.7.1 数据库优化](#171-数据库优化)
+- [1.3 技術架構](#13-技術架構)
+  - [1.3.1 架構图](#131-架構图)
+  - [1.3.2 服務边界與交互](#132-服務边界與交互)
+- [1.4 核心組件詳細實現](#14-核心組件詳細實現)
+  - [1.4.1 元資料管理服務](#141-元資料管理服務)
+  - [1.4.2 搜尋服務](#142-搜尋服務)
+  - [1.4.3 分類管理服務](#143-分類管理服務)
+- [1.5 資料模型詳細定義](#15-資料模型詳細定義)
+  - [1.5.1 資料源核心表](#151-資料源核心表)
+  - [1.5.2 資料源版本表](#152-資料源版本表)
+  - [1.5.3 分類表](#153-分類表)
+- [1.6 API詳細規範](#16-api詳細規範)
+  - [1.6.1 資料源管理API](#161-資料源管理api)
+  - [1.6.2 搜尋API](#162-搜尋api)
+- [1.7 效能優化策略](#17-效能優化策略)
+  - [1.7.1 資料庫優化](#171-資料庫優化)
   - [1.7.2 缓存策略](#172-缓存策略)
-  - [1.7.3 搜索性能优化](#173-搜索性能优化)
-- [1.8 安全考虑](#18-安全考虑)
-  - [1.8.1 访问控制](#181-访问控制)
-  - [1.8.2 数据安全](#182-数据安全)
-- [1.9 与其他模块的交互](#19-与其他模块的交互)
-  - [1.9.1 与数据源健康监测系统交互](#191-与数据源健康监测系统交互)
-  - [1.9.2 与数据处理工作流引擎交互](#192-与数据处理工作流引擎交互)
-  - [1.9.3 与AI辅助开发系统交互](#193-与ai辅助开发系统交互)
+  - [1.7.3 搜尋效能優化](#173-搜尋效能優化)
+- [1.8 安全考慮](#18-安全考慮)
+  - [1.8.1 訪問控制](#181-訪問控制)
+  - [1.8.2 資料安全](#182-資料安全)
+- [1.9 與其他模組的交互](#19-與其他模組的交互)
+  - [1.9.1 與資料源健康监测系統交互](#191-與資料源健康监测系統交互)
+  - [1.9.2 與資料處理工作流引擎交互](#192-與資料處理工作流引擎交互)
+  - [1.9.3 與AI輔助開发系統交互](#193-與ai輔助開发系統交互)
 
-### 2. 网站指纹分析引擎 (Website Fingerprinting Engine)
-- [2.1 模块概述](#21-模块概述)
-- [2.2 详细功能清单](#22-详细功能清单)
+### 2. 網站指紋分析引擎 (Website Fingerprinting Engine)
+- [2.1 模組概述](#21-模組概述)
+- [2.2 詳細功能清單](#22-詳細功能清單)
   - [2.2.1 核心功能](#221-核心功能)
   - [2.2.2 高级功能](#222-高级功能)
-- [2.3 技术架构](#23-技术架构)
-  - [2.3.1 架构图](#231-架构图)
-  - [2.3.2 服务边界与交互](#232-服务边界与交互)
-- [2.4 核心组件详细实现](#24-核心组件详细实现)
-  - [2.4.1 技术栈识别服务](#241-技术栈识别服务)
-  - [2.4.2 反爬机制检测服务](#242-反爬机制检测服务)
-  - [2.4.3 规则引擎服务](#243-规则引擎服务)
-- [2.5 数据模型详细定义](#25-数据模型详细定义)
-  - [2.5.1 指纹规则表](#251-指纹规则表)
+- [2.3 技術架構](#23-技術架構)
+  - [2.3.1 架構图](#231-架構图)
+  - [2.3.2 服務边界與交互](#232-服務边界與交互)
+- [2.4 核心組件詳細實現](#24-核心組件詳細實現)
+  - [2.4.1 技術棧识别服務](#241-技術棧识别服務)
+  - [2.4.2 反爬機制檢測服務](#242-反爬機制檢測服務)
+  - [2.4.3 规则引擎服務](#243-规则引擎服務)
+- [2.5 資料模型詳細定義](#25-資料模型詳細定義)
+  - [2.5.1 指紋规则表](#251-指紋规则表)
   - [2.5.2 分析结果表](#252-分析结果表)
-- [2.6 API详细规范](#26-api详细规范)
-- [2.7 性能优化策略](#27-性能优化策略)
-  - [2.7.1 分析性能优化](#271-分析性能优化)
-  - [2.7.2 规则匹配优化](#272-规则匹配优化)
-- [2.8 安全考虑](#28-安全考虑)
+- [2.6 API詳細規範](#26-api詳細規範)
+- [2.7 效能優化策略](#27-效能優化策略)
+  - [2.7.1 分析效能優化](#271-分析效能優化)
+  - [2.7.2 规则匹配優化](#272-规则匹配優化)
+- [2.8 安全考慮](#28-安全考慮)
   - [2.8.1 分析安全](#281-分析安全)
-  - [2.8.2 数据安全](#282-数据安全)
-- [2.9 与其他模块的交互](#29-与其他模块的交互)
-  - [2.9.1 与数据源注册中心交互](#291-与数据源注册中心交互)
-  - [2.9.2 与AI辅助开发系统交互](#292-与ai辅助开发系统交互)
-  - [2.9.3 与数据合规与安全中心交互](#293-与数据合规与安全中心交互)
+  - [2.8.2 資料安全](#282-資料安全)
+- [2.9 與其他模組的交互](#29-與其他模組的交互)
+  - [2.9.1 與資料源註冊中心交互](#291-與資料源註冊中心交互)
+  - [2.9.2 與AI輔助開发系統交互](#292-與ai輔助開发系統交互)
+  - [2.9.3 與資料合規與安全中心交互](#293-與資料合規與安全中心交互)
 
-### 3. 数据源健康监测系统 (Data Source Health Monitoring System)
-- [3.1 模块概述](#31-模块概述)
-- [3.2 详细功能清单](#32-详细功能清单)
+### 3. 資料源健康监测系統 (Data Source Health Monitoring System)
+- [3.1 模組概述](#31-模組概述)
+- [3.2 詳細功能清單](#32-詳細功能清單)
   - [3.2.1 核心功能](#321-核心功能)
   - [3.2.2 高级功能](#322-高级功能)
-- [3.3 技术架构](#33-技术架构)
-  - [3.3.1 架构图](#331-架构图)
-  - [3.3.2 服务边界与交互](#332-服务边界与交互)
-- [3.4 核心组件详细实现](#34-核心组件详细实现)
-  - [3.4.1 探测调度器](#341-探测调度器)
-  - [3.4.2 探测执行器](#342-探测执行器)
-  - [3.4.3 结果处理器](#343-结果处理器)
-- [3.5 数据模型详细定义](#35-数据模型详细定义)
-  - [3.5.1 健康指标表](#351-健康指标表)
+- [3.3 技術架構](#33-技術架構)
+  - [3.3.1 架構图](#331-架構图)
+  - [3.3.2 服務边界與交互](#332-服務边界與交互)
+- [3.4 核心組件詳細實現](#34-核心組件詳細實現)
+  - [3.4.1 探測调度器](#341-探測调度器)
+  - [3.4.2 探測执行器](#342-探測执行器)
+  - [3.4.3 结果處理器](#343-结果處理器)
+- [3.5 資料模型詳細定義](#35-資料模型詳細定義)
+  - [3.5.1 健康指標表](#351-健康指標表)
   - [3.5.2 告警表](#352-告警表)
-- [3.6 API详细规范](#36-api详细规范)
+- [3.6 API詳細規範](#36-api詳細規範)
   - [3.6.1 健康监测API](#361-健康监测api)
   - [3.6.2 告警API](#362-告警api)
-- [3.7 性能优化策略](#37-性能优化策略)
-  - [3.7.1 时序数据存储优化](#371-时序数据存储优化)
-  - [3.7.2 告警处理优化](#372-告警处理优化)
-- [3.8 安全考虑](#38-安全考虑)
-  - [3.8.1 探测安全](#381-探测安全)
-  - [3.8.2 数据安全](#382-数据安全)
-- [3.9 与其他模块的交互](#39-与其他模块的交互)
-  - [3.9.1 与数据源注册中心交互](#391-与数据源注册中心交互)
-  - [3.9.2 与数据处理工作流引擎交互](#392-与数据处理工作流引擎交互)
-  - [3.9.3 与数据质量预测分析系统交互](#393-与数据质量预测分析系统交互)
+- [3.7 效能優化策略](#37-效能優化策略)
+  - [3.7.1 時序資料儲存優化](#371-時序資料儲存優化)
+  - [3.7.2 告警處理優化](#372-告警處理優化)
+- [3.8 安全考慮](#38-安全考慮)
+  - [3.8.1 探測安全](#381-探測安全)
+  - [3.8.2 資料安全](#382-資料安全)
+- [3.9 與其他模組的交互](#39-與其他模組的交互)
+  - [3.9.1 與資料源註冊中心交互](#391-與資料源註冊中心交互)
+  - [3.9.2 與資料處理工作流引擎交互](#392-與資料處理工作流引擎交互)
+  - [3.9.3 與資料品質預测分析系統交互](#393-與資料品質預测分析系統交互)
 
-### 4. 数据处理工作流引擎 (Data Processing Workflow Engine)
-- [4.1 模块概述](#41-模块概述)
-- [4.2 详细功能清单](#42-详细功能清单)
+### 4. 資料處理工作流引擎 (Data Processing Workflow Engine)
+- [4.1 模組概述](#41-模組概述)
+- [4.2 詳細功能清單](#42-詳細功能清單)
   - [4.2.1 核心功能](#421-核心功能)
   - [4.2.2 高级功能](#422-高级功能)
-- [4.3 技术架构](#43-技术架构)
-  - [4.3.1 架构图](#431-架构图)
-  - [4.3.2 服务边界与交互](#432-服务边界与交互)
-- [4.4 核心组件详细实现](#44-核心组件详细实现)
-  - [4.4.1 工作流定义服务](#441-工作流定义服务)
-  - [4.4.2 工作流执行服务](#442-工作流执行服务)
+- [4.3 技術架構](#43-技術架構)
+  - [4.3.1 架構图](#431-架構图)
+  - [4.3.2 服務边界與交互](#432-服務边界與交互)
+- [4.4 核心組件詳細實現](#44-核心組件詳細實現)
+  - [4.4.1 工作流定義服務](#441-工作流定義服務)
+  - [4.4.2 工作流执行服務](#442-工作流执行服務)
   - [4.4.3 工作流调度器](#443-工作流调度器)
   - [4.4.4 工作流执行器](#444-工作流执行器)
-  - [4.4.5 节点执行器](#445-节点执行器)
-- [4.5 数据模型详细定义](#45-数据模型详细定义)
-  - [4.5.1 工作流定义表](#451-工作流定义表)
-  - [4.5.2 工作流实例表](#452-工作流实例表)
-  - [4.5.3 节点执行表](#453-节点执行表)
-- [4.6 API详细规范](#46-api详细规范)
-  - [4.6.1 工作流定义API](#461-工作流定义api)
+  - [4.4.5 節点执行器](#445-節点执行器)
+- [4.5 資料模型詳細定義](#45-資料模型詳細定義)
+  - [4.5.1 工作流定義表](#451-工作流定義表)
+  - [4.5.2 工作流實例表](#452-工作流實例表)
+  - [4.5.3 節点执行表](#453-節点执行表)
+- [4.6 API詳細規範](#46-api詳細規範)
+  - [4.6.1 工作流定義API](#461-工作流定義api)
   - [4.6.2 工作流执行API](#462-工作流执行api)
-- [4.7 性能优化策略](#47-性能优化策略)
-  - [4.7.1 工作流执行优化](#471-工作流执行优化)
-  - [4.7.2 资源管理优化](#472-资源管理优化)
-- [4.8 安全考虑](#48-安全考虑)
+- [4.7 效能優化策略](#47-效能優化策略)
+  - [4.7.1 工作流执行優化](#471-工作流执行優化)
+  - [4.7.2 資源管理優化](#472-資源管理優化)
+- [4.8 安全考慮](#48-安全考慮)
   - [4.8.1 工作流安全](#481-工作流安全)
-  - [4.8.2 数据安全](#482-数据安全)
-- [4.9 与其他模块的交互](#49-与其他模块的交互)
-  - [4.9.1 与数据源注册中心交互](#491-与数据源注册中心交互)
-  - [4.9.2 与自动化媒体处理管道交互](#492-与自动化媒体处理管道交互)
-  - [4.9.3 与AI辅助开发系统交互](#493-与ai辅助开发系统交互)
+  - [4.8.2 資料安全](#482-資料安全)
+- [4.9 與其他模組的交互](#49-與其他模組的交互)
+  - [4.9.1 與資料源註冊中心交互](#491-與資料源註冊中心交互)
+  - [4.9.2 與自動化媒體處理管道交互](#492-與自動化媒體處理管道交互)
+  - [4.9.3 與AI輔助開发系統交互](#493-與ai輔助開发系統交互)
 
-### 5. 自动化媒体处理管道 (Automated Media Processing Pipeline)
-- [5.1 模块概述](#51-模块概述)
-- [5.2 详细功能清单](#52-详细功能清单)
+### 5. 自動化媒體處理管道 (Automated Media Processing Pipeline)
+- [5.1 模組概述](#51-模組概述)
+- [5.2 詳細功能清單](#52-詳細功能清單)
   - [5.2.1 核心功能](#521-核心功能)
   - [5.2.2 高级功能](#522-高级功能)
-- [5.3 技术架构](#53-技术架构)
-  - [5.3.1 架构图](#531-架构图)
-  - [5.3.2 服务边界与交互](#532-服务边界与交互)
-- [5.4 核心组件详细实现](#54-核心组件详细实现)
-  - [5.4.1 文件监控服务](#541-文件监控服务)
-  - [5.4.2 媒体处理服务](#542-媒体处理服务)
-  - [5.4.3 媒体分析服务](#543-媒体分析服务)
-- [5.5 数据模型详细定义](#55-数据模型详细定义)
-  - [5.5.1 媒体文件表](#551-媒体文件表)
-  - [5.5.2 媒体处理任务表](#552-媒体处理任务表)
-  - [5.5.3 媒体标签表](#553-媒体标签表)
-  - [5.5.4 媒体相以度表](#554-媒体相以度表)
-- [5.6 API详细规范](#56-api详细规范)
-  - [5.6.1 媒体处理API](#561-媒体处理api)
-- [5.7 性能优化策略](#57-性能优化策略)
-  - [5.7.1 媒体处理性能优化](#571-媒体处理性能优化)
-- [5.8 安全与合规详细规范](#58-安全与合规详细规范)
-- [5.9 与其他模块的交互](#59-与其他模块的交互)
-  - [5.9.1 与数据处理工作流引擎交互](#591-与数据处理工作流引擎交互)
-  - [5.9.2 与网站指纹分析引擎交互](#592-与网站指纹分析引擎交互)
-  - [5.9.3 与数据源注册中心交互](#593-与数据源注册中心交互)
+- [5.3 技術架構](#53-技術架構)
+  - [5.3.1 架構图](#531-架構图)
+  - [5.3.2 服務边界與交互](#532-服務边界與交互)
+- [5.4 核心組件詳細實現](#54-核心組件詳細實現)
+  - [5.4.1 文件監控服務](#541-文件監控服務)
+  - [5.4.2 媒體處理服務](#542-媒體處理服務)
+  - [5.4.3 媒體分析服務](#543-媒體分析服務)
+- [5.5 資料模型詳細定義](#55-資料模型詳細定義)
+  - [5.5.1 媒體文件表](#551-媒體文件表)
+  - [5.5.2 媒體處理任務表](#552-媒體處理任務表)
+  - [5.5.3 媒體標籤表](#553-媒體標籤表)
+  - [5.5.4 媒體相以度表](#554-媒體相以度表)
+- [5.6 API詳細規範](#56-api詳細規範)
+  - [5.6.1 媒體處理API](#561-媒體處理api)
+- [5.7 效能優化策略](#57-效能優化策略)
+  - [5.7.1 媒體處理效能優化](#571-媒體處理效能優化)
+- [5.8 安全與合規詳細規範](#58-安全與合規詳細規範)
+- [5.9 與其他模組的交互](#59-與其他模組的交互)
+  - [5.9.1 與資料處理工作流引擎交互](#591-與資料處理工作流引擎交互)
+  - [5.9.2 與網站指紋分析引擎交互](#592-與網站指紋分析引擎交互)
+  - [5.9.3 與資料源註冊中心交互](#593-與資料源註冊中心交互)
 
-### 6. AI辅助开发系统 (AI-Assisted Development System)
-- [6.1 模块概述](#61-模块概述)
-- [6.2 详细功能清单](#62-详细功能清单)
+### 6. AI輔助開发系統 (AI-Assisted Development System)
+- [6.1 模組概述](#61-模組概述)
+- [6.2 詳細功能清單](#62-詳細功能清單)
   - [6.2.1 核心功能](#621-核心功能)
   - [6.2.2 高级功能](#622-高级功能)
-- [6.3 技术架构](#63-技术架构)
-  - [6.3.1 架构图](#631-架构图)
-  - [6.3.2 服务边界与交互](#632-服务边界与交互)
-- [6.4 核心组件详细实现](#64-核心组件详细实现)
-  - [6.4.1 需求解析服务](#641-需求解析服务)
-  - [6.4.2 代码生成服务](#642-代码生成服务)
-  - [6.4.3 问题诊断服务](#643-问题诊断服务)
-  - [6.4.4 学习推荐服务](#644-学习推荐服务)
-- [6.5 数据模型详细定义](#65-数据模型详细定义)
-  - [6.5.1 用户画像表](#651-用户画像表)
-  - [6.5.2 学习内容表](#652-学习内容表)
-  - [6.5.3 技能评估表](#653-技能评估表)
-  - [6.5.4 用户学习进度表](#654-用户学习进度表)
-  - [6.5.5 用户代码提交记录表](#655-用户代码提交记录表)
-- [6.6 API详细规范](#66-api详细规范)
+- [6.3 技術架構](#63-技術架構)
+  - [6.3.1 架構图](#631-架構图)
+  - [6.3.2 服務边界與交互](#632-服務边界與交互)
+- [6.4 核心組件詳細實現](#64-核心組件詳細實現)
+  - [6.4.1 需求解析服務](#641-需求解析服務)
+  - [6.4.2 代码生成服務](#642-代码生成服務)
+  - [6.4.3 问题诊断服務](#643-问题诊断服務)
+  - [6.4.4 学习推薦服務](#644-学习推薦服務)
+- [6.5 資料模型詳細定義](#65-資料模型詳細定義)
+  - [6.5.1 用戶画像表](#651-用戶画像表)
+  - [6.5.2 学习內容表](#652-学习內容表)
+  - [6.5.3 技能評估表](#653-技能評估表)
+  - [6.5.4 用戶学习进度表](#654-用戶学习进度表)
+  - [6.5.5 用戶代码提交記錄表](#655-用戶代码提交記錄表)
+- [6.6 API詳細規範](#66-api詳細規範)
   - [6.6.1 代码生成API](#661-代码生成api)
   - [6.6.2 问题诊断API](#662-问题诊断api)
-  - [6.6.3 学习推荐API](#663-学习推荐api)
-- [6.7 性能优化策略](#67-性能优化策略)
-  - [6.7.1 LLM调用优化](#671-llm调用优化)
-  - [6.7.2 上下文管理优化](#672-上下文管理优化)
-  - [6.7.3 资源管理策略](#673-资源管理策略)
-- [6.8 安全考虑](#68-安全考虑)
-  - [6.8.1 LLM输出安全](#681-llm输出安全)
-  - [6.8.2 数据隐私保护](#682-数据隐私保护)
-- [6.9 与其他模块的交互](#69-与其他模块的交互)
-  - [6.9.1 与数据处理工作流引擎交互](#691-与数据处理工作流引擎交互)
-  - [6.9.2 与网站指纹分析引擎交互](#692-与网站指纹分析引擎交互)
-  - [6.9.3 与数据合规与安全中心交互](#693-与数据合规与安全中心交互)
+  - [6.6.3 学习推薦API](#663-学习推薦api)
+- [6.7 效能優化策略](#67-效能優化策略)
+  - [6.7.1 LLM調用優化](#671-llm調用優化)
+  - [6.7.2 上下文管理優化](#672-上下文管理優化)
+  - [6.7.3 資源管理策略](#673-資源管理策略)
+- [6.8 安全考慮](#68-安全考慮)
+  - [6.8.1 LLM輸出安全](#681-llm輸出安全)
+  - [6.8.2 資料隐私保护](#682-資料隐私保护)
+- [6.9 與其他模組的交互](#69-與其他模組的交互)
+  - [6.9.1 與資料處理工作流引擎交互](#691-與資料處理工作流引擎交互)
+  - [6.9.2 與網站指紋分析引擎交互](#692-與網站指紋分析引擎交互)
+  - [6.9.3 與資料合規與安全中心交互](#693-與資料合規與安全中心交互)
 
-### 7. 数据合规与安全中心 (Data Compliance and Security Center)
-- [7.1 模块概述](#71-模块概述)
-- [7.2 详细功能清单](#72-详细功能清单)
+### 7. 資料合規與安全中心 (Data Compliance and Security Center)
+- [7.1 模組概述](#71-模組概述)
+- [7.2 詳細功能清單](#72-詳細功能清單)
   - [7.2.1 核心功能](#721-核心功能)
   - [7.2.2 高级功能](#722-高级功能)
-- [7.3 技术架构](#73-技术架构)
-  - [7.3.1 架构图](#731-架构图)
-  - [7.3.2 服务边界与交互](#732-服务边界与交互)
-- [7.4 核心组件详细实现](#74-核心组件详细实现)
-  - [7.4.1 合规规则引擎](#741-合规规则引擎)
-  - [7.4.2 敏感数据检测器](#742-敏感数据检测器)
-- [7.5 数据模型详细定义](#75-数据模型详细定义)
-  - [7.5.1 合规规则表](#751-合规规则表)
-  - [7.5.2 敏感数据模式表](#752-敏感数据模式表)
-  - [7.5.3 合规性检查结果表](#753-合规性检查结果表)
-  - [7.5.4 敏感数据检测结果表](#754-敏感数据检测结果表)
-  - [7.5.5 用户同意记录表](#755-用户同意记录表)
-- [7.6 API详细规范](#76-api详细规范)
-  - [7.6.1 合规性检查API](#761-合规性检查api)
-  - [7.6.2 敏感数据检测API](#762-敏感数据检测api)
-  - [7.6.3 用户同意管理API](#763-用户同意管理api)
-- [7.7 性能优化策略](#77-性能优化策略)
-  - [7.7.1 敏感数据检测优化](#771-敏感数据检测优化)
-  - [7.7.2 合规性检查优化](#772-合规性检查优化)
-- [7.8 安全考虑](#78-安全考虑)
-  - [7.8.1 数据安全策略](#781-数据安全策略)
-  - [7.8.2 合规性审计](#782-合规性审计)
-- [7.9 与其他模块的交互](#79-与其他模块的交互)
-  - [7.9.1 与数据源注册中心交互](#791-与数据源注册中心交互)
-  - [7.9.2 与自动化媒体处理管道交互](#792-与自动化媒体处理管道交互)
-  - [7.9.3 与数据处理工作流引擎交互](#793-与数据处理工作流引擎交互)
+- [7.3 技術架構](#73-技術架構)
+  - [7.3.1 架構图](#731-架構图)
+  - [7.3.2 服務边界與交互](#732-服務边界與交互)
+- [7.4 核心組件詳細實現](#74-核心組件詳細實現)
+  - [7.4.1 合規规则引擎](#741-合規规则引擎)
+  - [7.4.2 敏感資料檢測器](#742-敏感資料檢測器)
+- [7.5 資料模型詳細定義](#75-資料模型詳細定義)
+  - [7.5.1 合規规则表](#751-合規规则表)
+  - [7.5.2 敏感資料模式表](#752-敏感資料模式表)
+  - [7.5.3 合規性检查结果表](#753-合規性检查结果表)
+  - [7.5.4 敏感資料檢測结果表](#754-敏感資料檢測结果表)
+  - [7.5.5 用戶同意記錄表](#755-用戶同意記錄表)
+- [7.6 API詳細規範](#76-api詳細規範)
+  - [7.6.1 合規性检查API](#761-合規性检查api)
+  - [7.6.2 敏感資料檢測API](#762-敏感資料檢測api)
+  - [7.6.3 用戶同意管理API](#763-用戶同意管理api)
+- [7.7 效能優化策略](#77-效能優化策略)
+  - [7.7.1 敏感資料檢測優化](#771-敏感資料檢測優化)
+  - [7.7.2 合規性检查優化](#772-合規性检查優化)
+- [7.8 安全考慮](#78-安全考慮)
+  - [7.8.1 資料安全策略](#781-資料安全策略)
+  - [7.8.2 合規性審計](#782-合規性審計)
+- [7.9 與其他模組的交互](#79-與其他模組的交互)
+  - [7.9.1 與資料源註冊中心交互](#791-與資料源註冊中心交互)
+  - [7.9.2 與自動化媒體處理管道交互](#792-與自動化媒體處理管道交互)
+  - [7.9.3 與資料處理工作流引擎交互](#793-與資料處理工作流引擎交互)
 
-### 8. 分布式爬虫集群管理系统 (Distributed Crawler Cluster Management System)
-- [8.1 模块概述](#81-模块概述)
-- [8.2 详细功能清单](#82-详细功能清单)
+### 8. 分布式爬蟲集群管理系統 (Distributed Crawler Cluster Management System)
+- [8.1 模組概述](#81-模組概述)
+- [8.2 詳細功能清單](#82-詳細功能清單)
   - [8.2.1 核心功能](#821-核心功能)
   - [8.2.2 高级功能](#822-高级功能)
-- [8.3 技术架构](#83-技术架构)
-  - [8.3.1 架构图](#831-架构图)
-  - [8.3.2 服务边界与交互](#832-服务边界与交互)
-- [8.4 核心组件详细实现](#84-核心组件详细实现)
-  - [8.4.1 爬虫节点管理服务](#841-爬虫节点管理服务)
-  - [8.4.2 任务调度器](#842-任务调度器)
-- [8.5 数据模型详细定义](#85-数据模型详细定义)
-  - [8.5.1 爬虫节点表](#851-爬虫节点表)
-  - [8.5.2 爬虫任务表](#852-爬虫任务表)
-  - [8.5.3 爬虫任务执行表](#853-爬虫任务执行表)
-  - [8.5.4 爬虫集群表](#854-爬虫集群表)
-- [8.6 API详细规范](#86-api详细规范)
-  - [8.6.1 节点管理API](#861-节点管理api)
-  - [8.6.2 任务管理API](#862-任务管理api)
-- [8.7 性能优化策略](#87-性能优化策略)
-  - [8.7.1 任务调度优化](#871-任务调度优化)
-  - [8.7.2 资源优化](#872-资源优化)
-- [8.8 安全考虑](#88-安全考虑)
-  - [8.8.1 节点安全](#881-节点安全)
-  - [8.8.2 节点沙箱环境](#882-节点沙箱环境)
-- [8.9 与其他模块的交互](#89-与其他模块的交互)
-  - [8.9.1 与数据处理工作流引擎交互](#891-与数据处理工作流引擎交互)
-  - [8.9.2 与网站指纹分析引擎交互](#892-与网站指纹分析引擎交互)
-  - [8.9.3 与数据合规与安全中心交互](#893-与数据合规与安全中心交互)
+- [8.3 技術架構](#83-技術架構)
+  - [8.3.1 架構图](#831-架構图)
+  - [8.3.2 服務边界與交互](#832-服務边界與交互)
+- [8.4 核心組件詳細實現](#84-核心組件詳細實現)
+  - [8.4.1 爬蟲節点管理服務](#841-爬蟲節点管理服務)
+  - [8.4.2 任務调度器](#842-任務调度器)
+- [8.5 資料模型詳細定義](#85-資料模型詳細定義)
+  - [8.5.1 爬蟲節点表](#851-爬蟲節点表)
+  - [8.5.2 爬蟲任務表](#852-爬蟲任務表)
+  - [8.5.3 爬蟲任務执行表](#853-爬蟲任務执行表)
+  - [8.5.4 爬蟲集群表](#854-爬蟲集群表)
+- [8.6 API詳細規範](#86-api詳細規範)
+  - [8.6.1 節点管理API](#861-節点管理api)
+  - [8.6.2 任務管理API](#862-任務管理api)
+- [8.7 效能優化策略](#87-效能優化策略)
+  - [8.7.1 任務调度優化](#871-任務调度優化)
+  - [8.7.2 資源優化](#872-資源優化)
+- [8.8 安全考慮](#88-安全考慮)
+  - [8.8.1 節点安全](#881-節点安全)
+  - [8.8.2 節点沙箱环境](#882-節点沙箱环境)
+- [8.9 與其他模組的交互](#89-與其他模組的交互)
+  - [8.9.1 與資料處理工作流引擎交互](#891-與資料處理工作流引擎交互)
+  - [8.9.2 與網站指紋分析引擎交互](#892-與網站指紋分析引擎交互)
+  - [8.9.3 與資料合規與安全中心交互](#893-與資料合規與安全中心交互)
 
-### 9. 系统集成与部署
-- [9.1 部署架构](#91-部署架构)
+### 9. 系統整合與部署
+- [9.1 部署架構](#91-部署架構)
   - [9.1.1 生产环境部署](#911-生产环境部署)
-  - [9.1.2 服务部署拓扑](#912-服务部署拓扑)
+  - [9.1.2 服務部署拓扑](#912-服務部署拓扑)
 - [9.2 部署流程](#92-部署流程)
-  - [9.2.1 基础设施准备](#921-基础设施准备)
-  - [9.2.2 服务部署](#922-服务部署)
+  - [9.2.1 基礎設施准備](#921-基礎設施准備)
+  - [9.2.2 服務部署](#922-服務部署)
   - [9.2.3 配置管理](#923-配置管理)
-- [9.3 监控与告警](#93-监控与告警)
-  - [9.3.1 监控指标](#931-监控指标)
+- [9.3 監控與告警](#93-監控與告警)
+  - [9.3.1 監控指標](#931-監控指標)
   - [9.3.2 告警规则](#932-告警规则)
-- [9.4 持续集成与持续部署](#94-持续集成与持续部署)
+- [9.4 持續整合與持續部署](#94-持續整合與持續部署)
   - [9.4.1 CI/CD流水线](#941-cicd流水线)
   - [9.4.2 流水线配置](#942-流水线配置)
-  - [9.4.3 蓝度发布策略](#943-蓝度发布策略)
-- [9.5 安全与合规](#95-安全与合规)
+  - [9.4.3 藍度发布策略](#943-藍度发布策略)
+- [9.5 安全與合規](#95-安全與合規)
   - [9.5.1 安全策略](#951-安全策略)
   - [9.5.2 安全扫描策略](#952-安全扫描策略)
-- [9.6 性能测试方案](#96-性能测试方案)
-  - [9.6.1 基準测试场景](#961-基準测试场景)
-- [9.7 灾难恢复计划](#97-灾难恢复计划)
-  - [9.7.1 备份策略](#971-备份策略)
-  - [9.7.2 災难恢复流程](#972-災难恢复流程)
+- [9.6 效能测试方案](#96-效能测试方案)
+  - [9.6.1 基準测试場景](#961-基準测试場景)
+- [9.7 災難恢復計畫](#97-災難恢復計畫)
+  - [9.7.1 備份策略](#971-備份策略)
+  - [9.7.2 災难恢復流程](#972-災难恢復流程)
 
 ### 10. 附录
 - [10.1 术语表](#101-术语表)
-- [10.2 参考文献](#102-参考文献)
+- [10.2 參考文献](#102-參考文献)
 
 
-## 1. 数据源注册中心 (Data Source Registry)
+## 1. 資料源註冊中心 (Data Source Registry)
 
-### 1.1 模块概述
-数据源注册中心是镜界平台的核心元数据管理组件，负责存储、管理和检索所有数据源的元信息。它为其他模块提供统一的数据源发现、分类和管理能力，支持从简单网页到复杂API的各种数据源类型。
+### 1.1 模組概述
+資料源註冊中心是镜界平台的核心元資料管理組件，負責儲存、管理和檢索所有資料源的元資訊。它為其他模組提供統一的資料源發現、分類和管理能力，支援從简单網頁到複杂API的各種資料源類型。
 
-### 1.2 详细功能清单
+### 1.2 詳細功能清單
 
 #### 1.2.1 核心功能
-- **数据源CRUD管理**
-  - 创建、读取、更新、删除数据源元数据
-  - 支持版本控制的数据源定义
-  - 支持软删除与回收站功能
-- **数据源分类与标签**
-  - 多级分类体系管理
-  - 动态标签系统（支持用户自定义标签）
-  - 自动化标签建议（基于内容分析）
-- **高级搜索与过滤**
-  - 全文搜索（基于Elasticsearch）
-  - 复杂查询构建器（支持布尔逻辑）
-  - 保存常用搜索查询
-- **数据源健康监控集成**
-  - 与健康监测系统集成
-  - 健康状态可视化
-  - 健康历史记录查询
-- **访问控制与权限管理**
-  - 细粒度权限控制（项目级、数据源级）
-  - 基于角色的访问控制(RBAC)
-  - 数据源共享功能
+- **資料源CRUD管理**
+  - 创建、读取、更新、删除資料源元資料
+  - 支援版本控制的資料源定義
+  - 支援软删除與回收站功能
+- **資料源分類與標籤**
+  - 多级分類體系管理
+  - 動态標籤系統（支援用戶自定義標籤）
+  - 自動化標籤建議（基於內容分析）
+- **高级搜尋與過滤**
+  - 全文搜尋（基於Elasticsearch）
+  - 複杂查詢構建器（支援布尔逻辑）
+  - 保存常用搜尋查詢
+- **資料源健康監控整合**
+  - 與健康监测系統整合
+  - 健康狀態可视化
+  - 健康歷史記錄查詢
+- **訪問控制與權限管理**
+  - 细粒度權限控制（專案级、資料源级）
+  - 基於角色的訪問控制(RBAC)
+  - 資料源共享功能
 
 #### 1.2.2 高级功能
-- **数据源依赖关系管理**
-  - 识别和可视化数据源之间的依赖关系
-  - 影响分析（当一个数据源变更时影响范围分析）
-- **数据源变更追踪**
-  - 完整的变更历史记录
-  - 变更对比功能
-  - 回滚到历史版本
-- **自动化数据源发现**
-  - 网站地图解析
+- **資料源依賴關係管理**
+  - 识别和可视化資料源之间的依賴關係
+  - 影响分析（當一個資料源變更時影响范围分析）
+- **資料源變更追蹤**
+  - 完整的變更歷史記錄
+  - 變更對比功能
+  - 回滚到歷史版本
+- **自動化資料源發現**
+  - 網站地图解析
   - API文档解析（OpenAPI/Swagger）
-  - 智能数据源推荐
-- **数据源质量评估**
-  - 自动化质量评分
-  - 质量趋势分析
-  - 质量问题诊断
+  - 智能資料源推薦
+- **資料源品質評估**
+  - 自動化品質評分
+  - 品質趋势分析
+  - 品質问题诊断
 
-### 1.3 技术架构
+### 1.3 技術架構
 
-#### 1.3.1 架构图
+#### 1.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                 数据源注册中心 (DSR)                                          │
+│                                 資料源註冊中心 (DSR)                                          │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  核心服务层           │  集成层              │  支持服务层                                 │
+│  核心服務层           │  整合层              │  支援服務层                                 │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 元数据管理服务      │ • 数据源发现适配器    │ • 搜索索引服务                             │
-│ • 分类管理服务        │ • 健康监测集成        │ • 缓存服务                                 │
-│ • 标签管理服务        │ • API网关             │ • 通知服务                                 │
-│ • 搜索服务            │ • Webhook支持         │ • 审计日志服务                             │
-│ • 权限管理服务        │ • SDK支持             │ • 指标收集服务                             │
+│ • 元資料管理服務      │ • 資料源發現适配器    │ • 搜尋索引服務                             │
+│ • 分類管理服務        │ • 健康监测整合        │ • 缓存服務                                 │
+│ • 標籤管理服務        │ • API网關             │ • 通知服務                                 │
+│ • 搜尋服務            │ • Webhook支援         │ • 審計日志服務                             │
+│ • 權限管理服務        │ • SDK支援             │ • 指標收集服務                             │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 1.3.2 服务边界与交互
-- **输入**：
-  - 用户操作（Web界面、CLI、API）
-  - 健康监测系统更新
-  - 数据源发现服务
-  - 外部系统Webhook
-- **输出**：
-  - 数据源元数据给工作流引擎
-  - 健康状态给监控系统
-  - 分类信息给推荐引擎
-  - 变更事件给事件总线
+#### 1.3.2 服務边界與交互
+- **輸入**：
+  - 用戶操作（Web界面、CLI、API）
+  - 健康监测系統更新
+  - 資料源發現服務
+  - 外部系統Webhook
+- **輸出**：
+  - 資料源元資料給工作流引擎
+  - 健康狀態給監控系統
+  - 分類資訊給推薦引擎
+  - 變更事件給事件总线
 
-### 1.4 核心组件详细实现
+### 1.4 核心組件詳細實現
 
-#### 1.4.1 元数据管理服务
+#### 1.4.1 元資料管理服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class DataSourceService:
-    """数据源元数据管理核心服务"""
+    """資料源元資料管理核心服務"""
     
     def __init__(
         self,
@@ -378,14 +378,14 @@ class DataSourceService:
         user_id: str
     ) -> DataSource:
         """
-        创建新的数据源
+        创建新的資料源
         
-        :param project_id: 所属项目ID
-        :param data_source: 数据源对象
+        :param project_id: 所属專案ID
+        :param data_source: 資料源物件
         :param user_id: 创建者ID
-        :return: 创建后的数据源对象
+        :return: 创建後的資料源物件
         """
-        # 1. 验证数据源
+        # 1. 验證資料源
         self._validate_data_source(data_source)
         
         # 2. 生成唯一ID
@@ -396,13 +396,13 @@ class DataSourceService:
         data_source.owner_id = user_id
         data_source.status = "active"
         
-        # 3. 处理分类和标签
+        # 3. 處理分類和標籤
         self._process_categories_and_tags(data_source)
         
-        # 4. 保存到数据库
+        # 4. 保存到資料庫
         self._save_to_db(data_source)
         
-        # 5. 更新搜索索引
+        # 5. 更新搜尋索引
         self.search_index.add(data_source)
         
         # 6. 发布创建事件
@@ -415,32 +415,32 @@ class DataSourceService:
         return data_source
     
     def _validate_data_source(self, data_source: DataSource):
-        """验证数据源定义的有效性"""
+        """验證資料源定義的有效性"""
         # 必填字段检查
         required_fields = ["name", "url", "category", "data_type"]
         for field in required_fields:
             if not getattr(data_source, field):
                 raise ValidationError(f"Missing required field: {field}")
         
-        # URL格式验证
+        # URL格式验證
         if not self._is_valid_url(data_source.url):
             raise ValidationError("Invalid URL format")
         
-        # 数据类型验证
+        # 資料類型验證
         valid_data_types = ["image", "video", "document", "api", "html", "json", "xml"]
         if data_source.data_type not in valid_data_types:
             raise ValidationError(f"Invalid data type. Must be one of: {', '.join(valid_data_types)}")
         
-        # 架构验证（如果是API）
+        # 架構验證（如果是API）
         if data_source.data_type == "api" and data_source.schema:
             try:
-                # 使用JSON Schema验证
+                # 使用JSON Schema验證
                 validate(instance=data_source.schema, schema=API_SCHEMA)
             except Exception as e:
                 raise ValidationError(f"Invalid API schema: {str(e)}")
     
     def _is_valid_url(self, url: str) -> bool:
-        """验证URL格式"""
+        """验證URL格式"""
         try:
             result = urlparse(url)
             return all([result.scheme, result.netloc])
@@ -448,19 +448,19 @@ class DataSourceService:
             return False
     
     def _process_categories_and_tags(self, data_source: DataSource):
-        """处理分类和标签"""
-        # 自动分类（如果未指定）
+        """處理分類和標籤"""
+        # 自動分類（如果未指定）
         if not data_source.category:
             data_source.category = self._auto_categorize(data_source)
         
-        # 自动标签建议
+        # 自動標籤建議
         if self.config.auto_tagging_enabled:
             auto_tags = self._generate_auto_tags(data_source)
             data_source.tags = list(set(data_source.tags + auto_tags))
     
     def _auto_categorize(self, data_source: DataSource) -> str:
-        """自动分类算法"""
-        # 基于URL模式的分类
+        """自動分類算法"""
+        # 基於URL模式的分類
         url = data_source.url.lower()
         
         if "social" in url or any(kw in url for kw in ["facebook", "twitter", "instagram"]):
@@ -474,14 +474,14 @@ class DataSourceService:
         elif "video" in url or data_source.data_type == "video":
             return "video"
         
-        # 默认分类
+        # 默认分類
         return "general"
     
     def _generate_auto_tags(self, data_source: DataSource) -> List[str]:
-        """生成自动标签"""
+        """生成自動標籤"""
         tags = []
         
-        # 基于URL的标签
+        # 基於URL的標籤
         url = data_source.url.lower()
         if "api" in url:
             tags.append("api")
@@ -490,7 +490,7 @@ class DataSourceService:
         if "desktop" in url:
             tags.append("desktop")
         
-        # 基于内容类型的标签
+        # 基於內容類型的標籤
         if data_source.content_type:
             if "json" in data_source.content_type:
                 tags.append("json")
@@ -499,7 +499,7 @@ class DataSourceService:
             elif "html" in data_source.content_type:
                 tags.append("html")
         
-        # 基于数据类型的标签
+        # 基於資料類型的標籤
         if data_source.data_type == "image":
             tags.append("image-source")
         elif data_source.data_type == "video":
@@ -508,8 +508,8 @@ class DataSourceService:
         return tags
     
     def _save_to_db(self, data_source: DataSource):
-        """保存到数据库"""
-        # 准备SQL
+        """保存到資料庫"""
+        # 准備SQL
         sql = """
         INSERT INTO data_sources (
             id, project_id, name, display_name, description, url, 
@@ -549,29 +549,29 @@ class DataSourceService:
         user_id: str
     ) -> DataSource:
         """
-        获取数据源详情
+        獲取資料源詳情
         
-        :param data_source_id: 数据源ID
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :return: 数据源对象
+        :param data_source_id: 資料源ID
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :return: 資料源物件
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to read this data source")
         
-        # 2. 从数据库获取
+        # 2. 從資料庫獲取
         data_source = self._get_from_db(data_source_id, project_id)
         if not data_source:
             raise NotFoundError(f"Data source {data_source_id} not found")
         
-        # 3. 获取健康状态
+        # 3. 獲取健康狀態
         data_source.health = self._get_health_status(data_source_id)
         
         return data_source
     
     def _get_from_db(self, data_source_id: str, project_id: str) -> Optional[DataSource]:
-        """从数据库获取数据源"""
+        """從資料庫獲取資料源"""
         sql = """
         SELECT * FROM data_sources 
         WHERE id = %(id)s AND project_id = %(project_id)s
@@ -588,7 +588,7 @@ class DataSourceService:
         return self._row_to_data_source(row)
     
     def _row_to_data_source(self, row: Dict) -> DataSource:
-        """将数据库行转换为DataSource对象"""
+        """將資料庫行转换為DataSource物件"""
         return DataSource(
             id=row["id"],
             project_id=row["project_id"],
@@ -609,8 +609,8 @@ class DataSourceService:
         )
     
     def _get_health_status(self, data_source_id: str) -> DataSourceHealth:
-        """获取数据源健康状态"""
-        # 从健康监测系统获取最新状态
+        """獲取資料源健康狀態"""
+        # 從健康监测系統獲取最新狀態
         health_data = self.health_monitor.get_latest_health(data_source_id)
         
         if not health_data:
@@ -634,22 +634,22 @@ class DataSourceService:
         user_id: str
     ) -> DataSource:
         """
-        更新数据源
+        更新資料源
         
-        :param data_source_id: 数据源ID
-        :param project_id: 项目ID
+        :param data_source_id: 資料源ID
+        :param project_id: 專案ID
         :param updates: 更新字段
         :param user_id: 更新者ID
-        :return: 更新后的数据源
+        :return: 更新後的資料源
         """
-        # 1. 获取当前数据源
+        # 1. 獲取當前資料源
         current = self.get_data_source(data_source_id, project_id, user_id)
         
-        # 2. 检查权限
+        # 2. 检查權限
         if not self._has_permission(user_id, project_id, "write"):
             raise PermissionError("User does not have permission to update this data source")
         
-        # 3. 验证更新
+        # 3. 验證更新
         self._validate_updates(updates, current)
         
         # 4. 创建新版本
@@ -658,7 +658,7 @@ class DataSourceService:
         # 5. 保存更新
         self._save_update(data_source_id, project_id, updates)
         
-        # 6. 更新搜索索引
+        # 6. 更新搜尋索引
         updated_source = self._get_from_db(data_source_id, project_id)
         self.search_index.update(updated_source)
         
@@ -673,18 +673,18 @@ class DataSourceService:
         return updated_source
     
     def _validate_updates(self, updates: Dict, current: DataSource):
-        """验证更新是否有效"""
-        # 不能修改ID和项目ID
+        """验證更新是否有效"""
+        # 不能修改ID和專案ID
         if "id" in updates or "project_id" in updates:
             raise ValidationError("Cannot update data source ID or project ID")
         
-        # 验证URL变更
+        # 验證URL變更
         if "url" in updates and updates["url"] != current.url:
             # 检查URL格式
             if not self._is_valid_url(updates["url"]):
                 raise ValidationError("Invalid URL format")
             
-            # 检查重复URL
+            # 检查重複URL
             if self._url_exists(updates["url"], current.project_id, current.id):
                 raise ValidationError("URL already exists in this project")
     
@@ -704,11 +704,11 @@ class DataSourceService:
         return count > 0
     
     def _create_version(self, current: DataSource, updates: Dict, user_id: str) -> str:
-        """创建数据源新版本"""
+        """创建資料源新版本"""
         # 生成新版本ID
         version_id = f"ver-{uuid.uuid4().hex[:8]}"
         
-        # 准备版本数据
+        # 准備版本資料
         version_data = {
             "data_source_id": current.id,
             "version_id": version_id,
@@ -730,21 +730,21 @@ class DataSourceService:
         return version_id
     
     def _save_update(self, data_source_id: str, project_id: str, updates: Dict):
-        """保存数据源更新"""
-        # 准备更新字段
+        """保存資料源更新"""
+        # 准備更新字段
         update_fields = []
         params = {"id": data_source_id, "project_id": project_id, "updated_at": datetime.utcnow()}
         
         for field, value in updates.items():
             if field in ["tags", "metadata", "schema"]:
-                # 处理JSON字段
+                # 處理JSON字段
                 update_fields.append(f"{field} = %(field)s::jsonb")
                 params[field] = json.dumps(value)
             else:
                 update_fields.append(f"{field} = %({field})s")
                 params[field] = value
         
-        # 添加更新时间
+        # 添加更新時間
         update_fields.append("updated_at = %(updated_at)s")
         
         # 执行更新
@@ -764,14 +764,14 @@ class DataSourceService:
         permanent: bool = False
     ):
         """
-        删除数据源
+        删除資料源
         
-        :param data_source_id: 数据源ID
-        :param project_id: 项目ID
+        :param data_source_id: 資料源ID
+        :param project_id: 專案ID
         :param user_id: 删除者ID
         :param permanent: 是否永久删除
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "delete"):
             raise PermissionError("User does not have permission to delete this data source")
         
@@ -782,7 +782,7 @@ class DataSourceService:
             # 2. 软删除
             self._soft_delete(data_source_id, project_id, user_id)
         
-        # 3. 从搜索索引中移除
+        # 3. 從搜尋索引中移除
         self.search_index.delete(data_source_id, project_id)
         
         # 4. 发布删除事件
@@ -794,7 +794,7 @@ class DataSourceService:
         })
     
     def _soft_delete(self, data_source_id: str, project_id: str, user_id: str):
-        """软删除数据源"""
+        """软删除資料源"""
         self.db.execute("""
         UPDATE data_sources 
         SET status = 'deleted', deleted_at = NOW(), deleted_by = %(user_id)s
@@ -806,8 +806,8 @@ class DataSourceService:
         })
     
     def _permanent_delete(self, data_source_id: str, project_id: str):
-        """永久删除数据源"""
-        # 先删除相关记录
+        """永久删除資料源"""
+        # 先删除相關記錄
         self.db.execute("""
         DELETE FROM data_source_versions 
         WHERE data_source_id = %(id)s AND project_id = %(project_id)s
@@ -816,7 +816,7 @@ class DataSourceService:
             "project_id": project_id
         })
         
-        # 再删除主记录
+        # 再删除主記錄
         self.db.execute("""
         DELETE FROM data_sources 
         WHERE id = %(id)s AND project_id = %(project_id)s
@@ -835,31 +835,31 @@ class DataSourceService:
         page_size: int = 20
     ) -> DataSourceList:
         """
-        列出数据源
+        列出資料源
         
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :param filters: 过滤条件
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :param filters: 過滤條件
         :param sort: 排序字段
-        :param page: 页码
-        :param page_size: 每页数量
-        :return: 数据源列表
+        :param page: 頁码
+        :param page_size: 每頁數量
+        :return: 資料源列表
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to list data sources")
         
-        # 2. 构建查询
+        # 2. 構建查詢
         query = self._build_list_query(project_id, filters, sort, page, page_size)
         
-        # 3. 执行查询
+        # 3. 执行查詢
         rows = self.db.fetchall(query["sql"], query["params"])
         total = self.db.fetchone(query["count_sql"], query["params"])["count"]
         
         # 4. 转换结果
         data_sources = [self._row_to_data_source(row) for row in rows]
         
-        # 5. 获取健康状态（批量）
+        # 5. 獲取健康狀態（批量）
         data_source_ids = [ds.id for ds in data_sources]
         health_statuses = self.health_monitor.get_health_statuses(data_source_ids)
         
@@ -885,15 +885,15 @@ class DataSourceService:
         page: int,
         page_size: int
     ) -> Dict:
-        """构建列表查询SQL"""
-        # 基础查询
+        """構建列表查詢SQL"""
+        # 基礎查詢
         base_sql = """
         SELECT * FROM data_sources 
         WHERE project_id = %(project_id)s
         """
         params = {"project_id": project_id}
         
-        # 添加过滤条件
+        # 添加過滤條件
         if filters:
             if "status" in filters and filters["status"]:
                 base_sql += " AND status = %(status)s"
@@ -904,7 +904,7 @@ class DataSourceService:
                 params["category"] = filters["category"]
             
             if "tags" in filters and filters["tags"]:
-                # 处理标签过滤（包含所有指定标签）
+                # 處理標籤過滤（包含所有指定標籤）
                 tags = filters["tags"]
                 if isinstance(tags, str):
                     tags = [tags]
@@ -919,7 +919,7 @@ class DataSourceService:
         # 添加排序
         order_by = "updated_at DESC"
         if sort:
-            # 验证排序字段
+            # 验證排序字段
             valid_sort_fields = ["name", "created_at", "updated_at", "health_score"]
             if sort.lstrip("-") in valid_sort_fields:
                 direction = "DESC" if sort.startswith("-") else "ASC"
@@ -928,7 +928,7 @@ class DataSourceService:
         
         base_sql += f" ORDER BY {order_by}"
         
-        # 添加分页
+        # 添加分頁
         offset = (page - 1) * page_size
         paginated_sql = f"{base_sql} LIMIT %(page_size)s OFFSET %(offset)s"
         
@@ -937,7 +937,7 @@ class DataSourceService:
             "offset": offset
         })
         
-        # 计数查询
+        # 计數查詢
         count_sql = f"SELECT COUNT(*) FROM ({base_sql}) AS count_source"
         
         return {
@@ -947,18 +947,18 @@ class DataSourceService:
         }
     
     def _has_permission(self, user_id: str, project_id: str, permission: str) -> bool:
-        """检查用户是否有权限"""
-        # 实现权限检查逻辑
-        # 这里简化为检查用户是否是项目成员
+        """检查用戶是否有權限"""
+        # 實現權限检查逻辑
+        # 這里简化為检查用戶是否是專案成员
         return self.project_service.is_member(user_id, project_id)
 ```
 
-#### 1.4.2 搜索服务
+#### 1.4.2 搜尋服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class SearchService:
-    """数据源搜索服务，基于Elasticsearch实现"""
+    """資料源搜尋服務，基於Elasticsearch實現"""
     
     def __init__(
         self,
@@ -970,15 +970,15 @@ class SearchService:
         self.index_name = config.get("index_name", "data_sources")
         self.logger = logging.getLogger(__name__)
         
-        # 确保索引存在
+        # 確保索引存在
         self._ensure_index()
     
     def _ensure_index(self):
-        """确保Elasticsearch索引存在"""
+        """確保Elasticsearch索引存在"""
         if not self.es_client.indices.exists(index=self.index_name):
             self.logger.info(f"Creating Elasticsearch index: {self.index_name}")
             
-            # 定义索引设置
+            # 定義索引设置
             settings = {
                 "settings": {
                     "number_of_shards": 3,
@@ -1021,7 +1021,7 @@ class SearchService:
             )
     
     def add(self, data_source: DataSource):
-        """添加数据源到搜索索引"""
+        """添加資料源到搜尋索引"""
         doc = self._to_document(data_source)
         self.es_client.index(
             index=self.index_name,
@@ -1030,8 +1030,8 @@ class SearchService:
         )
     
     def _to_document(self, data_source: DataSource) -> Dict:
-        """将数据源转换为Elasticsearch文档"""
-        # 计算健康分数（如果可用）
+        """將資料源转换為Elasticsearch文档"""
+        # 计算健康分數（如果可用）
         health_score = 0.0
         if data_source.health and "availability_7d" in data_source.health.metrics:
             health_score = data_source.health.metrics["availability_7d"]
@@ -1055,7 +1055,7 @@ class SearchService:
         }
     
     def update(self, data_source: DataSource):
-        """更新搜索索引中的数据源"""
+        """更新搜尋索引中的資料源"""
         doc = self._to_document(data_source)
         self.es_client.update(
             index=self.index_name,
@@ -1064,7 +1064,7 @@ class SearchService:
         )
     
     def delete(self, data_source_id: str, project_id: str):
-        """从搜索索引中删除数据源"""
+        """從搜尋索引中删除資料源"""
         self.es_client.delete(
             index=self.index_name,
             id=data_source_id
@@ -1080,33 +1080,33 @@ class SearchService:
         page_size: int = 20
     ) -> SearchResult:
         """
-        搜索数据源
+        搜尋資料源
         
-        :param project_id: 项目ID
-        :param query: 搜索查询
-        :param filters: 过滤条件
+        :param project_id: 專案ID
+        :param query: 搜尋查詢
+        :param filters: 過滤條件
         :param sort: 排序字段
-        :param page: 页码
-        :param page_size: 每页数量
-        :return: 搜索结果
+        :param page: 頁码
+        :param page_size: 每頁數量
+        :return: 搜尋结果
         """
-        # 构建查询体
+        # 構建查詢體
         body = self._build_search_query(project_id, query, filters, sort, page, page_size)
         
-        # 执行搜索
+        # 执行搜尋
         result = self.es_client.search(
             index=self.index_name,
             body=body
         )
         
-        # 处理结果
+        # 處理结果
         hits = result["hits"]["hits"]
         total = result["hits"]["total"]["value"]
         
         data_sources = []
         for hit in hits:
             source = hit["_source"]
-            # 这里应该转换为DataSource对象，但为了示例简化
+            # 這里应该转换為DataSource物件，但為了示例简化
             data_sources.append(source)
         
         return SearchResult(
@@ -1125,8 +1125,8 @@ class SearchService:
         page: int,
         page_size: int
     ) -> Dict:
-        """构建Elasticsearch查询体"""
-        # 基础查询 - 仅限当前项目
+        """構建Elasticsearch查詢體"""
+        # 基礎查詢 - 仅限當前專案
         base_query = {
             "bool": {
                 "must": [
@@ -1135,7 +1135,7 @@ class SearchService:
             }
         }
         
-        # 添加全文搜索
+        # 添加全文搜尋
         if query and query.strip():
             base_query["bool"]["must"].append({
                 "multi_match": {
@@ -1145,7 +1145,7 @@ class SearchService:
                 }
             })
         
-        # 添加过滤条件
+        # 添加過滤條件
         if filters:
             if "status" in filters and filters["status"]:
                 base_query["bool"]["must"].append({
@@ -1162,7 +1162,7 @@ class SearchService:
                 if isinstance(tags, str):
                     tags = [tags]
                 
-                # 必须包含所有指定标签
+                # 必須包含所有指定標籤
                 for tag in tags:
                     base_query["bool"]["must"].append({
                         "term": {"tags": tag}
@@ -1177,10 +1177,10 @@ class SearchService:
                     }
                 })
         
-        # 构建排序
+        # 構建排序
         sort_spec = []
         if sort:
-            # 验证排序字段
+            # 验證排序字段
             valid_sort_fields = ["name", "created_at", "updated_at", "health_score"]
             if sort.lstrip("-") in valid_sort_fields:
                 direction = "desc" if sort.startswith("-") else "asc"
@@ -1192,7 +1192,7 @@ class SearchService:
             sort_spec.append({"_score": {"order": "desc"}})
             sort_spec.append({"updated_at": {"order": "desc"}})
         
-        # 计算分页
+        # 计算分頁
         from_val = (page - 1) * page_size
         
         return {
@@ -1204,8 +1204,8 @@ class SearchService:
         }
     
     def suggest_tags(self, project_id: str, prefix: str) -> List[str]:
-        """建议标签（基于现有标签）"""
-        # 使用terms aggregation获取匹配的标签
+        """建議標籤（基於現有標籤）"""
+        # 使用terms aggregation獲取匹配的標籤
         body = {
             "size": 0,
             "query": {
@@ -1231,17 +1231,17 @@ class SearchService:
             body=body
         )
         
-        # 提取建议的标签
+        # 提取建議的標籤
         buckets = result["aggregations"]["suggested_tags"]["buckets"]
         return [bucket["key"] for bucket in buckets]
 ```
 
-#### 1.4.3 分类管理服务
+#### 1.4.3 分類管理服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class CategoryService:
-    """数据源分类管理服务"""
+    """資料源分類管理服務"""
     
     def __init__(
         self,
@@ -1259,25 +1259,25 @@ class CategoryService:
         user_id: str
     ) -> List[CategoryNode]:
         """
-        获取分类树
+        獲取分類树
         
-        :param project_id: 项目ID
-        :param user_id: 用户ID
-        :return: 分类树
+        :param project_id: 專案ID
+        :param user_id: 用戶ID
+        :return: 分類树
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to view categories")
         
-        # 2. 尝试从缓存获取
+        # 2. 尝试從缓存獲取
         cache_key = f"{project_id}:tree"
         if cache_key in self.cache:
             return self.cache[cache_key]
         
-        # 3. 从数据库获取
+        # 3. 從資料庫獲取
         categories = self._get_all_categories(project_id)
         
-        # 4. 构建树结构
+        # 4. 構建树結構
         tree = self._build_category_tree(categories)
         
         # 5. 缓存结果
@@ -1286,7 +1286,7 @@ class CategoryService:
         return tree
     
     def _get_all_categories(self, project_id: str) -> List[Category]:
-        """从数据库获取所有分类"""
+        """從資料庫獲取所有分類"""
         sql = """
         SELECT * FROM data_source_categories 
         WHERE project_id = %(project_id)s 
@@ -1297,7 +1297,7 @@ class CategoryService:
         return [self._row_to_category(row) for row in rows]
     
     def _row_to_category(self, row: Dict) -> Category:
-        """将数据库行转换为Category对象"""
+        """將資料庫行转换為Category物件"""
         return Category(
             id=row["id"],
             project_id=row["project_id"],
@@ -1310,11 +1310,11 @@ class CategoryService:
         )
     
     def _build_category_tree(self, categories: List[Category]) -> List[CategoryNode]:
-        """构建分类树结构"""
-        # 创建ID到分类的映射
+        """構建分類树結構"""
+        # 创建ID到分類的映射
         category_map = {cat.id: cat for cat in categories}
         
-        # 创建节点映射
+        # 创建節点映射
         node_map = {}
         for cat in categories:
             node_map[cat.id] = CategoryNode(
@@ -1322,16 +1322,16 @@ class CategoryService:
                 children=[]
             )
         
-        # 构建树结构
+        # 構建树結構
         root_nodes = []
         for cat in categories:
             node = node_map[cat.id]
             
             if cat.parent_id is None:
-                # 根节点
+                # 根節点
                 root_nodes.append(node)
             else:
-                # 子节点
+                # 子節点
                 parent_node = node_map.get(cat.parent_id)
                 if parent_node:
                     parent_node.children.append(node)
@@ -1358,18 +1358,18 @@ class CategoryService:
         user_id: str
     ) -> Category:
         """
-        创建新分类
+        创建新分類
         
-        :param project_id: 项目ID
-        :param category: 分类对象
+        :param project_id: 專案ID
+        :param category: 分類物件
         :param user_id: 创建者ID
-        :return: 创建后的分类
+        :return: 创建後的分類
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "write"):
             raise PermissionError("User does not have permission to create categories")
         
-        # 2. 验证分类
+        # 2. 验證分類
         self._validate_category(category, project_id)
         
         # 3. 生成唯一ID
@@ -1378,7 +1378,7 @@ class CategoryService:
         category.created_at = datetime.utcnow()
         category.updated_at = category.created_at
         
-        # 4. 保存到数据库
+        # 4. 保存到資料庫
         self._save_category(category)
         
         # 5. 清除缓存
@@ -1387,12 +1387,12 @@ class CategoryService:
         return category
     
     def _validate_category(self, category: Category, project_id: str):
-        """验证分类是否有效"""
+        """验證分類是否有效"""
         # 必填字段
         if not category.name:
             raise ValidationError("Category name is required")
         
-        # 检查名称是否重复
+        # 检查名称是否重複
         if self._category_name_exists(category.name, project_id, category.parent_id, exclude_id=None):
             raise ValidationError("Category name already exists in this parent")
     
@@ -1403,7 +1403,7 @@ class CategoryService:
         parent_id: Optional[str],
         exclude_id: Optional[str]
     ) -> bool:
-        """检查分类名称是否已存在"""
+        """检查分類名称是否已存在"""
         sql = """
         SELECT COUNT(*) FROM data_source_categories 
         WHERE project_id = %(project_id)s 
@@ -1424,7 +1424,7 @@ class CategoryService:
         return count > 0
     
     def _save_category(self, category: Category):
-        """保存分类到数据库"""
+        """保存分類到資料庫"""
         sql = """
         INSERT INTO data_source_categories (
             id, project_id, name, description, parent_id, sort_order, created_at, updated_at
@@ -1453,18 +1453,18 @@ class CategoryService:
         user_id: str
     ) -> Category:
         """
-        更新分类
+        更新分類
         
-        :param category_id: 分类ID
-        :param project_id: 项目ID
+        :param category_id: 分類ID
+        :param project_id: 專案ID
         :param updates: 更新字段
         :param user_id: 更新者ID
-        :return: 更新后的分类
+        :return: 更新後的分類
         """
-        # 1. 获取当前分类
+        # 1. 獲取當前分類
         current = self.get_category(category_id, project_id, user_id)
         
-        # 2. 验证更新
+        # 2. 验證更新
         self._validate_category_update(updates, current, project_id)
         
         # 3. 更新字段
@@ -1484,12 +1484,12 @@ class CategoryService:
         current: Category,
         project_id: str
     ):
-        """验证分类更新是否有效"""
-        # 不能修改ID和项目ID
+        """验證分類更新是否有效"""
+        # 不能修改ID和專案ID
         if "id" in updates or "project_id" in updates:
             raise ValidationError("Cannot update category ID or project ID")
         
-        # 验证名称变更
+        # 验證名称變更
         if "name" in updates:
             if self._category_name_exists(
                 updates["name"], 
@@ -1499,7 +1499,7 @@ class CategoryService:
             ):
                 raise ValidationError("Category name already exists in this parent")
         
-        # 验证父级变更
+        # 验證父级變更
         if "parent_id" in updates:
             new_parent_id = updates["parent_id"]
             
@@ -1507,28 +1507,28 @@ class CategoryService:
             if self._would_create_cycle(current.id, new_parent_id):
                 raise ValidationError("Cannot create circular category hierarchy")
             
-            # 检查新父级是否在同一项目
+            # 检查新父级是否在同一專案
             if new_parent_id and not self._parent_in_same_project(new_parent_id, project_id):
                 raise ValidationError("Parent category must be in the same project")
     
     def _would_create_cycle(self, category_id: str, new_parent_id: Optional[str]) -> bool:
-        """检查是否会导致循环引用"""
+        """检查是否會导致循环引用"""
         if not new_parent_id:
             return False
         
-        # 检查新父级是否是当前分类的后代
+        # 检查新父级是否是當前分類的後代
         ancestor_ids = self._get_all_ancestor_ids(new_parent_id)
         return category_id in ancestor_ids
     
     def _get_all_ancestor_ids(self, category_id: str) -> Set[str]:
-        """获取分类的所有祖先ID"""
+        """獲取分類的所有祖先ID"""
         ancestor_ids = set()
         current_id = category_id
         
         while current_id:
             ancestor_ids.add(current_id)
             
-            # 获取父级
+            # 獲取父级
             parent_id = self.db.fetchone(
                 "SELECT parent_id FROM data_source_categories WHERE id = %(id)s",
                 {"id": current_id}
@@ -1539,7 +1539,7 @@ class CategoryService:
         return ancestor_ids
     
     def _parent_in_same_project(self, parent_id: str, project_id: str) -> bool:
-        """检查父级是否在同一项目"""
+        """检查父级是否在同一專案"""
         result = self.db.fetchone(
             "SELECT COUNT(*) FROM data_source_categories "
             "WHERE id = %(id)s AND project_id = %(project_id)s",
@@ -1548,7 +1548,7 @@ class CategoryService:
         return result["count"] > 0
     
     def _apply_updates(self, current: Category, updates: Dict) -> Category:
-        """应用更新到分类对象"""
+        """应用更新到分類物件"""
         updated = copy.deepcopy(current)
         
         for field, value in updates.items():
@@ -1559,7 +1559,7 @@ class CategoryService:
         return updated
     
     def _update_category_in_db(self, category: Category):
-        """将更新保存到数据库"""
+        """將更新保存到資料庫"""
         update_fields = []
         params = {
             "id": category.id,
@@ -1594,18 +1594,18 @@ class CategoryService:
         user_id: str
     ) -> Category:
         """
-        获取分类详情
+        獲取分類詳情
         
-        :param category_id: 分类ID
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :return: 分类对象
+        :param category_id: 分類ID
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :return: 分類物件
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to view this category")
         
-        # 2. 从数据库获取
+        # 2. 從資料庫獲取
         sql = """
         SELECT * FROM data_source_categories 
         WHERE id = %(id)s AND project_id = %(project_id)s
@@ -1629,26 +1629,26 @@ class CategoryService:
         reassign_to: Optional[str] = None
     ):
         """
-        删除分类
+        删除分類
         
-        :param category_id: 分类ID
-        :param project_id: 项目ID
+        :param category_id: 分類ID
+        :param project_id: 專案ID
         :param user_id: 删除者ID
-        :param reassign_to: 重新分配到的分类ID（可选）
+        :param reassign_to: 重新分配到的分類ID（可选）
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "delete"):
             raise PermissionError("User does not have permission to delete categories")
         
-        # 2. 获取分类
+        # 2. 獲取分類
         category = self.get_category(category_id, project_id, user_id)
         
-        # 3. 检查是否有子分类
+        # 3. 检查是否有子分類
         child_count = self._get_child_count(category_id)
         if child_count > 0:
             raise ValidationError("Cannot delete category with child categories")
         
-        # 4. 检查是否有数据源
+        # 4. 检查是否有資料源
         source_count = self._get_data_source_count(category_id)
         if source_count > 0:
             if not reassign_to:
@@ -1657,20 +1657,20 @@ class CategoryService:
                     "Please specify a category to reassign to."
                 )
             
-            # 验证目标分类
+            # 验證目標分類
             self.get_category(reassign_to, project_id, user_id)
             
-            # 重新分配数据源
+            # 重新分配資料源
             self._reassign_data_sources(category_id, reassign_to)
         
-        # 5. 删除分类
+        # 5. 删除分類
         self._delete_category(category_id)
         
         # 6. 清除缓存
         self._clear_cache(project_id)
     
     def _get_child_count(self, category_id: str) -> int:
-        """获取子分类数量"""
+        """獲取子分類數量"""
         result = self.db.fetchone(
             "SELECT COUNT(*) FROM data_source_categories WHERE parent_id = %(id)s",
             {"id": category_id}
@@ -1678,7 +1678,7 @@ class CategoryService:
         return result["count"]
     
     def _get_data_source_count(self, category_id: str) -> int:
-        """获取分类中的数据源数量"""
+        """獲取分類中的資料源數量"""
         result = self.db.fetchone(
             "SELECT COUNT(*) FROM data_sources WHERE category = %(id)s",
             {"id": category_id}
@@ -1686,37 +1686,37 @@ class CategoryService:
         return result["count"]
     
     def _reassign_data_sources(self, from_category: str, to_category: str):
-        """重新分配数据源到新分类"""
+        """重新分配資料源到新分類"""
         self.db.execute(
             "UPDATE data_sources SET category = %(to_category)s WHERE category = %(from_category)s",
             {"to_category": to_category, "from_category": from_category}
         )
     
     def _delete_category(self, category_id: str):
-        """从数据库删除分类"""
+        """從資料庫删除分類"""
         self.db.execute(
             "DELETE FROM data_source_categories WHERE id = %(id)s",
             {"id": category_id}
         )
     
     def _clear_cache(self, project_id: str):
-        """清除项目缓存"""
+        """清除專案缓存"""
         cache_key = f"{project_id}:tree"
         if cache_key in self.cache:
             del self.cache[cache_key]
     
     def _has_permission(self, user_id: str, project_id: str, permission: str) -> bool:
-        """检查用户是否有权限"""
-        # 实现权限检查逻辑
-        return True  # 简化实现
+        """检查用戶是否有權限"""
+        # 實現權限检查逻辑
+        return True  # 简化實現
 ```
 
-### 1.5 数据模型详细定义
+### 1.5 資料模型詳細定義
 
-#### 1.5.1 数据源核心表
+#### 1.5.1 資料源核心表
 
 ```sql
--- 数据源主表
+-- 資料源主表
 CREATE TABLE data_sources (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -1752,13 +1752,13 @@ CREATE TABLE data_sources (
     INDEX idx_data_sources_health ON data_sources(health_score DESC),
     INDEX idx_data_sources_updated ON data_sources(updated_at DESC),
     
-    -- 全文搜索
+    -- 全文搜尋
     ts_vector TSVECTOR GENERATED ALWAYS AS (
         to_tsvector('english', coalesce(display_name, '') || ' ' || coalesce(description, '') || ' ' || url)
     ) STORED
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_modified_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -1772,14 +1772,14 @@ BEFORE UPDATE ON data_sources
 FOR EACH ROW
 EXECUTE FUNCTION update_modified_column();
 
--- 全文搜索索引
+-- 全文搜尋索引
 CREATE INDEX idx_data_sources_search ON data_sources USING GIN (ts_vector);
 ```
 
-#### 1.5.2 数据源版本表
+#### 1.5.2 資料源版本表
 
 ```sql
--- 数据源版本表
+-- 資料源版本表
 CREATE TABLE data_source_versions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     data_source_id UUID NOT NULL REFERENCES data_sources(id) ON DELETE CASCADE,
@@ -1796,10 +1796,10 @@ CREATE TABLE data_source_versions (
 );
 ```
 
-#### 1.5.3 分类表
+#### 1.5.3 分類表
 
 ```sql
--- 数据源分类表
+-- 資料源分類表
 CREATE TABLE data_source_categories (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -1817,11 +1817,11 @@ CREATE TABLE data_source_categories (
 );
 ```
 
-### 1.6 API详细规范
+### 1.6 API詳細規範
 
-#### 1.6.1 数据源管理API
+#### 1.6.1 資料源管理API
 
-**创建数据源 (POST /api/v1/data-sources)**
+**创建資料源 (POST /api/v1/data-sources)**
 
 *请求示例:*
 ```http
@@ -1873,7 +1873,7 @@ X-Request-ID: req-123456
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -1934,7 +1934,7 @@ ETag: "d41d8cd98f00b204e9800998ecf8427e"
 }
 ```
 
-**获取数据源列表 (GET /api/v1/data-sources)**
+**獲取資料源列表 (GET /api/v1/data-sources)**
 
 *请求示例:*
 ```http
@@ -1944,7 +1944,7 @@ Authorization: Bearer <access_token>
 Accept: application/json
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -2002,9 +2002,9 @@ Content-Type: application/json
 }
 ```
 
-#### 1.6.2 搜索API
+#### 1.6.2 搜尋API
 
-**搜索数据源 (POST /api/v1/data-sources:search)**
+**搜尋資料源 (POST /api/v1/data-sources:search)**
 
 *请求示例:*
 ```http
@@ -2026,7 +2026,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -2052,13 +2052,13 @@ Content-Type: application/json
 }
 ```
 
-### 1.7 性能优化策略
+### 1.7 效能優化策略
 
-#### 1.7.1 数据库优化
+#### 1.7.1 資料庫優化
 
 1. **分区策略**
    ```sql
-   -- 按项目ID分区
+   -- 按專案ID分区
    CREATE TABLE data_sources PARTITION OF data_sources_master
    FOR VALUES IN ('proj-123');
    
@@ -2066,62 +2066,62 @@ Content-Type: application/json
    FOR VALUES IN ('proj-456');
    ```
 
-2. **索引优化**
+2. **索引優化**
    ```sql
-   -- 为常用查询模式创建复合索引
+   -- 為常用查詢模式创建複合索引
    CREATE INDEX idx_data_sources_project_category ON data_sources(project_id, category);
    CREATE INDEX idx_data_sources_project_status ON data_sources(project_id, status);
    CREATE INDEX idx_data_sources_project_health ON data_sources(project_id, health_score DESC);
    ```
 
-3. **查询优化**
-   - 使用覆盖索引减少IO
+3. **查詢優化**
+   - 使用覆蓋索引减少IO
    - 避免SELECT *
    - 使用批量操作减少往返
-   - 适当使用CTE提高可读性
+   - 适當使用CTE提高可读性
 
 #### 1.7.2 缓存策略
 
-1. **多级缓存架构**
+1. **多级缓存架構**
    ```
    ┌───────────────────────────────────────────────────────────────────────────────┐
    │                                   缓存层                                      │
    ├───────────────────┬───────────────────┬───────────────────┬───────────────────┤
-   │  客户端缓存       │  CDN缓存          │  应用层缓存      │  数据库缓存       │
+   │  客户端缓存       │  CDN缓存          │  应用层缓存      │  資料庫缓存       │
    ├───────────────────┼───────────────────┼───────────────────┼───────────────────┤
-   │ • ETag/Last-Modified│ • 静态资源缓存   │ • Redis缓存      │ • 查询结果缓存   │
-   │ • 浏览器本地存储   │ • API响应缓存    │ • 分类树缓存     │ • 连接池         │
+   │ • ETag/Last-Modified│ • 静态資源缓存   │ • Redis缓存      │ • 查詢结果缓存   │
+   │ • 浏览器本地儲存   │ • API響應缓存    │ • 分類树缓存     │ • 連接池         │
    └───────────────────┴───────────────────┴───────────────────┴───────────────────┘
    ```
 
 2. **缓存失效策略**
-   - 写操作后立即失效相关缓存
-   - 设置合理的TTL（分类树：5分钟，数据源详情：1分钟）
-   - 使用缓存版本控制避免陈旧数据
+   - 写操作後立即失效相關缓存
+   - 设置合理的TTL（分類树：5分钟，資料源詳情：1分钟）
+   - 使用缓存版本控制避免陈舊資料
 
-#### 1.7.3 搜索性能优化
+#### 1.7.3 搜尋效能優化
 
-1. **Elasticsearch优化**
-   - 调整分片和副本数量
-   - 优化索引刷新间隔
-   - 使用字段数据类型优化存储
-   - 实现搜索结果分页缓存
+1. **Elasticsearch優化**
+   - 调整分片和副本數量
+   - 優化索引刷新间隔
+   - 使用字段資料類型優化儲存
+   - 實現搜尋结果分頁缓存
 
-2. **查询优化**
+2. **查詢優化**
    ```python
    def optimized_search(project_id, query, filters, sort, page, page_size):
-       # 1. 使用过滤上下文代替查询上下文（当不需要相关性评分时）
+       # 1. 使用過滤上下文代替查詢上下文（當不需要相關性評分時）
        # 2. 限制返回字段
-       # 3. 使用search_after代替from/size进行深分页
-       # 4. 实现结果缓存
+       # 3. 使用search_after代替from/size进行深分頁
+       # 4. 實現结果缓存
        pass
    ```
 
-### 1.8 安全考虑
+### 1.8 安全考慮
 
-#### 1.8.1 访问控制
+#### 1.8.1 訪問控制
 
-1. **基于角色的访问控制(RBAC)模型**
+1. **基於角色的訪問控制(RBAC)模型**
    ```
    ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
    │    Users    │─────▶│    Roles    │─────▶│  Permissions│
@@ -2134,35 +2134,35 @@ Content-Type: application/json
    └─────────────┘      └─────────────┘
    ```
 
-2. **细粒度权限检查**
+2. **细粒度權限检查**
    ```python
    def check_permission(user_id, project_id, resource, action):
        """
-       检查用户是否有权限执行特定操作
+       检查用戶是否有權限执行特定操作
        
-       :param user_id: 用户ID
-       :param project_id: 项目ID
-       :param resource: 资源类型 (data_source, category等)
+       :param user_id: 用戶ID
+       :param project_id: 專案ID
+       :param resource: 資源類型 (data_source, category等)
        :param action: 操作 (read, write, delete等)
-       :return: 是否有权限
+       :return: 是否有權限
        """
-       # 1. 检查项目成员资格
+       # 1. 检查專案成员资格
        if not project_service.is_member(user_id, project_id):
            return False
        
-       # 2. 检查角色权限
+       # 2. 检查角色權限
        user_role = project_service.get_user_role(user_id, project_id)
        return permission_service.has_permission(user_role, resource, action)
    ```
 
-#### 1.8.2 数据安全
+#### 1.8.2 資料安全
 
-1. **敏感数据处理**
-   - 对API密钥等敏感信息进行加密存储
-   - 实现字段级访问控制
-   - 记录敏感数据访问日志
+1. **敏感資料處理**
+   - 對API密钥等敏感資訊进行加密儲存
+   - 實現字段级訪問控制
+   - 記錄敏感資料訪問日志
 
-2. **审计日志**
+2. **審計日志**
    ```sql
    CREATE TABLE data_source_audit_logs (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -2181,9 +2181,9 @@ Content-Type: application/json
    CREATE INDEX idx_audit_logs_timestamp ON data_source_audit_logs(timestamp DESC);
    ```
 
-### 1.9 与其他模块的交互
+### 1.9 與其他模組的交互
 
-#### 1.9.1 与数据源健康监测系统交互
+#### 1.9.1 與資料源健康监测系統交互
 
 ```mermaid
 sequenceDiagram
@@ -2202,7 +2202,7 @@ sequenceDiagram
     DSHMS-->>DSR: Health status and metrics
 ```
 
-#### 1.9.2 与数据处理工作流引擎交互
+#### 1.9.2 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
@@ -2219,7 +2219,7 @@ sequenceDiagram
     DSR-->>DPWE: Updated status
 ```
 
-#### 1.9.3 与AI辅助开发系统交互
+#### 1.9.3 與AI輔助開发系統交互
 
 ```mermaid
 sequenceDiagram
@@ -2236,87 +2236,87 @@ sequenceDiagram
     DSR-->>AIDS: Schema analysis results
 ```
 
-## 2. 网站指纹分析引擎 (Website Fingerprinting Engine)
+## 2. 網站指紋分析引擎 (Website Fingerprinting Engine)
 
-### 2.1 模块概述
-网站指纹分析引擎负责分析目标网站的技术栈、反爬机制和内容特征，为爬虫配置提供智能建议。它通过主动探测和被动分析相结合的方式，构建全面的网站指纹数据库。
+### 2.1 模組概述
+網站指紋分析引擎負責分析目標網站的技術棧、反爬機制和內容特徵，為爬蟲配置提供智能建議。它通過主動探測和被動分析相結合的方式，構建全面的網站指紋資料庫。
 
-### 2.2 详细功能清单
+### 2.2 詳細功能清單
 
 #### 2.2.1 核心功能
-- **技术栈识别**
-  - 服务器软件识别（Apache, Nginx, IIS等）
+- **技術棧识别**
+  - 服務器软件识别（Apache, Nginx, IIS等）
   - 编程语言识别（PHP, Ruby, Python, Node.js等）
   - 前端框架识别（React, Angular, Vue等）
   - CMS识别（WordPress, Drupal, Joomla等）
-  - 数据库识别
+  - 資料庫识别
   - CDN识别
-- **反爬机制检测**
-  - User-Agent检测
-  - IP限制检测
+- **反爬機制檢測**
+  - User-Agent檢測
+  - IP限制檢測
   - 请求频率限制
-  - 行为验证（鼠标移动、点击模式）
-  - 挑战响应机制（JS挑战、CAPTCHA）
-  - 指纹检测（Canvas, WebGL, AudioContext等）
-- **内容特征分析**
-  - 页面结构分析（DOM树复杂度）
-  - 动态内容检测（AJAX加载内容）
-  - 内容编码分析
-  - 响应时间分析
-- **指纹数据库管理**
-  - 指纹规则存储与管理
-  - 指纹版本控制
-  - 指纹质量评估
+  - 行為验證（鼠標移動、点击模式）
+  - 挑战響應機制（JS挑战、CAPTCHA）
+  - 指紋檢測（Canvas, WebGL, AudioContext等）
+- **內容特徵分析**
+  - 頁面結構分析（DOM树複杂度）
+  - 動态內容檢測（AJAX加载內容）
+  - 內容编码分析
+  - 響應時間分析
+- **指紋資料庫管理**
+  - 指紋规则儲存與管理
+  - 指紋版本控制
+  - 指紋品質評估
 
 #### 2.2.2 高级功能
-- **智能爬虫配置建议**
-  - 基于指纹的爬虫参数推荐
-  - 反爬绕过策略建议
-  - 最佳爬取时间建议
-- **网站变更监测**
-  - 技术栈变更检测
-  - 反爬机制更新预警
-  - 内容结构变更分析
-- **指纹学习系统**
-  - 自动学习新的网站特征
-  - 指纹规则优化
+- **智能爬蟲配置建議**
+  - 基於指紋的爬蟲參數推薦
+  - 反爬绕過策略建議
+  - 最佳爬取時間建議
+- **網站變更监测**
+  - 技術棧變更檢測
+  - 反爬機制更新預警
+  - 內容結構變更分析
+- **指紋学习系統**
+  - 自動学习新的網站特徵
+  - 指紋规则優化
   - 误报/漏报分析
 
-### 2.3 技术架构
+### 2.3 技術架構
 
-#### 2.3.1 架构图
+#### 2.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                              网站指纹分析引擎 (WFE)                                           │
+│                              網站指紋分析引擎 (WFE)                                           │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  分析执行层           │  规则引擎层           │  数据管理层                                 │
+│  分析执行层           │  规则引擎层           │  資料管理层                                 │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 主动探测服务        │ • 规则加载器          │ • 指纹数据库                               │
-│ • 被动分析服务        │ • 规则执行器          │ • 规则版本控制                             │
-│ • 指纹生成服务        │ • 规则优化器          │ • 分析结果存储                             │
-│ • 变更监测服务        │ • 机器学习模型        │ • 性能指标存储                             │
+│ • 主動探測服務        │ • 规则加载器          │ • 指紋資料庫                               │
+│ • 被動分析服務        │ • 规则执行器          │ • 规则版本控制                             │
+│ • 指紋生成服務        │ • 规则優化器          │ • 分析结果儲存                             │
+│ • 變更监测服務        │ • 机器学习模型        │ • 效能指標儲存                             │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 2.3.2 服务边界与交互
-- **输入**：
-  - 目标URL列表（来自数据源注册中心）
-  - 手动触发的分析请求
-  - 网站变更监测事件
-- **输出**：
-  - 技术栈分析报告
-  - 反爬机制检测结果
-  - 智能爬虫配置建议
-  - 网站变更预警
+#### 2.3.2 服務边界與交互
+- **輸入**：
+  - 目標URL列表（來自資料源註冊中心）
+  - 手動触发的分析请求
+  - 網站變更监测事件
+- **輸出**：
+  - 技術棧分析报告
+  - 反爬機制檢測结果
+  - 智能爬蟲配置建議
+  - 網站變更預警
 
-### 2.4 核心组件详细实现
+### 2.4 核心組件詳細實現
 
-#### 2.4.1 技术栈识别服务
+#### 2.4.1 技術棧识别服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class TechStackAnalyzer:
-    """网站技术栈识别服务"""
+    """網站技術棧识别服務"""
     
     def __init__(
         self,
@@ -2335,19 +2335,19 @@ class TechStackAnalyzer:
         options: Optional[AnalysisOptions] = None
     ) -> TechStackReport:
         """
-        分析网站技术栈
+        分析網站技術棧
         
-        :param url: 目标URL
+        :param url: 目標URL
         :param options: 分析选项
-        :return: 技术栈分析报告
+        :return: 技術棧分析报告
         """
-        # 1. 准备分析选项
+        # 1. 准備分析选项
         opts = options or AnalysisOptions()
         
-        # 2. 获取页面内容
+        # 2. 獲取頁面內容
         response = self._fetch_page(url, opts)
         
-        # 3. 执行技术栈分析
+        # 3. 执行技術棧分析
         tech_stack = self._analyze_tech_stack(url, response, opts)
         
         # 4. 生成报告
@@ -2358,8 +2358,8 @@ class TechStackAnalyzer:
         url: str,
         options: AnalysisOptions
     ) -> HttpResponse:
-        """获取页面内容"""
-        # 准备请求头
+        """獲取頁面內容"""
+        # 准備请求头
         headers = {
             "User-Agent": options.user_agent or self.config.default_user_agent,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -2367,7 +2367,7 @@ class TechStackAnalyzer:
             "Connection": "keep-alive"
         }
         
-        # 添加自定义请求头
+        # 添加自定義请求头
         if options.headers:
             headers.update(options.headers)
         
@@ -2401,7 +2401,7 @@ class TechStackAnalyzer:
         response: HttpResponse,
         options: AnalysisOptions
     ) -> Dict[str, List[Technology]]:
-        """分析技术栈"""
+        """分析技術棧"""
         results = {
             "server": [],
             "framework": [],
@@ -2412,17 +2412,17 @@ class TechStackAnalyzer:
             "os": []
         }
         
-        # 1. 从响应头分析
+        # 1. 從響應头分析
         self._analyze_from_headers(response, results)
         
-        # 2. 从HTML内容分析
+        # 2. 從HTML內容分析
         if response.content:
             self._analyze_from_html(response.content, results)
         
-        # 3. 从URL结构分析
+        # 3. 從URL結構分析
         self._analyze_from_url(url, results)
         
-        # 4. 从JavaScript文件分析
+        # 4. 從JavaScript文件分析
         if options.analyze_js and response.content:
             self._analyze_from_js(response.content, results)
         
@@ -2437,10 +2437,10 @@ class TechStackAnalyzer:
         response: HttpResponse,
         results: Dict[str, List[Technology]]
     ):
-        """从HTTP响应头分析技术栈"""
+        """從HTTP響應头分析技術棧"""
         headers = {k.lower(): v for k, v in response.headers.items()}
         
-        # 服务器软件
+        # 服務器软件
         if "server" in headers:
             server_header = headers["server"]
             server_match = self.rule_engine.match(
@@ -2478,18 +2478,18 @@ class TechStackAnalyzer:
         content: bytes,
         results: Dict[str, List[Technology]]
     ):
-        """从HTML内容分析技术栈"""
+        """從HTML內容分析技術棧"""
         try:
             # 解析HTML
             soup = BeautifulSoup(content, 'html.parser')
             
-            # Meta标签分析
+            # Meta標籤分析
             self._analyze_meta_tags(soup, results)
             
-            # 脚本标签分析
+            # 脚本標籤分析
             self._analyze_script_tags(soup, results)
             
-            # 链接标签分析
+            # 鏈接標籤分析
             self._analyze_link_tags(soup, results)
             
             # HTML属性分析
@@ -2503,7 +2503,7 @@ class TechStackAnalyzer:
         soup: BeautifulSoup,
         results: Dict[str, List[Technology]]
     ):
-        """分析meta标签"""
+        """分析meta標籤"""
         for meta in soup.find_all('meta'):
             name = meta.get('name', '').lower()
             content = meta.get('content', '')
@@ -2511,7 +2511,7 @@ class TechStackAnalyzer:
             if not content:
                 continue
             
-            # Generator meta标签
+            # Generator meta標籤
             if name == 'generator':
                 generator_match = self.rule_engine.match(
                     "generator", 
@@ -2521,7 +2521,7 @@ class TechStackAnalyzer:
                 if generator_match:
                     results["cms"].extend(generator_match.technologies)
             
-            # 特定CMS meta标签
+            # 特定CMS meta標籤
             elif "wordpress" in name or "wp" in name:
                 results["cms"].append(Technology(
                     name="WordPress",
@@ -2535,7 +2535,7 @@ class TechStackAnalyzer:
         soup: BeautifulSoup,
         results: Dict[str, List[Technology]]
     ):
-        """分析script标签"""
+        """分析script標籤"""
         for script in soup.find_all('script', src=True):
             src = script['src']
             
@@ -2564,7 +2564,7 @@ class TechStackAnalyzer:
         soup: BeautifulSoup,
         results: Dict[str, List[Technology]]
     ):
-        """分析link标签"""
+        """分析link標籤"""
         for link in soup.find_all('link', href=True):
             href = link['href']
             
@@ -2617,7 +2617,7 @@ class TechStackAnalyzer:
         url: str,
         results: Dict[str, List[Technology]]
     ):
-        """从URL结构分析技术栈"""
+        """從URL結構分析技術棧"""
         # 分析路径
         path_match = self.rule_engine.match(
             "paths", 
@@ -2627,7 +2627,7 @@ class TechStackAnalyzer:
         if path_match:
             results["server"].extend(path_match.technologies)
         
-        # 分析查询参数
+        # 分析查詢參數
         query_match = self.rule_engine.match(
             "query-params", 
             urlparse(url).query, 
@@ -2641,13 +2641,13 @@ class TechStackAnalyzer:
         content: bytes,
         results: Dict[str, List[Technology]]
     ):
-        """从JavaScript文件分析技术栈"""
+        """從JavaScript文件分析技術棧"""
         try:
             # 提取所有JS文件
             soup = BeautifulSoup(content, 'html.parser')
             js_files = [script['src'] for script in soup.find_all('script', src=True)]
             
-            # 下载并分析JS文件
+            # 下载並分析JS文件
             for js_url in js_files:
                 try:
                     js_response = self.http_client.get(
@@ -2655,7 +2655,7 @@ class TechStackAnalyzer:
                         timeout=self.config.js_analysis_timeout
                     )
                     
-                    # 分析JS内容
+                    # 分析JS內容
                     js_match = self.rule_engine.match(
                         "javascript", 
                         js_response.text, 
@@ -2677,13 +2677,13 @@ class TechStackAnalyzer:
         results: Dict[str, List[Technology]]
     ):
         """执行高级分析"""
-        # 1. 分析HTTP方法支持
+        # 1. 分析HTTP方法支援
         self._analyze_http_methods(url, results)
         
         # 2. 分析API端点
         self._analyze_api_endpoints(url, response, results)
         
-        # 3. 分析资源加载模式
+        # 3. 分析資源加载模式
         self._analyze_resource_loading(url, response, results)
     
     def _analyze_http_methods(
@@ -2691,7 +2691,7 @@ class TechStackAnalyzer:
         url: str,
         results: Dict[str, List[Technology]]
     ):
-        """分析HTTP方法支持"""
+        """分析HTTP方法支援"""
         methods = ["OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "PATCH"]
         supported_methods = []
         
@@ -2738,7 +2738,7 @@ class TechStackAnalyzer:
                     timeout=self.config.advanced_analysis_timeout
                 )
                 if api_response.status_code == 200:
-                    # 检查响应内容类型
+                    # 检查響應內容類型
                     content_type = api_response.headers.get('Content-Type', '').lower()
                     
                     if 'json' in content_type:
@@ -2764,7 +2764,7 @@ class TechStackAnalyzer:
         response: HttpResponse,
         results: Dict[str, List[Technology]]
     ):
-        """分析资源加载模式"""
+        """分析資源加载模式"""
         # 检查是否使用懒加载
         if "loading" in response.content.decode('utf-8', errors='ignore'):
             lazy_load_match = self.rule_engine.match(
@@ -2782,13 +2782,13 @@ class TechStackAnalyzer:
         tech_stack: Dict[str, List[Technology]],
         options: AnalysisOptions
     ) -> TechStackReport:
-        """生成技术栈分析报告"""
-        # 合并技术栈结果
+        """生成技術棧分析报告"""
+        # 合並技術棧结果
         all_technologies = []
         for category, technologies in tech_stack.items():
             all_technologies.extend(technologies)
         
-        # 去重并排序
+        # 去重並排序
         unique_technologies = self._deduplicate_technologies(all_technologies)
         sorted_technologies = sorted(
             unique_technologies, 
@@ -2796,7 +2796,7 @@ class TechStackAnalyzer:
             reverse=True
         )
         
-        # 生成详细报告
+        # 生成詳細报告
         return TechStackReport(
             url=url,
             status_code=response.status_code,
@@ -2811,7 +2811,7 @@ class TechStackAnalyzer:
         self, 
         technologies: List[Technology]
     ) -> List[Technology]:
-        """去重技术栈结果"""
+        """去重技術棧结果"""
         seen = {}
         result = []
         
@@ -2827,7 +2827,7 @@ class TechStackAnalyzer:
         self, 
         technologies: List[Technology]
     ) -> float:
-        """计算整体置信度"""
+        """计算整體置信度"""
         if not technologies:
             return 0.0
         
@@ -2836,7 +2836,7 @@ class TechStackAnalyzer:
         weighted_sum = 0
         
         for tech in technologies:
-            # 根据技术类别分配权重
+            # 根據技術类别分配权重
             weight = 1.0
             if tech.category == "server":
                 weight = 1.2
@@ -2849,7 +2849,7 @@ class TechStackAnalyzer:
         return min(1.0, weighted_sum / total_weight)
     
     def _extract_version(self, text: str) -> str:
-        """从文本中提取版本号"""
+        """從文本中提取版本號"""
         version_patterns = [
             r'version\s*[:=]?\s*v?(\d+\.\d+(?:\.\d+)?)',
             r'v(\d+\.\d+(?:\.\d+)?)',
@@ -2864,12 +2864,12 @@ class TechStackAnalyzer:
         return ""
 ```
 
-#### 2.4.2 反爬机制检测服务
+#### 2.4.2 反爬機制檢測服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class AntiCrawlingDetector:
-    """反爬机制检测服务"""
+    """反爬機制檢測服務"""
     
     def __init__(
         self,
@@ -2888,24 +2888,24 @@ class AntiCrawlingDetector:
         options: Optional[AnalysisOptions] = None
     ) -> AntiCrawlingReport:
         """
-        检测网站的反爬机制
+        檢測網站的反爬機制
         
-        :param url: 目标URL
+        :param url: 目標URL
         :param options: 分析选项
-        :return: 反爬机制检测报告
+        :return: 反爬機制檢測报告
         """
-        # 1. 准备分析选项
+        # 1. 准備分析选项
         opts = options or AnalysisOptions()
         
-        # 2. 执行基础检测
+        # 2. 执行基礎檢測
         basic_detection = self._basic_detection(url, opts)
         
-        # 3. 执行深度检测（如果启用）
+        # 3. 执行深度檢測（如果启用）
         advanced_detection = {}
         if opts.advanced_analysis:
             advanced_detection = self._advanced_detection(url, opts)
         
-        # 4. 合并结果
+        # 4. 合並结果
         all_detections = {**basic_detection, **advanced_detection}
         
         # 5. 生成报告
@@ -2916,28 +2916,28 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> Dict[str, DetectionResult]:
-        """基础反爬机制检测"""
+        """基礎反爬機制檢測"""
         results = {}
         
-        # 1. 获取正常响应
+        # 1. 獲取正常響應
         normal_response = self._fetch_page(url, options)
         
-        # 2. 检测User-Agent过滤
+        # 2. 檢測User-Agent過滤
         ua_detection = self._detect_user_agent_filtering(url, options)
         if ua_detection.confidence > 0:
             results["user_agent"] = ua_detection
         
-        # 3. 检测IP限制
+        # 3. 檢測IP限制
         ip_detection = self._detect_ip_limiting(url, options)
         if ip_detection.confidence > 0:
             results["ip_limiting"] = ip_detection
         
-        # 4. 检测请求频率限制
+        # 4. 檢測请求频率限制
         rate_limit_detection = self._detect_rate_limiting(url, options)
         if rate_limit_detection.confidence > 0:
             results["rate_limiting"] = rate_limit_detection
         
-        # 5. 检测Cookie要求
+        # 5. 檢測Cookie要求
         cookie_detection = self._detect_cookie_requirement(url, options, normal_response)
         if cookie_detection.confidence > 0:
             results["cookie_requirement"] = cookie_detection
@@ -2949,8 +2949,8 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> HttpResponse:
-        """获取页面内容（与TechStackAnalyzer共用）"""
-        # 与技术栈分析相同的实现
+        """獲取頁面內容（與TechStackAnalyzer共用）"""
+        # 與技術棧分析相同的實現
         pass
     
     def _detect_user_agent_filtering(
@@ -2958,16 +2958,16 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测User-Agent过滤"""
-        # 测试标准User-Agent
+        """檢測User-Agent過滤"""
+        # 测试標准User-Agent
         normal_response = self._fetch_page(url, options)
         
-        # 测试爬虫User-Agent
+        # 测试爬蟲User-Agent
         crawler_options = copy.copy(options)
         crawler_options.user_agent = self.config.crawler_user_agent
         crawler_response = self._fetch_page(url, crawler_options)
         
-        # 比较响应
+        # 比较響應
         if normal_response.status_code != crawler_response.status_code:
             return DetectionResult(
                 name="User-Agent Filtering",
@@ -2984,7 +2984,7 @@ class AntiCrawlingDetector:
                 ]
             )
         
-        # 检查响应内容差异
+        # 检查響應內容差异
         normal_hash = self._hash_content(normal_response.content)
         crawler_hash = self._hash_content(crawler_response.content)
         
@@ -3010,7 +3010,7 @@ class AntiCrawlingDetector:
         )
     
     def _hash_content(self, content: bytes) -> str:
-        """计算内容哈希"""
+        """计算內容哈希"""
         return hashlib.md5(content).hexdigest() if content else ""
     
     def _detect_ip_limiting(
@@ -3018,11 +3018,11 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测IP限制"""
-        # 使用不同IP（通过代理）发送请求
+        """檢測IP限制"""
+        # 使用不同IP（通過代理）发送请求
         ip_results = []
         
-        for proxy in self.config.test_proxies[:3]:  # 测试前3个代理
+        for proxy in self.config.test_proxies[:3]:  # 测试前3個代理
             try:
                 proxy_options = copy.copy(options)
                 proxy_options.proxy = proxy
@@ -3038,7 +3038,7 @@ class AntiCrawlingDetector:
                 confidence=0.0
             )
         
-        # 检查状态码差异
+        # 检查狀態码差异
         status_codes = [res[1] for res in ip_results]
         if len(set(status_codes)) > 1:
             return DetectionResult(
@@ -3057,7 +3057,7 @@ class AntiCrawlingDetector:
                 ]
             )
         
-        # 检查响应内容差异
+        # 检查響應內容差异
         content_hashes = [self._hash_content(self._fetch_page(url, options).content) for _ in range(3)]
         if len(set(content_hashes)) > 1:
             return DetectionResult(
@@ -3084,8 +3084,8 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测请求频率限制"""
-        # 快速发送多个请求
+        """檢測请求频率限制"""
+        # 快速发送多個请求
         timestamps = []
         status_codes = []
         
@@ -3100,12 +3100,12 @@ class AntiCrawlingDetector:
                 status_codes.append(500)
             time.sleep(0.1)  # 100ms间隔
         
-        # 分析响应时间
+        # 分析響應時間
         valid_timestamps = [t for t in timestamps if t is not None]
         if valid_timestamps:
             avg_time = sum(valid_timestamps) / len(valid_timestamps)
             if max(valid_timestamps) > avg_time * 3:
-                # 检测到响应时间显著增加
+                # 檢測到響應時間显著增加
                 slow_index = valid_timestamps.index(max(valid_timestamps))
                 return DetectionResult(
                     name="Rate Limiting",
@@ -3122,7 +3122,7 @@ class AntiCrawlingDetector:
                     ]
                 )
         
-        # 分析状态码
+        # 分析狀態码
         if 429 in status_codes or 403 in status_codes:
             error_index = status_codes.index(429) if 429 in status_codes else status_codes.index(403)
             return DetectionResult(
@@ -3151,7 +3151,7 @@ class AntiCrawlingDetector:
         options: AnalysisOptions,
         normal_response: HttpResponse
     ) -> DetectionResult:
-        """检测Cookie要求"""
+        """檢測Cookie要求"""
         # 检查Set-Cookie头
         if "set-cookie" in normal_response.headers:
             cookies = normal_response.headers["set-cookie"]
@@ -3170,7 +3170,7 @@ class AntiCrawlingDetector:
                     ]
                 )
         
-        # 检查响应中的cookie相关脚本
+        # 检查響應中的cookie相關脚本
         if normal_response.content:
             content = normal_response.content.decode('utf-8', errors='ignore')
             if "cookie" in content.lower():
@@ -3193,7 +3193,7 @@ class AntiCrawlingDetector:
         )
     
     def _find_cookie_references(self, content: str) -> List[str]:
-        """查找内容中的cookie引用"""
+        """查找內容中的cookie引用"""
         patterns = [
             r'cookie',
             r'document\.cookie',
@@ -3205,7 +3205,7 @@ class AntiCrawlingDetector:
         for pattern in patterns:
             matches = re.findall(pattern, content, re.IGNORECASE)
             if matches:
-                references.extend(matches[:3])  # 只取前3个匹配
+                references.extend(matches[:3])  # 只取前3個匹配
         
         return references
     
@@ -3214,25 +3214,25 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> Dict[str, DetectionResult]:
-        """高级反爬机制检测"""
+        """高级反爬機制檢測"""
         results = {}
         
-        # 1. 检测JavaScript挑战
+        # 1. 檢測JavaScript挑战
         js_challenge_detection = self._detect_js_challenge(url, options)
         if js_challenge_detection.confidence > 0:
             results["js_challenge"] = js_challenge_detection
         
-        # 2. 检测行为验证
+        # 2. 檢測行為验證
         behavior_detection = self._detect_behavior_verification(url, options)
         if behavior_detection.confidence > 0:
             results["behavior_verification"] = behavior_detection
         
-        # 3. 检测指纹检测
+        # 3. 檢測指紋檢測
         fingerprint_detection = self._detect_fingerprint_detection(url, options)
         if fingerprint_detection.confidence > 0:
             results["fingerprint_detection"] = fingerprint_detection
         
-        # 4. 检测CAPTCHA
+        # 4. 檢測CAPTCHA
         captcha_detection = self._detect_captcha(url, options)
         if captcha_detection.confidence > 0:
             results["captcha"] = captcha_detection
@@ -3244,16 +3244,16 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测JavaScript挑战"""
-        # 获取正常响应
+        """檢測JavaScript挑战"""
+        # 獲取正常響應
         normal_response = self._fetch_page(url, options)
         
-        # 获取禁用JS的响应
+        # 獲取禁用JS的響應
         no_js_options = copy.copy(options)
         no_js_options.headers = {"Accept": "text/plain"}
         no_js_response = self._fetch_page(url, no_js_options)
         
-        # 比较响应
+        # 比较響應
         normal_hash = self._hash_content(normal_response.content)
         no_js_hash = self._hash_content(no_js_response.content)
         
@@ -3309,11 +3309,11 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测行为验证"""
-        # 获取初始页面
+        """檢測行為验證"""
+        # 獲取初始頁面
         initial_response = self._fetch_page(url, options)
         
-        # 检查是否存在行为跟踪脚本
+        # 检查是否存在行為跟踪脚本
         if initial_response.content:
             content = initial_response.content.decode('utf-8', errors='ignore')
             behavior_patterns = [
@@ -3341,7 +3341,7 @@ class AntiCrawlingDetector:
                         ]
                     )
         
-        # 检查是否存在鼠标移动事件监听
+        # 检查是否存在鼠標移動事件监听
         if initial_response.content:
             content = initial_response.content.decode('utf-8', errors='ignore')
             if re.search(r'addEventListener\(["\']mousemove', content, re.IGNORECASE):
@@ -3369,8 +3369,8 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测指纹检测"""
-        # 获取页面内容
+        """檢測指紋檢測"""
+        # 獲取頁面內容
         response = self._fetch_page(url, options)
         
         if not response.content:
@@ -3381,7 +3381,7 @@ class AntiCrawlingDetector:
         
         content = response.content.decode('utf-8', errors='ignore')
         
-        # 检查Canvas指纹检测
+        # 检查Canvas指紋檢測
         if re.search(r'CanvasRenderingContext2D', content) or \
            re.search(r'toDataURL', content) or \
            re.search(r'getImageData', content):
@@ -3400,7 +3400,7 @@ class AntiCrawlingDetector:
                 ]
             )
         
-        # 检查WebGL指纹检测
+        # 检查WebGL指紋檢測
         if re.search(r'WebGLRenderingContext', content) or \
            re.search(r'getParameter', content):
             return DetectionResult(
@@ -3417,7 +3417,7 @@ class AntiCrawlingDetector:
                 ]
             )
         
-        # 检查AudioContext指纹检测
+        # 检查AudioContext指紋檢測
         if re.search(r'AudioContext', content) or \
            re.search(r'createOscillator', content):
             return DetectionResult(
@@ -3444,8 +3444,8 @@ class AntiCrawlingDetector:
         url: str,
         options: AnalysisOptions
     ) -> DetectionResult:
-        """检测CAPTCHA"""
-        # 获取页面内容
+        """檢測CAPTCHA"""
+        # 獲取頁面內容
         response = self._fetch_page(url, options)
         
         if not response.content:
@@ -3456,7 +3456,7 @@ class AntiCrawlingDetector:
         
         content = response.content.decode('utf-8', errors='ignore').lower()
         
-        # 检查常见CAPTCHA服务
+        # 检查常见CAPTCHA服務
         captcha_patterns = [
             ("recaptcha", "Google reCAPTCHA detected"),
             ("hcaptcha", "hCaptcha detected"),
@@ -3492,17 +3492,17 @@ class AntiCrawlingDetector:
         detections: Dict[str, DetectionResult],
         options: AnalysisOptions
     ) -> AntiCrawlingReport:
-        """生成反爬机制检测报告"""
-        # 过滤低置信度检测
+        """生成反爬機制檢測报告"""
+        # 過滤低置信度檢測
         significant_detections = [
             detection for detection in detections.values()
             if detection.confidence > 0.5
         ]
         
-        # 计算整体风险级别
+        # 计算整體風險级别
         risk_level = self._calculate_risk_level(significant_detections)
         
-        # 生成绕过建议
+        # 生成绕過建議
         bypass_suggestions = self._generate_bypass_suggestions(significant_detections)
         
         return AntiCrawlingReport(
@@ -3517,11 +3517,11 @@ class AntiCrawlingDetector:
         self,
         detections: List[DetectionResult]
     ) -> str:
-        """计算整体风险级别"""
+        """计算整體風險级别"""
         if not detections:
             return "low"
         
-        # 检查是否存在高风险检测
+        # 检查是否存在高風險檢測
         high_risk = any(d.severity == "critical" for d in detections)
         if high_risk:
             return "critical"
@@ -3536,7 +3536,7 @@ class AntiCrawlingDetector:
         self,
         detections: List[DetectionResult]
     ) -> List[str]:
-        """生成绕过建议"""
+        """生成绕過建議"""
         suggestions = set()
         
         for detection in detections:
@@ -3546,12 +3546,12 @@ class AntiCrawlingDetector:
         return list(suggestions)
 ```
 
-#### 2.4.3 规则引擎服务
+#### 2.4.3 规则引擎服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class RuleEngine:
-    """规则引擎，用于匹配网站特征"""
+    """规则引擎，用於匹配網站特徵"""
     
     def __init__(
         self,
@@ -3570,10 +3570,10 @@ class RuleEngine:
         category: RuleCategory
     ) -> RuleMatch:
         """
-        匹配内容与规则
+        匹配內容與规则
         
         :param rule_set: 规则集名称
-        :param content: 要匹配的内容
+        :param content: 要匹配的內容
         :param category: 规则类别
         :return: 规则匹配结果
         """
@@ -3582,7 +3582,7 @@ class RuleEngine:
         if cache_key in self.cache:
             return self.cache[cache_key]
         
-        # 2. 获取规则
+        # 2. 獲取规则
         rules = self.rule_repository.get_rules(rule_set, category)
         
         # 3. 执行匹配
@@ -3603,7 +3603,7 @@ class RuleEngine:
         matched_technologies = []
         matched_rules = []
         
-        # 1. 执行基于规则的匹配
+        # 1. 执行基於规则的匹配
         for rule in rules:
             if self._rule_matches(rule, content):
                 matched_rules.append(rule)
@@ -3614,11 +3614,11 @@ class RuleEngine:
             ml_match = self.ml_model.predict(content, category)
             if ml_match:
                 matched_technologies.extend(ml_match.technologies)
-                # 标记为ML匹配
+                # 標记為ML匹配
                 for tech in ml_match.technologies:
                     tech.source = "ml"
         
-        # 3. 去重并计算置信度
+        # 3. 去重並计算置信度
         unique_technologies = self._deduplicate_technologies(matched_technologies)
         
         return RuleMatch(
@@ -3628,12 +3628,12 @@ class RuleEngine:
         )
     
     def _rule_matches(self, rule: Rule, content: str) -> bool:
-        """检查规则是否匹配内容"""
+        """检查规则是否匹配內容"""
         if rule.pattern_type == PatternType.REGEX:
             return bool(re.search(rule.pattern, content, re.IGNORECASE))
         
         elif rule.pattern_type == PatternType.GLOB:
-            # 简单实现glob匹配
+            # 简单實現glob匹配
             regex = glob2regex(rule.pattern)
             return bool(re.match(regex, content, re.IGNORECASE))
         
@@ -3646,7 +3646,7 @@ class RuleEngine:
         self, 
         technologies: List[Technology]
     ) -> List[Technology]:
-        """去重技术结果"""
+        """去重技術结果"""
         seen = {}
         result = []
         
@@ -3662,7 +3662,7 @@ class RuleEngine:
         self, 
         technologies: List[Technology]
     ) -> float:
-        """计算整体置信度"""
+        """计算整體置信度"""
         if not technologies:
             return 0.0
         
@@ -3671,7 +3671,7 @@ class RuleEngine:
         weighted_sum = 0
         
         for tech in technologies:
-            # 根据技术类别分配权重
+            # 根據技術类别分配权重
             weight = 1.0
             if tech.category == "server":
                 weight = 1.2
@@ -3691,7 +3691,7 @@ class RuleEngine:
     ):
         """更新规则"""
         self.rule_repository.update_rules(rule_set, category, new_rules)
-        # 清除相关缓存
+        # 清除相關缓存
         self._clear_cache()
     
     def _clear_cache(self):
@@ -3699,7 +3699,7 @@ class RuleEngine:
         self.cache.clear()
 
 class RuleRepository:
-    """规则存储库"""
+    """规则儲存庫"""
     
     def __init__(self, db: Database):
         self.db = db
@@ -3710,7 +3710,7 @@ class RuleRepository:
         rule_set: str,
         category: RuleCategory
     ) -> List[Rule]:
-        """获取规则"""
+        """獲取规则"""
         sql = """
         SELECT * FROM fingerprint_rules 
         WHERE rule_set = %(rule_set)s 
@@ -3726,7 +3726,7 @@ class RuleRepository:
         return [self._row_to_rule(row) for row in rows]
     
     def _row_to_rule(self, row: Dict) -> Rule:
-        """将数据库行转换为Rule对象"""
+        """將資料庫行转换為Rule物件"""
         return Rule(
             id=row["id"],
             rule_set=row["rule_set"],
@@ -3741,7 +3741,7 @@ class RuleRepository:
         )
     
     def _decode_technologies(self, json_data: str) -> List[Technology]:
-        """解码技术列表"""
+        """解码技術列表"""
         if not json_data:
             return []
         
@@ -3763,9 +3763,9 @@ class RuleRepository:
         rules: List[Rule]
     ):
         """更新规则"""
-        # 开始事务
+        # 開始事务
         with self.db.transaction():
-            # 删除现有规则
+            # 删除現有规则
             self.db.execute(
                 "DELETE FROM fingerprint_rules WHERE rule_set = %(rule_set)s AND category = %(category)s",
                 {"rule_set": rule_set, "category": category.value}
@@ -3776,7 +3776,7 @@ class RuleRepository:
                 self._save_rule(rule)
     
     def _save_rule(self, rule: Rule):
-        """保存规则到数据库"""
+        """保存规则到資料庫"""
         sql = """
         INSERT INTO fingerprint_rules (
             rule_set, category, pattern, pattern_type, 
@@ -3808,9 +3808,9 @@ class RuleRepository:
             "updated_at": rule.updated_at or datetime.utcnow()
         })
 
-# 辅助函数
+# 輔助函數
 def glob2regex(pattern: str) -> str:
-    """将glob模式转换为正则表达式"""
+    """將glob模式转换為正则表达式"""
     regex = ''
     i = 0
     while i < len(pattern):
@@ -3845,12 +3845,12 @@ def glob2regex(pattern: str) -> str:
     return regex
 ```
 
-### 2.5 数据模型详细定义
+### 2.5 資料模型詳細定義
 
-#### 2.5.1 指纹规则表
+#### 2.5.1 指紋规则表
 
 ```sql
--- 指纹规则表
+-- 指紋规则表
 CREATE TABLE fingerprint_rules (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     rule_set VARCHAR(50) NOT NULL,
@@ -3869,7 +3869,7 @@ CREATE TABLE fingerprint_rules (
     INDEX idx_rules_priority ON fingerprint_rules(priority)
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_fingerprint_rules_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -3887,7 +3887,7 @@ EXECUTE FUNCTION update_fingerprint_rules_modtime();
 #### 2.5.2 分析结果表
 
 ```sql
--- 技术栈分析结果表
+-- 技術棧分析结果表
 CREATE TABLE tech_stack_analysis (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     url VARCHAR(2048) NOT NULL,
@@ -3906,7 +3906,7 @@ CREATE TABLE tech_stack_analysis (
     INDEX idx_analysis_timestamp ON tech_stack_analysis(timestamp DESC)
 );
 
--- 反爬机制检测结果表
+-- 反爬機制檢測结果表
 CREATE TABLE anti_crawling_analysis (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     url VARCHAR(2048) NOT NULL,
@@ -3925,11 +3925,11 @@ CREATE TABLE anti_crawling_analysis (
 );
 ```
 
-### 2.6 API详细规范
+### 2.6 API詳細規範
 
-#### 2.6.1 网站分析API
+#### 2.6.1 網站分析API
 
-**分析网站 (POST /api/v1/analyze)**
+**分析網站 (POST /api/v1/analyze)**
 
 *请求示例:*
 ```http
@@ -3949,7 +3949,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -4032,7 +4032,7 @@ Content-Type: application/json
 }
 ```
 
-**获取分析历史 (GET /api/v1/analysis-history)**
+**獲取分析歷史 (GET /api/v1/analysis-history)**
 
 *请求示例:*
 ```http
@@ -4041,7 +4041,7 @@ Host: wfe.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -4071,11 +4071,11 @@ Content-Type: application/json
 }
 ```
 
-### 2.7 性能优化策略
+### 2.7 效能優化策略
 
-#### 2.7.1 分析性能优化
+#### 2.7.1 分析效能優化
 
-1. **并行分析**
+1. **並行分析**
    ```python
    def analyze_multiple_urls(urls, options):
        with ThreadPoolExecutor(max_workers=10) as executor:
@@ -4096,58 +4096,58 @@ Content-Type: application/json
    ```
 
 2. **缓存策略**
-   - 对相同URL的分析结果缓存24小时
-   - 使用URL哈希作为缓存键
-   - 支持强制刷新分析
+   - 對相同URL的分析结果缓存24小時
+   - 使用URL哈希作為缓存鍵
+   - 支援强制刷新分析
 
-3. **资源限制**
-   - 限制每个分析任务的最大资源使用
-   - 实现超时机制
-   - 限制并发分析任务数量
+3. **資源限制**
+   - 限制每個分析任務的最大資源使用
+   - 實現超時機制
+   - 限制並發分析任務數量
 
-#### 2.7.2 规则匹配优化
+#### 2.7.2 规则匹配優化
 
-1. **规则索引优化**
+1. **规则索引優化**
    ```sql
-   -- 为常用规则集创建索引
+   -- 為常用规则集创建索引
    CREATE INDEX idx_rules_set_category ON fingerprint_rules(rule_set, category);
    CREATE INDEX idx_rules_priority ON fingerprint_rules(priority);
    ```
 
-2. **规则匹配算法优化**
-   - 对正则表达式规则进行编译缓存
+2. **规则匹配算法優化**
+   - 對正则表达式规则进行编译缓存
    - 使用Aho-Corasick算法进行多模式匹配
-   - 对高频规则进行优先级排序
+   - 對高频规则进行优先级排序
 
-### 2.8 安全考虑
+### 2.8 安全考慮
 
 #### 2.8.1 分析安全
 
 1. **沙箱环境**
    - 在隔离环境中执行JavaScript分析
-   - 限制网络访问
-   - 限制系统资源使用
+   - 限制网络訪問
+   - 限制系統資源使用
 
 2. **安全分析策略**
    - 限制分析深度
    - 避免敏感操作
-   - 监控异常行为
+   - 監控異常行為
 
-#### 2.8.2 数据安全
+#### 2.8.2 資料安全
 
 1. **分析结果保护**
-   - 仅授权用户可访问分析结果
-   - 敏感信息脱敏
-   - 完整的访问审计
+   - 仅授權用戶可訪問分析结果
+   - 敏感資訊脱敏
+   - 完整的訪問審計
 
 2. **隐私保护**
-   - 不存储完整的页面内容
-   - 自动清理临时数据
+   - 不儲存完整的頁面內容
+   - 自動清理临時資料
    - 符合GDPR要求
 
-### 2.9 与其他模块的交互
+### 2.9 與其他模組的交互
 
-#### 2.9.1 与数据源注册中心交互
+#### 2.9.1 與資料源註冊中心交互
 
 ```mermaid
 sequenceDiagram
@@ -4157,7 +4157,7 @@ sequenceDiagram
     DSR->>WFE: POST /api/v1/analyze (new data source)
     WFE-->>DSR: Analysis report
     
-    loop 每24小时
+    loop 每24小時
         DSR->>WFE: POST /api/v1/analyze (existing data source)
         WFE-->>DSR: Analysis report
     end
@@ -4166,7 +4166,7 @@ sequenceDiagram
     WFE-->>DSR: Analysis history
 ```
 
-#### 2.9.2 与AI辅助开发系统交互
+#### 2.9.2 與AI輔助開发系統交互
 
 ```mermaid
 sequenceDiagram
@@ -4180,7 +4180,7 @@ sequenceDiagram
     WFE-->>AIDS: Rule creation confirmation
 ```
 
-#### 2.9.3 与数据合规与安全中心交互
+#### 2.9.3 與資料合規與安全中心交互
 
 ```mermaid
 sequenceDiagram
@@ -4194,91 +4194,91 @@ sequenceDiagram
     WFE-->>DCS: Compliance assessment based on fingerprint
 ```
 
-## 3. 数据源健康监测系统 (Data Source Health Monitoring System)
+## 3. 資料源健康监测系統 (Data Source Health Monitoring System)
 
-### 3.1 模块概述
-数据源健康监测系统负责持续监控所有数据源的可用性、性能和数据质量，及时发现和预警数据源问题。它通过定期探测和智能分析，提供全面的数据源健康状态视图。
+### 3.1 模組概述
+資料源健康监测系統負責持續監控所有資料源的可用性、效能和資料品質，及時發現和預警資料源问题。它通過定期探測和智能分析，提供全面的資料源健康狀態视图。
 
-### 3.2 详细功能清单
+### 3.2 詳細功能清單
 
 #### 3.2.1 核心功能
-- **可用性监控**
-  - HTTP状态码监控
-  - 响应时间监控
-  - 内容验证（关键字/正则匹配）
-  - SSL证书有效期监控
-- **性能监控**
-  - 响应时间分布
-  - 首字节时间(TTFB)
-  - 内容下载时间
-  - 资源加载性能
-- **数据质量监控**
-  - 数据完整性验证
-  - 数据格式验证
-  - 数据量波动检测
-  - 异常值检测
-- **健康评分系统**
-  - 综合健康评分计算
-  - 历史趋势分析
-  - 健康状态预测
-- **告警系统**
+- **可用性監控**
+  - HTTP狀態码監控
+  - 響應時間監控
+  - 內容验證（關鍵字/正则匹配）
+  - SSL證书有效期監控
+- **效能監控**
+  - 響應時間分布
+  - 首字節時間(TTFB)
+  - 內容下载時間
+  - 資源加载效能
+- **資料品質監控**
+  - 資料完整性验證
+  - 資料格式验證
+  - 資料量波動檢測
+  - 異常值檢測
+- **健康評分系統**
+  - 综合健康評分计算
+  - 歷史趋势分析
+  - 健康狀態預测
+- **告警系統**
   - 多级告警阈值配置
   - 智能告警抑制
   - 多通道通知（邮件、Slack、Webhook）
 
 #### 3.2.2 高级功能
 - **根因分析**
-  - 自动分析故障原因
-  - 影响范围评估
-  - 修复建议
-- **预测性维护**
-  - 基于历史数据的趋势预测
-  - 异常模式检测
-  - 预防性告警
-- **SLA合规监控**
-  - SLA指标跟踪
-  - 合规报告生成
-  - 服务信用计算
-- **变更影响分析**
-  - 网站变更检测
-  - 变更对爬虫的影响评估
-  - 自动化配置建议
+  - 自動分析故障原因
+  - 影响范围評估
+  - 修複建議
+- **預测性维护**
+  - 基於歷史資料的趋势預测
+  - 異常模式檢測
+  - 預防性告警
+- **SLA合規監控**
+  - SLA指標跟踪
+  - 合規报告生成
+  - 服務信用计算
+- **變更影响分析**
+  - 網站變更檢測
+  - 變更對爬蟲的影响評估
+  - 自動化配置建議
 
-### 3.3 技术架构
+### 3.3 技術架構
 
-#### 3.3.1 架构图
+#### 3.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                            数据源健康监测系统 (DSHMS)                                         │
+│                            資料源健康监测系統 (DSHMS)                                         │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  监控执行层           │  分析处理层           │  数据存储层                                │
+│  監控执行层           │  分析處理层           │  資料儲存层                                │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 探测调度器           │ • 健康评分计算器      │ • 时序数据库 (InfluxDB)                    │
-│ • HTTP探测器          │ • 异常检测引擎        │ • 分析结果存储 (PostgreSQL)                │
-│ • 内容验证器           │ • 根因分析器          │ • 告警状态存储 (Redis)                     │
-│ • 性能分析器           │ • 预测模型            │ • 配置存储 (PostgreSQL)                    │
+│ • 探測调度器           │ • 健康評分计算器      │ • 時序資料庫 (InfluxDB)                    │
+│ • HTTP探測器          │ • 異常檢測引擎        │ • 分析结果儲存 (PostgreSQL)                │
+│ • 內容验證器           │ • 根因分析器          │ • 告警狀態儲存 (Redis)                     │
+│ • 效能分析器           │ • 預测模型            │ • 配置儲存 (PostgreSQL)                    │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 3.3.2 服务边界与交互
-- **输入**：
-  - 数据源列表（来自数据源注册中心）
-  - 监控配置（探测频率、验证规则等）
+#### 3.3.2 服務边界與交互
+- **輸入**：
+  - 資料源列表（來自資料源註冊中心）
+  - 監控配置（探測频率、验證规则等）
   - 告警通知配置
-- **输出**：
-  - 健康状态指标
+- **輸出**：
+  - 健康狀態指標
   - 告警事件
   - 健康报告
   - 根因分析结果
 
-### 3.4 核心组件详细实现
+### 3.4 核心組件詳細實現
 
-#### 3.4.1 探测调度器
+#### 3.4.1 探測调度器
 
-**技术实现：**
+**技術實現：**
 ```python
 class ProbeScheduler:
-    """探测调度器，负责安排和执行探测任务"""
+    """探測调度器，負責安排和执行探測任務"""
     
     def __init__(
         self,
@@ -4295,17 +4295,17 @@ class ProbeScheduler:
         self.probe_queue = Queue(maxsize=self.config.max_queued_probes)
     
     def start(self):
-        """启动探测调度器"""
+        """启動探測调度器"""
         if self.running:
             return
         
         self.running = True
         self.logger.info("Starting probe scheduler")
         
-        # 启动探测执行器
+        # 启動探測执行器
         self._start_probe_executor()
         
-        # 添加定期任务
+        # 添加定期任務
         self.scheduler.add_job(
             self._schedule_probes,
             'interval',
@@ -4313,22 +4313,22 @@ class ProbeScheduler:
             id='schedule_probes'
         )
         
-        # 启动调度器
+        # 启動调度器
         self.scheduler.start()
         self.logger.info("Probe scheduler started")
     
     def _start_probe_executor(self):
-        """启动探测执行器"""
+        """启動探測执行器"""
         def executor_loop():
             while self.running:
                 try:
-                    # 从队列获取探测任务
+                    # 從隊列獲取探測任務
                     probe_task = self.probe_queue.get(timeout=1)
                     
-                    # 执行探测
+                    # 执行探測
                     self.probe_executor.execute(probe_task)
                     
-                    # 标记任务完成
+                    # 標记任務完成
                     self.probe_queue.task_done()
                     
                 except Empty:
@@ -4337,17 +4337,17 @@ class ProbeScheduler:
                     self.logger.error("Error executing probe: %s", str(e))
                     time.sleep(1)
         
-        # 启动执行线程
+        # 启動执行线程
         self.executor_thread = Thread(target=executor_loop, daemon=True)
         self.executor_thread.start()
     
     def _schedule_probes(self):
-        """安排探测任务"""
+        """安排探測任務"""
         try:
-            # 获取需要探测的数据源
+            # 獲取需要探測的資料源
             data_sources = self._get_data_sources_to_probe()
             
-            # 为每个数据源创建探测任务
+            # 為每個資料源创建探測任務
             for data_source in data_sources:
                 probe_task = self._create_probe_task(data_source)
                 self._enqueue_probe_task(probe_task)
@@ -4358,8 +4358,8 @@ class ProbeScheduler:
             self.logger.error("Error scheduling probes: %s", str(e))
     
     def _get_data_sources_to_probe(self) -> List[DataSource]:
-        """获取需要探测的数据源"""
-        # 获取所有active状态的数据源
+        """獲取需要探測的資料源"""
+        # 獲取所有active狀態的資料源
         data_sources = self.data_source_service.list_data_sources(
             project_id="all",
             user_id="system",
@@ -4368,12 +4368,12 @@ class ProbeScheduler:
             page_size=1000
         ).items
         
-        # 过滤需要探测的数据源
+        # 過滤需要探測的資料源
         now = datetime.utcnow()
         probes_to_schedule = []
         
         for ds in data_sources:
-            # 检查上次探测时间
+            # 检查上次探測時間
             last_probe = ds.metadata.get("last_probe_time")
             probe_interval = ds.metadata.get("probe_interval", self.config.default_probe_interval)
             
@@ -4383,8 +4383,8 @@ class ProbeScheduler:
         return probes_to_schedule
     
     def _create_probe_task(self, data_source: DataSource) -> ProbeTask:
-        """创建探测任务"""
-        # 获取探测配置
+        """创建探測任務"""
+        # 獲取探測配置
         probe_config = self._get_probe_config(data_source)
         
         return ProbeTask(
@@ -4396,8 +4396,8 @@ class ProbeScheduler:
         )
     
     def _get_probe_config(self, data_source: DataSource) -> ProbeConfig:
-        """获取探测配置"""
-        # 从元数据获取配置，如果没有则使用默认值
+        """獲取探測配置"""
+        # 從元資料獲取配置，如果沒有则使用默认值
         metadata = data_source.metadata
         
         return ProbeConfig(
@@ -4409,14 +4409,14 @@ class ProbeScheduler:
         )
     
     def _enqueue_probe_task(self, probe_task: ProbeTask):
-        """将探测任务加入队列"""
+        """將探測任務加入隊列"""
         try:
             self.probe_queue.put_nowait(probe_task)
         except QueueFull:
             self.logger.warning("Probe queue is full. Dropping probe for %s", probe_task.url)
     
     def stop(self):
-        """停止探测调度器"""
+        """停止探測调度器"""
         if not self.running:
             return
         
@@ -4425,12 +4425,12 @@ class ProbeScheduler:
         self.logger.info("Probe scheduler stopped")
 ```
 
-#### 3.4.2 探测执行器
+#### 3.4.2 探測执行器
 
-**技术实现：**
+**技術實現：**
 ```python
 class ProbeExecutor:
-    """探测执行器，负责实际执行探测任务"""
+    """探測执行器，負責實际执行探測任務"""
     
     def __init__(
         self,
@@ -4444,23 +4444,23 @@ class ProbeExecutor:
         self.logger = logging.getLogger(__name__)
     
     def execute(self, probe_task: ProbeTask):
-        """执行探测任务"""
+        """执行探測任務"""
         try:
             start_time = time.time()
             
-            # 1. 执行HTTP探测
+            # 1. 执行HTTP探測
             http_result = self._execute_http_probe(probe_task)
             
-            # 2. 执行内容验证
+            # 2. 执行內容验證
             validation_result = self._execute_content_validation(probe_task, http_result)
             
-            # 3. 执行性能分析
+            # 3. 执行效能分析
             performance_result = self._execute_performance_analysis(probe_task, http_result)
             
-            # 4. 执行数据验证（如果适用）
+            # 4. 执行資料验證（如果适用）
             data_validation_result = self._execute_data_validation(probe_task, http_result)
             
-            # 5. 处理结果
+            # 5. 處理结果
             total_time = time.time() - start_time
             self.result_processor.process(
                 probe_task,
@@ -4476,11 +4476,11 @@ class ProbeExecutor:
             self.result_processor.process_error(probe_task, str(e))
     
     def _execute_http_probe(self, probe_task: ProbeTask) -> HttpProbeResult:
-        """执行HTTP探测"""
+        """执行HTTP探測"""
         start_time = time.time()
         
         try:
-            # 准备请求
+            # 准備请求
             headers = self._build_headers(probe_task)
             
             # 执行HTTP请求
@@ -4491,7 +4491,7 @@ class ProbeExecutor:
                 follow_redirects=True
             )
             
-            # 计算时间指标
+            # 计算時間指標
             dns_time = response.timings.get('dns', 0)
             connect_time = response.timings.get('connect', 0)
             tls_time = response.timings.get('tls', 0)
@@ -4524,7 +4524,7 @@ class ProbeExecutor:
             )
     
     def _build_headers(self, probe_task: ProbeTask) -> Dict[str, str]:
-        """构建请求头"""
+        """構建请求头"""
         headers = {
             "User-Agent": self.config.default_user_agent,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -4532,14 +4532,14 @@ class ProbeExecutor:
             "Connection": "keep-alive"
         }
         
-        # 添加自定义请求头
+        # 添加自定義请求头
         if probe_task.config.headers:
             headers.update(probe_task.config.headers)
         
         return headers
     
     def _extract_certificate_info(self, response: HttpResponse) -> Dict:
-        """提取证书信息"""
+        """提取證书資訊"""
         if not response.certificate:
             return {}
         
@@ -4557,10 +4557,10 @@ class ProbeExecutor:
         probe_task: ProbeTask,
         http_result: HttpProbeResult
     ) -> ContentValidationResult:
-        """执行内容验证"""
+        """执行內容验證"""
         if not probe_task.config.verification_rules or http_result.status_code != 200:
             return ContentValidationResult(
-                passed=True,  # 没有规则或非200响应，视为通过
+                passed=True,  # 沒有规则或非200響應，视為通過
                 errors=[],
                 verified_rules=[]
             )
@@ -4569,7 +4569,7 @@ class ProbeExecutor:
         errors = []
         verified_rules = []
         
-        # 检查每个验证规则
+        # 检查每個验證规则
         for rule in probe_task.config.verification_rules:
             result = self._validate_content_rule(rule, http_result)
             if not result["passed"]:
@@ -4594,16 +4594,16 @@ class ProbeExecutor:
         rule: Dict,
         http_result: HttpProbeResult
     ) -> Dict:
-        """验证单个内容规则"""
+        """验證单個內容规则"""
         content = http_result.content
         if not content:
             return {"passed": False, "message": "No content to validate"}
         
         try:
-            # 解码内容
+            # 解码內容
             content_str = content.decode('utf-8', errors='replace')
             
-            # 根据规则类型进行验证
+            # 根據规则類型进行验證
             if rule["type"] == "keyword":
                 if rule["keyword"] not in content_str:
                     return {
@@ -4619,7 +4619,7 @@ class ProbeExecutor:
                     }
             
             elif rule["type"] == "xpath":
-                # 使用lxml进行XPath验证
+                # 使用lxml进行XPath验證
                 tree = etree.fromstring(content, etree.HTMLParser())
                 results = tree.xpath(rule["expression"])
                 if not results:
@@ -4641,15 +4641,15 @@ class ProbeExecutor:
         probe_task: ProbeTask,
         http_result: HttpProbeResult
     ) -> PerformanceAnalysisResult:
-        """执行性能分析"""
+        """执行效能分析"""
         timings = http_result.timings
         total_time = timings.get("total", 0)
         
-        # 检查性能阈值
+        # 检查效能阈值
         thresholds = probe_task.config.performance_thresholds
         performance_issues = []
         
-        # 检查总响应时间
+        # 检查总響應時間
         if "total" in thresholds and total_time > thresholds["total"]:
             performance_issues.append({
                 "metric": "total_time",
@@ -4668,7 +4668,7 @@ class ProbeExecutor:
                 "severity": "high" if ttfb > thresholds["ttfb"] * 2 else "medium"
             })
         
-        # 检查下载时间
+        # 检查下载時間
         download_time = timings.get("download", 0)
         if "download" in thresholds and download_time > thresholds["download"]:
             performance_issues.append({
@@ -4689,7 +4689,7 @@ class ProbeExecutor:
         probe_task: ProbeTask,
         http_result: HttpProbeResult
     ) -> DataValidationResult:
-        """执行数据验证"""
+        """执行資料验證"""
         if not probe_task.config.data_validation or http_result.status_code != 200:
             return DataValidationResult(
                 passed=True,
@@ -4708,7 +4708,7 @@ class ProbeExecutor:
             )
         
         try:
-            # 根据内容类型进行验证
+            # 根據內容類型进行验證
             content_type = http_result.headers.get("Content-Type", "")
             
             if "json" in content_type:
@@ -4736,15 +4736,15 @@ class ProbeExecutor:
         data_validation: Dict,
         content: bytes
     ) -> DataValidationResult:
-        """验证JSON数据"""
+        """验證JSON資料"""
         try:
             data = json.loads(content)
             issues = []
             metrics = {}
             
-            # 检查数据结构
+            # 检查資料結構
             if "schema" in data_validation:
-                # 使用JSON Schema验证
+                # 使用JSON Schema验證
                 try:
                     validate(instance=data, schema=data_validation["schema"])
                 except Exception as e:
@@ -4753,7 +4753,7 @@ class ProbeExecutor:
                         "message": str(e)
                     })
             
-            # 检查数据量
+            # 检查資料量
             if "min_items" in data_validation:
                 if isinstance(data, list) and len(data) < data_validation["min_items"]:
                     issues.append({
@@ -4766,7 +4766,7 @@ class ProbeExecutor:
                         "message": f"Data volume ({len(data)} items) below minimum ({data_validation['min_items']})"
                     })
             
-            # 计算指标
+            # 计算指標
             if isinstance(data, list):
                 metrics["item_count"] = len(data)
             elif isinstance(data, dict):
@@ -4790,14 +4790,14 @@ class ProbeExecutor:
         data_validation: Dict,
         content: bytes
     ) -> DataValidationResult:
-        """验证XML数据"""
-        # XML验证实现（简化）
+        """验證XML資料"""
+        # XML验證實現（简化）
         try:
             tree = etree.fromstring(content)
             issues = []
             metrics = {}
             
-            # 检查元素数量
+            # 检查元素數量
             if "min_elements" in data_validation:
                 element_count = len(tree.xpath("//node()"))
                 if element_count < data_validation["min_elements"]:
@@ -4825,8 +4825,8 @@ class ProbeExecutor:
         data_validation: Dict,
         content: bytes
     ) -> DataValidationResult:
-        """验证HTML数据"""
-        # HTML验证实现（简化）
+        """验證HTML資料"""
+        # HTML验證實現（简化）
         try:
             soup = BeautifulSoup(content, 'html.parser')
             issues = []
@@ -4841,7 +4841,7 @@ class ProbeExecutor:
                             "message": f"Required element '{selector}' not found"
                         })
             
-            # 计算指标
+            # 计算指標
             metrics["link_count"] = len(soup.find_all('a'))
             metrics["image_count"] = len(soup.find_all('img'))
             
@@ -4859,12 +4859,12 @@ class ProbeExecutor:
             )
 ```
 
-#### 3.4.3 结果处理器
+#### 3.4.3 结果處理器
 
-**技术实现：**
+**技術實現：**
 ```python
 class ResultProcessor:
-    """结果处理器，负责处理探测结果并更新健康状态"""
+    """结果處理器，負責處理探測结果並更新健康狀態"""
     
     def __init__(
         self,
@@ -4888,8 +4888,8 @@ class ResultProcessor:
         data_validation_result: DataValidationResult,
         total_time: float
     ):
-        """处理探测结果"""
-        # 1. 计算健康评分
+        """處理探測结果"""
+        # 1. 计算健康評分
         health_score = self._calculate_health_score(
             http_result,
             validation_result,
@@ -4897,7 +4897,7 @@ class ResultProcessor:
             data_validation_result
         )
         
-        # 2. 更新数据源健康状态
+        # 2. 更新資料源健康狀態
         self._update_data_source_health(
             probe_task,
             http_result,
@@ -4905,7 +4905,7 @@ class ResultProcessor:
             total_time
         )
         
-        # 3. 处理告警
+        # 3. 處理告警
         self._process_alerts(
             probe_task,
             http_result,
@@ -4915,7 +4915,7 @@ class ResultProcessor:
             data_validation_result
         )
         
-        # 4. 存储指标
+        # 4. 儲存指標
         self._store_metrics(
             probe_task,
             http_result,
@@ -4932,17 +4932,17 @@ class ResultProcessor:
         performance_result: PerformanceAnalysisResult,
         data_validation_result: DataValidationResult
     ) -> float:
-        """计算健康评分"""
-        # 基础分（基于HTTP状态码）
+        """计算健康評分"""
+        # 基礎分（基於HTTP狀態码）
         base_score = self._calculate_base_score(http_result)
         
-        # 验证分
+        # 验證分
         validation_score = self._calculate_validation_score(validation_result)
         
-        # 性能分
+        # 效能分
         performance_score = self._calculate_performance_score(performance_result)
         
-        # 数据质量分
+        # 資料品質分
         data_score = self._calculate_data_score(data_validation_result)
         
         # 加权计算
@@ -4957,9 +4957,9 @@ class ResultProcessor:
         return max(0.0, min(1.0, total_score))
     
     def _calculate_base_score(self, http_result: HttpProbeResult) -> float:
-        """计算基础分（基于HTTP状态码）"""
+        """计算基礎分（基於HTTP狀態码）"""
         if http_result.status_code == 0:
-            return 0.0  # 连接错误
+            return 0.0  # 連接错误
         
         if 200 <= http_result.status_code < 300:
             return 1.0
@@ -4970,22 +4970,22 @@ class ResultProcessor:
         if 400 <= http_result.status_code < 500:
             return 0.3  # 客户端错误
         
-        return 0.1  # 服务端错误
+        return 0.1  # 服務端错误
     
     def _calculate_validation_score(self, validation_result: ContentValidationResult) -> float:
-        """计算验证分"""
+        """计算验證分"""
         if not validation_result.verified_rules:
-            return 1.0  # 没有验证规则
+            return 1.0  # 沒有验證规则
         
         passed_count = sum(1 for r in validation_result.verified_rules if r["passed"])
         return passed_count / len(validation_result.verified_rules)
     
     def _calculate_performance_score(self, performance_result: PerformanceAnalysisResult) -> float:
-        """计算性能分"""
+        """计算效能分"""
         if not performance_result.issues:
             return 1.0
         
-        # 根据问题严重程度计算
+        # 根據问题严重程度计算
         severity_weights = {"low": 0.1, "medium": 0.3, "high": 0.7}
         total_deduction = 0
         
@@ -4995,11 +4995,11 @@ class ResultProcessor:
         return max(0.0, 1.0 - total_deduction)
     
     def _calculate_data_score(self, data_validation_result: DataValidationResult) -> float:
-        """计算数据质量分"""
+        """计算資料品質分"""
         if not data_validation_result.issues:
             return 1.0
         
-        # 简单实现：根据问题数量计算
+        # 简单實現：根據问题數量计算
         return max(0.0, 1.0 - (len(data_validation_result.issues) * 0.2))
     
     def _update_data_source_health(
@@ -5009,8 +5009,8 @@ class ResultProcessor:
         health_score: float,
         total_time: float
     ):
-        """更新数据源健康状态"""
-        # 准备更新数据
+        """更新資料源健康狀態"""
+        # 准備更新資料
         update_data = {
             "last_health_check": datetime.utcnow().isoformat(),
             "health_score": health_score,
@@ -5021,7 +5021,7 @@ class ResultProcessor:
             "status": self._determine_status(health_score)
         }
         
-        # 更新数据源
+        # 更新資料源
         self.data_source_service.update_data_source(
             data_source_id=probe_task.data_source_id,
             project_id=probe_task.project_id,
@@ -5034,8 +5034,8 @@ class ResultProcessor:
         data_source_id: str,
         current_score: float
     ) -> float:
-        """计算24小时可用性"""
-        # 获取过去24小时的历史记录
+        """计算24小時可用性"""
+        # 獲取過去24小時的歷史記錄
         history = self.metrics_service.get_health_history(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(hours=24),
@@ -5043,7 +5043,7 @@ class ResultProcessor:
             limit=1000
         )
         
-        # 添加当前分数
+        # 添加當前分數
         scores = [h["score"] for h in history] + [current_score]
         
         # 计算平均值
@@ -5055,7 +5055,7 @@ class ResultProcessor:
         current_score: float
     ) -> float:
         """计算7天可用性"""
-        # 获取过去7天的历史记录（每天一个样本）
+        # 獲取過去7天的歷史記錄（每天一個样本）
         history = self.metrics_service.get_health_history(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(days=7),
@@ -5064,7 +5064,7 @@ class ResultProcessor:
             limit=7
         )
         
-        # 添加当前分数
+        # 添加當前分數
         scores = [h["score"] for h in history] + [current_score]
         
         # 计算平均值
@@ -5075,15 +5075,15 @@ class ResultProcessor:
         data_source_id: str,
         current_time: float
     ) -> float:
-        """计算P50响应时间"""
-        # 获取过去1小时的响应时间
+        """计算P50響應時間"""
+        # 獲取過去1小時的響應時間
         history = self.metrics_service.get_response_times(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(hours=1),
             limit=100
         )
         
-        # 添加当前时间
+        # 添加當前時間
         times = [h["time"] for h in history] + [current_time]
         
         # 计算P50
@@ -5094,22 +5094,22 @@ class ResultProcessor:
         data_source_id: str,
         current_time: float
     ) -> float:
-        """计算P95响应时间"""
-        # 获取过去1小时的响应时间
+        """计算P95響應時間"""
+        # 獲取過去1小時的響應時間
         history = self.metrics_service.get_response_times(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(hours=1),
             limit=100
         )
         
-        # 添加当前时间
+        # 添加當前時間
         times = [h["time"] for h in history] + [current_time]
         
         # 计算P95
         return np.percentile(times, 95) if times else current_time
     
     def _determine_status(self, health_score: float) -> str:
-        """确定健康状态"""
+        """确定健康狀態"""
         if health_score >= self.config.status_thresholds["healthy"]:
             return "healthy"
         elif health_score >= self.config.status_thresholds["degraded"]:
@@ -5126,7 +5126,7 @@ class ResultProcessor:
         performance_result: PerformanceAnalysisResult,
         data_validation_result: DataValidationResult
     ):
-        """处理告警"""
+        """處理告警"""
         # 1. 检查是否需要触发告警
         alert_needed = self._should_trigger_alert(
             probe_task.data_source_id,
@@ -5159,27 +5159,27 @@ class ResultProcessor:
         http_result: HttpProbeResult
     ) -> bool:
         """检查是否需要触发告警"""
-        # 获取当前告警状态
+        # 獲取當前告警狀態
         current_alert = self.alert_service.get_current_alert(data_source_id)
         
         # 如果已经有活跃告警，不需要新告警
         if current_alert and current_alert["status"] == "active":
             return False
         
-        # 检查健康分数是否低于阈值
+        # 检查健康分數是否低於阈值
         if health_score >= self.config.alert_thresholds["health_score"]:
             return False
         
-        # 检查HTTP状态码
+        # 检查HTTP狀態码
         if http_result.status_code == 0 or http_result.status_code >= 500:
             return True
         
-        # 检查连续失败次数
+        # 检查連續失败次數
         failure_count = self._get_consecutive_failures(data_source_id)
         return failure_count >= self.config.alert_thresholds["consecutive_failures"]
     
     def _get_consecutive_failures(self, data_source_id: str) -> int:
-        """获取连续失败次数"""
+        """獲取連續失败次數"""
         history = self.metrics_service.get_health_history(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(hours=1),
@@ -5203,15 +5203,15 @@ class ResultProcessor:
         """检查告警是否已解决"""
         current_alert = self.alert_service.get_current_alert(data_source_id)
         
-        # 没有活跃告警，无需处理
+        # 沒有活跃告警，无需處理
         if not current_alert or current_alert["status"] != "active":
             return
         
-        # 检查健康分数是否恢复
+        # 检查健康分數是否恢復
         if health_score < self.config.alert_resolution_threshold:
             return
         
-        # 检查连续成功次数
+        # 检查連續成功次數
         success_count = self._get_consecutive_successes(data_source_id)
         if success_count < self.config.alert_resolution_min_success:
             return
@@ -5226,7 +5226,7 @@ class ResultProcessor:
         )
     
     def _get_consecutive_successes(self, data_source_id: str) -> int:
-        """获取连续成功次数"""
+        """獲取連續成功次數"""
         history = self.metrics_service.get_health_history(
             data_source_id,
             start_time=datetime.utcnow() - timedelta(hours=1),
@@ -5292,7 +5292,7 @@ class ResultProcessor:
         performance_result: PerformanceAnalysisResult
     ) -> str:
         """确定告警级别"""
-        # 基于HTTP状态码
+        # 基於HTTP狀態码
         if http_result.status_code == 0:
             return "critical"
         if http_result.status_code >= 500:
@@ -5300,7 +5300,7 @@ class ResultProcessor:
         if http_result.status_code >= 400:
             return "high"
         
-        # 基于健康分数
+        # 基於健康分數
         if health_score < self.config.severity_thresholds["critical"]:
             return "critical"
         if health_score < self.config.severity_thresholds["high"]:
@@ -5308,11 +5308,11 @@ class ResultProcessor:
         if health_score < self.config.severity_thresholds["medium"]:
             return "medium"
         
-        # 基于验证问题
+        # 基於验證问题
         if validation_result.errors:
             return "medium"
         
-        # 基于性能问题
+        # 基於效能问题
         if any(issue["severity"] == "high" for issue in performance_result.issues):
             return "high"
         if any(issue["severity"] == "medium" for issue in performance_result.issues):
@@ -5351,17 +5351,17 @@ class ResultProcessor:
         data_validation_result: DataValidationResult,
         health_score: float
     ):
-        """存储指标"""
+        """儲存指標"""
         timestamp = datetime.utcnow()
         
-        # 存储健康指标
+        # 儲存健康指標
         self.metrics_service.store_health_metric(
             data_source_id=probe_task.data_source_id,
             score=health_score,
             timestamp=timestamp
         )
         
-        # 存储响应时间指标
+        # 儲存響應時間指標
         if "total" in http_result.timings:
             self.metrics_service.store_response_time(
                 data_source_id=probe_task.data_source_id,
@@ -5369,7 +5369,7 @@ class ResultProcessor:
                 timestamp=timestamp
             )
         
-        # 存储可用性指标
+        # 儲存可用性指標
         is_available = 1 if (200 <= http_result.status_code < 400) else 0
         self.metrics_service.store_availability(
             data_source_id=probe_task.data_source_id,
@@ -5377,7 +5377,7 @@ class ResultProcessor:
             timestamp=timestamp
         )
         
-        # 存储验证指标
+        # 儲存验證指標
         self.metrics_service.store_validation_metrics(
             data_source_id=probe_task.data_source_id,
             passed=validation_result.passed,
@@ -5385,7 +5385,7 @@ class ResultProcessor:
             timestamp=timestamp
         )
         
-        # 存储性能指标
+        # 儲存效能指標
         self.metrics_service.store_performance_metrics(
             data_source_id=probe_task.data_source_id,
             metrics=performance_result.timings,
@@ -5393,7 +5393,7 @@ class ResultProcessor:
             timestamp=timestamp
         )
         
-        # 存储数据质量指标
+        # 儲存資料品質指標
         self.metrics_service.store_data_metrics(
             data_source_id=probe_task.data_source_id,
             passed=data_validation_result.passed,
@@ -5403,10 +5403,10 @@ class ResultProcessor:
         )
     
     def process_error(self, probe_task: ProbeTask, error: str):
-        """处理探测错误"""
+        """處理探測错误"""
         self.logger.error("Probe error for %s: %s", probe_task.url, error)
         
-        # 更新数据源状态
+        # 更新資料源狀態
         update_data = {
             "last_health_check": datetime.utcnow().isoformat(),
             "health_score": 0.0,
@@ -5435,7 +5435,7 @@ class ResultProcessor:
         )
         self.alert_service.trigger_alert(alert)
         
-        # 存储错误指标
+        # 儲存错误指標
         self.metrics_service.store_health_metric(
             data_source_id=probe_task.data_source_id,
             score=0.0,
@@ -5443,12 +5443,12 @@ class ResultProcessor:
         )
 ```
 
-### 3.5 数据模型详细定义
+### 3.5 資料模型詳細定義
 
-#### 3.5.1 健康指标表
+#### 3.5.1 健康指標表
 
 ```sql
--- 健康指标表（时序数据）
+-- 健康指標表（時序資料）
 CREATE TABLE health_metrics (
     time TIMESTAMPTZ NOT NULL,
     data_source_id UUID NOT NULL REFERENCES data_sources(id) ON DELETE CASCADE,
@@ -5464,7 +5464,7 @@ CREATE TABLE health_metrics (
 -- 创建分区（按月）
 SELECT create_hypertable('health_metrics', 'time', partitioning_column => 'data_source_id', number_partitions => 4);
 
--- 健康历史表（汇总数据）
+-- 健康歷史表（汇总資料）
 CREATE TABLE health_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     data_source_id UUID NOT NULL REFERENCES data_sources(id) ON DELETE CASCADE,
@@ -5527,11 +5527,11 @@ CREATE TABLE alert_notifications (
 );
 ```
 
-### 3.6 API详细规范
+### 3.6 API詳細規範
 
 #### 3.6.1 健康监测API
 
-**获取数据源健康状态 (GET /api/v1/health/data-sources/{id})**
+**獲取資料源健康狀態 (GET /api/v1/health/data-sources/{id})**
 
 *请求示例:*
 ```http
@@ -5540,7 +5540,7 @@ Host: dshms.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -5583,7 +5583,7 @@ Content-Type: application/json
 }
 ```
 
-**获取健康历史 (GET /api/v1/health/history/{id})**
+**獲取健康歷史 (GET /api/v1/health/history/{id})**
 
 *请求示例:*
 ```http
@@ -5592,7 +5592,7 @@ Host: dshms.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -5617,14 +5617,14 @@ Content-Type: application/json
       "response_time_avg": 0.38,
       "response_time_p95": 1.3
     },
-    // ... 更多数据点
+    // ... 更多資料点
   ]
 }
 ```
 
 #### 3.6.2 告警API
 
-**获取活跃告警 (GET /api/v1/alerts/active)**
+**獲取活跃告警 (GET /api/v1/alerts/active)**
 
 *请求示例:*
 ```http
@@ -5633,7 +5633,7 @@ Host: dshms.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -5682,7 +5682,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -5700,13 +5700,13 @@ Content-Type: application/json
 }
 ```
 
-### 3.7 性能优化策略
+### 3.7 效能優化策略
 
-#### 3.7.1 时序数据存储优化
+#### 3.7.1 時序資料儲存優化
 
 1. **Hypertable分区**
    ```sql
-   -- 创建按数据源ID分区的Hypertable
+   -- 创建按資料源ID分区的Hypertable
    SELECT create_hypertable('health_metrics', 'time', partitioning_column => 'data_source_id', number_partitions => 4);
    
    -- 添加压缩策略
@@ -5714,12 +5714,12 @@ Content-Type: application/json
    SELECT add_compression_policy('health_metrics', INTERVAL '7 days');
    ```
 
-2. **数据保留策略**
+2. **資料保留策略**
    ```sql
-   -- 保留原始数据7天
+   -- 保留原始資料7天
    SELECT add_retention_policy('health_metrics', INTERVAL '7 days');
    
-   -- 为更长期数据创建连续聚合
+   -- 為更長期資料创建連續聚合
    CREATE MATERIALIZED VIEW health_daily
    WITH (timescaledb.continuous) AS
    SELECT
@@ -5733,13 +5733,13 @@ Content-Type: application/json
    WITH DATA;
    ```
 
-#### 3.7.2 告警处理优化
+#### 3.7.2 告警處理優化
 
 1. **告警抑制策略**
    ```python
    def should_suppress_alert(alert: Alert) -> bool:
        """检查是否应该抑制告警"""
-       # 相同数据源的重复告警抑制
+       # 相同資料源的重複告警抑制
        recent_alerts = get_recent_alerts(
            data_source_id=alert.data_source_id,
            since=datetime.utcnow() - timedelta(minutes=5)
@@ -5762,7 +5762,7 @@ Content-Type: application/json
    ```python
    def aggregate_similar_alerts(alerts: List[Alert]) -> List[AlertGroup]:
        """聚合相似告警"""
-       # 按数据源和严重程度分组
+       # 按資料源和严重程度分組
        groups = defaultdict(list)
        for alert in alerts:
            key = (alert.data_source_id, alert.severity)
@@ -5786,35 +5786,35 @@ Content-Type: application/json
        return alert_groups
    ```
 
-### 3.8 安全考虑
+### 3.8 安全考慮
 
-#### 3.8.1 探测安全
+#### 3.8.1 探測安全
 
-1. **探测限制**
-   - 限制探测频率，避免被目标网站封禁
-   - 实现随机化探测间隔
-   - 支持自定义User-Agent轮换
+1. **探測限制**
+   - 限制探測频率，避免被目標網站封禁
+   - 實現隨机化探測间隔
+   - 支援自定義User-Agent轮换
 
-2. **目标网站保护**
+2. **目標網站保护**
    - 尊重robots.txt
-   - 实现Crawl-Delay遵守
-   - 避免高负载探测
+   - 實現Crawl-Delay遵守
+   - 避免高负载探測
 
-#### 3.8.2 数据安全
+#### 3.8.2 資料安全
 
-1. **敏感数据处理**
-   - 不存储响应内容（除非必要）
-   - 对存储的内容进行脱敏
-   - 限制敏感数据访问
+1. **敏感資料處理**
+   - 不儲存響應內容（除非必要）
+   - 對儲存的內容进行脱敏
+   - 限制敏感資料訪問
 
-2. **隐私合规**
+2. **隐私合規**
    - 符合GDPR要求
-   - 提供数据删除选项
-   - 限制数据保留时间
+   - 提供資料删除选项
+   - 限制資料保留時間
 
-### 3.9 与其他模块的交互
+### 3.9 與其他模組的交互
 
-#### 3.9.1 与数据源注册中心交互
+#### 3.9.1 與資料源註冊中心交互
 
 ```mermaid
 sequenceDiagram
@@ -5833,7 +5833,7 @@ sequenceDiagram
     DSHMS-->>DSR: Health status and metrics
 ```
 
-#### 3.9.2 与数据处理工作流引擎交互
+#### 3.9.2 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
@@ -5850,7 +5850,7 @@ sequenceDiagram
     DSHMS-->>DPWE: Resolution confirmation
 ```
 
-#### 3.9.3 与数据质量预测分析系统交互
+#### 3.9.3 與資料品質預测分析系統交互
 
 ```mermaid
 sequenceDiagram
@@ -5864,41 +5864,41 @@ sequenceDiagram
     DQPAS-->>DSHMS: Prediction results
 ```
 
-## 4. 数据处理工作流引擎 (Data Processing Workflow Engine)
+## 4. 資料處理工作流引擎 (Data Processing Workflow Engine)
 
-### 4.1 模块概述
-数据处理工作流引擎是镜界平台的核心自动化组件，提供可视化工作流设计和执行能力。它支持从简单触发到复杂数据处理流水线的完整工作流管理，是实现数据采集、处理和分析自动化的关键。
+### 4.1 模組概述
+資料處理工作流引擎是镜界平台的核心自動化組件，提供可视化工作流設計和执行能力。它支援從简单触发到複杂資料處理流水线的完整工作流管理，是實現資料採集、處理和分析自動化的關鍵。
 
-### 4.2 详细功能清单
+### 4.2 詳細功能清單
 
 #### 4.2.1 核心功能
-- **工作流定义管理**
-  - 可视化工作流设计器
+- **工作流定義管理**
+  - 可视化工作流設計器
   - 工作流版本控制
-  - 工作流模板库
+  - 工作流模板庫
   - 工作流导入/导出
 - **触发器管理**
-  - 定时触发器
-  - 文件系统触发器（监控NAS）
+  - 定時触发器
+  - 文件系統触发器（監控NAS）
   - API触发器（Webhook）
-  - 条件触发器
-- **节点类型支持**
-  - 数据源节点（获取数据）
-  - 处理节点（数据转换、清洗）
-  - AI节点（调用AI服务）
-  - 存储节点（保存结果）
-  - 条件节点（分支逻辑）
-  - 循环节点
+  - 條件触发器
+- **節点類型支援**
+  - 資料源節点（獲取資料）
+  - 處理節点（資料转换、清洗）
+  - AI節点（調用AI服務）
+  - 儲存節点（保存结果）
+  - 條件節点（分支逻辑）
+  - 循环節点
 - **工作流执行**
   - 同步/异步执行
-  - 执行状态跟踪
-  - 执行日志记录
+  - 执行狀態跟踪
+  - 执行日志記錄
   - 执行结果查看
-- **错误处理**
-  - 自动重试机制
-  - 错误分类与处理
+- **错误處理**
+  - 自動重试機制
+  - 错误分類與處理
   - 失败通知
-  - 手动重试
+  - 手動重试
 
 #### 4.2.2 高级功能
 - **工作流调试**
@@ -5906,57 +5906,57 @@ sequenceDiagram
   - 断点设置
   - 变量检查
   - 执行回放
-- **资源管理**
-  - 资源需求定义
-  - 资源配额管理
-  - 动态资源分配
-  - 资源使用监控
+- **資源管理**
+  - 資源需求定義
+  - 資源配额管理
+  - 動态資源分配
+  - 資源使用監控
 - **工作流分析**
-  - 执行性能分析
+  - 执行效能分析
   - 瓶颈识别
-  - 优化建议
+  - 優化建議
   - 成本分析
-- **工作流共享与协作**
+- **工作流共享與协作**
   - 工作流分享
   - 协作编辑
-  - 评论与反馈
-  - 权限管理
+  - 评论與反馈
+  - 權限管理
 
-### 4.3 技术架构
+### 4.3 技術架構
 
-#### 4.3.1 架构图
+#### 4.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                             数据处理工作流引擎 (DPWE)                                         │
+│                             資料處理工作流引擎 (DPWE)                                         │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  前端交互层           │  服务层               │  执行层                                    │
+│  前端交互层           │  服務层               │  执行层                                    │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 工作流设计器         │ • 工作流管理服务      │ • 调度器                                  │
-│ • 执行监控界面        │ • 触发器服务          │ • 节点执行器                              │
-│ • 调试工具            │ • 执行服务            │ • 资源管理器                              │
-│ • 分析仪表盘          │ • 错误处理服务        │ • 日志收集器                              │
+│ • 工作流設計器         │ • 工作流管理服務      │ • 调度器                                  │
+│ • 执行監控界面        │ • 触发器服務          │ • 節点执行器                              │
+│ • 调试工具            │ • 执行服務            │ • 資源管理器                              │
+│ • 分析仪表盘          │ • 错误處理服務        │ • 日志收集器                              │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 4.3.2 服务边界与交互
-- **输入**：
-  - 工作流定义（来自用户或API）
-  - 触发事件（定时、文件系统、Webhook等）
-  - 节点执行请求
-- **输出**：
-  - 工作流执行状态
+#### 4.3.2 服務边界與交互
+- **輸入**：
+  - 工作流定義（來自用戶或API）
+  - 触发事件（定時、文件系統、Webhook等）
+  - 節点执行请求
+- **輸出**：
+  - 工作流执行狀態
   - 执行结果
-  - 日志和指标
+  - 日志和指標
   - 错误通知
 
-### 4.4 核心组件详细实现
+### 4.4 核心組件詳細實現
 
-#### 4.4.1 工作流定义服务
+#### 4.4.1 工作流定義服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class WorkflowDefinitionService:
-    """工作流定义管理服务"""
+    """工作流定義管理服務"""
     
     def __init__(
         self,
@@ -5979,12 +5979,12 @@ class WorkflowDefinitionService:
         """
         创建新工作流
         
-        :param project_id: 项目ID
-        :param workflow: 工作流定义
+        :param project_id: 專案ID
+        :param workflow: 工作流定義
         :param user_id: 创建者ID
-        :return: 创建后的工作流
+        :return: 创建後的工作流
         """
-        # 1. 验证工作流
+        # 1. 验證工作流
         self._validate_workflow(workflow)
         
         # 2. 生成唯一ID
@@ -5997,10 +5997,10 @@ class WorkflowDefinitionService:
         workflow.updated_by = user_id
         workflow.status = "active"
         
-        # 3. 保存工作流定义
+        # 3. 保存工作流定義
         self._save_workflow(workflow)
         
-        # 4. 保存到存储（用于版本控制）
+        # 4. 保存到儲存（用於版本控制）
         self._save_to_storage(workflow)
         
         # 5. 清除缓存
@@ -6009,14 +6009,14 @@ class WorkflowDefinitionService:
         return workflow
     
     def _validate_workflow(self, workflow: WorkflowDefinition):
-        """验证工作流定义的有效性"""
+        """验證工作流定義的有效性"""
         # 必填字段检查
         required_fields = ["name", "triggers", "nodes"]
         for field in required_fields:
             if not getattr(workflow, field):
                 raise ValidationError(f"Missing required field: {field}")
         
-        # 验证触发器
+        # 验證触发器
         if not workflow.triggers:
             raise ValidationError("At least one trigger is required")
         
@@ -6026,7 +6026,7 @@ class WorkflowDefinitionService:
             if not trigger.config:
                 raise ValidationError("Trigger config is required")
         
-        # 验证节点
+        # 验證節点
         if not workflow.nodes:
             raise ValidationError("At least one node is required")
         
@@ -6041,7 +6041,7 @@ class WorkflowDefinitionService:
             if not node.type:
                 raise ValidationError(f"Node type is required for node {node.id}")
         
-        # 验证连接
+        # 验證連接
         if workflow.edges:
             for edge in workflow.edges:
                 if edge.source not in node_ids:
@@ -6049,20 +6049,20 @@ class WorkflowDefinitionService:
                 if edge.target not in node_ids:
                     raise ValidationError(f"Edge target {edge.target} does not exist")
         
-        # 验证入口节点（至少有一个没有入边的节点）
+        # 验證入口節点（至少有一個沒有入边的節点）
         entry_nodes = self._find_entry_nodes(workflow)
         if not entry_nodes:
             raise ValidationError("No entry nodes found (nodes with no incoming edges)")
     
     def _find_entry_nodes(self, workflow: WorkflowDefinition) -> Set[str]:
-        """查找入口节点（没有入边的节点）"""
+        """查找入口節点（沒有入边的節点）"""
         all_nodes = {node.id for node in workflow.nodes}
         target_nodes = {edge.target for edge in workflow.edges}
         return all_nodes - target_nodes
     
     def _save_workflow(self, workflow: WorkflowDefinition):
-        """保存工作流定义到数据库"""
-        # 准备SQL
+        """保存工作流定義到資料庫"""
+        # 准備SQL
         sql = """
         INSERT INTO workflows (
             id, project_id, name, display_name, description, version, 
@@ -6093,17 +6093,17 @@ class WorkflowDefinitionService:
         })
     
     def _save_to_storage(self, workflow: WorkflowDefinition):
-        """保存工作流到存储（用于版本控制）"""
-        # 生成存储路径
+        """保存工作流到儲存（用於版本控制）"""
+        # 生成儲存路径
         storage_path = f"workflows/{workflow.project_id}/{workflow.id}/{workflow.version}"
         
-        # 保存定义
+        # 保存定義
         self.storage.save(
             f"{storage_path}/definition.json",
             json.dumps(workflow.definition).encode('utf-8')
         )
         
-        # 保存元数据
+        # 保存元資料
         self.storage.save(
             f"{storage_path}/metadata.json",
             json.dumps({
@@ -6122,29 +6122,29 @@ class WorkflowDefinitionService:
         version: Optional[str] = None
     ) -> WorkflowDefinition:
         """
-        获取工作流详情
+        獲取工作流詳情
         
         :param workflow_id: 工作流ID
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :param version: 版本号（可选）
-        :return: 工作流定义
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :param version: 版本號（可选）
+        :return: 工作流定義
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to read this workflow")
         
-        # 2. 从缓存获取
+        # 2. 從缓存獲取
         cache_key = f"{workflow_id}:{version or 'latest'}"
         if cache_key in self.cache:
             return self.cache[cache_key]
         
-        # 3. 从数据库获取
+        # 3. 從資料庫獲取
         workflow = self._get_from_db(workflow_id, project_id, version)
         if not workflow:
             raise NotFoundError(f"Workflow {workflow_id} not found")
         
-        # 4. 从存储加载定义（如果是特定版本）
+        # 4. 從儲存加载定義（如果是特定版本）
         if version and version != workflow.version:
             self._load_definition_from_storage(workflow, version)
         
@@ -6159,9 +6159,9 @@ class WorkflowDefinitionService:
         project_id: str,
         version: Optional[str] = None
     ) -> Optional[WorkflowDefinition]:
-        """从数据库获取工作流"""
+        """從資料庫獲取工作流"""
         if version:
-            # 获取特定版本
+            # 獲取特定版本
             sql = """
             SELECT * FROM workflows 
             WHERE id = %(id)s AND project_id = %(project_id)s AND version = %(version)s
@@ -6172,7 +6172,7 @@ class WorkflowDefinitionService:
                 "version": version
             }
         else:
-            # 获取最新版本
+            # 獲取最新版本
             sql = """
             SELECT * FROM workflows 
             WHERE id = %(id)s AND project_id = %(project_id)s
@@ -6191,7 +6191,7 @@ class WorkflowDefinitionService:
         return self._row_to_workflow(row)
     
     def _row_to_workflow(self, row: Dict) -> WorkflowDefinition:
-        """将数据库行转换为WorkflowDefinition对象"""
+        """將資料庫行转换為WorkflowDefinition物件"""
         return WorkflowDefinition(
             id=row["id"],
             project_id=row["project_id"],
@@ -6214,7 +6214,7 @@ class WorkflowDefinitionService:
         workflow: WorkflowDefinition,
         version: str
     ):
-        """从存储加载特定版本的定义"""
+        """從儲存加载特定版本的定義"""
         storage_path = f"workflows/{workflow.project_id}/{workflow.id}/{version}/definition.json"
         
         try:
@@ -6236,19 +6236,19 @@ class WorkflowDefinitionService:
         更新工作流
         
         :param workflow_id: 工作流ID
-        :param project_id: 项目ID
+        :param project_id: 專案ID
         :param updates: 更新字段
         :param user_id: 更新者ID
-        :return: 更新后的工作流
+        :return: 更新後的工作流
         """
-        # 1. 获取当前工作流
+        # 1. 獲取當前工作流
         current = self.get_workflow(workflow_id, project_id, user_id)
         
-        # 2. 检查权限
+        # 2. 检查權限
         if not self._has_permission(user_id, project_id, "write"):
             raise PermissionError("User does not have permission to update this workflow")
         
-        # 3. 验证更新
+        # 3. 验證更新
         self._validate_updates(updates, current)
         
         # 4. 创建新版本
@@ -6263,32 +6263,32 @@ class WorkflowDefinitionService:
         return updated_workflow
     
     def _validate_updates(self, updates: Dict, current: WorkflowDefinition):
-        """验证更新是否有效"""
-        # 不能修改ID和项目ID
+        """验證更新是否有效"""
+        # 不能修改ID和專案ID
         if "id" in updates or "project_id" in updates:
             raise ValidationError("Cannot update workflow ID or project ID")
         
-        # 验证定义更新
+        # 验證定義更新
         if "definition" in updates:
-            # 创建临时工作流进行验证
+            # 创建临時工作流进行验證
             temp_workflow = copy.deepcopy(current)
             temp_workflow.definition = updates["definition"]
             self._validate_workflow(temp_workflow)
     
     def _create_new_version(self, current: WorkflowDefinition, updates: Dict, user_id: str) -> str:
         """创建工作流新版本"""
-        # 解析当前版本
+        # 解析當前版本
         major, minor, patch = map(int, current.version.split('.'))
         
-        # 确定新版本号
+        # 确定新版本號
         if "breaking_change" in updates and updates["breaking_change"]:
-            # 重大变更
+            # 重大變更
             new_version = f"{major + 1}.0.0"
         elif "feature" in updates and updates["feature"]:
             # 新功能
             new_version = f"{major}.{minor + 1}.0"
         else:
-            # 修复
+            # 修複
             new_version = f"{major}.{minor}.{patch + 1}"
         
         return new_version
@@ -6302,7 +6302,7 @@ class WorkflowDefinitionService:
         user_id: str
     ) -> WorkflowDefinition:
         """保存工作流更新"""
-        # 准备更新字段
+        # 准備更新字段
         update_fields = []
         params = {
             "id": workflow_id,
@@ -6332,7 +6332,7 @@ class WorkflowDefinitionService:
             update_fields.append("metadata = %(metadata)s")
             params["metadata"] = json.dumps(updates["metadata"])
         
-        # 添加版本和更新时间
+        # 添加版本和更新時間
         update_fields.append("version = %(version)s")
         update_fields.append("updated_at = %(updated_at)s")
         update_fields.append("updated_by = %(updated_by)s")
@@ -6346,7 +6346,7 @@ class WorkflowDefinitionService:
         
         self.db.execute(sql, params)
         
-        # 保存到存储
+        # 保存到儲存
         workflow = self._get_from_db(workflow_id, project_id, new_version)
         self._save_to_storage(workflow)
         
@@ -6363,11 +6363,11 @@ class WorkflowDefinitionService:
         删除工作流
         
         :param workflow_id: 工作流ID
-        :param project_id: 项目ID
+        :param project_id: 專案ID
         :param user_id: 删除者ID
         :param permanent: 是否永久删除
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "delete"):
             raise PermissionError("User does not have permission to delete this workflow")
         
@@ -6404,7 +6404,7 @@ class WorkflowDefinitionService:
             "project_id": project_id
         })
         
-        # 从存储中删除
+        # 從儲存中删除
         try:
             self.storage.delete_prefix(f"workflows/{project_id}/{workflow_id}/")
         except Exception as e:
@@ -6423,22 +6423,22 @@ class WorkflowDefinitionService:
         """
         列出工作流
         
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :param filters: 过滤条件
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :param filters: 過滤條件
         :param sort: 排序字段
-        :param page: 页码
-        :param page_size: 每页数量
+        :param page: 頁码
+        :param page_size: 每頁數量
         :return: 工作流列表
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to list workflows")
         
-        # 2. 构建查询
+        # 2. 構建查詢
         query = self._build_list_query(project_id, filters, sort, page, page_size)
         
-        # 3. 执行查询
+        # 3. 执行查詢
         rows = self.db.fetchall(query["sql"], query["params"])
         total = self.db.fetchone(query["count_sql"], query["params"])["count"]
         
@@ -6460,22 +6460,22 @@ class WorkflowDefinitionService:
         page: int,
         page_size: int
     ) -> Dict:
-        """构建列表查询SQL"""
-        # 基础查询
+        """構建列表查詢SQL"""
+        # 基礎查詢
         base_sql = """
         SELECT * FROM workflows 
         WHERE project_id = %(project_id)s
         """
         params = {"project_id": project_id}
         
-        # 添加过滤条件
+        # 添加過滤條件
         if filters:
             if "status" in filters and filters["status"]:
                 base_sql += " AND status = %(status)s"
                 params["status"] = filters["status"]
             
             if "tags" in filters and filters["tags"]:
-                # 处理标签过滤（包含所有指定标签）
+                # 處理標籤過滤（包含所有指定標籤）
                 tags = filters["tags"]
                 if isinstance(tags, str):
                     tags = [tags]
@@ -6488,14 +6488,14 @@ class WorkflowDefinitionService:
                 params["tags"] = tags
             
             if "search" in filters and filters["search"]:
-                # 全文搜索
+                # 全文搜尋
                 base_sql += " AND to_tsvector('english', coalesce(display_name, '') || ' ' || coalesce(description, '')) @@ to_tsquery('english', %(search)s)"
                 params["search"] = filters["search"].replace(' ', ' & ')
         
         # 添加排序
         order_by = "updated_at DESC"
         if sort:
-            # 验证排序字段
+            # 验證排序字段
             valid_sort_fields = ["name", "created_at", "updated_at", "status"]
             if sort.lstrip("-") in valid_sort_fields:
                 direction = "DESC" if sort.startswith("-") else "ASC"
@@ -6504,7 +6504,7 @@ class WorkflowDefinitionService:
         
         base_sql += f" ORDER BY {order_by}"
         
-        # 添加分页
+        # 添加分頁
         offset = (page - 1) * page_size
         paginated_sql = f"{base_sql} LIMIT %(page_size)s OFFSET %(offset)s"
         
@@ -6513,7 +6513,7 @@ class WorkflowDefinitionService:
             "offset": offset
         })
         
-        # 计数查询
+        # 计數查詢
         count_sql = f"SELECT COUNT(*) FROM ({base_sql}) AS count_source"
         
         return {
@@ -6531,20 +6531,20 @@ class WorkflowDefinitionService:
         page_size: int = 10
     ) -> WorkflowVersionList:
         """
-        获取工作流版本
+        獲取工作流版本
         
         :param workflow_id: 工作流ID
-        :param project_id: 项目ID
-        :param user_id: 用户ID
-        :param page: 页码
-        :param page_size: 每页数量
+        :param project_id: 專案ID
+        :param user_id: 用戶ID
+        :param page: 頁码
+        :param page_size: 每頁數量
         :return: 工作流版本列表
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to view workflow versions")
         
-        # 2. 获取版本列表（从数据库）
+        # 2. 獲取版本列表（從資料庫）
         sql = """
         SELECT version, created_at, created_by, description
         FROM workflows 
@@ -6562,7 +6562,7 @@ class WorkflowDefinitionService:
         
         rows = self.db.fetchall(sql, params)
         
-        # 3. 获取总数量
+        # 3. 獲取总數量
         count_sql = """
         SELECT COUNT(*) FROM workflows 
         WHERE id = %(id)s AND project_id = %(project_id)s
@@ -6589,24 +6589,24 @@ class WorkflowDefinitionService:
         )
     
     def _has_permission(self, user_id: str, project_id: str, permission: str) -> bool:
-        """检查用户是否有权限"""
-        # 实现权限检查逻辑
-        return True  # 简化实现
+        """检查用戶是否有權限"""
+        # 實現權限检查逻辑
+        return True  # 简化實現
     
     def _clear_cache(self, project_id: str):
-        """清除项目缓存"""
-        # 清除所有以project_id开头的缓存键
+        """清除專案缓存"""
+        # 清除所有以project_id開头的缓存鍵
         keys_to_clear = [k for k in self.cache if k.startswith(project_id)]
         for key in keys_to_clear:
             del self.cache[key]
 ```
 
-#### 4.4.2 工作流执行服务
+#### 4.4.2 工作流执行服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class WorkflowExecutionService:
-    """工作流执行服务，负责工作流实例的创建和管理"""
+    """工作流执行服務，負責工作流實例的创建和管理"""
     
     def __init__(
         self,
@@ -6630,22 +6630,22 @@ class WorkflowExecutionService:
         options: Optional[ExecutionOptions] = None
     ) -> WorkflowInstance:
         """
-        创建工作流实例
+        创建工作流實例
         
         :param workflow_id: 工作流ID
-        :param project_id: 项目ID
+        :param project_id: 專案ID
         :param user_id: 创建者ID
-        :param input_data: 输入数据
+        :param input_data: 輸入資料
         :param options: 执行选项
-        :return: 工作流实例
+        :return: 工作流實例
         """
-        # 1. 获取工作流定义
+        # 1. 獲取工作流定義
         workflow = self._get_workflow(workflow_id, project_id, user_id)
         
-        # 2. 验证输入数据
+        # 2. 验證輸入資料
         self._validate_input(input_data, workflow)
         
-        # 3. 创建实例
+        # 3. 创建實例
         instance = self._create_instance_record(
             workflow_id, 
             project_id, 
@@ -6668,8 +6668,8 @@ class WorkflowExecutionService:
         return instance
     
     def _get_workflow(self, workflow_id: str, project_id: str, user_id: str):
-        """获取工作流定义"""
-        # 这里应该调用WorkflowDefinitionService，为简化直接查询
+        """獲取工作流定義"""
+        # 這里应该調用WorkflowDefinitionService，為简化直接查詢
         workflow = self.db.fetchone(
             "SELECT * FROM workflows WHERE id = %(id)s AND project_id = %(project_id)s ORDER BY version DESC LIMIT 1",
             {"id": workflow_id, "project_id": project_id}
@@ -6681,17 +6681,17 @@ class WorkflowExecutionService:
         return workflow
     
     def _validate_input(self, input_data: Dict, workflow: Dict):
-        """验证输入数据"""
+        """验證輸入資料"""
         # 检查必填字段
         if "trigger" not in input_data:
             raise ValidationError("Input must contain 'trigger' field")
         
-        # 验证触发器类型
+        # 验證触发器類型
         trigger_type = input_data["trigger"].get("type")
         if not trigger_type:
             raise ValidationError("Trigger type is required")
         
-        # 验证触发器配置
+        # 验證触发器配置
         trigger_config = input_data["trigger"].get("config", {})
         workflow_triggers = json.loads(workflow["definition"]).get("triggers", [])
         
@@ -6699,7 +6699,7 @@ class WorkflowExecutionService:
         if not trigger_def:
             raise ValidationError(f"Invalid trigger type: {trigger_type}")
         
-        # 验证必填配置项
+        # 验證必填配置项
         for field in trigger_def.get("required_fields", []):
             if field not in trigger_config:
                 raise ValidationError(f"Trigger config missing required field: {field}")
@@ -6712,11 +6712,11 @@ class WorkflowExecutionService:
         input_data: Dict,
         options: Optional[ExecutionOptions]
     ) -> WorkflowInstance:
-        """创建工作流实例记录"""
+        """创建工作流實例記錄"""
         # 生成唯一ID
         instance_id = f"inst-{uuid.uuid4().hex[:12]}"
         
-        # 准备实例数据
+        # 准備實例資料
         instance = WorkflowInstance(
             id=instance_id,
             workflow_id=workflow_id,
@@ -6731,13 +6731,13 @@ class WorkflowExecutionService:
             created_by=user_id
         )
         
-        # 保存到数据库
+        # 保存到資料庫
         self._save_instance(instance)
         
         return instance
     
     def _save_instance(self, instance: WorkflowInstance):
-        """保存工作流实例到数据库"""
+        """保存工作流實例到資料庫"""
         sql = """
         INSERT INTO workflow_instances (
             id, workflow_id, project_id, trigger_type, trigger_payload, input, 
@@ -6769,29 +6769,29 @@ class WorkflowExecutionService:
         user_id: str
     ) -> WorkflowInstance:
         """
-        获取工作流实例详情
+        獲取工作流實例詳情
         
-        :param instance_id: 实例ID
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :return: 工作流实例
+        :param instance_id: 實例ID
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :return: 工作流實例
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to read this instance")
         
-        # 2. 从数据库获取
+        # 2. 從資料庫獲取
         instance = self._get_from_db(instance_id, project_id)
         if not instance:
             raise NotFoundError(f"Workflow instance {instance_id} not found")
         
-        # 3. 获取节点执行状态
+        # 3. 獲取節点执行狀態
         instance.node_executions = self._get_node_executions(instance_id)
         
         return instance
     
     def _get_from_db(self, instance_id: str, project_id: str) -> Optional[WorkflowInstance]:
-        """从数据库获取工作流实例"""
+        """從資料庫獲取工作流實例"""
         sql = """
         SELECT * FROM workflow_instances 
         WHERE id = %(id)s AND project_id = %(project_id)s
@@ -6808,7 +6808,7 @@ class WorkflowExecutionService:
         return self._row_to_instance(row)
     
     def _row_to_instance(self, row: Dict) -> WorkflowInstance:
-        """将数据库行转换为WorkflowInstance对象"""
+        """將資料庫行转换為WorkflowInstance物件"""
         return WorkflowInstance(
             id=row["id"],
             workflow_id=row["workflow_id"],
@@ -6830,7 +6830,7 @@ class WorkflowExecutionService:
         )
     
     def _get_node_executions(self, instance_id: str) -> List[NodeExecution]:
-        """获取节点执行状态"""
+        """獲取節点执行狀態"""
         sql = """
         SELECT * FROM node_executions 
         WHERE instance_id = %(instance_id)s 
@@ -6841,7 +6841,7 @@ class WorkflowExecutionService:
         return [self._row_to_node_execution(row) for row in rows]
     
     def _row_to_node_execution(self, row: Dict) -> NodeExecution:
-        """将数据库行转换为NodeExecution对象"""
+        """將資料庫行转换為NodeExecution物件"""
         return NodeExecution(
             id=row["id"],
             instance_id=row["instance_id"],
@@ -6866,26 +6866,26 @@ class WorkflowExecutionService:
         user_id: str
     ):
         """
-        取消工作流实例
+        取消工作流實例
         
-        :param instance_id: 实例ID
-        :param project_id: 项目ID
+        :param instance_id: 實例ID
+        :param project_id: 專案ID
         :param user_id: 取消者ID
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "cancel"):
             raise PermissionError("User does not have permission to cancel this instance")
         
-        # 2. 获取实例
+        # 2. 獲取實例
         instance = self.get_instance(instance_id, project_id, user_id)
         if not instance:
             raise NotFoundError(f"Workflow instance {instance_id} not found")
         
-        # 3. 检查状态
+        # 3. 检查狀態
         if instance.status not in ["pending", "running"]:
             raise ValidationError(f"Cannot cancel instance in {instance.status} state")
         
-        # 4. 更新状态
+        # 4. 更新狀態
         self._update_instance_status(
             instance_id,
             project_id,
@@ -6910,7 +6910,7 @@ class WorkflowExecutionService:
         status: str,
         **kwargs
     ):
-        """更新工作流实例状态"""
+        """更新工作流實例狀態"""
         update_fields = ["status = %(status)s"]
         params = {
             "id": instance_id,
@@ -6947,31 +6947,31 @@ class WorkflowExecutionService:
         page_size: int = 20
     ) -> WorkflowInstanceList:
         """
-        列出工作流实例
+        列出工作流實例
         
-        :param project_id: 项目ID
-        :param user_id: 请求用户ID
-        :param filters: 过滤条件
+        :param project_id: 專案ID
+        :param user_id: 请求用戶ID
+        :param filters: 過滤條件
         :param sort: 排序字段
-        :param page: 页码
-        :param page_size: 每页数量
-        :return: 工作流实例列表
+        :param page: 頁码
+        :param page_size: 每頁數量
+        :return: 工作流實例列表
         """
-        # 1. 检查权限
+        # 1. 检查權限
         if not self._has_permission(user_id, project_id, "read"):
             raise PermissionError("User does not have permission to list workflow instances")
         
-        # 2. 构建查询
+        # 2. 構建查詢
         query = self._build_list_query(project_id, filters, sort, page, page_size)
         
-        # 3. 执行查询
+        # 3. 执行查詢
         rows = self.db.fetchall(query["sql"], query["params"])
         total = self.db.fetchone(query["count_sql"], query["params"])["count"]
         
         # 4. 转换结果
         instances = [self._row_to_instance(row) for row in rows]
         
-        # 5. 获取节点执行状态（批量）
+        # 5. 獲取節点执行狀態（批量）
         instance_ids = [inst.id for inst in instances]
         node_executions = self._get_node_executions_batch(instance_ids)
         
@@ -6993,15 +6993,15 @@ class WorkflowExecutionService:
         page: int,
         page_size: int
     ) -> Dict:
-        """构建列表查询SQL"""
-        # 基础查询
+        """構建列表查詢SQL"""
+        # 基礎查詢
         base_sql = """
         SELECT * FROM workflow_instances 
         WHERE project_id = %(project_id)s
         """
         params = {"project_id": project_id}
         
-        # 添加过滤条件
+        # 添加過滤條件
         if filters:
             if "status" in filters and filters["status"]:
                 base_sql += " AND status = %(status)s"
@@ -7026,7 +7026,7 @@ class WorkflowExecutionService:
         # 添加排序
         order_by = "created_at DESC"
         if sort:
-            # 验证排序字段
+            # 验證排序字段
             valid_sort_fields = ["created_at", "started_at", "completed_at", "status", "duration"]
             if sort.lstrip("-") in valid_sort_fields:
                 direction = "DESC" if sort.startswith("-") else "ASC"
@@ -7035,7 +7035,7 @@ class WorkflowExecutionService:
         
         base_sql += f" ORDER BY {order_by}"
         
-        # 添加分页
+        # 添加分頁
         offset = (page - 1) * page_size
         paginated_sql = f"{base_sql} LIMIT %(page_size)s OFFSET %(offset)s"
         
@@ -7044,7 +7044,7 @@ class WorkflowExecutionService:
             "offset": offset
         })
         
-        # 计数查询
+        # 计數查詢
         count_sql = f"SELECT COUNT(*) FROM ({base_sql}) AS count_source"
         
         return {
@@ -7054,7 +7054,7 @@ class WorkflowExecutionService:
         }
     
     def _get_node_executions_batch(self, instance_ids: List[str]) -> Dict[str, List[NodeExecution]]:
-        """批量获取节点执行状态"""
+        """批量獲取節点执行狀態"""
         if not instance_ids:
             return {}
         
@@ -7066,7 +7066,7 @@ class WorkflowExecutionService:
         
         rows = self.db.fetchall(sql, {"instance_ids": instance_ids})
         
-        # 按实例ID分组
+        # 按實例ID分組
         executions_by_instance = defaultdict(list)
         for row in rows:
             executions_by_instance[row["instance_id"]].append(self._row_to_node_execution(row))
@@ -7074,17 +7074,17 @@ class WorkflowExecutionService:
         return dict(executions_by_instance)
     
     def _has_permission(self, user_id: str, project_id: str, permission: str) -> bool:
-        """检查用户是否有权限"""
-        # 实现权限检查逻辑
-        return True  # 简化实现
+        """检查用戶是否有權限"""
+        # 實現權限检查逻辑
+        return True  # 简化實現
 ```
 
 #### 4.4.3 工作流调度器
 
-**技术实现：**
+**技術實現：**
 ```python
 class WorkflowScheduler:
-    """工作流调度器，负责工作流实例的调度和执行"""
+    """工作流调度器，負責工作流實例的调度和执行"""
     
     def __init__(
         self,
@@ -7105,14 +7105,14 @@ class WorkflowScheduler:
         self.lock = threading.Lock()
     
     def start(self):
-        """启动调度器"""
+        """启動调度器"""
         if self.running:
             return
         
         self.running = True
         self.logger.info("Starting workflow scheduler")
         
-        # 添加定期任务
+        # 添加定期任務
         self.scheduler.add_job(
             self._process_queue,
             'interval',
@@ -7127,16 +7127,16 @@ class WorkflowScheduler:
             id='check_timeouts'
         )
         
-        # 恢复未完成的实例
+        # 恢復未完成的實例
         self._recover_incomplete_instances()
         
-        # 启动调度器
+        # 启動调度器
         self.scheduler.start()
         self.logger.info("Workflow scheduler started")
     
     def _recover_incomplete_instances(self):
-        """恢复未完成的工作流实例"""
-        # 获取所有未完成的实例
+        """恢復未完成的工作流實例"""
+        # 獲取所有未完成的實例
         sql = """
         SELECT id, project_id FROM workflow_instances 
         WHERE status IN ('pending', 'running') 
@@ -7158,9 +7158,9 @@ class WorkflowScheduler:
     
     def schedule(self, instance: WorkflowInstanceRef):
         """
-        调度工作流实例
+        调度工作流實例
         
-        :param instance: 工作流实例引用
+        :param instance: 工作流實例引用
         """
         with self.lock:
             # 检查是否已在调度中
@@ -7168,18 +7168,18 @@ class WorkflowScheduler:
                 self.logger.debug("Instance %s already in scheduler", instance.id)
                 return
             
-            # 获取实例优先级
+            # 獲取實例优先级
             priority = self._get_instance_priority(instance)
             
-            # 添加到队列
+            # 添加到隊列
             self.task_queue.put((priority, time.time(), instance))
             self.active_instances.add(instance.id)
             
             self.logger.debug("Scheduled instance %s with priority %d", instance.id, priority)
     
     def _get_instance_priority(self, instance: WorkflowInstanceRef) -> int:
-        """获取实例优先级"""
-        # 从数据库获取优先级
+        """獲取實例优先级"""
+        # 從資料庫獲取优先级
         sql = "SELECT priority FROM workflow_instances WHERE id = %(id)s"
         result = self.db.fetchone(sql, {"id": instance.id})
         
@@ -7190,15 +7190,15 @@ class WorkflowScheduler:
         return self.config.default_priority
     
     def _process_queue(self):
-        """处理任务队列"""
+        """處理任務隊列"""
         if self.task_queue.empty():
             return
         
         try:
-            # 获取下一个任务
+            # 獲取下一個任務
             _, _, instance = self.task_queue.get_nowait()
             
-            # 从活动实例中移除
+            # 從活動實例中移除
             with self.lock:
                 self.active_instances.discard(instance.id)
             
@@ -7211,8 +7211,8 @@ class WorkflowScheduler:
             self.logger.error("Error processing workflow instance: %s", str(e))
     
     def _check_timeouts(self):
-        """检查超时实例"""
-        # 获取可能超时的运行中实例
+        """检查超時實例"""
+        # 獲取可能超時的运行中實例
         sql = """
         SELECT id, project_id, started_at, timeout 
         FROM workflow_instances 
@@ -7230,7 +7230,7 @@ class WorkflowScheduler:
             if started_at and (now - started_at) > timedelta(seconds=timeout):
                 self.logger.warning("Instance %s timed out", instance["id"])
                 
-                # 更新状态
+                # 更新狀態
                 self._update_instance_status(
                     instance["id"],
                     instance["project_id"],
@@ -7255,8 +7255,8 @@ class WorkflowScheduler:
         status: str,
         **kwargs
     ):
-        """更新工作流实例状态"""
-        # 这里应该调用WorkflowExecutionService，为简化直接更新
+        """更新工作流實例狀態"""
+        # 這里应该調用WorkflowExecutionService，為简化直接更新
         update_fields = ["status = %(status)s"]
         params = {
             "id": instance_id,
@@ -7287,13 +7287,13 @@ class WorkflowScheduler:
     
     def cancel(self, instance_id: str):
         """
-        取消工作流实例
+        取消工作流實例
         
-        :param instance_id: 实例ID
+        :param instance_id: 實例ID
         """
-        # 从队列中移除
+        # 從隊列中移除
         with self.lock:
-            # 创建临时队列
+            # 创建临時隊列
             temp_queue = PriorityQueue()
             canceled = False
             
@@ -7304,10 +7304,10 @@ class WorkflowScheduler:
                 else:
                     temp_queue.put((priority, timestamp, instance))
             
-            # 替换队列
+            # 替换隊列
             self.task_queue = temp_queue
             
-            # 从活动实例中移除
+            # 從活動實例中移除
             if instance_id in self.active_instances:
                 self.active_instances.remove(instance_id)
                 canceled = True
@@ -7327,10 +7327,10 @@ class WorkflowScheduler:
 
 #### 4.4.4 工作流执行器
 
-**技术实现：**
+**技術實現：**
 ```python
 class WorkflowExecutor:
-    """工作流执行器，负责执行工作流实例"""
+    """工作流执行器，負責执行工作流實例"""
     
     def __init__(
         self,
@@ -7347,25 +7347,25 @@ class WorkflowExecutor:
     
     def execute(self, instance: WorkflowInstanceRef):
         """
-        执行工作流实例
+        执行工作流實例
         
-        :param instance: 工作流实例引用
+        :param instance: 工作流實例引用
         """
         try:
-            # 1. 获取工作流定义
+            # 1. 獲取工作流定義
             workflow = self._get_workflow_definition(instance)
             
-            # 2. 更新实例状态为运行中
+            # 2. 更新實例狀態為运行中
             self._update_instance_status(
                 instance.id,
                 instance.project_id,
                 "running"
             )
             
-            # 3. 获取入口节点
+            # 3. 獲取入口節点
             entry_nodes = self._find_entry_nodes(workflow)
             
-            # 4. 执行入口节点
+            # 4. 执行入口節点
             for node_id in entry_nodes:
                 self._execute_node(instance, workflow, node_id)
                 
@@ -7374,7 +7374,7 @@ class WorkflowExecutor:
             self._handle_execution_error(instance, str(e))
     
     def _get_workflow_definition(self, instance: WorkflowInstanceRef) -> Dict:
-        """获取工作流定义"""
+        """獲取工作流定義"""
         sql = """
         SELECT w.definition, i.input 
         FROM workflows w
@@ -7392,7 +7392,7 @@ class WorkflowExecutor:
         }
     
     def _find_entry_nodes(self, workflow: Dict) -> Set[str]:
-        """查找入口节点（没有入边的节点）"""
+        """查找入口節点（沒有入边的節点）"""
         all_nodes = {node["node_id"] for node in workflow["definition"]["nodes"]}
         target_nodes = {edge["to"] for edge in workflow["definition"].get("edges", [])}
         return all_nodes - target_nodes
@@ -7404,8 +7404,8 @@ class WorkflowExecutor:
         status: str,
         **kwargs
     ):
-        """更新工作流实例状态"""
-        # 这里应该调用WorkflowExecutionService，为简化直接更新
+        """更新工作流實例狀態"""
+        # 這里应该調用WorkflowExecutionService，為简化直接更新
         update_fields = ["status = %(status)s"]
         params = {
             "id": instance_id,
@@ -7440,17 +7440,17 @@ class WorkflowExecutor:
         workflow: Dict,
         node_id: str
     ):
-        """执行节点"""
-        # 1. 获取节点定义
+        """执行節点"""
+        # 1. 獲取節点定義
         node_def = self._get_node_definition(workflow, node_id)
         if not node_def:
             self._handle_node_error(instance, node_id, f"Node {node_id} not found")
             return
         
-        # 2. 获取输入数据
+        # 2. 獲取輸入資料
         input_data = self._get_node_input(instance, workflow, node_id)
         
-        # 3. 创建节点执行记录
+        # 3. 创建節点执行記錄
         execution_id = self._create_node_execution(
             instance, 
             node_id, 
@@ -7458,7 +7458,7 @@ class WorkflowExecutor:
             input_data
         )
         
-        # 4. 执行节点
+        # 4. 执行節点
         try:
             self.node_executor.execute(
                 execution_id=execution_id,
@@ -7473,7 +7473,7 @@ class WorkflowExecutor:
             self._handle_node_error(instance, node_id, str(e))
     
     def _get_node_definition(self, workflow: Dict, node_id: str) -> Optional[Dict]:
-        """获取节点定义"""
+        """獲取節点定義"""
         for node in workflow["definition"]["nodes"]:
             if node["node_id"] == node_id:
                 return node
@@ -7485,22 +7485,22 @@ class WorkflowExecutor:
         workflow: Dict,
         node_id: str
     ) -> Dict:
-        """获取节点输入数据"""
+        """獲取節点輸入資料"""
         input_data = {}
         
-        # 如果是入口节点，使用工作流输入
+        # 如果是入口節点，使用工作流輸入
         if node_id in self._find_entry_nodes(workflow):
             return workflow["input"]
         
-        # 否则，从前置节点获取输出
+        # 否则，從前置節点獲取輸出
         for edge in workflow["definition"].get("edges", []):
             if edge["to"] == node_id:
                 source_node_id = edge["from"]
                 
-                # 获取源节点输出
+                # 獲取源節点輸出
                 source_output = self._get_node_output(instance, source_node_id)
                 if source_output:
-                    # 应用数据映射
+                    # 应用資料映射
                     if "mapping" in edge:
                         mapped_output = self._apply_data_mapping(
                             source_output,
@@ -7513,11 +7513,11 @@ class WorkflowExecutor:
         return input_data
     
     def _apply_data_mapping(self, source_data: Dict, mapping_rules: Dict) -> Dict:
-        """应用数据映射规则"""
+        """应用資料映射规则"""
         result = {}
         
         for target_path, source_expr in mapping_rules.items():
-            # 解析源表达式（支持简单的JMESPath）
+            # 解析源表达式（支援简单的JMESPath）
             if source_expr.startswith("$."):
                 # 简单JMESPath解析
                 value = jmespath.search(source_expr[2:], source_data)
@@ -7525,13 +7525,13 @@ class WorkflowExecutor:
                 # 直接值
                 value = source_expr
             
-            # 设置目标路径
+            # 设置目標路径
             self._set_nested_value(result, target_path, value)
         
         return result
     
     def _set_nested_value(self, obj: Dict, path: str, value: Any):
-        """设置嵌套对象的值"""
+        """设置嵌套物件的值"""
         parts = path.split('.')
         for part in parts[:-1]:
             if part not in obj:
@@ -7544,7 +7544,7 @@ class WorkflowExecutor:
         instance: WorkflowInstanceRef,
         node_id: str
     ) -> Optional[Dict]:
-        """获取节点输出"""
+        """獲取節点輸出"""
         sql = """
         SELECT output FROM node_executions 
         WHERE instance_id = %(instance_id)s AND node_id = %(node_id)s 
@@ -7565,7 +7565,7 @@ class WorkflowExecutor:
         node_type: str,
         input_data: Dict
     ) -> str:
-        """创建节点执行记录"""
+        """创建節点执行記錄"""
         execution_id = f"node-{uuid.uuid4().hex[:8]}"
         
         sql = """
@@ -7587,7 +7587,7 @@ class WorkflowExecutor:
         return execution_id
     
     def _calculate_deadline(self, node_def: Dict) -> datetime:
-        """计算节点执行截止时间"""
+        """计算節点执行截止時間"""
         timeout = node_def.get("timeout", self.config.default_node_timeout)
         return datetime.utcnow() + timedelta(seconds=timeout)
     
@@ -7597,8 +7597,8 @@ class WorkflowExecutor:
         node_id: str,
         error: str
     ):
-        """处理节点错误"""
-        # 更新节点状态
+        """處理節点错误"""
+        # 更新節点狀態
         self._update_node_status(
             instance.id,
             node_id,
@@ -7609,7 +7609,7 @@ class WorkflowExecutor:
             }
         )
         
-        # 检查是否需要失败整个工作流
+        # 检查是否需要失败整個工作流
         workflow = self._get_workflow_definition(instance)
         node_def = self._get_node_definition(workflow, node_id)
         
@@ -7631,7 +7631,7 @@ class WorkflowExecutor:
         status: str,
         **kwargs
     ):
-        """更新节点执行状态"""
+        """更新節点执行狀態"""
         update_fields = ["status = %(status)s"]
         params = {
             "instance_id": instance_id,
@@ -7668,14 +7668,14 @@ class WorkflowExecutor:
         output: Dict
     ):
         """
-        处理节点完成事件
+        處理節点完成事件
         
-        :param execution_id: 节点执行ID
-        :param node_id: 节点ID
-        :param instance_id: 实例ID
-        :param output: 节点输出
+        :param execution_id: 節点执行ID
+        :param node_id: 節点ID
+        :param instance_id: 實例ID
+        :param output: 節点輸出
         """
-        # 1. 更新节点状态
+        # 1. 更新節点狀態
         self._update_node_status(
             instance_id,
             node_id,
@@ -7683,16 +7683,16 @@ class WorkflowExecutor:
             output=output
         )
         
-        # 2. 获取工作流定义
+        # 2. 獲取工作流定義
         workflow = self._get_workflow_definition(WorkflowInstanceRef(
             id=instance_id,
-            project_id="unknown"  # 实际实现中应该获取project_id
+            project_id="unknown"  # 實际實現中应该獲取project_id
         ))
         
-        # 3. 查找后续节点
+        # 3. 查找後續節点
         next_nodes = self._find_next_nodes(workflow, node_id)
         
-        # 4. 执行后续节点
+        # 4. 执行後續節点
         for next_node_id in next_nodes:
             self._execute_node(
                 WorkflowInstanceRef(id=instance_id, project_id="unknown"),
@@ -7705,15 +7705,15 @@ class WorkflowExecutor:
             self._mark_workflow_completed(instance_id)
     
     def _find_next_nodes(self, workflow: Dict, node_id: str) -> List[str]:
-        """查找后续节点"""
+        """查找後續節点"""
         return [
             edge["to"] for edge in workflow["definition"].get("edges", [])
             if edge["from"] == node_id
         ]
     
     def _mark_workflow_completed(self, instance_id: str):
-        """标记工作流完成"""
-        # 获取所有节点状态
+        """標记工作流完成"""
+        # 獲取所有節点狀態
         sql = """
         SELECT COUNT(*) FROM node_executions 
         WHERE instance_id = %(instance_id)s AND status != 'completed'
@@ -7724,7 +7724,7 @@ class WorkflowExecutor:
         if incomplete_count == 0:
             self._update_instance_status(
                 instance_id,
-                "unknown",  # 实际实现中应该获取project_id
+                "unknown",  # 實际實現中应该獲取project_id
                 "completed"
             )
     
@@ -7738,16 +7738,16 @@ class WorkflowExecutor:
         max_retries: int
     ):
         """
-        处理节点失败事件
+        處理節点失败事件
         
-        :param execution_id: 节点执行ID
-        :param node_id: 节点ID
-        :param instance_id: 实例ID
-        :param error: 错误信息
-        :param retry_count: 重试次数
-        :param max_retries: 最大重试次数
+        :param execution_id: 節点执行ID
+        :param node_id: 節点ID
+        :param instance_id: 實例ID
+        :param error: 错误資訊
+        :param retry_count: 重试次數
+        :param max_retries: 最大重试次數
         """
-        # 1. 更新节点状态
+        # 1. 更新節点狀態
         self._update_node_status(
             instance_id,
             node_id,
@@ -7758,10 +7758,10 @@ class WorkflowExecutor:
         
         # 2. 检查是否可以重试
         if retry_count < max_retries:
-            # 计算重试延迟
+            # 计算重试延遲
             retry_delay = self._calculate_retry_delay(retry_count)
             
-            # 计划重试
+            # 計畫重试
             self._schedule_retry(
                 execution_id,
                 node_id,
@@ -7778,7 +7778,7 @@ class WorkflowExecutor:
             )
     
     def _calculate_retry_delay(self, retry_count: int) -> float:
-        """计算重试延迟（指数退避）"""
+        """计算重试延遲（指數退避）"""
         base = self.config.retry_base_delay
         factor = self.config.retry_backoff_factor
         return base * (factor ** retry_count)
@@ -7791,8 +7791,8 @@ class WorkflowExecutor:
         retry_count: int,
         delay: float
     ):
-        """计划节点重试"""
-        # 这里应该使用定时任务系统，为简化使用线程
+        """計畫節点重试"""
+        # 這里应该使用定時任務系統，為简化使用线程
         def retry_task():
             time.sleep(delay)
             self._retry_node(execution_id, node_id, instance_id, retry_count)
@@ -7806,26 +7806,26 @@ class WorkflowExecutor:
         instance_id: str,
         retry_count: int
     ):
-        """重试节点"""
-        # 1. 获取工作流定义
+        """重试節点"""
+        # 1. 獲取工作流定義
         workflow = self._get_workflow_definition(WorkflowInstanceRef(
             id=instance_id,
             project_id="unknown"
         ))
         
-        # 2. 获取节点定义
+        # 2. 獲取節点定義
         node_def = self._get_node_definition(workflow, node_id)
         if not node_def:
             return
         
-        # 3. 获取输入数据
+        # 3. 獲取輸入資料
         input_data = self._get_node_input(
             WorkflowInstanceRef(id=instance_id, project_id="unknown"),
             workflow,
             node_id
         )
         
-        # 4. 更新节点状态为重试中
+        # 4. 更新節点狀態為重试中
         self._update_node_status(
             instance_id,
             node_id,
@@ -7833,7 +7833,7 @@ class WorkflowExecutor:
             retry_count=retry_count
         )
         
-        # 5. 重新执行节点
+        # 5. 重新执行節点
         try:
             self.node_executor.execute(
                 execution_id=execution_id,
@@ -7852,12 +7852,12 @@ class WorkflowExecutor:
             )
 ```
 
-#### 4.4.5 节点执行器
+#### 4.4.5 節点执行器
 
-**技术实现：**
+**技術實現：**
 ```python
 class NodeExecutor:
-    """节点执行器，负责执行单个节点"""
+    """節点执行器，負責执行单個節点"""
     
     def __init__(
         self,
@@ -7881,23 +7881,23 @@ class NodeExecutor:
         deadline: Optional[datetime] = None
     ):
         """
-        执行节点
+        执行節点
         
-        :param execution_id: 节点执行ID
-        :param node_id: 节点ID
-        :param node_type: 节点类型
-        :param parameters: 节点参数
-        :param input: 输入数据
-        :param max_retries: 最大重试次数
-        :param deadline: 截止时间
+        :param execution_id: 節点执行ID
+        :param node_id: 節点ID
+        :param node_type: 節点類型
+        :param parameters: 節点參數
+        :param input: 輸入資料
+        :param max_retries: 最大重试次數
+        :param deadline: 截止時間
         """
         try:
-            # 1. 获取节点处理器
+            # 1. 獲取節点處理器
             node_handler = self.node_registry.get_handler(node_type)
             if not node_handler:
                 raise NodeExecutionError(f"Node type {node_type} not registered")
             
-            # 2. 执行节点
+            # 2. 执行節点
             start_time = time.time()
             output = node_handler.execute(
                 execution_id=execution_id,
@@ -7907,7 +7907,7 @@ class NodeExecutor:
             )
             duration = time.time() - start_time
             
-            # 3. 处理成功
+            # 3. 處理成功
             self._handle_success(
                 execution_id,
                 node_id,
@@ -7916,13 +7916,13 @@ class NodeExecutor:
             )
             
         except Exception as e:
-            # 4. 处理失败
+            # 4. 處理失败
             self._handle_failure(
                 execution_id,
                 node_id,
                 e,
                 max_retries,
-                0  # 初始重试次数为0
+                0  # 初始重试次數為0
             )
     
     def _handle_success(
@@ -7932,7 +7932,7 @@ class NodeExecutor:
         output: Dict,
         duration: float
     ):
-        """处理节点成功"""
+        """處理節点成功"""
         # 发布完成事件
         self.event_bus.publish("node.execution.completed", {
             "execution_id": execution_id,
@@ -7949,8 +7949,8 @@ class NodeExecutor:
         max_retries: int,
         retry_count: int
     ):
-        """处理节点失败"""
-        # 准备错误信息
+        """處理節点失败"""
+        # 准備错误資訊
         error_info = {
             "code": type(error).__name__,
             "message": str(error),
@@ -7966,12 +7966,12 @@ class NodeExecutor:
             "max_retries": max_retries
         })
         
-        # 如果还有重试机会，计划重试
+        # 如果还有重试机會，計畫重试
         if retry_count < max_retries:
-            # 计算重试延迟
+            # 计算重试延遲
             retry_delay = self._calculate_retry_delay(retry_count)
             
-            # 计划重试
+            # 計畫重试
             self._schedule_retry(
                 execution_id,
                 node_id,
@@ -7982,7 +7982,7 @@ class NodeExecutor:
             )
     
     def _calculate_retry_delay(self, retry_count: int) -> float:
-        """计算重试延迟（指数退避）"""
+        """计算重试延遲（指數退避）"""
         base = self.config.retry_base_delay
         factor = self.config.retry_backoff_factor
         return base * (factor ** retry_count)
@@ -7996,8 +7996,8 @@ class NodeExecutor:
         max_retries: int,
         delay: float
     ):
-        """计划节点重试"""
-        # 这里应该使用定时任务系统，为简化使用线程
+        """計畫節点重试"""
+        # 這里应该使用定時任務系統，為简化使用线程
         def retry_task():
             time.sleep(delay)
             self._retry_node(
@@ -8018,20 +8018,20 @@ class NodeExecutor:
         retry_count: int,
         max_retries: int
     ):
-        """重试节点"""
-        # 获取节点信息（实际实现中应该从存储获取）
-        # 这里简化为假设我们知道node_type和参数
-        node_type = "unknown"  # 实际实现中应该获取
-        parameters = {}  # 实际实现中应该获取
-        input_data = {}  # 实际实现中应该获取
+        """重试節点"""
+        # 獲取節点資訊（實际實現中应该從儲存獲取）
+        # 這里简化為假设我们知道node_type和參數
+        node_type = "unknown"  # 實际實現中应该獲取
+        parameters = {}  # 實际實現中应该獲取
+        input_data = {}  # 實际實現中应该獲取
         
         try:
-            # 获取节点处理器
+            # 獲取節点處理器
             node_handler = self.node_registry.get_handler(node_type)
             if not node_handler:
                 raise NodeExecutionError(f"Node type {node_type} not registered")
             
-            # 执行节点
+            # 执行節点
             start_time = time.time()
             output = node_handler.execute(
                 execution_id=execution_id,
@@ -8041,7 +8041,7 @@ class NodeExecutor:
             )
             duration = time.time() - start_time
             
-            # 处理成功
+            # 處理成功
             self._handle_success(
                 execution_id,
                 node_id,
@@ -8050,7 +8050,7 @@ class NodeExecutor:
             )
             
         except Exception as e:
-            # 递归处理失败
+            # 递归處理失败
             self._handle_failure(
                 execution_id,
                 node_id,
@@ -8060,23 +8060,23 @@ class NodeExecutor:
             )
 
 class NodeRegistry:
-    """节点处理器注册表"""
+    """節点處理器註冊表"""
     
     def __init__(self):
         self.handlers = {}
         self.logger = logging.getLogger(__name__)
     
     def register(self, node_type: str, handler: NodeHandler):
-        """注册节点处理器"""
+        """註冊節点處理器"""
         self.handlers[node_type] = handler
         self.logger.info("Registered node handler for %s", node_type)
     
     def get_handler(self, node_type: str) -> Optional[NodeHandler]:
-        """获取节点处理器"""
+        """獲取節点處理器"""
         return self.handlers.get(node_type)
 
 class NodeHandler(ABC):
-    """节点处理器基类"""
+    """節点處理器基类"""
     
     @abstractmethod
     def execute(
@@ -8087,19 +8087,19 @@ class NodeHandler(ABC):
         input: Dict
     ) -> Dict:
         """
-        执行节点
+        执行節点
         
         :param execution_id: 执行ID
-        :param node_id: 节点ID
-        :param parameters: 节点参数
-        :param input: 输入数据
-        :return: 节点输出
+        :param node_id: 節点ID
+        :param parameters: 節点參數
+        :param input: 輸入資料
+        :return: 節点輸出
         """
         pass
 
-# 示例节点处理器
+# 示例節点處理器
 class HttpNodeHandler(NodeHandler):
-    """HTTP节点处理器"""
+    """HTTP節点處理器"""
     
     def __init__(self, http_client: HttpClient, config: Config):
         self.http_client = http_client
@@ -8112,10 +8112,10 @@ class HttpNodeHandler(NodeHandler):
         parameters: Dict,
         input: Dict
     ) -> Dict:
-        # 1. 验证参数
+        # 1. 验證參數
         self._validate_parameters(parameters)
         
-        # 2. 准备请求
+        # 2. 准備请求
         url = self._resolve_url(parameters["url"], input)
         method = parameters.get("method", "GET").upper()
         headers = self._resolve_headers(parameters.get("headers", {}), input)
@@ -8130,11 +8130,11 @@ class HttpNodeHandler(NodeHandler):
             timeout=parameters.get("timeout", self.config.default_timeout)
         )
         
-        # 4. 处理响应
+        # 4. 處理響應
         return self._process_response(response, parameters)
     
     def _validate_parameters(self, parameters: Dict):
-        """验证参数"""
+        """验證參數"""
         if "url" not in parameters:
             raise NodeExecutionError("URL is required for HTTP node")
         
@@ -8144,7 +8144,7 @@ class HttpNodeHandler(NodeHandler):
     
     def _resolve_url(self, url_template: str, input: Dict) -> str:
         """解析URL模板"""
-        # 简单实现：替换{{var}}为input中的值
+        # 简单實現：替换{{var}}為input中的值
         def replace_match(match):
             var_name = match.group(1)
             return str(input.get(var_name, match.group(0)))
@@ -8162,7 +8162,7 @@ class HttpNodeHandler(NodeHandler):
         return resolved
     
     def _resolve_body(self, body: Dict, input: Dict) -> Dict:
-        """解析请求体"""
+        """解析请求體"""
         return self._resolve_template_recursive(body, input)
     
     def _resolve_template(self, template: str, input: Dict) -> str:
@@ -8185,14 +8185,14 @@ class HttpNodeHandler(NodeHandler):
             return obj
     
     def _process_response(self, response: HttpResponse, parameters: Dict) -> Dict:
-        """处理HTTP响应"""
+        """處理HTTP響應"""
         result = {
             "status_code": response.status_code,
             "headers": dict(response.headers),
             "url": response.url
         }
         
-        # 处理响应体
+        # 處理響應體
         if response.content:
             content_type = response.headers.get("Content-Type", "")
             
@@ -8213,8 +8213,8 @@ class HttpNodeHandler(NodeHandler):
         return result
     
     def _parse_xml(self, content: bytes) -> Dict:
-        """解析XML内容"""
-        # 简单实现
+        """解析XML內容"""
+        # 简单實現
         try:
             import xmltodict
             return xmltodict.parse(content)
@@ -8222,23 +8222,23 @@ class HttpNodeHandler(NodeHandler):
             return {"raw": content.decode('utf-8', errors='replace')}
     
     def _apply_output_mapping(self, response: Dict, mapping: Dict) -> Dict:
-        """应用输出映射"""
+        """应用輸出映射"""
         result = {}
         
         for target, source in mapping.items():
-            # 支持简单的JMESPath
+            # 支援简单的JMESPath
             if source.startswith("$."):
                 value = jmespath.search(source[2:], response)
             else:
                 value = response.get(source)
             
-            # 设置目标路径
+            # 设置目標路径
             self._set_nested_value(result, target, value)
         
         return result
     
     def _set_nested_value(self, obj: Dict, path: str, value: Any):
-        """设置嵌套对象的值"""
+        """设置嵌套物件的值"""
         parts = path.split('.')
         for part in parts[:-1]:
             if part not in obj:
@@ -8246,17 +8246,17 @@ class HttpNodeHandler(NodeHandler):
             obj = obj[part]
         obj[parts[-1]] = value
 
-# 注册示例节点处理器
+# 註冊示例節点處理器
 node_registry = NodeRegistry()
 node_registry.register("http/request", HttpNodeHandler(http_client, config))
 ```
 
-### 4.5 数据模型详细定义
+### 4.5 資料模型詳細定義
 
-#### 4.5.1 工作流定义表
+#### 4.5.1 工作流定義表
 
 ```sql
--- 工作流定义表
+-- 工作流定義表
 CREATE TABLE workflows (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -8281,13 +8281,13 @@ CREATE TABLE workflows (
     INDEX idx_workflows_status ON workflows(status),
     INDEX idx_workflows_updated ON workflows(updated_at DESC),
     
-    -- 全文搜索
+    -- 全文搜尋
     ts_vector TSVECTOR GENERATED ALWAYS AS (
         to_tsvector('english', coalesce(display_name, '') || ' ' || coalesce(description, ''))
     ) STORED
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_workflows_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -8301,14 +8301,14 @@ BEFORE UPDATE ON workflows
 FOR EACH ROW
 EXECUTE FUNCTION update_workflows_modtime();
 
--- 全文搜索索引
+-- 全文搜尋索引
 CREATE INDEX idx_workflows_search ON workflows USING GIN (ts_vector);
 ```
 
-#### 4.5.2 工作流实例表
+#### 4.5.2 工作流實例表
 
 ```sql
--- 工作流实例表
+-- 工作流實例表
 CREATE TABLE workflow_instances (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     workflow_id UUID NOT NULL REFERENCES workflows(id) ON DELETE CASCADE,
@@ -8336,10 +8336,10 @@ CREATE TABLE workflow_instances (
 );
 ```
 
-#### 4.5.3 节点执行表
+#### 4.5.3 節点执行表
 
 ```sql
--- 节点执行表
+-- 節点执行表
 CREATE TABLE node_executions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     instance_id UUID NOT NULL REFERENCES workflow_instances(id) ON DELETE CASCADE,
@@ -8364,9 +8364,9 @@ CREATE TABLE node_executions (
 );
 ```
 
-### 4.6 API详细规范
+### 4.6 API詳細規範
 
-#### 4.6.1 工作流定义API
+#### 4.6.1 工作流定義API
 
 **创建工作流 (POST /api/v1/workflows)**
 
@@ -8380,8 +8380,8 @@ X-Request-ID: req-123456
 
 {
   "name": "nas-photo-processing",
-  "display_name": "NAS照片智能处理流水线",
-  "description": "监控NAS目录并自动处理新照片",
+  "display_name": "NAS照片智能處理流水线",
+  "description": "監控NAS目录並自動處理新照片",
   "triggers": [
     {
       "type": "filesystem",
@@ -8453,7 +8453,7 @@ X-Request-ID: req-123456
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -8465,8 +8465,8 @@ ETag: "d41d8cd98f00b204e9800998ecf8427e"
   "id": "wf-7a8b9c0d",
   "project_id": "proj-456",
   "name": "nas-photo-processing",
-  "display_name": "NAS照片智能处理流水线",
-  "description": "监控NAS目录并自动处理新照片",
+  "display_name": "NAS照片智能處理流水线",
+  "description": "監控NAS目录並自動處理新照片",
   "version": "1.0.0",
   "triggers": [
     {
@@ -8544,7 +8544,7 @@ ETag: "d41d8cd98f00b204e9800998ecf8427e"
 
 #### 4.6.2 工作流执行API
 
-**创建工作流实例 (POST /api/v1/workflows/{workflow_name}:run)**
+**创建工作流實例 (POST /api/v1/workflows/{workflow_name}:run)**
 
 *请求示例:*
 ```http
@@ -8570,7 +8570,7 @@ X-Request-ID: req-789012
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 202 Accepted
 Content-Type: application/json
@@ -8605,7 +8605,7 @@ X-Request-ID: req-789012
 }
 ```
 
-**获取工作流实例状态 (GET /api/v1/workflowInstances/{instance_id})**
+**獲取工作流實例狀態 (GET /api/v1/workflowInstances/{instance_id})**
 
 *请求示例:*
 ```http
@@ -8615,7 +8615,7 @@ Authorization: Bearer <access_token>
 Accept: application/json
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -8698,14 +8698,14 @@ Content-Type: application/json
 }
 ```
 
-### 4.7 性能优化策略
+### 4.7 效能優化策略
 
-#### 4.7.1 工作流执行优化
+#### 4.7.1 工作流执行優化
 
-1. **并行执行**
+1. **並行执行**
    ```python
    def execute_parallel_nodes(instance, workflow, node_ids):
-       """并行执行多个节点"""
+       """並行执行多個節点"""
        with ThreadPoolExecutor(max_workers=5) as executor:
            futures = {
                executor.submit(execute_node, instance, workflow, node_id): node_id
@@ -8721,30 +8721,30 @@ Content-Type: application/json
                    handle_node_failure(instance, node_id, str(e))
    ```
 
-2. **执行计划优化**
+2. **执行計畫優化**
    ```python
    def optimize_execution_plan(workflow):
-       """优化工作流执行计划"""
-       # 1. 识别可以并行执行的节点
+       """優化工作流执行計畫"""
+       # 1. 识别可以並行执行的節点
        parallel_groups = find_parallelizable_nodes(workflow)
        
-       # 2. 识别计算密集型节点，提前调度
+       # 2. 识别计算密集型節点，提前调度
        compute_intensive = identify_compute_intensive_nodes(workflow)
        
-       # 3. 生成优化后的执行计划
+       # 3. 生成優化後的执行計畫
        return generate_optimized_plan(parallel_groups, compute_intensive)
    ```
 
-3. **缓存优化**
+3. **缓存優化**
    ```python
    class NodeExecutionCache:
-       """节点执行结果缓存"""
+       """節点执行结果缓存"""
        
        def __init__(self, ttl=3600):
            self.cache = TTLCache(maxsize=10000, ttl=ttl)
        
        def get(self, node_id, input_hash):
-           """获取缓存结果"""
+           """獲取缓存结果"""
            key = f"{node_id}:{input_hash}"
            return self.cache.get(key)
        
@@ -8754,30 +8754,30 @@ Content-Type: application/json
            self.cache[key] = result
    ```
 
-#### 4.7.2 资源管理优化
+#### 4.7.2 資源管理優化
 
-1. **动态资源分配**
+1. **動态資源分配**
    ```python
    def allocate_resources(node_type, parameters):
-       """根据节点类型和参数分配资源"""
-       # 基础资源需求
+       """根據節点類型和參數分配資源"""
+       # 基礎資源需求
        resources = {
            "cpu": 1000,  # 1000 millicores
            "memory": 512,  # 512 MB
            "gpu": False
        }
        
-       # 根据节点类型调整
+       # 根據節点類型调整
        if node_type.startswith("ai/"):
            resources["gpu"] = True
            resources["memory"] = 2048
            
-           # 根据模型大小调整
+           # 根據模型大小调整
            if "model" in parameters:
                if "large" in parameters["model"]:
                    resources["memory"] = 4096
        
-       # 根据输入大小调整
+       # 根據輸入大小调整
        if "input_size" in parameters:
            size_mb = parameters["input_size"]
            resources["memory"] = max(512, int(512 * (size_mb / 10)))
@@ -8785,20 +8785,20 @@ Content-Type: application/json
        return resources
    ```
 
-2. **资源配额管理**
+2. **資源配额管理**
    ```python
    class ResourceQuotaManager:
-       """资源配额管理器"""
+       """資源配额管理器"""
        
        def __init__(self, db):
            self.db = db
        
        def check_quota(self, project_id, resources):
-           """检查资源配额"""
-           # 获取项目配额
+           """检查資源配额"""
+           # 獲取專案配额
            quota = self._get_project_quota(project_id)
            
-           # 获取已用资源
+           # 獲取已用資源
            used = self._get_used_resources(project_id)
            
            # 检查是否超出配额
@@ -8812,8 +8812,8 @@ Content-Type: application/json
            return True, ""
        
        def _get_project_quota(self, project_id):
-           """获取项目配额"""
-           # 从数据库获取
+           """獲取專案配额"""
+           # 從資料庫獲取
            return {
                "cpu": 10000,  # 10 cores
                "memory": 10240,  # 10 GB
@@ -8821,8 +8821,8 @@ Content-Type: application/json
            }
        
        def _get_used_resources(self, project_id):
-           """获取已用资源"""
-           # 计算运行中实例的资源使用
+           """獲取已用資源"""
+           # 计算运行中實例的資源使用
            return {
                "cpu": 3000,
                "memory": 3072,
@@ -8830,41 +8830,41 @@ Content-Type: application/json
            }
    ```
 
-### 4.8 安全考虑
+### 4.8 安全考慮
 
 #### 4.8.1 工作流安全
 
 1. **沙箱执行**
    ```python
    def execute_in_sandbox(node_type, parameters, input_data):
-       """在沙箱中执行节点"""
+       """在沙箱中执行節点"""
        # 1. 创建隔离环境
        sandbox = create_sandbox()
        
-       # 2. 限制资源
+       # 2. 限制資源
        sandbox.set_resource_limits(
            cpu=parameters.get("cpu_limit", 1000),
            memory=parameters.get("memory_limit", 512)
        )
        
-       # 3. 限制网络访问
+       # 3. 限制网络訪問
        if node_type.startswith("http/"):
            sandbox.allow_network("api.mirror-realm.com")
        else:
            sandbox.deny_network()
        
-       # 4. 执行节点
+       # 4. 执行節点
        try:
            return sandbox.execute(node_type, parameters, input_data)
        finally:
            sandbox.cleanup()
    ```
 
-2. **输入验证**
+2. **輸入验證**
    ```python
    def validate_node_input(node_type, input_data):
-       """验证节点输入"""
-       # 定义各节点类型的输入模式
+       """验證節点輸入"""
+       # 定義各節点類型的輸入模式
        schemas = {
            "http/request": {
                "type": "object",
@@ -8885,24 +8885,24 @@ Content-Type: application/json
                },
                "required": ["image_path"]
            }
-           # 其他节点类型...
+           # 其他節点類型...
        }
        
-       # 验证输入
+       # 验證輸入
        if node_type in schemas:
            validate(instance=input_data, schema=schemas[node_type])
    ```
 
-#### 4.8.2 数据安全
+#### 4.8.2 資料安全
 
-1. **敏感数据处理**
+1. **敏感資料處理**
    ```python
    def sanitize_workflow_data(data):
-       """清洗工作流数据中的敏感信息"""
-       # 定义敏感字段
+       """清洗工作流資料中的敏感資訊"""
+       # 定義敏感字段
        sensitive_fields = ["api_key", "password", "secret", "token"]
        
-       # 递归处理
+       # 递归處理
        if isinstance(data, dict):
            return {
                k: "****" if k.lower() in sensitive_fields else sanitize_workflow_data(v)
@@ -8914,7 +8914,7 @@ Content-Type: application/json
            return data
    ```
 
-2. **审计日志**
+2. **審計日志**
    ```sql
    CREATE TABLE workflow_audit_logs (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -8934,47 +8934,47 @@ Content-Type: application/json
    CREATE INDEX idx_audit_logs_timestamp ON workflow_audit_logs(timestamp DESC);
    ```
 
-### 4.9 与其他模块的交互
+### 4.9 與其他模組的交互
 
-#### 4.9.1 与数据源注册中心交互
+#### 4.9.1 與資料源註冊中心交互
 
 ```mermaid
 sequenceDiagram
     participant DSR as Data Source Registry
     participant DPWE as Data Processing Workflow Engine
     
-    DPWE->>DSR: GET /api/v1/data-sources (获取数据源列表)
-    DSR-->>DPWE: 数据源元数据
+    DPWE->>DSR: GET /api/v1/data-sources (獲取資料源列表)
+    DSR-->>DPWE: 資料源元資料
     
-    DPWE->>DSR: POST /api/v1/data-sources (创建工作流使用的数据源)
+    DPWE->>DSR: POST /api/v1/data-sources (创建工作流使用的資料源)
     DSR-->>DPWE: 创建结果
     
     loop 工作流执行中
-        DPWE->>DSR: GET /api/v1/data-sources/{id} (获取数据源详情)
-        DSR-->>DPWE: 数据源详情
+        DPWE->>DSR: GET /api/v1/data-sources/{id} (獲取資料源詳情)
+        DSR-->>DPWE: 資料源詳情
     end
 ```
 
-#### 4.9.2 与自动化媒体处理管道交互
+#### 4.9.2 與自動化媒體處理管道交互
 
 ```mermaid
 sequenceDiagram
     participant AMP as Automated Media Processing Pipeline
     participant DPWE as Data Processing Workflow Engine
     
-    DPWE->>AMP: POST /api/v1/media:process (触发媒体处理)
-    AMP-->>DPWE: 处理任务ID
+    DPWE->>AMP: POST /api/v1/media:process (触发媒體處理)
+    AMP-->>DPWE: 處理任務ID
     
-    loop 处理进行中
-        DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (查询状态)
-        AMP-->>DPWE: 处理状态
+    loop 處理进行中
+        DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (查詢狀態)
+        AMP-->>DPWE: 處理狀態
     end
     
-    DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (获取结果)
-    AMP-->>DPWE: 处理结果和元数据
+    DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (獲取结果)
+    AMP-->>DPWE: 處理结果和元資料
 ```
 
-#### 4.9.3 与AI辅助开发系统交互
+#### 4.9.3 與AI輔助開发系統交互
 
 ```mermaid
 sequenceDiagram
@@ -8982,107 +8982,107 @@ sequenceDiagram
     participant DPWE as Data Processing Workflow Engine
     
     DPWE->>AIDS: POST /api/v1/workflows/generate (生成工作流)
-    AIDS-->>DPWE: 工作流定义
+    AIDS-->>DPWE: 工作流定義
     
-    DPWE->>AIDS: POST /api/v1/workflows/assist (工作流辅助)
-    AIDS-->>DPWE: 建议和优化
+    DPWE->>AIDS: POST /api/v1/workflows/assist (工作流輔助)
+    AIDS-->>DPWE: 建議和優化
     
-    DPWE->>AIDS: GET /api/v1/nodes/templates (获取节点模板)
-    AIDS-->>DPWE: 节点模板列表
+    DPWE->>AIDS: GET /api/v1/nodes/templates (獲取節点模板)
+    AIDS-->>DPWE: 節点模板列表
 ```
 
-## 5. 自动化媒体处理管道 (Automated Media Processing Pipeline)
+## 5. 自動化媒體處理管道 (Automated Media Processing Pipeline)
 
-### 5.1 模块概述
-自动化媒体处理管道是镜界平台的核心数据处理组件，专注于图像和视频等媒体文件的自动化处理。它提供从文件监控、预处理、AI增强到存储归档的完整处理流水线，支持与NAS系统的深度集成。
+### 5.1 模組概述
+自動化媒體處理管道是镜界平台的核心資料處理組件，专註於图像和视频等媒體文件的自動化處理。它提供從文件監控、預處理、AI增强到儲存归档的完整處理流水线，支援與NAS系統的深度整合。
 
-### 5.2 详细功能清单
+### 5.2 詳細功能清單
 
 #### 5.2.1 核心功能
-- **文件监控与触发**
-  - 多协议NAS连接（SMB、WebDAV、FTP、NFS）
-  - 实时文件系统监控
+- **文件監控與触发**
+  - 多协议NAS連接（SMB、WebDAV、FTP、NFS）
+  - 實時文件系統監控
   - 文件变化事件聚合
-  - 增量处理优化
-- **预处理阶段**
-  - 格式转换与标准化
-  - 元数据提取（EXIF、IPTC）
-  - 基础修复（去噪、旋转）
-  - 文件分块处理
+  - 增量處理優化
+- **預處理阶段**
+  - 格式转换與標准化
+  - 元資料提取（EXIF、IPTC）
+  - 基礎修複（去噪、旋转）
+  - 文件分块處理
 - **AI增强阶段**
-  - 画质智能修复（超分辨率、去噪）
-  - 自动色彩校正
-  - 智能裁剪与构图优化
+  - 画质智能修複（超分辨率、去噪）
+  - 自動色彩校正
+  - 智能裁剪與构图優化
   - 分辨率增强（超分重建）
-  - 面部优化与修饰
+  - 面部優化與修饰
 - **分析阶段**
-  - 图像内容识别与标签
-  - 质量评估与评分
+  - 图像內容识别與標籤
+  - 品質評估與評分
   - 相似图片去重
-  - 异常检测与过滤
-- **组织阶段**
-  - AI自动标签分类
-  - 相似图片分组
-  - 存储空间分析
-  - 备份与还原管理
+  - 異常檢測與過滤
+- **組織阶段**
+  - AI自動標籤分類
+  - 相似图片分組
+  - 儲存空间分析
+  - 備份與还原管理
 - **归档阶段**
-  - 处理后文件自动归档
-  - 处理报告生成
-  - 结果通知与分享
+  - 處理後文件自動归档
+  - 處理报告生成
+  - 结果通知與分享
 
 #### 5.2.2 高级功能
-- **智能处理流水线**
-  - 基于内容的处理策略
-  - 动态调整处理参数
-  - 质量-速度权衡
-  - 处理优先级管理
-- **批量处理任务**
-  - 全库批量处理
-  - 增量更新处理
-  - 条件筛选处理
-  - 预览后确认处理
-- **风格学习与迁移**
-  - 个人风格模型训练
-  - 艺术风格迁移
-  - 批量风格统一
-  - 自定义风格库
+- **智能處理流水线**
+  - 基於內容的處理策略
+  - 動态调整處理參數
+  - 品質-速度权衡
+  - 處理优先级管理
+- **批量處理任務**
+  - 全庫批量處理
+  - 增量更新處理
+  - 條件筛选處理
+  - 預览後确认處理
+- **風格学习與迁移**
+  - 個人風格模型训练
+  - 艺术風格迁移
+  - 批量風格統一
+  - 自定義風格庫
 - **智能相册管理**
-  - 人脸识别与分组
-  - 场景自动分类
-  - 时间线智能整理
-  - 情感标签分析
+  - 人脸识别與分組
+  - 場景自動分類
+  - 時間线智能整理
+  - 情感標籤分析
 
-### 5.3 技术架构
+### 5.3 技術架構
 
-#### 5.3.1 架构图
+#### 5.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                            自动化媒体处理管道 (AMP)                                           │
+│                            自動化媒體處理管道 (AMP)                                           │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  输入层               │  处理层               │  输出层                                    │
+│  輸入层               │  處理层               │  輸出层                                    │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 文件监控服务        │ • 预处理服务          │ • 存储服务                                 │
-│ • 事件接收器          │ • AI增强服务          │ • 通知服务                                 │
-│ • 批量任务调度        │ • 内容分析服务        │ • 报告生成器                               │
+│ • 文件監控服務        │ • 預處理服務          │ • 儲存服務                                 │
+│ • 事件接收器          │ • AI增强服務          │ • 通知服務                                 │
+│ • 批量任務调度        │ • 內容分析服務        │ • 报告生成器                               │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 5.3.2 服务边界与交互
-- **输入**：
-  - 文件系统事件（来自NAS监控）
-  - 手动触发的处理请求
-  - 批量处理任务
-- **输出**：
-  - 处理后的媒体文件
-  - 处理报告
-  - 分析结果和元数据
+#### 5.3.2 服務边界與交互
+- **輸入**：
+  - 文件系統事件（來自NAS監控）
+  - 手動触发的處理请求
+  - 批量處理任務
+- **輸出**：
+  - 處理後的媒體文件
+  - 處理报告
+  - 分析结果和元資料
   - 通知事件
 
-### 5.4 核心组件详细实现
+### 5.4 核心組件詳細實現
 
-#### 5.4.1 文件监控服务
+#### 5.4.1 文件監控服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import os
 import time
@@ -9093,7 +9093,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, Dict, List, Optional, Set
 
 class FileEvent:
-    """文件系统事件对象"""
+    """文件系統事件物件"""
     
     CREATE = "create"
     MODIFY = "modify"
@@ -9119,14 +9119,14 @@ class FileEvent:
         self.error = None
     
     def mark_processed(self, success: bool, error: str = None):
-        """标记事件已处理"""
+        """標记事件已處理"""
         self.processed = True
         self.processing_end = time.time()
         if not success:
             self.error = error
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "event_type": self.event_type,
             "src_path": self.src_path,
@@ -9139,7 +9139,7 @@ class FileEvent:
         }
 
 class DirectoryEventHandler(FileSystemEventHandler):
-    """目录事件处理器"""
+    """目录事件處理器"""
     
     def __init__(
         self,
@@ -9182,7 +9182,7 @@ class DirectoryEventHandler(FileSystemEventHandler):
                 ))
 
 class FileSystemWatcher:
-    """文件系统监控器，支持多目录监控和事件聚合"""
+    """文件系統監控器，支援多目录監控和事件聚合"""
     
     def __init__(
         self,
@@ -9194,14 +9194,14 @@ class FileSystemWatcher:
         max_workers: int = 4
     ):
         """
-        初始化文件系统监控器
+        初始化文件系統監控器
         
-        :param paths: 要监控的目录路径列表
-        :param event_types: 要监听的事件类型 (create, modify, delete, move)
-        :param recursive: 是否递归监控子目录
-        :param debounce_ms: 事件去抖时间 (毫秒)
+        :param paths: 要監控的目录路径列表
+        :param event_types: 要监听的事件類型 (create, modify, delete, move)
+        :param recursive: 是否递归監控子目录
+        :param debounce_ms: 事件去抖時間 (毫秒)
         :param ignored_patterns: 忽略的文件模式列表
-        :param max_workers: 处理事件的线程池大小
+        :param max_workers: 處理事件的线程池大小
         """
         self.paths = paths
         self.event_types = event_types or [FileEvent.CREATE]
@@ -9217,14 +9217,14 @@ class FileSystemWatcher:
         self.running = False
     
     def start(self, callback: Callable[[FileEvent], None]):
-        """启动监控器"""
+        """启動監控器"""
         if self.running:
             return
         
         self.callback = callback
         self.running = True
         
-        # 为每个路径创建观察者
+        # 為每個路径创建观察者
         for path in self.paths:
             if not os.path.exists(path):
                 self.logger.warning("Path does not exist: %s", path)
@@ -9242,11 +9242,11 @@ class FileSystemWatcher:
             
             self.logger.info("Started watching directory: %s (recursive=%s)", path, self.recursive)
         
-        # 启动去抖定时器
+        # 启動去抖定時器
         self.executor.submit(self._debounce_timer)
     
     def stop(self):
-        """停止监控器"""
+        """停止監控器"""
         self.running = False
         
         # 停止所有观察者
@@ -9258,24 +9258,24 @@ class FileSystemWatcher:
         
         self.observers = []
         
-        # 关闭线程池
+        # 關闭线程池
         self.executor.shutdown(wait=True)
         
         self.logger.info("Stopped file system watcher")
     
     def _buffer_event(self, event: FileEvent):
-        """缓冲事件用于去抖"""
+        """缓冲事件用於去抖"""
         if not self.running:
             return
         
-        # 仅处理指定的事件类型
+        # 仅處理指定的事件類型
         if event.event_type not in self.event_types:
             return
         
-        # 生成唯一键（路径+事件类型）
+        # 生成唯一鍵（路径+事件類型）
         key = f"{event.src_path}|{event.event_type}"
         
-        # 如果是移动事件，使用目标路径
+        # 如果是移動事件，使用目標路径
         if event.event_type == FileEvent.MOVE:
             key = f"{event.dest_path}|{event.event_type}"
         
@@ -9286,7 +9286,7 @@ class FileSystemWatcher:
         }
     
     def _debounce_timer(self):
-        """去抖定时器"""
+        """去抖定時器"""
         while self.running:
             try:
                 current_time = time.time()
@@ -9294,12 +9294,12 @@ class FileSystemWatcher:
                 
                 # 检查缓冲区中的事件
                 for key, item in list(self.event_buffer.items()):
-                    # 检查是否超过去抖时间
+                    # 检查是否超過去抖時間
                     if (current_time - item["timestamp"]) * 1000 >= self.debounce_ms:
                         events_to_process.append(item["event"])
                         del self.event_buffer[key]
                 
-                # 处理事件
+                # 處理事件
                 if events_to_process:
                     self._process_events(events_to_process)
                 
@@ -9311,16 +9311,16 @@ class FileSystemWatcher:
                 time.sleep(1)
     
     def _process_events(self, events: List[FileEvent]):
-        """处理事件列表"""
+        """處理事件列表"""
         for event in events:
             try:
-                # 标记处理开始
+                # 標记處理開始
                 event.processing_start = time.time()
                 
-                # 调用回调
+                # 調用回调
                 self.callback(event)
                 
-                # 标记处理完成
+                # 標记處理完成
                 event.mark_processed(True)
                 
             except Exception as e:
@@ -9328,7 +9328,7 @@ class FileSystemWatcher:
                 self.logger.error("Error processing file event: %s", str(e))
     
     def get_status(self) -> Dict:
-        """获取监控器状态"""
+        """獲取監控器狀態"""
         return {
             "running": self.running,
             "paths": self.paths,
@@ -9340,7 +9340,7 @@ class FileSystemWatcher:
         }
 
 class NasConnectionManager:
-    """NAS连接管理器，支持多协议"""
+    """NAS連接管理器，支援多协议"""
     
     def __init__(self, config: Dict):
         self.config = config
@@ -9349,16 +9349,16 @@ class NasConnectionManager:
     
     def connect(self, connection_id: str, config: Dict) -> str:
         """
-        创建NAS连接
+        创建NAS連接
         
-        :param connection_id: 连接ID
-        :param config: 连接配置
-        :return: 连接ID
+        :param connection_id: 連接ID
+        :param config: 連接配置
+        :return: 連接ID
         """
-        # 验证配置
+        # 验證配置
         self._validate_config(config)
         
-        # 创建连接
+        # 创建連接
         if config["protocol"] == "smb":
             connection = self._create_smb_connection(config)
         elif config["protocol"] == "webdav":
@@ -9370,13 +9370,13 @@ class NasConnectionManager:
         else:
             raise ValueError(f"Unsupported protocol: {config['protocol']}")
         
-        # 保存连接
+        # 保存連接
         self.connections[connection_id] = connection
         
         return connection_id
     
     def _validate_config(self, config: Dict):
-        """验证连接配置"""
+        """验證連接配置"""
         required_fields = ["protocol", "host", "path"]
         for field in required_fields:
             if field not in config:
@@ -9386,10 +9386,10 @@ class NasConnectionManager:
             if "username" not in config or "password" not in config:
                 raise ValueError("SMB connection requires username and password")
         
-        # 其他协议验证...
+        # 其他协议验證...
     
     def _create_smb_connection(self, config: Dict) -> Any:
-        """创建SMB连接"""
+        """创建SMB連接"""
         from smbprotocol.connection import Connection
         from smbprotocol.session import Session
         from smbprotocol.tree import TreeConnect
@@ -9411,7 +9411,7 @@ class NasConnectionManager:
         }
     
     def _create_webdav_connection(self, config: Dict) -> Any:
-        """创建WebDAV连接"""
+        """创建WebDAV連接"""
         from webdav3.client import Client
         
         options = {
@@ -9428,7 +9428,7 @@ class NasConnectionManager:
         }
     
     def _create_ftp_connection(self, config: Dict) -> Any:
-        """创建FTP连接"""
+        """创建FTP連接"""
         from ftplib import FTP
         
         ftp = FTP(config["host"])
@@ -9441,8 +9441,8 @@ class NasConnectionManager:
         }
     
     def _create_nfs_connection(self, config: Dict) -> Any:
-        """创建NFS连接"""
-        # NFS通常通过挂载点访问，这里假设已挂载
+        """创建NFS連接"""
+        # NFS通常通過挂载点訪問，這里假设已挂载
         return {
             "mount_point": config["mount_point"],
             "config": config
@@ -9452,7 +9452,7 @@ class NasConnectionManager:
         """
         列出文件
         
-        :param connection_id: 连接ID
+        :param connection_id: 連接ID
         :param path: 路径
         :return: 文件列表
         """
@@ -9473,8 +9473,8 @@ class NasConnectionManager:
         """列出SMB文件"""
         from smbprotocol.open import Open, CreateOptions, FilePipePrinterAccessMask
         
-        # SMB协议比较复杂，这里简化实现
-        # 实际实现需要处理目录枚举
+        # SMB协议比较複杂，這里简化實現
+        # 實际實現需要處理目录枚举
         return []
     
     def _list_files_webdav(self, connection: Dict, path: str) -> List[Dict]:
@@ -9505,7 +9505,7 @@ class NasConnectionManager:
         
         result = []
         for line in files:
-            # 解析FTP LIST输出
+            # 解析FTP LIST輸出
             parts = line.split()
             if len(parts) >= 9:
                 name = ' '.join(parts[8:])
@@ -9555,20 +9555,20 @@ class NasConnectionManager:
         debounce_ms: int = 500
     ) -> str:
         """
-        监控目录
+        監控目录
         
-        :param connection_id: 连接ID
+        :param connection_id: 連接ID
         :param path: 路径
-        :param callback: 回调函数
-        :param event_types: 事件类型
+        :param callback: 回调函數
+        :param event_types: 事件類型
         :param recursive: 是否递归
-        :param debounce_ms: 去抖时间
-        :return: 监控器ID
+        :param debounce_ms: 去抖時間
+        :return: 監控器ID
         """
         connection = self._get_connection(connection_id)
         config = connection["config"]
         
-        # 对于NFS和本地挂载，可以直接使用FileSystemWatcher
+        # 對於NFS和本地挂载，可以直接使用FileSystemWatcher
         if config["protocol"] in ["nfs", "local"]:
             mount_point = connection.get("mount_point", config.get("mount_point", "/"))
             full_path = os.path.join(mount_point, path.lstrip('/'))
@@ -9585,7 +9585,7 @@ class NasConnectionManager:
             self.watchers[watcher_id] = watcher
             return watcher_id
         
-        # 对于其他协议，需要轮询（简化实现）
+        # 對於其他协议，需要轮询（简化實現）
         if config["protocol"] == "smb":
             return self._watch_smb_directory(connection, path, callback, event_types, recursive, debounce_ms)
         elif config["protocol"] == "webdav":
@@ -9596,15 +9596,15 @@ class NasConnectionManager:
         raise ValueError("Unsupported protocol for directory watching")
     
     def _get_connection(self, connection_id: str) -> Dict:
-        """获取连接"""
+        """獲取連接"""
         if connection_id not in self.connections:
             raise ValueError(f"Connection {connection_id} not found")
         return self.connections[connection_id]
 ```
 
-#### 5.4.2 媒体处理服务
+#### 5.4.2 媒體處理服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import cv2
 import numpy as np
@@ -9622,7 +9622,7 @@ import tempfile
 import hashlib
 
 class MediaProcessingService:
-    """媒体处理服务，协调整个处理流水线"""
+    """媒體處理服務，協調整個處理流水线"""
     
     def __init__(
         self,
@@ -9644,12 +9644,12 @@ class MediaProcessingService:
         callback: Optional[Callable[[ProcessingStatus], None]] = None
     ) -> ProcessingResult:
         """
-        处理媒体文件
+        處理媒體文件
         
         :param file_path: 文件路径
-        :param workflow: 处理工作流
-        :param callback: 状态回调函数
-        :return: 处理结果
+        :param workflow: 處理工作流
+        :param callback: 狀態回调函數
+        :return: 處理结果
         """
         start_time = time.time()
         status = ProcessingStatus(
@@ -9660,18 +9660,18 @@ class MediaProcessingService:
         )
         
         try:
-            # 1. 更新状态：开始预处理
+            # 1. 更新狀態：開始預處理
             status.step = "preprocessing"
             status.progress = 0.1
             self._notify_callback(callback, status)
             
-            # 2. 预处理
+            # 2. 預處理
             preprocessed_path, preprocessed_meta = self.preprocessor.preprocess(
                 file_path,
                 workflow.preprocessing
             )
             
-            # 3. 更新状态：开始AI增强
+            # 3. 更新狀態：開始AI增强
             status.step = "enhancing"
             status.progress = 0.3
             self._notify_callback(callback, status)
@@ -9682,7 +9682,7 @@ class MediaProcessingService:
                 workflow.enhancement
             )
             
-            # 5. 更新状态：开始分析
+            # 5. 更新狀態：開始分析
             status.step = "analyzing"
             status.progress = 0.7
             self._notify_callback(callback, status)
@@ -9693,19 +9693,19 @@ class MediaProcessingService:
                 workflow.analysis
             )
             
-            # 7. 更新状态：开始组织
+            # 7. 更新狀態：開始組織
             status.step = "organizing"
             status.progress = 0.9
             self._notify_callback(callback, status)
             
-            # 8. 组织（分类、归档等）
+            # 8. 組織（分類、归档等）
             organized_path = self._organize_result(
                 enhanced_path,
                 analysis_result,
                 workflow.organization
             )
             
-            # 9. 生成处理报告
+            # 9. 生成處理报告
             report = self._generate_report(
                 file_path,
                 preprocessed_meta,
@@ -9732,7 +9732,7 @@ class MediaProcessingService:
             )
             
         except Exception as e:
-            # 处理错误
+            # 處理错误
             status.status = "failed"
             status.error = str(e)
             self._notify_callback(callback, status)
@@ -9743,7 +9743,7 @@ class MediaProcessingService:
         callback: Optional[Callable[[ProcessingStatus], None]],
         status: ProcessingStatus
     ):
-        """通知状态回调"""
+        """通知狀態回调"""
         if callback:
             try:
                 callback(status)
@@ -9756,8 +9756,8 @@ class MediaProcessingService:
         analysis: Dict,
         organization_config: Dict
     ) -> str:
-        """组织处理结果"""
-        # 根据分析结果生成目标路径
+        """組織處理结果"""
+        # 根據分析结果生成目標路径
         if organization_config.get("path_template"):
             target_path = self._apply_path_template(
                 organization_config["path_template"],
@@ -9772,10 +9772,10 @@ class MediaProcessingService:
                 os.path.basename(file_path)
             )
         
-        # 确保目录存在
+        # 確保目录存在
         os.makedirs(os.path.dirname(target_path), exist_ok=True)
         
-        # 移动文件
+        # 移動文件
         shutil.move(file_path, target_path)
         
         return target_path
@@ -9787,12 +9787,12 @@ class MediaProcessingService:
         analysis: Dict
     ) -> str:
         """应用路径模板"""
-        # 获取文件信息
+        # 獲取文件資訊
         file_name = os.path.basename(source_path)
         file_ext = os.path.splitext(file_name)[1]
         dir_name = os.path.dirname(source_path)
         
-        # 获取日期信息
+        # 獲取日期資訊
         current_date = datetime.now()
         date_info = {
             "year": current_date.year,
@@ -9802,7 +9802,7 @@ class MediaProcessingService:
             "minute": current_date.minute
         }
         
-        # 获取分析信息
+        # 獲取分析資訊
         analysis_info = {
             "quality": analysis.get("quality", {}).get("score", 0),
             "tags": ",".join(analysis.get("tags", [])),
@@ -9843,7 +9843,7 @@ class MediaProcessingService:
         analysis_result: Dict,
         processing_time: float
     ) -> Dict:
-        """生成处理报告"""
+        """生成處理报告"""
         return {
             "source_file": source_path,
             "processing_time": processing_time,
@@ -9854,7 +9854,7 @@ class MediaProcessingService:
         }
 
 class MediaPreprocessor:
-    """媒体预处理器，执行基础预处理任务"""
+    """媒體預處理器，执行基礎預處理任務"""
     
     def __init__(self, config: Config):
         self.config = config
@@ -9866,22 +9866,22 @@ class MediaPreprocessor:
         config: Dict
     ) -> Tuple[str, Dict]:
         """
-        预处理媒体文件
+        預處理媒體文件
         
         :param file_path: 文件路径
-        :param config: 预处理配置
-        :return: (处理后的文件路径, 元理元数据)
+        :param config: 預處理配置
+        :return: (處理後的文件路径, 元理元資料)
         """
         # 1. 读取文件
         image = self._read_image(file_path)
         
-        # 2. 获取EXIF信息
+        # 2. 獲取EXIF資訊
         exif_data = self._extract_exif(file_path)
         
-        # 3. 应用预处理步骤
+        # 3. 应用預處理步骤
         preprocessed, meta = self._apply_preprocessing_steps(image, exif_data, config)
         
-        # 4. 保存处理后的文件
+        # 4. 保存處理後的文件
         output_path = self._save_image(preprocessed, file_path, config)
         
         return output_path, meta
@@ -9892,11 +9892,11 @@ class MediaPreprocessor:
         if image is None:
             raise ValueError(f"Failed to read image: {file_path}")
         
-        # 转换为RGB（OpenCV默认是BGR）
+        # 转换為RGB（OpenCV默认是BGR）
         return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
     def _extract_exif(self, file_path: str) -> Dict:
-        """提取EXIF信息"""
+        """提取EXIF資訊"""
         try:
             with open(file_path, 'rb') as f:
                 exif = exifread.process_file(f)
@@ -9911,13 +9911,13 @@ class MediaPreprocessor:
         exif_data: Dict,
         config: Dict
     ) -> Tuple[np.ndarray, Dict]:
-        """应用预处理步骤"""
+        """应用預處理步骤"""
         meta = {
             "original_size": (image.shape[1], image.shape[0]),
             "steps": []
         }
         
-        # 1. 自动旋转（如果需要）
+        # 1. 自動旋转（如果需要）
         if config.get("auto_rotate", True):
             rotated, rotation_meta = self._auto_rotate(image, exif_data)
             image = rotated
@@ -9944,7 +9944,7 @@ class MediaPreprocessor:
                 "meta": resize_meta
             })
         
-        # 4. 基础修复
+        # 4. 基礎修複
         if config.get("basic_repair", True):
             repaired, repair_meta = self._basic_repair(image)
             image = repaired
@@ -9960,7 +9960,7 @@ class MediaPreprocessor:
         image: np.ndarray,
         exif_data: Dict
     ) -> Tuple[np.ndarray, Dict]:
-        """自动旋转图像"""
+        """自動旋转图像"""
         orientation = exif_data.get('Image Orientation')
         
         if not orientation:
@@ -9972,11 +9972,11 @@ class MediaPreprocessor:
                 # 正常方向，无需旋转
                 return image, {"rotation": 0}
             elif orientation == 6:
-                # 顺时针90度
+                # 顺時针90度
                 rotated = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
                 return rotated, {"rotation": 90}
             elif orientation == 8:
-                # 逆时针90度
+                # 逆時针90度
                 rotated = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
                 return rotated, {"rotation": -90}
             elif orientation == 3:
@@ -9994,7 +9994,7 @@ class MediaPreprocessor:
         target_format: str
     ) -> Tuple[np.ndarray, Dict]:
         """转换图像格式"""
-        # 这里简化实现，实际应该根据目标格式进行转换
+        # 這里简化實現，實际应该根據目標格式进行转换
         return image, {"format": target_format}
     
     def _resize_image(
@@ -10008,7 +10008,7 @@ class MediaPreprocessor:
         max_width = int(width_str)
         max_height = int(height_str)
         
-        # 获取当前尺寸
+        # 獲取當前尺寸
         current_height, current_width = image.shape[:2]
         
         # 计算缩放比例
@@ -10043,7 +10043,7 @@ class MediaPreprocessor:
         }
     
     def _basic_repair(self, image: np.ndarray) -> Tuple[np.ndarray, Dict]:
-        """基础修复（去噪等）"""
+        """基礎修複（去噪等）"""
         # 应用非局部均值去噪
         denoised = cv2.fastNlMeansDenoisingColored(
             image,
@@ -10068,8 +10068,8 @@ class MediaPreprocessor:
         source_path: str,
         config: Dict
     ) -> str:
-        """保存处理后的图像"""
-        # 生成临时文件路径
+        """保存處理後的图像"""
+        # 生成临時文件路径
         temp_dir = self.config.temp_dir or tempfile.gettempdir()
         file_name = os.path.basename(source_path)
         output_path = os.path.join(temp_dir, f"preprocessed_{file_name}")
@@ -10083,7 +10083,7 @@ class MediaPreprocessor:
         return output_path
 
 class MediaEnhancer:
-    """媒体增强器，执行AI增强任务"""
+    """媒體增强器，执行AI增强任務"""
     
     def __init__(
         self,
@@ -10100,11 +10100,11 @@ class MediaEnhancer:
         config: Dict
     ) -> Tuple[str, Dict]:
         """
-        增强媒体文件
+        增强媒體文件
         
         :param file_path: 文件路径
         :param config: 增强配置
-        :return: (增强后的文件路径, 增强元数据)
+        :return: (增强後的文件路径, 增强元資料)
         """
         # 1. 加载图像
         image = self._load_image(file_path)
@@ -10112,7 +10112,7 @@ class MediaEnhancer:
         # 2. 应用增强步骤
         enhanced, meta = self._apply_enhancement_steps(image, config)
         
-        # 3. 保存增强后的文件
+        # 3. 保存增强後的文件
         output_path = self._save_image(enhanced, file_path, config)
         
         return output_path, meta
@@ -10162,7 +10162,7 @@ class MediaEnhancer:
                 "meta": crop_meta
             })
         
-        # 4. 面部增强（如果启用且检测到人脸）
+        # 4. 面部增强（如果启用且檢測到人脸）
         if config.get("face_enhance", False):
             enhanced, face_meta = self._face_enhancement(image)
             image = enhanced
@@ -10178,18 +10178,18 @@ class MediaEnhancer:
         image: np.ndarray,
         config: Dict
     ) -> Tuple[np.ndarray, Dict]:
-        """超分辨率处理"""
-        # 获取模型
+        """超分辨率處理"""
+        # 獲取模型
         model_name = config.get("model", "realesrgan-x4plus")
         model = self.model_registry.get_model(model_name)
         
         # 执行超分辨率
         try:
-            # 将图像转换为Bytes
+            # 將图像转换為Bytes
             _, buffer = cv2.imencode('.png', cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
             image_bytes = buffer.tobytes()
             
-            # 调用模型服务
+            # 調用模型服務
             enhanced_bytes = model.process(image_bytes)
             
             # 转换回图像
@@ -10213,15 +10213,15 @@ class MediaEnhancer:
     
     def _color_correction(self, image: np.ndarray) -> Tuple[np.ndarray, Dict]:
         """色彩校正"""
-        # 简单实现：自动对比度和亮度调整
+        # 简单實現：自動對比度和亮度调整
         lab = cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
         l, a, b = cv2.split(lab)
         
-        # 应用CLAHE（对比度受限的自适应直方图均衡化）
+        # 应用CLAHE（對比度受限的自適應直方图均衡化）
         clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
         cl = clahe.apply(l)
         
-        # 合并通道
+        # 合並通道
         corrected_lab = cv2.merge((cl, a, b))
         corrected = cv2.cvtColor(corrected_lab, cv2.COLOR_LAB2RGB)
         
@@ -10237,10 +10237,10 @@ class MediaEnhancer:
         config: Dict
     ) -> Tuple[np.ndarray, Dict]:
         """智能裁剪"""
-        # 简单实现：基于内容感知的裁剪
-        # 实际应用中应该使用更复杂的算法
+        # 简单實現：基於內容感知的裁剪
+        # 實际应用中应该使用更複杂的算法
         
-        # 获取目标宽高比
+        # 獲取目標宽高比
         aspect_ratio = config.get("aspect_ratio", "original")
         if aspect_ratio == "original":
             return image, {"cropped": False}
@@ -10250,18 +10250,18 @@ class MediaEnhancer:
             width_ratio, height_ratio = map(float, aspect_ratio.split(':'))
             target_ratio = width_ratio / height_ratio
             
-            # 获取当前尺寸
+            # 獲取當前尺寸
             height, width = image.shape[:2]
             current_ratio = width / height
             
             # 计算裁剪区域
             if current_ratio > target_ratio:
-                # 宽度过宽，裁剪宽度
+                # 宽度過宽，裁剪宽度
                 new_width = int(height * target_ratio)
                 start_x = (width - new_width) // 2
                 cropped = image[:, start_x:start_x + new_width, :]
             else:
-                # 高度过高，裁剪高度
+                # 高度過高，裁剪高度
                 new_height = int(width / target_ratio)
                 start_y = (height - new_height) // 2
                 cropped = image[start_y:start_y + new_height, :, :]
@@ -10283,7 +10283,7 @@ class MediaEnhancer:
     
     def _face_enhancement(self, image: np.ndarray) -> Tuple[np.ndarray, Dict]:
         """面部增强"""
-        # 这里简化实现，实际应该调用专门的面部增强模型
+        # 這里简化實現，實际应该調用专门的面部增强模型
         return image, {"enhanced": False, "message": "Face enhancement not implemented"}
     
     def _save_image(
@@ -10292,8 +10292,8 @@ class MediaEnhancer:
         source_path: str,
         config: Dict
     ) -> str:
-        """保存增强后的图像"""
-        # 生成临时文件路径
+        """保存增强後的图像"""
+        # 生成临時文件路径
         temp_dir = self.config.temp_dir or tempfile.gettempdir()
         file_name = os.path.basename(source_path)
         output_path = os.path.join(temp_dir, f"enhanced_{file_name}")
@@ -10307,7 +10307,7 @@ class MediaEnhancer:
         return output_path
 
 class MediaAnalyzer:
-    """媒体分析器，执行内容分析任务"""
+    """媒體分析器，执行內容分析任務"""
     
     def __init__(
         self,
@@ -10328,7 +10328,7 @@ class MediaAnalyzer:
         config: Dict
     ) -> Dict:
         """
-        分析媒体文件
+        分析媒體文件
         
         :param file_path: 文件路径
         :param config: 分析配置
@@ -10338,11 +10338,11 @@ class MediaAnalyzer:
             "timestamp": datetime.utcnow().isoformat()
         }
         
-        # 1. 标签分析
+        # 1. 標籤分析
         if "tags" in config.get("tasks", []):
             results["tags"] = self.tagger.generate_tags(file_path)
         
-        # 2. 质量分析
+        # 2. 品質分析
         if "quality-assessment" in config.get("tasks", []):
             results["quality"] = self.quality_analyzer.assess(file_path)
         
@@ -10350,20 +10350,20 @@ class MediaAnalyzer:
         if "face-detection" in config.get("tasks", []):
             results["faces"] = self.face_detector.detect(file_path)
         
-        # 4. 相似图片检测
+        # 4. 相似图片檢測
         if "duplicate-detection" in config.get("tasks", []):
             results["duplicates"] = self._detect_duplicates(file_path)
         
         return results
     
     def _detect_duplicates(self, file_path: str) -> List[Dict]:
-        """检测相似图片"""
-        # 简单实现：基于感知哈希
+        """檢測相似图片"""
+        # 简单實現：基於感知哈希
         try:
-            # 计算当前图片的哈希
+            # 计算當前图片的哈希
             current_hash = self._calculate_image_hash(file_path)
             
-            # 获取数据库中所有图片
+            # 獲取資料庫中所有图片
             all_images = self._get_all_images()
             
             # 计算相似度
@@ -10391,18 +10391,18 @@ class MediaAnalyzer:
         return str(hash)
     
     def _get_all_images(self) -> List[Dict]:
-        """获取所有图片（简化实现）"""
-        # 这里应该从数据库获取
+        """獲取所有图片（简化實現）"""
+        # 這里应该從資料庫獲取
         return []
     
     def _calculate_similarity(self, hash1: str, hash2: str) -> float:
-        """计算两个哈希的相似度"""
+        """计算两個哈希的相似度"""
         h1 = imagehash.hex_to_hash(hash1)
         h2 = imagehash.hex_to_hash(hash2)
         return 1 - (h1 - h2) / len(h1.hash) ** 2
 
 class ModelRegistry:
-    """模型注册表，管理可用的AI模型"""
+    """模型註冊表，管理可用的AI模型"""
     
     def __init__(self, config: Config):
         self.config = config
@@ -10412,7 +10412,7 @@ class ModelRegistry:
     
     def _load_models(self):
         """加载模型配置"""
-        # 从配置加载模型
+        # 從配置加载模型
         for model_config in self.config.models:
             try:
                 model = self._create_model(model_config)
@@ -10422,17 +10422,17 @@ class ModelRegistry:
                 self.logger.error("Failed to load model %s: %s", model_config["id"], str(e))
     
     def _create_model(self, config: Dict) -> Any:
-        """创建模型实例"""
+        """创建模型實例"""
         if config["type"] == "super-resolution":
             return SuperResolutionModel(config)
         elif config["type"] == "face-enhancement":
             return FaceEnhancementModel(config)
-        # 其他模型类型...
+        # 其他模型類型...
         else:
             raise ValueError(f"Unsupported model type: {config['type']}")
     
     def get_model(self, model_id: str) -> Any:
-        """获取模型"""
+        """獲取模型"""
         if model_id not in self.models:
             raise ValueError(f"Model {model_id} not found")
         return self.models[model_id]
@@ -10447,7 +10447,7 @@ class SuperResolutionModel:
     
     def _load_model(self):
         """加载模型"""
-        # 根据配置加载适当的模型
+        # 根據配置加载适當的模型
         if self.config["name"] == "realesrgan-x4plus":
             from realesrgan import RealESRGANer
             return RealESRGANer(
@@ -10463,8 +10463,8 @@ class SuperResolutionModel:
             raise ValueError(f"Unsupported model: {self.config['name']}")
     
     def process(self, image_bytes: bytes) -> bytes:
-        """处理图像"""
-        # 将码图像
+        """處理图像"""
+        # 將码图像
         nparr = np.frombuffer(image_bytes, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         
@@ -10483,9 +10483,9 @@ class SuperResolutionModel:
         _, buffer = cv2.imencode('.png', output)
         return buffer.tobytes()
 
-# 辅助类定义
+# 輔助类定義
 class ProcessingWorkflow:
-    """处理工作流定义"""
+    """處理工作流定義"""
     def __init__(
         self,
         id: str,
@@ -10501,7 +10501,7 @@ class ProcessingWorkflow:
         self.organization = organization
 
 class ProcessingStatus:
-    """处理状态"""
+    """處理狀態"""
     def __init__(
         self,
         file_path: str,
@@ -10522,7 +10522,7 @@ class ProcessingStatus:
         self.timestamp = datetime.utcnow().isoformat()
 
 class ProcessingResult:
-    """处理结果"""
+    """處理结果"""
     def __init__(
         self,
         processed_path: str,
@@ -10536,9 +10536,9 @@ class ProcessingResult:
         self.processing_time = processing_time
 ```
 
-#### 5.4.3 媒体分析服务
+#### 5.4.3 媒體分析服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import cv2
 import numpy as np
@@ -10557,7 +10557,7 @@ import faiss
 import pickle
 
 class MediaTagger:
-    """媒体标签生成器，基于CLIP模型"""
+    """媒體標籤生成器，基於CLIP模型"""
     
     def __init__(
         self,
@@ -10573,11 +10573,11 @@ class MediaTagger:
         self.clip_model, self.clip_preprocess = clip.load(clip_model_name, device="cuda" if torch.cuda.is_available() else "cpu")
         self.clip_model.eval()
         
-        # 加载人脸检测模型
+        # 加载人脸檢測模型
         self.logger.info("Loading face detection model: %s", face_detection_model)
         self.face_detector = self._load_face_detector(face_detection_model)
         
-        # 预定义的标签候选
+        # 預定義的標籤候选
         self.candidate_tags = self.config.get("candidate_tags", [
             "portrait", "landscape", "architecture", "food", "animal", 
             "vehicle", "nature", "people", "event", "product",
@@ -10586,7 +10586,7 @@ class MediaTagger:
         ])
     
     def _load_face_detector(self, model_name: str):
-        """加载人脸检测模型"""
+        """加载人脸檢測模型"""
         if model_name == "retinaface_resnet50":
             from retinaface import RetinaFace
             return RetinaFace
@@ -10598,24 +10598,24 @@ class MediaTagger:
     
     def generate_tags(self, image_path: str) -> List[Dict]:
         """
-        生成图像标签
+        生成图像標籤
         
         :param image_path: 图像路径
-        :return: 标签列表
+        :return: 標籤列表
         """
-        # 1. 加载并预处理图像
+        # 1. 加载並預處理图像
         try:
             image = self.clip_preprocess(Image.open(image_path)).unsqueeze(0).to(next(self.clip_model.parameters()).device)
         except Exception as e:
             self.logger.error("Error loading image %s: %s", image_path, str(e))
             return []
         
-        # 2. 计算图像特征
+        # 2. 计算图像特徵
         with torch.no_grad():
             image_features = self.clip_model.encode_image(image)
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
         
-        # 3. 计算与候选标签的相似度
+        # 3. 计算與候选標籤的相似度
         text_inputs = torch.cat([clip.tokenize(f"a photo of {c}") for c in self.candidate_tags]).to(next(self.clip_model.parameters()).device)
         
         with torch.no_grad():
@@ -10625,7 +10625,7 @@ class MediaTagger:
             # 计算相似度
             similarity = (image_features @ text_features.T).cpu().numpy()[0]
         
-        # 4. 选择前N个标签
+        # 4. 选择前N個標籤
         top_indices = np.argsort(similarity)[::-1][:self.config.get("max_tags", 5)]
         tags = []
         for idx in top_indices:
@@ -10635,16 +10635,16 @@ class MediaTagger:
                     "confidence": float(similarity[idx])
                 })
         
-        # 5. 检测人脸并添加相关标签
+        # 5. 檢測人脸並添加相關標籤
         face_tags = self._detect_faces(image_path)
         tags.extend(face_tags)
         
         return tags
     
     def _detect_faces(self, image_path: str) -> List[Dict]:
-        """检测人脸并生成相关标签"""
+        """檢測人脸並生成相關標籤"""
         try:
-            # 检测人脸
+            # 檢測人脸
             faces = self.face_detector.detect_faces(image_path)
             
             tags = []
@@ -10666,7 +10666,7 @@ class MediaTagger:
             return []
 
 class QualityAnalyzer:
-    """图像质量分析器"""
+    """图像品質分析器"""
     
     def __init__(self, config: Config = None):
         self.config = config or Config()
@@ -10674,10 +10674,10 @@ class QualityAnalyzer:
     
     def assess(self, image_path: str) -> Dict:
         """
-        评估图像质量
+        評估图像品質
         
         :param image_path: 图像路径
-        :return: 质量评估结果
+        :return: 品質評估结果
         """
         try:
             # 1. 加载图像
@@ -10735,7 +10735,7 @@ class QualityAnalyzer:
         }
     
     def _analyze_colorfulness(self, image: np.ndarray) -> Dict:
-        """分析色彩丰富度"""
+        """分析色彩豐富度"""
         # 转换到HSV空间
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
@@ -10761,7 +10761,7 @@ class QualityAnalyzer:
         exposure: Dict,
         colorfulness: Dict
     ) -> List[str]:
-        """识别质量问題"""
+        """识别品質问題"""
         issues = []
         
         # 清晰度问题
@@ -10777,7 +10777,7 @@ class QualityAnalyzer:
         return issues
 
 class FaceDetector:
-    """人脸检测器"""
+    """人脸檢測器"""
     
     def __init__(
         self,
@@ -10787,7 +10787,7 @@ class FaceDetector:
         self.config = config or Config()
         self.logger = logging.getLogger(__name__)
         
-        # 加载人脸检测模型
+        # 加载人脸檢測模型
         self.logger.info("Loading face detection model: %s", model_name)
         self.face_detector = self._load_face_detector(model_name)
         
@@ -10796,7 +10796,7 @@ class FaceDetector:
         self.face_recognition = face_recognition
     
     def _load_face_detector(self, model_name: str):
-        """加载人脸检测模型"""
+        """加载人脸檢測模型"""
         if model_name == "retinaface_resnet50":
             from retinaface import RetinaFace
             return RetinaFace
@@ -10808,22 +10808,22 @@ class FaceDetector:
     
     def detect(self, image_path: str) -> List[Dict]:
         """
-        检测图像中的人脸
+        檢測图像中的人脸
         
         :param image_path: 图像路径
         :return: 人脸列表
         """
         try:
-            # 检测人脸
+            # 檢測人脸
             faces = self.face_detector.detect_faces(image_path)
             
-            # 处理结果
+            # 處理结果
             results = []
             for i, face in enumerate(faces):
                 x, y, w, h = face['facial_area']
                 confidence = face['score']
                 
-                # 获取人脸特征
+                # 獲取人脸特徵
                 face_image = Image.open(image_path).crop((x, y, x+w, y+h))
                 face_encoding = self._get_face_encoding(face_image)
                 
@@ -10841,12 +10841,12 @@ class FaceDetector:
             return []
     
     def _get_face_encoding(self, face_image: Image.Image) -> Optional[np.ndarray]:
-        """获取人脸特征编码"""
+        """獲取人脸特徵编码"""
         try:
-            # 转换为numpy数组
+            # 转换為numpy數组
             face_np = np.array(face_image)
             
-            # 获取人脸编码
+            # 獲取人脸编码
             encodings = self.face_recognition.face_encodings(face_np)
             return encodings[0] if encodings else None
             
@@ -10855,7 +10855,7 @@ class FaceDetector:
             return None
 
 class MediaClassifier:
-    """媒体文件智能分类系统"""
+    """媒體文件智能分類系統"""
     
     def __init__(
         self,
@@ -10866,12 +10866,12 @@ class MediaClassifier:
         config: Config = None
     ):
         """
-        初始化媒体分类器
+        初始化媒體分類器
         
         :param clip_model_name: CLIP模型名称
-        :param face_detection_model: 人脸检测模型
-        :param cluster_count: 聚类数量
-        :param index_path: FAISS索引路径 (用于相似图片查找)
+        :param face_detection_model: 人脸檢測模型
+        :param cluster_count: 聚类數量
+        :param index_path: FAISS索引路径 (用於相似图片查找)
         :param config: 配置
         """
         self.logger = logging.getLogger(__name__)
@@ -10882,7 +10882,7 @@ class MediaClassifier:
         self.clip_model, self.clip_preprocess = clip.load(clip_model_name, device="cuda" if torch.cuda.is_available() else "cpu")
         self.clip_model.eval()
         
-        # 初始化人脸检测
+        # 初始化人脸檢測
         self.logger.info("Loading face detection model: %s", face_detection_model)
         self.face_detector = self._load_face_detector(face_detection_model)
         
@@ -10896,12 +10896,12 @@ class MediaClassifier:
         self.index_path = index_path
         self.index = self._load_or_create_index()
         
-        # 标签映射
+        # 標籤映射
         self.label_map = {}
         self.cluster_descriptions = {}
     
     def _load_face_detector(self, model_name: str):
-        """加载人脸检测模型"""
+        """加载人脸檢測模型"""
         if model_name == "retinaface_resnet50":
             from retinaface import RetinaFace
             return RetinaFace
@@ -10918,9 +10918,9 @@ class MediaClassifier:
             return faiss.read_index(self.index_path)
         else:
             # 创建新的索引 (使用HNSW for efficient search)
-            dimension = 512  # CLIP特征维度
-            M = 32  # HNSW参数
-            ef_construction = 128  # HNSW参数
+            dimension = 512  # CLIP特徵维度
+            M = 32  # HNSW參數
+            ef_construction = 128  # HNSW參數
             
             index = faiss.IndexHNSWFlat(dimension, M)
             index.hnsw.efConstruction = ef_construction
@@ -10929,11 +10929,11 @@ class MediaClassifier:
             return index
     
     def extract_features(self, image_path: str) -> np.ndarray:
-        """提取图像特征向量"""
-        # 加载并预处理图像
+        """提取图像特徵向量"""
+        # 加载並預處理图像
         image = self.clip_preprocess(Image.open(image_path)).unsqueeze(0).to(next(self.clip_model.parameters()).device)
         
-        # 提取CLIP特征
+        # 提取CLIP特徵
         with torch.no_grad():
             features = self.clip_model.encode_image(image)
             features = features / features.norm(dim=-1, keepdim=True)  # L2归一化
@@ -10941,8 +10941,8 @@ class MediaClassifier:
         return features.cpu().numpy().flatten()
     
     def extract_face_features(self, image_path: str) -> List[np.ndarray]:
-        """提取人脸特征"""
-        # 检测人脸
+        """提取人脸特徵"""
+        # 檢測人脸
         faces = self.face_detector.detect_faces(image_path)
         
         face_features = []
@@ -10951,7 +10951,7 @@ class MediaClassifier:
             x, y, w, h = face['facial_area']
             face_img = Image.open(image_path).crop((x, y, x+w, y+h))
             
-            # 预处理并提取特征
+            # 預處理並提取特徵
             face_img = self.clip_preprocess(face_img).unsqueeze(0).to(next(self.clip_model.parameters()).device)
             
             with torch.no_grad():
@@ -10969,24 +10969,24 @@ class MediaClassifier:
         detect_faces: bool = True
     ) -> Dict:
         """
-        分类单个图像
+        分類单個图像
         
         :param image_path: 图像路径
-        :param generate_tags: 是否生成语义标签
-        :param detect_faces: 是否检测人脸
-        :return: 分类结果
+        :param generate_tags: 是否生成语義標籤
+        :param detect_faces: 是否檢測人脸
+        :return: 分類结果
         """
         start_time = time.time()
         
-        # 提取图像特征
+        # 提取图像特徵
         image_features = self.extract_features(image_path)
         
-        # 人脸检测与特征提取
+        # 人脸檢測與特徵提取
         face_data = []
         if detect_faces:
             face_features = self.extract_face_features(image_path)
             for i, features in enumerate(face_features):
-                # 识别人脸 (与已知人脸聚类比较)
+                # 识别人脸 (與已知人脸聚类比较)
                 face_id = self._identify_face(features)
                 face_data.append({
                     "index": i,
@@ -10997,7 +10997,7 @@ class MediaClassifier:
         # 查找相以图片
         similar_images = self._find_similar_images(image_features, k=10)
         
-        # 生成语义标签
+        # 生成语義標籤
         tags = []
         if generate_tags:
             tags = self._generate_semantic_tags(image_features)
@@ -11022,12 +11022,12 @@ class MediaClassifier:
     
     def _identify_face(self, face_features: np.ndarray) -> str:
         """识别人脸，返回face_id"""
-        # 檢查是否与已知人脸匹配
+        # 檢查是否與已知人脸匹配
         distances = []
-        known_faces = self._get_known_faces()  # 从数据库获取已知人脸
+        known_faces = self._get_known_faces()  # 從資料庫獲取已知人脸
         
         if not known_faces:
-            # 如果没有已知人脸，创建新face_id
+            # 如果沒有已知人脸，创建新face_id
             return f"face-{uuid.uuid4().hex[:8]}"
         
         for face_id, features in known_faces.items():
@@ -11055,25 +11055,25 @@ class MediaClassifier:
             return 0.0
         
         distance = np.linalg.norm(face_features - known_faces[face_id])
-        # 转换为0-1的置信度 (距离越小，置信度越高)
+        # 转换為0-1的置信度 (距离越小，置信度越高)
         return max(0.0, min(1.0, 1.0 - (distance / 1.5)))
     
     def _find_similar_images(self, features: np.ndarray, k: int = 10) -> List[Dict]:
         """查找相以图片"""
-        # 添加到索引 (临时)
+        # 添加到索引 (临時)
         index = faiss.IndexFlatL2(features.shape[0])
         index.add(np.array([features]))
         
-        # 搜索相以图片
+        # 搜尋相以图片
         D, I = self.index.search(np.array([features]), k+1)  # +1 because it includes the query itself
         
         results = []
-        for i in range(1, min(k+1, len(I[0]))):  # 跳过第一个结果 (查询本身)
+        for i in range(1, min(k+1, len(I[0]))):  # 跳過第一個结果 (查詢本身)
             idx = I[0][i]
             distance = D[0][i]
-            similarity = 1 / (1 + distance)  # 转换为相以度
+            similarity = 1 / (1 + distance)  # 转换為相以度
             
-            # 获取图片信息 (从数据库)
+            # 獲取图片資訊 (從資料庫)
             image_info = self._get_image_info_by_index(idx)
             if image_info:
                 results.append({
@@ -11086,8 +11086,8 @@ class MediaClassifier:
         return results
     
     def _generate_semantic_tags(self, features: np.ndarray) -> List[Dict]:
-        """生成语义标签"""
-        # 预定义的标签候选
+        """生成语義標籤"""
+        # 預定義的標籤候选
         candidate_tags = self.config.get("candidate_tags", [
             "portrait", "landscape", "architecture", "food", "animal", 
             "vehicle", "nature", "people", "event", "product",
@@ -11095,7 +11095,7 @@ class MediaClassifier:
             "close-up", "macro", "aerial", "black and white", "color"
         ])
         
-        # 使用CLIP计算与候选标签的相以度
+        # 使用CLIP计算與候选標籤的相以度
         text_inputs = torch.cat([clip.tokenize(f"a photo of {c}") for c in candidate_tags]).to(next(self.clip_model.parameters()).device)
         
         with torch.no_grad():
@@ -11105,7 +11105,7 @@ class MediaClassifier:
             # 计算相以度
             similarity = (torch.from_numpy(features).float() @ text_features.T).cpu().numpy()
         
-        # 选择前N个标签
+        # 选择前N個標籤
         top_indices = np.argsort(similarity)[::-1][:5]
         tags = []
         for idx in top_indices:
@@ -11118,26 +11118,26 @@ class MediaClassifier:
         return tags
     
     def _assess_image_quality(self, image_path: str) -> float:
-        """评估图像质量 (0-1)"""
-        # 简单实现：使用OpenCV计算清晰度
+        """評估图像品質 (0-1)"""
+        # 简单實現：使用OpenCV计算清晰度
         image = cv2.imread(image_path)
         if image is None:
             return 0.0
         
-        # 转换为灰度
+        # 转换為灰度
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         # 计算Laplacian方差 (衡量清晰度)
         fm = cv2.Laplacian(gray, cv2.CV_64F).var()
         
-        # 归一化到0-1范围 (基于经验值)
+        # 归一化到0-1范围 (基於经验值)
         quality = min(1.0, max(0.0, fm / 100.0))
         
         return quality
     
     def train_clusters(self, feature_vectors: List[np.ndarray]):
         """训练聚类模型"""
-        # 标准化特征
+        # 標准化特徵
         scaled_features = self.scaler.fit_transform(feature_vectors)
         
         # PCA降维
@@ -11146,33 +11146,33 @@ class MediaClassifier:
         # K-Means聚类
         self.kmeans.fit(reduced_features)
         
-        # 为每个聚类生成描述
+        # 為每個聚类生成描述
         self._generate_cluster_descriptions(feature_vectors)
     
     def _generate_cluster_descriptions(self, feature_vectors: List[np.ndarray]):
-        """为每个聚类生成描述性标签"""
-        # 对每个聚类，选择代表性图像
+        """為每個聚类生成描述性標籤"""
+        # 對每個聚类，选择代表性图像
         cluster_centers = self.kmeans.cluster_centers_
         representative_images = {}
         
         for i, center in enumerate(cluster_centers):
-            # 找到最近的特征向量
+            # 找到最近的特徵向量
             distances = [np.linalg.norm(feat - center) for feat in feature_vectors]
             closest_idx = np.argmin(distances)
             representative_images[i] = feature_vectors[closest_idx]
         
-        # 为每个聚类生成描述
+        # 為每個聚类生成描述
         for cluster_id, features in representative_images.items():
             tags = self._generate_semantic_tags(features)
             top_tags = sorted(tags, key=lambda x: x["confidence"], reverse=True)[:3]
             self.cluster_descriptions[cluster_id] = ", ".join([t["tag"] for t in top_tags]) or f"Cluster {cluster_id}"
     
     def add_to_index(self, image_id: str, features: np.ndarray):
-        """将图像特征添加到索引"""
+        """將图像特徵添加到索引"""
         # 添加到FAISS索引
         self.index.add(np.array([features]))
         
-        # 保存到数据库 (image_id -> index position)
+        # 保存到資料庫 (image_id -> index position)
         self._save_index_mapping(image_id, self.index.ntotal - 1)
         
         # 保存索引到磁盘
@@ -11181,7 +11181,7 @@ class MediaClassifier:
     
     def update_index(self):
         """更新索引 (重新训练聚类等)"""
-        # 获取所有特征向量
+        # 獲取所有特徵向量
         all_features = self._get_all_features()
         
         if len(all_features) > self.cluster_count:
@@ -11193,39 +11193,39 @@ class MediaClassifier:
         for image_id, features in all_features:
             self.add_to_index(image_id, features)
     
-    # 以下为数据库交互方法 (需根据实际数据库实现)
+    # 以下為資料庫交互方法 (需根據實际資料庫實現)
     def _get_known_faces(self) -> Dict[str, np.ndarray]:
-        """获取已知人脸特征 (从数据库)"""
-        # 实现数据库查询
+        """獲取已知人脸特徵 (從資料庫)"""
+        # 實現資料庫查詢
         pass
     
     def _add_new_face(self, face_id: str, features: np.ndarray):
-        """添加新人脸到数据库"""
-        # 实现数据库插入
+        """添加新人脸到資料庫"""
+        # 實現資料庫插入
         pass
     
     def _get_image_info_by_index(self, index: int) -> Optional[Dict]:
-        """通过索引获取图像信息"""
-        # 实现数据库查询
+        """通過索引獲取图像資訊"""
+        # 實現資料庫查詢
         pass
     
     def _save_index_mapping(self, image_id: str, index_pos: int):
         """保存图像ID到索引位置的映射"""
-        # 实现数据库插入
+        # 實現資料庫插入
         pass
     
     def _get_all_features(self) -> List[Tuple[str, np.ndarray]]:
-        """获取所有图像特征"""
-        # 实现数据库查询
+        """獲取所有图像特徵"""
+        # 實現資料庫查詢
         pass
 ```
 
-### 5.5 数据模型详细定义
+### 5.5 資料模型詳細定義
 
-#### 5.5.1 媒体文件表
+#### 5.5.1 媒體文件表
 
 ```sql
--- 媒体文件元数据表
+-- 媒體文件元資料表
 CREATE TABLE media_files (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -11253,13 +11253,13 @@ CREATE TABLE media_files (
     INDEX idx_media_files_created ON media_files(created_at DESC),
     INDEX idx_media_files_processed ON media_files(processed_at DESC),
     
-    -- 全文搜索
+    -- 全文搜尋
     ts_vector TSVECTOR GENERATED ALWAYS AS (
         to_tsvector('simple', coalesce(filename, '') || ' ' || coalesce(metadata->>'title', '') || ' ' || coalesce(metadata->>'description', ''))
     ) STORED
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_media_files_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -11273,14 +11273,14 @@ BEFORE UPDATE ON media_files
 FOR EACH ROW
 EXECUTE FUNCTION update_media_files_modtime();
 
--- 全文搜索索引
+-- 全文搜尋索引
 CREATE INDEX idx_media_files_search ON media_files USING GIN (ts_vector);
 ```
 
-#### 5.5.2 媒体处理任务表
+#### 5.5.2 媒體處理任務表
 
 ```sql
--- 媒体处理任务表
+-- 媒體處理任務表
 CREATE TABLE media_processing_tasks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     file_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
@@ -11309,10 +11309,10 @@ CREATE TABLE media_processing_tasks (
 );
 ```
 
-#### 5.5.3 媒体标签表
+#### 5.5.3 媒體標籤表
 
 ```sql
--- 媒体标签表
+-- 媒體標籤表
 CREATE TABLE media_tags (
     file_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
     tag_type VARCHAR(50) NOT NULL,
@@ -11328,10 +11328,10 @@ CREATE TABLE media_tags (
 );
 ```
 
-#### 5.5.4 媒体相以度表
+#### 5.5.4 媒體相以度表
 
 ```sql
--- 媒体相以度表 (用于查找相以图片)
+-- 媒體相以度表 (用於查找相以图片)
 CREATE TABLE media_similarity (
     file_id1 UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
     file_id2 UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
@@ -11340,17 +11340,17 @@ CREATE TABLE media_similarity (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     
     PRIMARY KEY (file_id1, file_id2, algorithm),
-    CHECK (file_id1 < file_id2),  -- 避免重复存储
+    CHECK (file_id1 < file_id2),  -- 避免重複儲存
     INDEX idx_similarity_score ON media_similarity(similarity_score DESC),
     INDEX idx_similarity_file1 ON media_similarity(file_id1)
 );
 ```
 
-### 5.6 API详细规范
+### 5.6 API詳細規範
 
-#### 5.6.1 媒体处理API
+#### 5.6.1 媒體處理API
 
-**触发媒体文件处理 (POST /api/v1/media:process)**
+**触发媒體文件處理 (POST /api/v1/media:process)**
 
 *请求示例:*
 ```http
@@ -11378,7 +11378,7 @@ X-Request-ID: req-345678
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 202 Accepted
 Content-Type: application/json
@@ -11400,7 +11400,7 @@ X-Request-ID: req-345678
 }
 ```
 
-**获取处理任务状态 (GET /api/v1/media/processingTasks/{task_id})**
+**獲取處理任務狀態 (GET /api/v1/media/processingTasks/{task_id})**
 
 *请求示例:*
 ```http
@@ -11409,7 +11409,7 @@ Host: amp.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例 (处理中):*
+*成功響應示例 (處理中):*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -11449,7 +11449,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例 (已完成):*
+*成功響應示例 (已完成):*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -11518,36 +11518,36 @@ Content-Type: application/json
 }
 ```
 
-### 5.7 性能优化策略
+### 5.7 效能優化策略
 
-#### 5.7.1 媒体处理性能优化
+#### 5.7.1 媒體處理效能優化
 
-**1080P图片处理性能 (realesrgan-x4plus)**
+**1080P图片處理效能 (realesrgan-x4plus)**
 
-| 指标 | 1 GPU | 2 GPUs | 4 GPUs |
+| 指標 | 1 GPU | 2 GPUs | 4 GPUs |
 |------|-------|--------|--------|
-| **单文件处理时间** | <5.0s | <5.0s | <5.0s |
-| **P95处理时间** | <5.0s | <5.0s | <5.0s |
+| **单文件處理時間** | <5.0s | <5.0s | <5.0s |
+| **P95處理時間** | <5.0s | <5.0s | <5.0s |
 | **吞吐量 (无GPU限制)** | >120 img/min | >240 img/min | >480 img/min |
 | **GPU利用率** | 75-85% | 75-85% | 75-85% |
 | **内存使用峰值** | <6GB/worker | <6GB/worker | <6GB/worker |
 | **错误率** | <0.5% | <0.5% | <0.5% |
-| **资源弹性** | <2min | <2min | <2min |
+| **資源弹性** | <2min | <2min | <2min |
 
-**4K图片处理流水线性能**
+**4K图片處理流水线效能**
 
-| 指标 | 1 GPU | 2 GPUs | 4 GPUs |
+| 指標 | 1 GPU | 2 GPUs | 4 GPUs |
 |------|-------|--------|--------|
-| **端到端处理时间** | <25.0s | <25.0s | <25.0s |
-| **P95处理时间** | <25.0s | <25.0s | <25.0s |
+| **端到端處理時間** | <25.0s | <25.0s | <25.0s |
+| **P95處理時間** | <25.0s | <25.0s | <25.0s |
 | **吞吐量 (批量)** | >30 img/min | >60 img/min | >120 img/min |
-| **CPU/GPU平衡** | 优化 | 优化 | 优化 |
-| **大文件处理稳定性** | 稳定 | 稳定 | 稳定 |
-| **错误恢复时间** | <30s | <30s | <30s |
+| **CPU/GPU平衡** | 優化 | 優化 | 優化 |
+| **大文件處理稳定性** | 稳定 | 稳定 | 稳定 |
+| **错误恢復時間** | <30s | <30s | <30s |
 
-#### 5.7.2 详细测试脚本示例
+#### 5.7.2 詳細测试脚本示例
 
-**媒体处理性能测试脚本 (locustfile.py)**
+**媒體處理效能测试脚本 (locustfile.py)**
 ```python
 import os
 import time
@@ -11575,7 +11575,7 @@ WORKFLOWS = [
 
 @events.test_start.add_listener
 def on_test_start(environment, **kwargs):
-    """测试开始前的准备工作"""
+    """测试開始前的准備工作"""
     if not isinstance(environment.runner, MasterRunner):
         print(f"[{datetime.now()}] Starting media processing performance test")
         print(f"  * Test images: {TEST_IMAGES}")
@@ -11584,7 +11584,7 @@ def on_test_start(environment, **kwargs):
 
 @events.test_stop.add_listener
 def on_test_stop(environment, **kwargs):
-    """测试结束后的清理工作"""
+    """测试结束後的清理工作"""
     if not isinstance(environment.runner, MasterRunner):
         print(f"[{datetime.now()}] Media processing performance test completed")
 
@@ -11592,7 +11592,7 @@ class MediaProcessingUser(HttpUser):
     wait_time = between(0.5, 2.0)
     
     def on_start(self):
-        """用户启动时的初始化"""
+        """用戶启動時的初始化"""
         self.auth_token = self._get_auth_token()
         self.headers = {
             "Authorization": f"Bearer {self.auth_token}",
@@ -11600,7 +11600,7 @@ class MediaProcessingUser(HttpUser):
         }
     
     def _get_auth_token(self):
-        """获取认证令牌"""
+        """獲取認證令牌"""
         response = self.client.post(
             "/api/v1/auth/token",
             json={
@@ -11613,7 +11613,7 @@ class MediaProcessingUser(HttpUser):
     
     @task(8)
     def process_1080p_image(self):
-        """处理1080P图片"""
+        """處理1080P图片"""
         self._process_image(
             image=random.choice([img for img in TEST_IMAGES if "1080p" in img]),
             workflow="nas-photo-processing",
@@ -11622,7 +11622,7 @@ class MediaProcessingUser(HttpUser):
     
     @task(3)
     def process_4k_image(self):
-        """处理4K图片"""
+        """處理4K图片"""
         self._process_image(
             image=random.choice([img for img in TEST_IMAGES if "4k" in img]),
             workflow="nas-photo-processing",
@@ -11631,7 +11631,7 @@ class MediaProcessingUser(HttpUser):
     
     @task(1)
     def process_pro_photo(self):
-        """处理专业照片"""
+        """處理专业照片"""
         self._process_image(
             image="pro-photo.jpg",
             workflow="professional-photo-processing",
@@ -11639,7 +11639,7 @@ class MediaProcessingUser(HttpUser):
         )
     
     def _process_image(self, image, workflow, priority):
-        """通用图片处理方法"""
+        """通用图片處理方法"""
         start_time = time.time()
         
         try:
@@ -11663,7 +11663,7 @@ class MediaProcessingUser(HttpUser):
             if response.status_code == 202:
                 task_id = response.json()["task_id"]
                 
-                # 轮询任务状态
+                # 轮询任務狀態
                 max_polls = 30
                 poll_interval = 0.5
                 completed = False
@@ -11713,18 +11713,18 @@ class MediaProcessingUser(HttpUser):
             )
 ```
 
-### 5.8 安全与合规详细规范
+### 5.8 安全與合規詳細規範
 
-#### 5.8.1 敏感数据检测与脱敏规则
+#### 5.8.1 敏感資料檢測與脱敏规则
 
-**敏感数据正则表达式规则库**
+**敏感資料正则表达式规则庫**
 ```json
 {
   "patterns": [
     {
       "id": "credit-card",
-      "name": "信用卡号",
-      "description": "检测各种信用卡号格式",
+      "name": "信用卡號",
+      "description": "檢測各種信用卡號格式",
       "regex": "(?:\\d[ -]*?){13,16}",
       "confidence": 0.9,
       "redaction": "****-****-****-XXXX",
@@ -11735,8 +11735,8 @@ class MediaProcessingUser(HttpUser):
     },
     {
       "id": "ssn",
-      "name": "社会安全号码",
-      "description": "美国社会安全号码 (格式: XXX-XX-XXXX)",
+      "name": "社會安全號码",
+      "description": "美国社會安全號码 (格式: XXX-XX-XXXX)",
       "regex": "\\b\\d{3}[- ]?\\d{2}[- ]?\\d{4}\\b",
       "confidence": 0.95,
       "redaction": "***-**-XXXX",
@@ -11745,7 +11745,7 @@ class MediaProcessingUser(HttpUser):
     {
       "id": "email",
       "name": "电子邮件地址",
-      "description": "标准电子邮件格式",
+      "description": "標准电子邮件格式",
       "regex": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
       "confidence": 0.8,
       "redaction": "userXXXX@example.com",
@@ -11753,8 +11753,8 @@ class MediaProcessingUser(HttpUser):
     },
     {
       "id": "phone",
-      "name": "电话号码",
-      "description": "国际电话号码格式",
+      "name": "电话號码",
+      "description": "国际电话號码格式",
       "regex": "(?:\\+?1[-. ]?)?\\(?\\d{3}\\)?[-. ]?\\d{3}[-. ]?\\d{4}",
       "confidence": 0.75,
       "redaction": "(XXX) XXX-XXXX",
@@ -11762,8 +11762,8 @@ class MediaProcessingUser(HttpUser):
     },
     {
       "id": "passport",
-      "name": "护照号码",
-      "description": "通用护照号码格式",
+      "name": "护照號码",
+      "description": "通用护照號码格式",
       "regex": "[A-Z0-9]{6,9}",
       "confidence": 0.7,
       "redaction": "XXXXXX",
@@ -11788,9 +11788,9 @@ class MediaProcessingUser(HttpUser):
 }
 ```
 
-#### 5.8.2 数据处理安全中间件实现
+#### 5.8.2 資料處理安全中间件實現
 
-**数据安全中间件 (data_security_middleware.py)**
+**資料安全中间件 (data_security_middleware.py)**
 ```python
 import re
 import json
@@ -11800,7 +11800,7 @@ import logging
 
 class DataSecurityMiddleware:
     """
-    数据安全中间件，负责敏感数据检测与脱敏
+    資料安全中间件，負責敏感資料檢測與脱敏
     """
     
     def __init__(self, config_path: str = "security_rules.json"):
@@ -11826,16 +11826,16 @@ class DataSecurityMiddleware:
         self.context_stack.append(context)
     
     def exit_context(self):
-        """退出当前安全上下文"""
+        """退出當前安全上下文"""
         if self.context_stack:
             self.context_stack.pop()
     
     def get_current_context(self) -> Optional[str]:
-        """获取当前安全上下文"""
+        """獲取當前安全上下文"""
         return self.context_stack[-1] if self.context_stack else None
     
     def _is_pattern_allowed(self, pattern_id: str, context: Optional[str]) -> bool:
-        """检查模式是否在当前上下文中允许使用"""
+        """检查模式是否在當前上下文中允许使用"""
         if not context:
             return False
             
@@ -11850,7 +11850,7 @@ class DataSecurityMiddleware:
         return pattern_id in context_rule["allowed_patterns"]
     
     def _validate_pattern(self, pattern_id: str, value: str) -> bool:
-        """验证敏感数据模式"""
+        """验證敏感資料模式"""
         pattern = next(
             (p for p in self.rules["patterns"] if p["id"] == pattern_id),
             None
@@ -11859,18 +11859,18 @@ class DataSecurityMiddleware:
         if not pattern or "validation" not in pattern:
             return True
             
-        # Luhn算法验证 (信用卡)
+        # Luhn算法验證 (信用卡)
         if pattern["id"] == "credit-card" and pattern["validation"].get("luhn_check"):
             return self._validate_luhn(value)
             
         return True
     
     def _validate_luhn(self, card_number: str) -> bool:
-        """验证信用卡号是否通过Luhn算法"""
-        # 清理非数字字符
+        """验證信用卡號是否通過Luhn算法"""
+        # 清理非數字字符
         digits = re.sub(r"[^\d]", "", card_number)
         
-        # 檢查长度
+        # 檢查長度
         if len(digits) < 13 or len(digits) > 16:
             return False
             
@@ -11889,7 +11889,7 @@ class DataSecurityMiddleware:
         return total % 10 == 0
     
     def _redact_value(self, pattern_id: str, value: str) -> str:
-        """根据规则脱敏值"""
+        """根據规则脱敏值"""
         pattern = next(
             (p for p in self.rules["patterns"] if p["id"] == pattern_id),
             None
@@ -11898,7 +11898,7 @@ class DataSecurityMiddleware:
         if not pattern or "redaction" not in pattern:
             return value
             
-        # 简单实现：根据规则替换
+        # 简单實現：根據规则替换
         if "XXXX" in pattern["redaction"]:
             # 保留末尾几位
             last_digits = pattern["redaction"].count("X")
@@ -11908,11 +11908,11 @@ class DataSecurityMiddleware:
     
     def detect_sensitive_data(self, data: Any, context: Optional[str] = None) -> List[Dict]:
         """
-        检测数据中的敏感信息
+        檢測資料中的敏感資訊
         
-        :param data: 要检测的数据 (可以是字符串、字典、列表)
+        :param data: 要檢測的資料 (可以是字符串、字典、列表)
         :param context: 安全上下文
-        :return: 检测到的敏感数据列表
+        :return: 檢測到的敏感資料列表
         """
         results = []
         
@@ -11922,7 +11922,7 @@ class DataSecurityMiddleware:
                 for match in matches:
                     value = match.group(0)
                     
-                    # 验证模式 (如果需要)
+                    # 验證模式 (如果需要)
                     if not self._validate_pattern(pattern["id"], value):
                         continue
                         
@@ -11937,15 +11937,15 @@ class DataSecurityMiddleware:
                     
         elif isinstance(data, dict):
             for key, value in data.items():
-                # 檢查键名是否暗示敏感数据
+                # 檢查鍵名是否暗示敏感資料
                 if any(kw in key.lower() for kw in ["ssn", "social", "security", "credit", "card", "passport"]):
-                    # 递归检测值
+                    # 递归檢測值
                     sub_results = self.detect_sensitive_data(value, context)
                     for r in sub_results:
                         r["path"] = f"{key}.{r.get('path', '')}".rstrip('.')
                         results.append(r)
                 
-                # 检测值
+                # 檢測值
                 sub_results = self.detect_sensitive_data(value, context)
                 for r in sub_results:
                     r["path"] = f"{key}.{r.get('path', '')}".rstrip('.')
@@ -11962,19 +11962,19 @@ class DataSecurityMiddleware:
     
     def redact_sensitive_data(self,  Any, context: Optional[str] = None) -> Any:
         """
-        脱敏数据中的敏感信息
+        脱敏資料中的敏感資訊
         
-        :param  要脱敏的数据
+        :param  要脱敏的資料
         :param context: 安全上下文
-        :return: 脱敏后的数据
+        :return: 脱敏後的資料
         """
         current_context = context or self.get_current_context()
         
         if isinstance(data, str):
-            # 检测所有敏感数据
+            # 檢測所有敏感資料
             detections = self.detect_sensitive_data(data, current_context)
             
-            # 按位置排序，从后往前替换 (避免位置偏移)
+            # 按位置排序，從後往前替换 (避免位置偏移)
             detections.sort(key=lambda x: x["start"], reverse=True)
             
             result = data
@@ -11989,9 +11989,9 @@ class DataSecurityMiddleware:
         elif isinstance(data, dict):
             result = {}
             for key, value in data.items():
-                # 檢查键名是否需要特殊处理
+                # 檢查鍵名是否需要特殊處理
                 if any(kw in key.lower() for kw in ["ssn", "social", "security", "credit", "card", "passport"]):
-                    # 键名暗示敏感数据，脱敏整个值
+                    # 鍵名暗示敏感資料，脱敏整個值
                     result[key] = self.redact_sensitive_data(value, current_context)
                 else:
                     # 递归脱敏
@@ -12005,10 +12005,10 @@ class DataSecurityMiddleware:
     
     def audit_log(self, operation: str, data: Any, context: Optional[str] = None):
         """
-        记录安全审计日志
+        記錄安全審計日志
         
-        :param operation: 操作类型
-        :param  操作数据
+        :param operation: 操作類型
+        :param  操作資料
         :param context: 安全上下文
         """
         detections = self.detect_sensitive_data(data, context)
@@ -12028,7 +12028,7 @@ class DataSecurityMiddleware:
                     "pattern": d["pattern_id"],
                     "value_sample": d["value"][:10] + "..." if len(d["value"]) > 10 else d["value"],
                     "allowed": d["allowed"]
-                } for d in detections[:5]]  # 只录前5个
+                } for d in detections[:5]]  # 只录前5個
             }
             
             self.logger.info("Security audit: %s", json.dumps(log_entry))
@@ -12046,17 +12046,17 @@ class DataSecurityMiddleware:
                 self.enter_context(required_context)
                 
                 try:
-                    # 执行前审计
+                    # 执行前審計
                     self.audit_log(f"enter:{func.__name__}", kwargs, required_context)
                     
-                    # 执行函数
+                    # 执行函數
                     result = func(*args, **kwargs)
                     
-                    # 检测并脱敏返回数据
+                    # 檢測並脱敏返回資料
                     if isinstance(result, (dict, list, str)):
                         result = self.redact_sensitive_data(result, required_context)
                     
-                    # 执行后审计
+                    # 执行後審計
                     self.audit_log(f"exit:{func.__name__}", result, required_context)
                     
                     return result
@@ -12071,156 +12071,156 @@ security = DataSecurityMiddleware()
 
 @security.protect_route(required_context="payment-processing")
 def process_payment(data: Dict) -> Dict:
-    """处理支付请求 (自动脱敏敏感数据)"""
-    # 业务逻辑
+    """處理支付请求 (自動脱敏敏感資料)"""
+    # 業務逻辑
     payment_result = {
         "status": "success",
         "transaction_id": "txn-123456",
-        "card_number": data["card_number"],  # 将被自动脱敏
+        "card_number": data["card_number"],  # 將被自動脱敏
         "amount": data["amount"]
     }
     return payment_result
 ```
 
-### 5.9 与其他模块的交互
+### 5.9 與其他模組的交互
 
-#### 5.9.1 与数据处理工作流引擎交互
+#### 5.9.1 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
     participant DPWE as Data Processing Workflow Engine
     participant AMP as Automated Media Processing Pipeline
     
-    DPWE->>AMP: POST /api/v1/media:process (触发处理)
-    AMP-->>DPWE: 处理任务ID
+    DPWE->>AMP: POST /api/v1/media:process (触发處理)
+    AMP-->>DPWE: 處理任務ID
     
-    loop 处理进行中
-        DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (查询状态)
-        AMP-->>DPWE: 处理状态
+    loop 處理进行中
+        DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (查詢狀態)
+        AMP-->>DPWE: 處理狀態
     end
     
-    DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (获取结果)
-    AMP-->>DPWE: 处理结果和元数据
+    DPWE->>AMP: GET /api/v1/media/processingTasks/{task_id} (獲取结果)
+    AMP-->>DPWE: 處理结果和元資料
 ```
 
-#### 5.9.2 与AI辅助开发系统交互
+#### 5.9.2 與AI輔助開发系統交互
 
 ```mermaid
 sequenceDiagram
     participant AIDS as AI-Assisted Development System
     participant AMP as Automated Media Processing Pipeline
     
-    AIDS->>AMP: GET /api/v1/media/models (获取可用模型)
+    AIDS->>AMP: GET /api/v1/media/models (獲取可用模型)
     AMP-->>AIDS: 模型列表
     
-    AIDS->>AMP: POST /api/v1/media/process (请求处理示例)
-    AMP-->>AIDS: 处理结果示例
+    AIDS->>AMP: POST /api/v1/media/process (请求處理示例)
+    AMP-->>AIDS: 處理结果示例
     
-    AIDS->>AMP: GET /api/v1/media/analysis (获取分析能力)
+    AIDS->>AMP: GET /api/v1/media/analysis (獲取分析能力)
     AMP-->>AIDS: 分析能力描述
 ```
 
-#### 5.9.3 与数据源注册中心交互
+#### 5.9.3 與資料源註冊中心交互
 
 ```mermaid
 sequenceDiagram
     participant DSR as Data Source Registry
     participant AMP as Automated Media Processing Pipeline
     
-    AMP->>DSR: GET /api/v1/data-sources?type=media (获取媒体数据源)
-    DSR-->>AMP: 媒体数据源列表
+    AMP->>DSR: GET /api/v1/data-sources?type=media (獲取媒體資料源)
+    DSR-->>AMP: 媒體資料源列表
     
-    AMP->>DSR: POST /api/v1/data-sources (创建处理后的媒体数据源)
+    AMP->>DSR: POST /api/v1/data-sources (创建處理後的媒體資料源)
     DSR-->>AMP: 创建结果
     
-    AMP->>DSR: GET /api/v1/data-sources/{id} (获取数据源详情)
-    DSR-->>AMP: 数据源详情
+    AMP->>DSR: GET /api/v1/data-sources/{id} (獲取資料源詳情)
+    DSR-->>AMP: 資料源詳情
 ```
 
-## 6. AI辅助开发系统 (AI-Assisted Development System)
+## 6. AI輔助開发系統 (AI-Assisted Development System)
 
-### 6.1 模块概述
-AI辅助开发系统是镜界平台的智能助手，利用大型语言模型和领域知识库，为爬虫工程师和数据科学家提供代码生成、问题诊断和学习推荐等辅助功能。它通过自然语言交互，降低数据采集的技术门槛，提高开发效率。
+### 6.1 模組概述
+AI輔助開发系統是镜界平台的智能助手，利用大型语言模型和领域知识庫，為爬蟲工程师和資料科学家提供代码生成、问题诊断和学习推薦等輔助功能。它通過自然语言交互，降低資料採集的技術门槛，提高開发效率。
 
-### 6.2 详细功能清单
+### 6.2 詳細功能清單
 
 #### 6.2.1 核心功能
 - **自然语言需求解析**
   - 需求意图识别
-  - 关键参数提取
-  - 需求验证与澄清
-  - 需求分解与任务规划
+  - 關鍵參數提取
+  - 需求验證與澄清
+  - 需求分解與任務规划
 - **智能代码生成**
-  - 爬虫代码生成（Python、JavaScript）
-  - 数据处理代码生成
-  - 工作流定义生成
+  - 爬蟲代码生成（Python、JavaScript）
+  - 資料處理代码生成
+  - 工作流定義生成
   - 测试用例生成
-- **问题诊断与修复建议**
+- **问题诊断與修複建議**
   - 错误日志分析
   - 反爬问题诊断
-  - 性能瓶颈分析
-  - 修复建议生成
-- **学习路径个性化推荐**
-  - 技能评估与差距分析
-  - 个性化学习路径规划
-  - 实战项目推荐
-  - 进阶学习资源推荐
+  - 效能瓶颈分析
+  - 修複建議生成
+- **学习路径個性化推薦**
+  - 技能評估與差距分析
+  - 個性化学习路径规划
+  - 實战專案推薦
+  - 进阶学习資源推薦
 
 #### 6.2.2 高级功能
-- **领域知识库**
-  - 爬虫技术栈知识库
-  - 反爬策略数据库
-  - 网站技术栈指纹库
-  - HTTP状态码知识库
-- **多轮对话记忆**
-  - 上下文理解与跟踪
-  - 对话状态管理
-  - 记忆长期化
-  - 个性化偏好学习
-- **代码理解与优化**
+- **领域知识庫**
+  - 爬蟲技術棧知识庫
+  - 反爬策略資料庫
+  - 網站技術棧指紋庫
+  - HTTP狀態码知识庫
+- **多轮對话记忆**
+  - 上下文理解與跟踪
+  - 對话狀態管理
+  - 记忆長期化
+  - 個性化偏好学习
+- **代码理解與優化**
   - 代码静态分析
-  - 代码质量评估
-  - 性能优化建议
-  - 安全漏洞检测
-- **集成开发环境支持**
+  - 代码品質評估
+  - 效能優化建議
+  - 安全漏洞檢測
+- **整合開发环境支援**
   - VS Code插件
-  - Jupyter Notebook集成
+  - Jupyter Notebook整合
   - 命令行工具
-  - 工作流内嵌调用
+  - 工作流内嵌調用
 
-### 6.3 技术架构
+### 6.3 技術架構
 
-#### 6.3.1 架构图
+#### 6.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                AI辅助开发系统 (AIDS)                                          │
+│                                AI輔助開发系統 (AIDS)                                          │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  交互层               │  服务层               │  数据层                                    │
+│  交互层               │  服務层               │  資料层                                    │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • Web聊天界面         │ • 需求解析服务        │ • 领域知识库                               │
-│ • IDE插件             │ • 代码生成服务        │ • 代码片段库                               │
-│ • CLI工具             │ • 问题诊断服务        │ • 错误模式库                               │
-│ • 工作流内嵌调用       │ • 学习推荐服务        │ • 用户画像库                               │
+│ • Web聊天界面         │ • 需求解析服務        │ • 领域知识庫                               │
+│ • IDE插件             │ • 代码生成服務        │ • 代码片段庫                               │
+│ • CLI工具             │ • 问题诊断服務        │ • 错误模式庫                               │
+│ • 工作流内嵌調用       │ • 学习推薦服務        │ • 用戶画像庫                               │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 6.3.2 服务边界与交互
-- **输入**：
-  - 自然语言查询（用户输入）
-  - 代码片段（用于分析或生成）
-  - 错误日志（用于诊断）
-  - 工作流定义（用于辅助）
-- **输出**：
+#### 6.3.2 服務边界與交互
+- **輸入**：
+  - 自然语言查詢（用戶輸入）
+  - 代码片段（用於分析或生成）
+  - 错误日志（用於诊断）
+  - 工作流定義（用於輔助）
+- **輸出**：
   - 生成的代码
   - 问题诊断结果
-  - 学习资源推荐
+  - 学习資源推薦
   - 需求澄清问题
 
-### 6.4 核心组件详细实现
+### 6.4 核心組件詳細實現
 
-#### 6.4.1 需求解析服务
+#### 6.4.1 需求解析服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import re
 import json
@@ -12232,7 +12232,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 class RequirementParser:
-    """需求解析服务，将自然语言需求转换为结构化任务"""
+    """需求解析服務，將自然语言需求转换為結構化任務"""
     
     def __init__(
         self,
@@ -12251,25 +12251,25 @@ class RequirementParser:
         context: Optional[Dict] = None
     ) -> ParsedRequirement:
         """
-        解析用户需求
+        解析用戶需求
         
-        :param user_query: 用户自然语言查询
-        :param context: 对话上下文
-        :return: 解析后的需求对象
+        :param user_query: 用戶自然语言查詢
+        :param context: 對话上下文
+        :return: 解析後的需求物件
         """
-        # 1. 预处理用户查询
+        # 1. 預處理用戶查詢
         cleaned_query = self._clean_query(user_query)
         
-        # 2. 识别需求类型
+        # 2. 识别需求類型
         requirement_type = self._identify_requirement_type(cleaned_query)
         
-        # 3. 提取关键参数
+        # 3. 提取關鍵參數
         parameters = self._extract_parameters(cleaned_query, requirement_type)
         
-        # 4. 验证参数完整性
+        # 4. 验證參數完整性
         missing_params = self._validate_parameters(requirement_type, parameters)
         
-        # 5. 生成结构化需求
+        # 5. 生成結構化需求
         return ParsedRequirement(
             original_query=user_query,
             cleaned_query=cleaned_query,
@@ -12281,11 +12281,11 @@ class RequirementParser:
         )
     
     def _clean_query(self, query: str) -> str:
-        """清理用户查询"""
+        """清理用戶查詢"""
         # 移除特殊字符
         query = re.sub(r'[^\w\s]', ' ', query)
         
-        # 转换为小写
+        # 转换為小写
         query = query.lower()
         
         # 移除多余空格
@@ -12294,8 +12294,8 @@ class RequirementParser:
         return query
     
     def _identify_requirement_type(self, query: str) -> str:
-        """识别需求类型"""
-        # 基于关键词匹配
+        """识别需求類型"""
+        # 基於關鍵词匹配
         if any(word in query for word in ["generate", "create", "make"]):
             if any(word in query for word in ["code", "script", "crawler"]):
                 return "code_generation"
@@ -12308,7 +12308,7 @@ class RequirementParser:
         if any(word in query for word in ["learn", "study", "tutorial", "how to"]):
             return "learning_request"
         
-        # 默认类型
+        # 默认類型
         return "general_query"
     
     def _extract_parameters(
@@ -12316,7 +12316,7 @@ class RequirementParser:
         query: str,
         requirement_type: str
     ) -> Dict:
-        """提取需求参数"""
+        """提取需求參數"""
         doc = self.nlp(query)
         parameters = {}
         
@@ -12330,15 +12330,15 @@ class RequirementParser:
         return parameters
     
     def _extract_code_generation_params(self, doc: Doc) -> Dict:
-        """提取代码生成参数"""
+        """提取代码生成參數"""
         params = {}
         
-        # 提取目标网站
+        # 提取目標網站
         for ent in doc.ents:
             if ent.label_ in ["WEBSITE", "URL", "ORG"]:
                 params["target_website"] = ent.text
         
-        # 提取数据类型
+        # 提取資料類型
         data_types = ["image", "video", "text", "html", "json", "xml"]
         for token in doc:
             if token.text in data_types:
@@ -12367,18 +12367,18 @@ class RequirementParser:
         return params
     
     def _extract_workflow_params(self, doc: Doc) -> Dict:
-        """提取工作流参数"""
+        """提取工作流參數"""
         params = {}
         
-        # 提取触发条件
-        if "schedule" in doc.text or "定时" in doc.text:
+        # 提取触发條件
+        if "schedule" in doc.text or "定時" in doc.text:
             params["trigger"] = "schedule"
-        elif "filesystem" in doc.text or "文件系统" in doc.text:
+        elif "filesystem" in doc.text or "文件系統" in doc.text:
             params["trigger"] = "filesystem"
         elif "webhook" in doc.text or "回调" in doc.text:
             params["trigger"] = "webhook"
         
-        # 提取处理步骤
+        # 提取處理步骤
         processing_steps = []
         if "download" in doc.text or "下载" in doc.text:
             processing_steps.append("download")
@@ -12388,7 +12388,7 @@ class RequirementParser:
             processing_steps.append("transform")
         if "analyze" in doc.text or "分析" in doc.text:
             processing_steps.append("analyze")
-        if "store" in doc.text or "存储" in doc.text:
+        if "store" in doc.text or "儲存" in doc.text:
             processing_steps.append("store")
         
         if processing_steps:
@@ -12397,23 +12397,23 @@ class RequirementParser:
         return params
     
     def _extract_problem_diagnosis_params(self, doc: Doc) -> Dict:
-        """提取问题诊断参数"""
+        """提取问题诊断參數"""
         params = {}
         
-        # 提取错误信息
+        # 提取错误資訊
         error_keywords = ["error", "exception", "failed", "not working"]
         for sent in doc.sents:
             if any(keyword in sent.text for keyword in error_keywords):
                 params["error_message"] = sent.text
                 break
         
-        # 提取网站信息
+        # 提取網站資訊
         for ent in doc.ents:
             if ent.label_ in ["WEBSITE", "URL", "ORG"]:
                 params["target_website"] = ent.text
                 break
         
-        # 提取技术栈
+        # 提取技術棧
         tech_keywords = ["javascript", "react", "angular", "vue", "angular", "wordpress"]
         for token in doc:
             if token.text in tech_keywords:
@@ -12427,7 +12427,7 @@ class RequirementParser:
         requirement_type: str,
         parameters: Dict
     ) -> List[str]:
-        """验证参数完整性"""
+        """验證參數完整性"""
         missing_params = []
         
         if requirement_type == "code_generation":
@@ -12454,7 +12454,7 @@ class RequirementParser:
         parameters: Dict
     ) -> float:
         """计算解析置信度"""
-        # 基于参数完整性
+        # 基於參數完整性
         if requirement_type == "general_query":
             return 0.5
         
@@ -12467,13 +12467,13 @@ class RequirementParser:
             required_params = ["error_message"]
         
         if not required_params:
-            return 0.8  # 一般查询，置信度中等
+            return 0.8  # 一般查詢，置信度中等
         
         filled_params = [param for param in required_params if param in parameters]
         return len(filled_params) / len(required_params)
 
 class KnowledgeBase:
-    """领域知识库，存储爬虫相关知识"""
+    """领域知识庫，儲存爬蟲相關知识"""
     
     def __init__(self, config: Config):
         self.config = config
@@ -12481,8 +12481,8 @@ class KnowledgeBase:
         self._load_knowledge()
     
     def _load_knowledge(self):
-        """加载知识库"""
-        # 从配置或数据库加载知识
+        """加载知识庫"""
+        # 從配置或資料庫加载知识
         self.anti_crawling_strategies = self._load_anti_crawling_strategies()
         self.technology_fingerprints = self._load_technology_fingerprints()
         self.error_patterns = self._load_error_patterns()
@@ -12492,22 +12492,22 @@ class KnowledgeBase:
         return [
             {
                 "id": "user-agent-check",
-                "name": "User-Agent检测",
-                "description": "网站通过User-Agent检测爬虫",
+                "name": "User-Agent檢測",
+                "description": "網站通過User-Agent檢測爬蟲",
                 "indicators": [
-                    "403 Forbidden响应",
-                    "需要特定User-Agent才能访问"
+                    "403 Forbidden響應",
+                    "需要特定User-Agent才能訪問"
                 ],
                 "solutions": [
                     {
                         "title": "轮换User-Agent",
-                        "description": "使用随机User-Agent池",
+                        "description": "使用隨机User-Agent池",
                         "code_example": "from fake_useragent import UserAgent\nua = UserAgent()\nheaders = {'User-Agent': ua.random}",
                         "effectiveness": 0.85,
                         "complexity": 0.3
                     },
                     {
-                        "title": "模拟浏览器特征",
+                        "title": "模拟浏览器特徵",
                         "description": "添加浏览器特有的请求头",
                         "code_example": "headers = {\n    'User-Agent': 'Mozilla/5.0...',\n    'Accept-Language': 'en-US,en;q=0.9',\n    'Sec-Ch-Ua': '\"Chromium\";v=\"112\", \"Google Chrome\";v=\"112\", \"Not_A Brand\";v=\"24\"'\n}",
                         "effectiveness": 0.92,
@@ -12518,22 +12518,22 @@ class KnowledgeBase:
             {
                 "id": "rate-limiting",
                 "name": "请求频率限制",
-                "description": "网站限制单位时间内的请求数量",
+                "description": "網站限制单位時間内的请求數量",
                 "indicators": [
-                    "429 Too Many Requests响应",
-                    "请求间隔过短导致失败"
+                    "429 Too Many Requests響應",
+                    "请求间隔過短导致失败"
                 ],
                 "solutions": [
                     {
                         "title": "添加请求间隔",
-                        "description": "在请求之间添加随机延迟",
+                        "description": "在请求之间添加隨机延遲",
                         "code_example": "import time\nimport random\ntime.sleep(random.uniform(1, 3))",
                         "effectiveness": 0.75,
                         "complexity": 0.2
                     },
                     {
                         "title": "使用代理IP轮换",
-                        "description": "通过轮换不同IP地址分散请求",
+                        "description": "通過轮换不同IP地址分散请求",
                         "code_example": "proxies = {\n    'http': 'http://10.10.1.10:3128',\n    'https': 'http://10.10.1.10:1080',\n}\nresponse = requests.get(url, proxies=proxies)",
                         "effectiveness": 0.85,
                         "complexity": 0.7
@@ -12543,7 +12543,7 @@ class KnowledgeBase:
         ]
     
     def _load_technology_fingerprints(self) -> List[Dict]:
-        """加载技术栈指纹知识"""
+        """加载技術棧指紋知识"""
         return [
             {
                 "id": "react",
@@ -12561,7 +12561,7 @@ class KnowledgeBase:
                     }
                 ],
                 "crawl_implications": [
-                    "需要处理客户端渲染内容",
+                    "需要處理客户端渲染內容",
                     "可能使用React Router进行导航"
                 ]
             },
@@ -12583,7 +12583,7 @@ class KnowledgeBase:
                 ],
                 "crawl_implications": [
                     "可能使用REST API",
-                    "需要注意主题和插件的自定义结构"
+                    "需要註意主题和插件的自定義結構"
                 ]
             }
         ]
@@ -12594,10 +12594,10 @@ class KnowledgeBase:
             {
                 "id": "403-forbidden",
                 "pattern": "403 Forbidden",
-                "description": "访问被拒绝",
+                "description": "訪問被拒绝",
                 "causes": [
                     "IP被封禁",
-                    "User-Agent被识别为爬虫",
+                    "User-Agent被识别為爬蟲",
                     "缺少必要的请求头"
                 ],
                 "solutions": [
@@ -12615,14 +12615,14 @@ class KnowledgeBase:
             {
                 "id": "429-too-many-requests",
                 "pattern": "429 Too Many Requests",
-                "description": "请求过于频繁",
+                "description": "请求過於频繁",
                 "causes": [
-                    "请求频率超过网站限制",
+                    "请求频率超過網站限制",
                     "未使用请求间隔"
                 ],
                 "solutions": [
-                    "添加随机请求间隔",
-                    "减少并发请求数",
+                    "添加隨机请求间隔",
+                    "减少並發请求數",
                     "使用代理IP轮换"
                 ],
                 "examples": [
@@ -12635,14 +12635,14 @@ class KnowledgeBase:
         ]
     
     def get_anti_crawling_strategy(self, strategy_id: str) -> Optional[Dict]:
-        """获取反爬策略"""
+        """獲取反爬策略"""
         return next(
             (s for s in self.anti_crawling_strategies if s["id"] == strategy_id),
             None
         )
     
     def get_technology_fingerprint(self, tech_id: str) -> Optional[Dict]:
-        """获取技术栈指纹"""
+        """獲取技術棧指紋"""
         return next(
             (t for t in self.technology_fingerprints if t["id"] == tech_id),
             None
@@ -12653,15 +12653,15 @@ class KnowledgeBase:
         matches = []
         
         for pattern in self.error_patterns:
-            # 简单实现：关键词匹配
+            # 简单實現：關鍵词匹配
             if any(keyword in error_message.lower() for keyword in pattern["pattern"].lower().split()):
                 matches.append(pattern)
         
         return matches
 
-# 辅助类定义
+# 輔助类定義
 class ParsedRequirement:
-    """解析后的需求对象"""
+    """解析後的需求物件"""
     def __init__(
         self,
         original_query: str,
@@ -12681,9 +12681,9 @@ class ParsedRequirement:
         self.context = context or {}
 ```
 
-#### 6.4.2 代码生成服务
+#### 6.4.2 代码生成服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import os
 import time
@@ -12695,7 +12695,7 @@ from jinja2 import Template
 
 class CodeGenerationService:
     """
-    AI代码生成服务，支持多种爬虫场景
+    AI代码生成服務，支援多種爬蟲場景
     """
     
     def __init__(
@@ -12719,35 +12719,35 @@ class CodeGenerationService:
         context: dict = None
     ) -> CodeGenerationResult:
         """
-        根据用户需求生成爬虫代码
+        根據用戶需求生成爬蟲代码
         
-        :param user_request: 用户自然语言描述
-        :param context: 上下文信息（可选）
+        :param user_request: 用戶自然语言描述
+        :param context: 上下文資訊（可选）
         :return: 代码生成结果
         """
         start_time = time.time()
         
         try:
-            # 1. 场景分类
+            # 1. 場景分類
             scene_type = self.scene_classifier.classify(user_request)
             
-            # 2. 获取相关模板
+            # 2. 獲取相關模板
             templates = self.template_repo.get_templates(
                 scene_type=scene_type,
                 language=context.get("language", "python") if context else "python"
             )
             
-            # 3. 构建提示词
+            # 3. 構建提示词
             prompt = self._build_prompt(user_request, templates, context)
             
-            # 4. 调用LLM生成代码
+            # 4. 調用LLM生成代码
             raw_code = self.llm_client.generate(prompt)
             
-            # 5. 代码后处理与验证
+            # 5. 代码後處理與验證
             processed_code = self._post_process_code(raw_code, scene_type)
             validation_result = self.code_validator.validate(processed_code)
             
-            # 6. 构建结果
+            # 6. 構建结果
             return CodeGenerationResult(
                 code=processed_code,
                 scene_type=scene_type,
@@ -12767,13 +12767,13 @@ class CodeGenerationService:
         templates: List[CodeTemplate],
         context: dict
     ) -> str:
-        """构建LLM提示词"""
+        """構建LLM提示词"""
         # 加载提示词模板
         template_path = self.config.get("prompt_template_path", "prompts/code_generation.j2")
         with open(template_path, 'r') as f:
             template_content = f.read()
         
-        # 准备模板变量
+        # 准備模板变量
         template_vars = {
             "user_request": user_request,
             "templates": [
@@ -12795,11 +12795,11 @@ class CodeGenerationService:
         return jinja_template.render(**template_vars)
     
     def _post_process_code(self, raw_code: str, scene_type: str) -> str:
-        """代码后处理：清理、格式化、添加注释"""
-        # 1. 移除多余内容
+        """代码後處理：清理、格式化、添加註释"""
+        # 1. 移除多余內容
         code = self._remove_extra_content(raw_code)
         
-        # 2. 根据场景类型进行特定后处理
+        # 2. 根據場景類型进行特定後處理
         if scene_type == "static-html":
             code = self._process_static_html_code(code)
         elif scene_type == "dynamic-rendering":
@@ -12816,8 +12816,8 @@ class CodeGenerationService:
         return code
     
     def _remove_extra_content(self, code: str) -> str:
-        """移除LLM生成的多余内容"""
-        # 移除Markdown代码块标记
+        """移除LLM生成的多余內容"""
+        # 移除Markdown代码块標记
         code = re.sub(r'```python\n', '', code)
         code = re.sub(r'\n```', '', code)
         
@@ -12828,34 +12828,34 @@ class CodeGenerationService:
         return code.strip()
     
     def _process_static_html_code(self, code: str) -> str:
-        """处理静态HTML爬虫代码"""
-        # 确保使用了requests和BeautifulSoup
+        """處理静态HTML爬蟲代码"""
+        # 確保使用了requests和BeautifulSoup
         if "import requests" not in code:
             code = "import requests\n" + code
         if "from bs4 import BeautifulSoup" not in code and "BeautifulSoup" in code:
             code = "from bs4 import BeautifulSoup\n" + code
         
-        # 添加基本错误处理
+        # 添加基本错误處理
         if "try:" not in code:
             code = self._add_basic_error_handling(code)
         
         return code
     
     def _process_dynamic_rendering_code(self, code: str) -> str:
-        """处理动态渲染页面爬虫代码"""
-        # 确保使用了selenium
+        """處理動态渲染頁面爬蟲代码"""
+        # 確保使用了selenium
         if "from selenium import webdriver" not in code:
             code = "from selenium import webdriver\n" + code
         
-        # 添加等待机制
+        # 添加等待機制
         if "WebDriverWait" not in code and "wait" in code.lower():
             code = self._add_wait_mechanism(code)
         
         return code
     
     def _process_api_code(self, code: str) -> str:
-        """处理API爬虫代码"""
-        # 确保处理了分页
+        """處理API爬蟲代码"""
+        # 確保處理了分頁
         if "page" in code.lower() and "while" not in code and "for" not in code:
             code = self._add_pagination_handling(code)
         
@@ -12866,19 +12866,19 @@ class CodeGenerationService:
         return code
     
     def _add_basic_error_handling(self, code: str) -> str:
-        """添加基本错误处理"""
+        """添加基本错误處理"""
         error_handling = """
 try:
     # 原有代码
     {}
 except Exception as e:
     print(f"Error: {str(e)}")
-    # 可以添加更多错误处理逻辑
+    # 可以添加更多错误處理逻辑
 """
         return error_handling.format(code)
     
     def _add_wait_mechanism(self, code: str) -> str:
-        """添加等待机制"""
+        """添加等待機制"""
         wait_code = """
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12891,28 +12891,28 @@ element = wait.until(EC.presence_of_element_located((By.ID, "target-element")))
         return wait_code + "\n\n" + code
     
     def _add_pagination_handling(self, code: str) -> str:
-        """添加分页处理"""
+        """添加分頁處理"""
         pagination_code = """
-# 处理分页
+# 處理分頁
 page = 1
 all_data = []
 
 while True:
-    # 构建URL
+    # 構建URL
     url = f"https://api.example.com/data?page={page}"
     
     # 发送请求
     response = requests.get(url)
     data = response.json()
     
-    # 检查是否还有数据
+    # 检查是否还有資料
     if not data["items"]:
         break
     
     # 添加到结果
     all_data.extend(data["items"])
     
-    # 下一页
+    # 下一頁
     page += 1
 """
         return pagination_code + "\n\n" + code
@@ -12932,7 +12932,7 @@ def make_request(url):
     
     def _format_code(self, code: str) -> str:
         """格式化代码"""
-        # 这里简化实现，实际应该使用black等格式化工具
+        # 這里简化實現，實际应该使用black等格式化工具
         return code
     
     def _add_required_imports(self, code: str) -> str:
@@ -12953,11 +12953,11 @@ def make_request(url):
     
     def _calculate_confidence(self, validation_result: ValidationResult) -> float:
         """计算生成代码的置信度"""
-        # 根据验证结果计算置信度
+        # 根據验證结果计算置信度
         if validation_result.is_valid:
             return 0.9
         elif validation_result.errors:
-            # 根据错误严重程度调整
+            # 根據错误严重程度调整
             severity_weights = {
                 "syntax": 0.3,
                 "import": 0.2,
@@ -12974,7 +12974,7 @@ def make_request(url):
         return 0.5
 
 class SceneClassifier:
-    """爬虫场景分类器"""
+    """爬蟲場景分類器"""
     
     SCENE_CATEGORIES = [
         "static-html", 
@@ -12988,16 +12988,16 @@ class SceneClassifier:
     ]
     
     def __init__(self):
-        # 加载预训练分类模型
+        # 加载預训练分類模型
         self.model = load_model("scene-classification-v1")
     
     def classify(self, user_request: str) -> str:
-        """将用户请求分类到最匹配的场景"""
-        # 实现分类逻辑
+        """將用戶请求分類到最匹配的場景"""
+        # 實現分類逻辑
         return self.model.predict(user_request)
 
 class TemplateRepository:
-    """代码模板仓库"""
+    """代码模板仓庫"""
     
     def __init__(self, db: Database):
         self.db = db
@@ -13008,8 +13008,8 @@ class TemplateRepository:
         scene_type: str,
         language: str = "python"
     ) -> List[CodeTemplate]:
-        """获取相关代码模板"""
-        # 从数据库获取模板
+        """獲取相關代码模板"""
+        # 從資料庫獲取模板
         sql = """
         SELECT * FROM code_templates 
         WHERE scene_type = %(scene_type)s 
@@ -13025,7 +13025,7 @@ class TemplateRepository:
         return [self._row_to_template(row) for row in rows]
     
     def _row_to_template(self, row: Dict) -> CodeTemplate:
-        """将数据库行转换为CodeTemplate对象"""
+        """將資料庫行转换為CodeTemplate物件"""
         return CodeTemplate(
             id=row["id"],
             name=row["name"],
@@ -13041,7 +13041,7 @@ class TemplateRepository:
         )
     
     def _decode_parameters(self, json_data: str) -> List[TemplateParameter]:
-        """解码参数定义"""
+        """解码參數定義"""
         if not json_data:
             return []
         
@@ -13072,26 +13072,26 @@ class TemplateRepository:
         ]
 
 class CodeValidator:
-    """代码验证器"""
+    """代码验證器"""
     
     def validate(self, code: str) -> ValidationResult:
         """
-        验证生成的代码
+        验證生成的代码
         
         :param code: 生成的代码
-        :return: 验证结果
+        :return: 验證结果
         """
         errors = []
         
-        # 1. 语法验证
+        # 1. 语法验證
         syntax_errors = self._validate_syntax(code)
         errors.extend(syntax_errors)
         
-        # 2. 导入验证
+        # 2. 导入验證
         import_errors = self._validate_imports(code)
         errors.extend(import_errors)
         
-        # 3. 逻辑验证
+        # 3. 逻辑验證
         logic_errors = self._validate_logic(code)
         errors.extend(logic_errors)
         
@@ -13101,7 +13101,7 @@ class CodeValidator:
         )
     
     def _validate_syntax(self, code: str) -> List[Dict]:
-        """验证代码语法"""
+        """验證代码语法"""
         try:
             ast.parse(code)
             return []
@@ -13120,10 +13120,10 @@ class CodeValidator:
             }]
     
     def _validate_imports(self, code: str) -> List[Dict]:
-        """验证导入语句"""
+        """验證导入语句"""
         errors = []
         
-        # 检查requests库
+        # 检查requests庫
         if ("requests" in code or "get(" in code) and "import requests" not in code:
             errors.append({
                 "type": "import",
@@ -13150,10 +13150,10 @@ class CodeValidator:
         return errors
     
     def _validate_logic(self, code: str) -> List[Dict]:
-        """验证代码逻辑（简化实现）"""
+        """验證代码逻辑（简化實現）"""
         errors = []
         
-        # 检查分页处理
+        # 检查分頁處理
         if "page" in code.lower() and "while" not in code and "for" not in code:
             errors.append({
                 "type": "logic",
@@ -13169,7 +13169,7 @@ class CodeValidator:
                 "severity": 0.4
             })
         
-        # 检查错误处理
+        # 检查错误處理
         if "try" not in code and ("requests.get" in code or "selenium" in code):
             errors.append({
                 "type": "logic",
@@ -13177,7 +13177,7 @@ class CodeValidator:
                 "severity": 0.6
             })
         
-        # 检查User-Agent设置（针对爬虫）
+        # 检查User-Agent设置（针對爬蟲）
         if "requests.get" in code and "User-Agent" not in code:
             errors.append({
                 "type": "logic",
@@ -13188,7 +13188,7 @@ class CodeValidator:
         return errors
 
 class ValidationResult:
-    """代码验证结果"""
+    """代码验證结果"""
     def __init__(
         self,
         is_valid: bool,
@@ -13198,12 +13198,12 @@ class ValidationResult:
         self.errors = errors
 ```
 
-#### 6.4.3 问题诊断服务
+#### 6.4.3 问题诊断服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class ProblemDiagnosisService:
-    """问题诊断服务，分析错误并提供解决方案"""
+    """问题诊断服務，分析错误並提供解决方案"""
     
     def __init__(
         self,
@@ -13224,31 +13224,31 @@ class ProblemDiagnosisService:
         context: dict = None
     ) -> DiagnosisResult:
         """
-        诊断错误问题并提供解决方案
+        诊断错误问题並提供解决方案
         
         :param error_log: 错误日志
-        :param context: 上下文信息（可选）
+        :param context: 上下文資訊（可选）
         :return: 诊断结果
         """
         start_time = time.time()
         
         try:
-            # 1. 分析错误类型
+            # 1. 分析错误類型
             error_analysis = self.error_analyzer.analyze(error_log)
             
-            # 2. 获取相关知识
+            # 2. 獲取相關知识
             relevant_knowledge = self._get_relevant_knowledge(error_analysis)
             
-            # 3. 构建诊断提示
+            # 3. 構建诊断提示
             prompt = self._build_diagnosis_prompt(error_log, error_analysis, relevant_knowledge, context)
             
-            # 4. 调用LLM生成诊断
+            # 4. 調用LLM生成诊断
             diagnosis = self.llm_client.generate(prompt)
             
             # 5. 解析诊断结果
             parsed_diagnosis = self._parse_diagnosis(diagnosis, error_analysis)
             
-            # 6. 构建结果
+            # 6. 構建结果
             return DiagnosisResult(
                 error_log=error_log,
                 analysis=error_analysis,
@@ -13263,7 +13263,7 @@ class ProblemDiagnosisService:
             raise DiagnosisError(f"Failed to diagnose problem: {str(e)}")
     
     def _get_relevant_knowledge(self, error_analysis: ErrorAnalysis) -> Dict:
-        """获取相关知识库内容"""
+        """獲取相關知识庫內容"""
         knowledge = {
             "error_patterns": [],
             "anti_crawling_strategies": [],
@@ -13275,14 +13275,14 @@ class ProblemDiagnosisService:
             patterns = self.knowledge_base.match_error_pattern(error_analysis.error_message)
             knowledge["error_patterns"] = patterns
         
-        # 获取相关反爬策略
+        # 獲取相關反爬策略
         if error_analysis.anti_crawling_indicators:
             for indicator in error_analysis.anti_crawling_indicators:
                 strategy = self.knowledge_base.get_anti_crawling_strategy(indicator)
                 if strategy:
                     knowledge["anti_crawling_strategies"].append(strategy)
         
-        # 获取技术栈指纹
+        # 獲取技術棧指紋
         if error_analysis.technology:
             fingerprint = self.knowledge_base.get_technology_fingerprint(error_analysis.technology)
             if fingerprint:
@@ -13297,13 +13297,13 @@ class ProblemDiagnosisService:
         knowledge: Dict,
         context: dict
     ) -> str:
-        """构建诊断提示词"""
+        """構建诊断提示词"""
         # 加载提示词模板
         template_path = self.config.get("diagnosis_prompt_template", "prompts/diagnosis.j2")
         with open(template_path, 'r') as f:
             template_content = f.read()
         
-        # 准备模板变量
+        # 准備模板变量
         template_vars = {
             "error_log": error_log,
             "error_analysis": {
@@ -13325,7 +13325,7 @@ class ProblemDiagnosisService:
     
     def _parse_diagnosis(self, diagnosis_text: str, error_analysis: ErrorAnalysis) -> Dict:
         """解析诊断结果"""
-        # 简单实现：提取关键信息
+        # 简单實現：提取關鍵資訊
         result = {
             "root_cause": "",
             "impact": "",
@@ -13347,35 +13347,35 @@ class ProblemDiagnosisService:
         for solution in solutions_match:
             result["suggested_solutions"].append(solution.strip())
         
-        # 如果没有提取到，使用整个文本作为原因
+        # 如果沒有提取到，使用整個文本作為原因
         if not result["root_cause"]:
             result["root_cause"] = diagnosis_text.split('\n')[0]
         
         return result
     
     def _extract_solutions(self, parsed_diagnosis: Dict) -> List[Dict]:
-        """从诊断结果中提取解决方案"""
+        """從诊断结果中提取解决方案"""
         solutions = []
         
-        # 从知识库获取标准解决方案
+        # 從知识庫獲取標准解决方案
         if parsed_diagnosis.get("root_cause"):
-            # 这里可以添加更复杂的逻辑来匹配知识库中的解决方案
+            # 這里可以添加更複杂的逻辑來匹配知识庫中的解决方案
             pass
         
-        # 从解析结果中提取
+        # 從解析结果中提取
         for i, solution_text in enumerate(parsed_diagnosis.get("suggested_solutions", [])):
             solutions.append({
                 "id": f"sol-{i+1}",
                 "description": solution_text,
-                "confidence": 0.8,  # 简化实现
+                "confidence": 0.8,  # 简化實現
                 "implementation": self._generate_implementation(solution_text)
             })
         
         return solutions
     
     def _generate_implementation(self, solution_description: str) -> str:
-        """为解决方案生成实现代码"""
-        # 简单实现：基于描述生成代码示例
+        """為解决方案生成實現代码"""
+        # 简单實現：基於描述生成代码示例
         if "User-Agent" in solution_description:
             return """headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -13389,14 +13389,14 @@ response = requests.get(url, headers=headers)"""
 }
 response = requests.get(url, proxies=proxies)"""
         
-        # 默认实现
-        return f"# {solution_description}\n# 实现代码示例\npass"
+        # 默认實現
+        return f"# {solution_description}\n# 實現代码示例\npass"
     
     def _calculate_confidence(self, parsed_diagnosis: Dict, error_analysis: ErrorAnalysis) -> float:
         """计算诊断置信度"""
         base_confidence = 0.7
         
-        # 根据分析的完整性调整
+        # 根據分析的完整性调整
         if error_analysis.error_type:
             base_confidence += 0.1
         if error_analysis.anti_crawling_indicators:
@@ -13404,7 +13404,7 @@ response = requests.get(url, proxies=proxies)"""
         if error_analysis.technology:
             base_confidence += 0.05
         
-        # 根据诊断结果的详细程度调整
+        # 根據诊断结果的詳細程度调整
         if parsed_diagnosis.get("root_cause") and len(parsed_diagnosis["root_cause"]) > 20:
             base_confidence += 0.05
         if parsed_diagnosis.get("suggested_solutions") and len(parsed_diagnosis["suggested_solutions"]) >= 2:
@@ -13413,7 +13413,7 @@ response = requests.get(url, proxies=proxies)"""
         return min(1.0, base_confidence)
 
 class ErrorAnalyzer:
-    """错误分析器，提取错误关键信息"""
+    """错误分析器，提取错误關鍵資訊"""
     
     def analyze(self, error_log: str) -> ErrorAnalysis:
         """
@@ -13422,16 +13422,16 @@ class ErrorAnalyzer:
         :param error_log: 错误日志
         :return: 错误分析结果
         """
-        # 1. 提取HTTP状态码
+        # 1. 提取HTTP狀態码
         status_code = self._extract_status_code(error_log)
         
-        # 2. 识别错误类型
+        # 2. 识别错误類型
         error_type = self._identify_error_type(error_log, status_code)
         
-        # 3. 检测反爬迹象
+        # 3. 檢測反爬迹象
         anti_crawling_indicators = self._detect_anti_crawling_indicators(error_log)
         
-        # 4. 识别技术栈
+        # 4. 识别技術棧
         technology = self._identify_technology(error_log)
         
         # 5. 提取URL
@@ -13447,8 +13447,8 @@ class ErrorAnalyzer:
         )
     
     def _extract_status_code(self, error_log: str) -> Optional[int]:
-        """提取HTTP状态码"""
-        # 匹配常见的HTTP状态码
+        """提取HTTP狀態码"""
+        # 匹配常见的HTTP狀態码
         pattern = r'HTTP\s*(\d{3})|status\s*code\s*(\d{3})'
         match = re.search(pattern, error_log, re.IGNORECASE)
         if match:
@@ -13456,15 +13456,15 @@ class ErrorAnalyzer:
         return None
     
     def _identify_error_type(self, error_log: str, status_code: Optional[int]) -> str:
-        """识别错误类型"""
-        # 基于状态码
+        """识别错误類型"""
+        # 基於狀態码
         if status_code:
             if 400 <= status_code < 500:
                 return "client_error"
             if 500 <= status_code < 600:
                 return "server_error"
         
-        # 基于错误消息
+        # 基於错误消息
         if "timeout" in error_log.lower():
             return "timeout"
         if "connection" in error_log.lower() and "refused" in error_log.lower():
@@ -13479,11 +13479,11 @@ class ErrorAnalyzer:
         return "unknown"
     
     def _detect_anti_crawling_indicators(self, error_log: str) -> List[str]:
-        """检测反爬迹象"""
+        """檢測反爬迹象"""
         indicators = []
         
-        # 检查常见的反爬特征
-        if re.search(r'captcha|验证|challenge', error_log, re.IGNORECASE):
+        # 检查常见的反爬特徵
+        if re.search(r'captcha|验證|challenge', error_log, re.IGNORECASE):
             indicators.append("captcha")
         if "403" in error_log and "User-Agent" in error_log:
             indicators.append("user-agent-check")
@@ -13497,8 +13497,8 @@ class ErrorAnalyzer:
         return indicators
     
     def _identify_technology(self, error_log: str) -> Optional[str]:
-        """识别网站技术栈"""
-        # 简单实现：基于错误消息中的关键词
+        """识别網站技術棧"""
+        # 简单實現：基於错误消息中的關鍵词
         tech_indicators = {
             "cloudflare": ["cloudflare", "cf-ray", "challenge"],
             "akamai": ["akamai", "akam"], 
@@ -13518,7 +13518,7 @@ class ErrorAnalyzer:
         match = re.search(url_pattern, error_log)
         return match.group(0) if match else None
 
-# 辅助类定义
+# 輔助类定義
 class ErrorAnalysis:
     """错误分析结果"""
     def __init__(
@@ -13556,12 +13556,12 @@ class DiagnosisResult:
         self.processing_time = processing_time
 ```
 
-#### 6.4.4 学习推荐服务
+#### 6.4.4 学习推薦服務
 
-**技术实现：**
+**技術實現：**
 ```python
 class LearningRecommendationService:
-    """学习推荐服务，提供个性化学习路径"""
+    """学习推薦服務，提供個性化学习路径"""
     
     def __init__(
         self,
@@ -13582,28 +13582,28 @@ class LearningRecommendationService:
         context: dict = None
     ) -> LearningRecommendation:
         """
-        为用户生成学习推荐
+        為用戶生成学习推薦
         
-        :param user_id: 用户ID
-        :param context: 上下文信息（可选）
-        :return: 学习推荐
+        :param user_id: 用戶ID
+        :param context: 上下文資訊（可选）
+        :return: 学习推薦
         """
         start_time = time.time()
         
         try:
-            # 1. 获取用户画像
+            # 1. 獲取用戶画像
             user_profile = self.user_profile_service.get_profile(user_id)
             
-            # 2. 评估用户技能
+            # 2. 評估用戶技能
             skill_assessment = self.skill_assessment.evaluate(user_id, context)
             
             # 3. 识别技能差距
             skill_gaps = self._identify_skill_gaps(skill_assessment)
             
-            # 4. 获取相关学习内容
+            # 4. 獲取相關学习內容
             relevant_content = self._get_relevant_content(skill_gaps, user_profile)
             
-            # 5. 生成个性化学习路径
+            # 5. 生成個性化学习路径
             learning_path = self._generate_learning_path(
                 user_profile,
                 skill_assessment,
@@ -13611,7 +13611,7 @@ class LearningRecommendationService:
                 relevant_content
             )
             
-            # 6. 构建结果
+            # 6. 構建结果
             return LearningRecommendation(
                 user_id=user_id,
                 profile_snapshot=user_profile,
@@ -13634,9 +13634,9 @@ class LearningRecommendationService:
         """识别技能差距"""
         gaps = []
         
-        # 检查关键技能领域
+        # 检查關鍵技能领域
         for domain, assessment in skill_assessment.domain_assessments.items():
-            # 定义关键技能
+            # 定義關鍵技能
             key_skills = self.config.get(f"key_skills.{domain}", [])
             
             for skill in key_skills:
@@ -13663,10 +13663,10 @@ class LearningRecommendationService:
         skill_gaps: List[SkillGap],
         user_profile: UserProfile
     ) -> List[LearningContent]:
-        """获取相关学习内容"""
+        """獲取相關学习內容"""
         all_content = []
         
-        # 为每个技能差距获取内容
+        # 為每個技能差距獲取內容
         for gap in skill_gaps:
             domain_content = self.content_repository.get_content(
                 domain=gap.domain,
@@ -13676,11 +13676,11 @@ class LearningRecommendationService:
                 language=user_profile.preferred_language
             )
             
-            # 按相关性排序
+            # 按相關性排序
             sorted_content = self._rank_content(domain_content, gap, user_profile)
             all_content.extend(sorted_content)
         
-        # 去重并限制数量
+        # 去重並限制數量
         unique_content = self._deduplicate_content(all_content)
         return unique_content[:self.config.get("max_content_per_recommendation", 10)]
     
@@ -13690,15 +13690,15 @@ class LearningRecommendationService:
         skill_gap: SkillGap,
         user_profile: UserProfile
     ) -> List[LearningContent]:
-        """对学习内容进行排序"""
+        """對学习內容进行排序"""
         ranked = []
         
         for content in content_list:
-            # 计算相关性分数
+            # 计算相關性分數
             relevance = self._calculate_relevance(content, skill_gap, user_profile)
             ranked.append((content, relevance))
         
-        # 按相关性排序
+        # 按相關性排序
         ranked.sort(key=lambda x: x[1], reverse=True)
         
         return [item[0] for item in ranked]
@@ -13709,7 +13709,7 @@ class LearningRecommendationService:
         skill_gap: SkillGap,
         user_profile: UserProfile
     ) -> float:
-        """计算内容相关性"""
+        """计算內容相關性"""
         score = 0.0
         
         # 技能匹配度
@@ -13731,7 +13731,7 @@ class LearningRecommendationService:
         return min(1.0, score)
     
     def _deduplicate_content(self, content_list: List[LearningContent]) -> List[LearningContent]:
-        """去重学习内容"""
+        """去重学习內容"""
         seen = set()
         unique_content = []
         
@@ -13750,21 +13750,21 @@ class LearningRecommendationService:
         relevant_content: List[LearningContent]
     ) -> LearningPath:
         """生成学习路径"""
-        # 按领域分组内容
+        # 按领域分組內容
         content_by_domain = defaultdict(list)
         for content in relevant_content:
             content_by_domain[content.domain].append(content)
         
-        # 为每个领域生成路径
+        # 為每個领域生成路径
         domain_paths = []
         for domain, contents in content_by_domain.items():
             domain_path = self._generate_domain_path(domain, contents, skill_gaps)
             domain_paths.append(domain_path)
         
-        # 整合为完整学习路径
+        # 整合為完整学习路径
         return LearningPath(
-            title="个性化爬虫技能提升路径",
-            description="根据您的技能评估生成的个性化学习路径",
+            title="個性化爬蟲技能提升路径",
+            description="根據您的技能評估生成的個性化学习路径",
             domains=domain_paths,
             estimated_duration=self._calculate_estimated_duration(relevant_content),
             difficulty_level=self._determine_difficulty_level(skill_assessment)
@@ -13777,12 +13777,12 @@ class LearningRecommendationService:
         skill_gaps: List[SkillGap]
     ) -> DomainPath:
         """生成特定领域的学习路径"""
-        # 按技能分组
+        # 按技能分組
         contents_by_skill = defaultdict(list)
         for content in contents:
             contents_by_skill[content.skill].append(content)
         
-        # 为每个技能生成路径
+        # 為每個技能生成路径
         skill_paths = []
         for skill, skill_contents in contents_by_skill.items():
             # 按难度排序
@@ -13803,12 +13803,12 @@ class LearningRecommendationService:
         )
     
     def _calculate_estimated_duration(self, contents: List[LearningContent]) -> timedelta:
-        """计算预计学习时间"""
+        """计算預计学习時間"""
         total_minutes = sum(content.estimated_duration for content in contents)
         return timedelta(minutes=total_minutes)
     
     def _determine_difficulty_level(self, skill_assessment: SkillAssessmentResult) -> str:
-        """确定整体难度级别"""
+        """确定整體难度级别"""
         # 计算平均技能水平
         total_skills = 0
         sum_levels = 0
@@ -13835,30 +13835,30 @@ class LearningRecommendationService:
         skill_assessment: SkillAssessmentResult,
         skill_gaps: List[SkillGap]
     ) -> float:
-        """计算推荐置信度"""
-        # 基于评估的完整性
+        """计算推薦置信度"""
+        # 基於評估的完整性
         confidence = 0.7
         
         # 如果有明确的技能差距
         if skill_gaps:
             confidence += 0.2
         
-        # 如果评估包含详细数据
+        # 如果評估包含詳細資料
         if any(assessment.get("detailed", False) for assessment in skill_assessment.domain_assessments.values()):
             confidence += 0.1
         
         return min(1.0, confidence)
 
 class UserProfileService:
-    """用户画像服务"""
+    """用戶画像服務"""
     
     def __init__(self, db: Database):
         self.db = db
         self.logger = logging.getLogger(__name__)
     
     def get_profile(self, user_id: str) -> UserProfile:
-        """获取用户画像"""
-        # 从数据库获取
+        """獲取用戶画像"""
+        # 從資料庫獲取
         sql = "SELECT * FROM user_profiles WHERE user_id = %(user_id)s"
         row = self.db.fetchone(sql, {"user_id": user_id})
         
@@ -13869,7 +13869,7 @@ class UserProfileService:
         return self._row_to_profile(row)
     
     def _create_default_profile(self, user_id: str) -> UserProfile:
-        """创建默认用户画像"""
+        """创建默认用戶画像"""
         profile = UserProfile(
             user_id=user_id,
             experience_level="beginner",
@@ -13881,13 +13881,13 @@ class UserProfileService:
             last_updated=datetime.utcnow()
         )
         
-        # 保存到数据库
+        # 保存到資料庫
         self._save_profile(profile)
         
         return profile
     
     def _save_profile(self, profile: UserProfile):
-        """保存用户画像"""
+        """保存用戶画像"""
         sql = """
         INSERT INTO user_profiles (
             user_id, experience_level, preferred_language,
@@ -13920,7 +13920,7 @@ class UserProfileService:
         })
     
     def _row_to_profile(self, row: Dict) -> UserProfile:
-        """将数据库行转换为UserProfile对象"""
+        """將資料庫行转换為UserProfile物件"""
         return UserProfile(
             user_id=row["user_id"],
             experience_level=row["experience_level"],
@@ -13933,7 +13933,7 @@ class UserProfileService:
         )
 
 class ContentRepository:
-    """学习内容仓库"""
+    """学习內容仓庫"""
     
     def __init__(self, db: Database):
         self.db = db
@@ -13948,8 +13948,8 @@ class ContentRepository:
         language: str = "en",
         limit: int = 20
     ) -> List[LearningContent]:
-        """获取学习内容"""
-        # 构建查询
+        """獲取学习內容"""
+        # 構建查詢
         conditions = []
         params = {
             "min_difficulty": min_difficulty,
@@ -13980,7 +13980,7 @@ class ContentRepository:
         return [self._row_to_content(row) for row in rows]
     
     def _row_to_content(self, row: Dict) -> LearningContent:
-        """将数据库行转换为LearningContent对象"""
+        """將資料庫行转换為LearningContent物件"""
         return LearningContent(
             id=row["id"],
             title=row["title"],
@@ -13999,7 +13999,7 @@ class ContentRepository:
         )
 
 class SkillAssessment:
-    """技能评估器"""
+    """技能評估器"""
     
     def __init__(self, db: Database, config: Config):
         self.db = db
@@ -14012,34 +14012,34 @@ class SkillAssessment:
         context: dict = None
     ) -> SkillAssessmentResult:
         """
-        评估用户技能水平
+        評估用戶技能水平
         
-        :param user_id: 用户ID
-        :param context: 上下文信息
-        :return: 技能评估结果
+        :param user_id: 用戶ID
+        :param context: 上下文資訊
+        :return: 技能評估结果
         """
-        # 1. 获取用户历史数据
+        # 1. 獲取用戶歷史資料
         user_history = self._get_user_history(user_id)
         
-        # 2. 分析用户行为
+        # 2. 分析用戶行為
         behavioral_analysis = self._analyze_behavior(user_history, context)
         
-        # 3. 评估各领域技能
+        # 3. 評估各领域技能
         domain_assessments = self._assess_domains(user_id, user_history, behavioral_analysis)
         
-        # 4. 生成综合评估
+        # 4. 生成综合評估
         return SkillAssessmentResult(
             user_id=user_id,
             domain_assessments=domain_assessments,
             behavioral_analysis=behavioral_analysis,
             assessment_date=datetime.utcnow(),
-            detailed=True  # 是否包含详细评估
+            detailed=True  # 是否包含詳細評估
         )
     
     def _get_user_history(self, user_id: str) -> UserHistory:
-        """获取用户历史数据"""
-        # 从数据库获取
-        # 这里简化实现
+        """獲取用戶歷史資料"""
+        # 從資料庫獲取
+        # 這里简化實現
         return UserHistory(
             user_id=user_id,
             completed_tasks=[],
@@ -14053,7 +14053,7 @@ class SkillAssessment:
         user_history: UserHistory,
         context: dict
     ) -> Dict:
-        """分析用户行为"""
+        """分析用戶行為"""
         analysis = {
             "activity_level": "medium",
             "learning_style": "visual",
@@ -14079,7 +14079,7 @@ class SkillAssessment:
         return analysis
     
     def _categorize_error(self, error_log: str) -> str:
-        """分类错误类型"""
+        """分類错误類型"""
         if "403" in error_log or "forbidden" in error_log.lower():
             return "access_denied"
         if "429" in error_log or "too many requests" in error_log.lower():
@@ -14096,15 +14096,15 @@ class SkillAssessment:
         user_history: UserHistory,
         behavioral_analysis: Dict
     ) -> Dict[str, Dict]:
-        """评估各领域技能"""
+        """評估各领域技能"""
         domains = self.config.get("assessment_domains", ["web_scraping", "data_processing", "api_integration"])
         assessments = {}
         
         for domain in domains:
-            # 获取领域配置
+            # 獲取领域配置
             domain_config = self.config.get(f"domain.{domain}", {})
             
-            # 评估技能水平
+            # 評估技能水平
             skill_level = self._assess_skill_level(
                 domain,
                 user_history,
@@ -14136,16 +14136,16 @@ class SkillAssessment:
         behavioral_analysis: Dict,
         domain_config: Dict
     ) -> float:
-        """评估领域整体技能水平"""
-        # 基于完成的任务
+        """評估领域整體技能水平"""
+        # 基於完成的任務
         completed_tasks = [t for t in user_history.completed_tasks if t.domain == domain]
-        task_score = min(1.0, len(completed_tasks) / 5)  # 假设5个任务达到最高水平
+        task_score = min(1.0, len(completed_tasks) / 5)  # 假设5個任務达到最高水平
         
-        # 基于代码质量
+        # 基於代码品質
         code_submissions = [s for s in user_history.code_submissions if s.domain == domain]
         code_score = self._calculate_code_score(code_submissions)
         
-        # 基于错误率
+        # 基於错误率
         error_rate = self._calculate_error_rate(user_history.error_logs, domain)
         error_score = max(0.0, 1.0 - error_rate * 2)
         
@@ -14162,25 +14162,25 @@ class SkillAssessment:
             error_score * weights["errors"]
         )
         
-        # 转换为1-5的等级
+        # 转换為1-5的等级
         return min(5.0, max(1.0, total_score * 4 + 1))
     
     def _calculate_code_score(self, submissions: List[CodeSubmission]) -> float:
-        """计算代码质量分数"""
+        """计算代码品質分數"""
         if not submissions:
             return 0.5
         
-        # 简单实现：基于代码长度和错误
+        # 简单實現：基於代码長度和错误
         total_score = 0
         for sub in submissions:
-            # 基本分数
+            # 基本分數
             score = 0.5
             
-            # 代码长度加分
+            # 代码長度加分
             if len(sub.code) > 50:
                 score += 0.2
             
-            # 错误数量扣分
+            # 错误數量扣分
             error_penalty = min(0.3, sub.error_count * 0.1)
             score -= error_penalty
             
@@ -14193,12 +14193,12 @@ class SkillAssessment:
         if not error_logs:
             return 0.0
         
-        # 计算与领域相关的错误
+        # 计算與领域相關的错误
         domain_errors = [log for log in error_logs if self._is_domain_error(log, domain)]
         return len(domain_errors) / len(error_logs)
     
     def _is_domain_error(self, error_log: str, domain: str) -> bool:
-        """检查错误是否与领域相关"""
+        """检查错误是否與领域相關"""
         if domain == "web_scraping":
             return any(keyword in error_log.lower() 
                       for keyword in ["scrape", "crawl", "parser", "selector", "403", "429"])
@@ -14217,15 +14217,15 @@ class SkillAssessment:
         overall_level: float,
         domain_config: Dict
     ) -> Dict[str, float]:
-        """评估具体技能点"""
+        """評估具體技能点"""
         skills = domain_config.get("skills", {})
         assessed_skills = {}
         
         for skill, config in skills.items():
-            # 基础分数基于整体水平
+            # 基礎分數基於整體水平
             base_score = overall_level * config.get("weight", 1.0)
             
-            # 根据特定指标调整
+            # 根據特定指標调整
             if domain == "web_scraping":
                 if skill == "static_html":
                     base_score = self._assess_static_html_skill(user_history)
@@ -14239,8 +14239,8 @@ class SkillAssessment:
         return assessed_skills
     
     def _assess_static_html_skill(self, user_history: UserHistory) -> float:
-        """评估静态HTML爬取技能"""
-        # 检查是否使用过requests和BeautifulSoup
+        """評估静态HTML爬取技能"""
+        # 检查是否使用過requests和BeautifulSoup
         has_requests = any("import requests" in sub.code for sub in user_history.code_submissions)
         has_bs4 = any("from bs4 import BeautifulSoup" in sub.code for sub in user_history.code_submissions)
         
@@ -14250,17 +14250,17 @@ class SkillAssessment:
         if has_bs4:
             score += 1.5
         
-        # 检查是否处理过常见问题
+        # 检查是否處理過常见问题
         if any("403" in log for log in user_history.error_logs):
-            score += 1.0  # 处理了访问被拒绝问题
+            score += 1.0  # 處理了訪問被拒绝问题
         if any("pagination" in sub.code for sub in user_history.code_submissions):
-            score += 1.0  # 处理过分页
+            score += 1.0  # 處理過分頁
         
         return score
     
     def _assess_dynamic_rendering_skill(self, user_history: UserHistory) -> float:
-        """评估动态渲染页面爬取技能"""
-        # 检查是否使用过selenium或类似工具
+        """評估動态渲染頁面爬取技能"""
+        # 检查是否使用過selenium或类似工具
         has_selenium = any("from selenium import webdriver" in sub.code for sub in user_history.code_submissions)
         has_playwright = any("from playwright import sync_playwright" in sub.code for sub in user_history.code_submissions)
         
@@ -14268,11 +14268,11 @@ class SkillAssessment:
         if has_selenium or has_playwright:
             score += 2.0
         
-        # 检查是否处理过等待问题
+        # 检查是否處理過等待问题
         if any("WebDriverWait" in sub.code or "time.sleep" in sub.code for sub in user_history.code_submissions):
             score += 1.0
         
-        # 检查是否处理过反爬问题
+        # 检查是否處理過反爬问题
         if any("proxy" in sub.code for sub in user_history.code_submissions):
             score += 1.0
         
@@ -14280,19 +14280,19 @@ class SkillAssessment:
     
     def _identify_strengths(self, domain: str, skills: Dict[str, float]) -> List[str]:
         """识别优势技能"""
-        # 找出高于平均的技能
+        # 找出高於平均的技能
         avg = sum(skills.values()) / len(skills) if skills else 3.0
         return [skill for skill, level in skills.items() if level >= avg + 0.5]
     
     def _identify_weaknesses(self, domain: str, skills: Dict[str, float]) -> List[str]:
         """识别薄弱技能"""
-        # 找出低于平均的技能
+        # 找出低於平均的技能
         avg = sum(skills.values()) / len(skills) if skills else 3.0
         return [skill for skill, level in skills.items() if level <= avg - 0.5]
 
-# 辅助类定义
+# 輔助类定義
 class UserProfile:
-    """用户画像"""
+    """用戶画像"""
     def __init__(
         self,
         user_id: str,
@@ -14314,7 +14314,7 @@ class UserProfile:
         self.last_updated = last_updated
 
 class UserHistory:
-    """用户历史数据"""
+    """用戶歷史資料"""
     def __init__(
         self,
         user_id: str,
@@ -14330,7 +14330,7 @@ class UserHistory:
         self.learning_progress = learning_progress
 
 class CodeSubmission:
-    """代码提交记录"""
+    """代码提交記錄"""
     def __init__(
         self,
         id: str,
@@ -14364,7 +14364,7 @@ class SkillGap:
         self.gap_size = gap_size
 
 class LearningContent:
-    """学习内容"""
+    """学习內容"""
     def __init__(
         self,
         id: str,
@@ -14440,7 +14440,7 @@ class LearningPath:
         self.difficulty_level = difficulty_level
 
 class LearningRecommendation:
-    """学习推荐"""
+    """学习推薦"""
     def __init__(
         self,
         user_id: str,
@@ -14462,7 +14462,7 @@ class LearningRecommendation:
         self.processing_time = processing_time
 
 class SkillAssessmentResult:
-    """技能评估结果"""
+    """技能評估结果"""
     def __init__(
         self,
         user_id: str,
@@ -14478,12 +14478,12 @@ class SkillAssessmentResult:
         self.detailed = detailed
 ```
 
-### 6.5 数据模型详细定义
+### 6.5 資料模型詳細定義
 
-#### 6.5.1 用户画像表
+#### 6.5.1 用戶画像表
 
 ```sql
--- 用户画像表
+-- 用戶画像表
 CREATE TABLE user_profiles (
     user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     experience_level VARCHAR(20) NOT NULL DEFAULT 'beginner' CHECK (experience_level IN ('beginner', 'intermediate', 'advanced')),
@@ -14500,10 +14500,10 @@ CREATE TABLE user_profiles (
 );
 ```
 
-#### 6.5.2 学习内容表
+#### 6.5.2 学习內容表
 
 ```sql
--- 学习内容表
+-- 学习內容表
 CREATE TABLE learning_content (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
@@ -14529,10 +14529,10 @@ CREATE TABLE learning_content (
 );
 ```
 
-#### 6.5.3 技能评估表
+#### 6.5.3 技能評估表
 
 ```sql
--- 技能评估表
+-- 技能評估表
 CREATE TABLE skill_assessments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -14547,10 +14547,10 @@ CREATE TABLE skill_assessments (
 );
 ```
 
-#### 6.5.4 用户学习进度表
+#### 6.5.4 用戶学习进度表
 
 ```sql
--- 用户学习进度表
+-- 用戶学习进度表
 CREATE TABLE user_learning_progress (
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     content_id UUID NOT NULL REFERENCES learning_content(id) ON DELETE CASCADE,
@@ -14568,10 +14568,10 @@ CREATE TABLE user_learning_progress (
 );
 ```
 
-#### 6.5.5 用户代码提交记录表
+#### 6.5.5 用戶代码提交記錄表
 
 ```sql
--- 用户代码提交记录表
+-- 用戶代码提交記錄表
 CREATE TABLE user_code_submissions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -14587,11 +14587,11 @@ CREATE TABLE user_code_submissions (
 );
 ```
 
-### 6.6 API详细规范
+### 6.6 API詳細規範
 
 #### 6.6.1 代码生成API
 
-**生成爬虫代码 (POST /api/v1/code:generate)**
+**生成爬蟲代码 (POST /api/v1/code:generate)**
 
 *请求示例:*
 ```http
@@ -14601,7 +14601,7 @@ Authorization: Bearer <access_token>
 Content-Type: application/json
 
 {
-  "request": "请生成一个爬取https://example.com/products的Python爬虫，需要处理分页和User-Agent轮换",
+  "request": "请生成一個爬取https://example.com/products的Python爬蟲，需要處理分頁和User-Agent轮换",
   "context": {
     "language": "python",
     "preferred_style": "functional",
@@ -14610,13 +14610,13 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "code": "import requests\nfrom fake_useragent import UserAgent\n\nua = UserAgent()\n\nfor page in range(1, 11):\n    url = f'https://example.com/products?page={page}'\n    headers = {'User-Agent': ua.random}\n    response = requests.get(url, headers=headers)\n    # 处理响应...\n    print(f'Page {page} status: {response.status_code}')",
+  "code": "import requests\nfrom fake_useragent import UserAgent\n\nua = UserAgent()\n\nfor page in range(1, 11):\n    url = f'https://example.com/products?page={page}'\n    headers = {'User-Agent': ua.random}\n    response = requests.get(url, headers=headers)\n    # 處理響應...\n    print(f'Page {page} status: {response.status_code}')",
   "scene_type": "pagination",
   "templates_used": ["pagination-python", "user-agent-rotation"],
   "validation": {
@@ -14648,7 +14648,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -14664,24 +14664,24 @@ Content-Type: application/json
     "url": "https://example.com/api/data?page=5"
   },
   "diagnosis": {
-    "root_cause": "网站通过User-Agent检测识别出爬虫请求",
-    "impact": "请求被服务器拒绝，无法获取数据",
+    "root_cause": "網站通過User-Agent檢測识别出爬蟲请求",
+    "impact": "请求被服務器拒绝，无法獲取資料",
     "suggested_solutions": [
-      "使用更真实的User-Agent轮换策略",
-      "添加必要的请求头模拟浏览器行为",
-      "考虑使用代理IP轮换"
+      "使用更真實的User-Agent轮换策略",
+      "添加必要的请求头模拟浏览器行為",
+      "考慮使用代理IP轮换"
     ]
   },
   "solutions": [
     {
       "id": "sol-1",
-      "description": "使用更真实的User-Agent轮换策略",
+      "description": "使用更真實的User-Agent轮换策略",
       "confidence": 0.85,
       "implementation": "from fake_useragent import UserAgent\nua = UserAgent()\nheaders = {'User-Agent': ua.random}"
     },
     {
       "id": "sol-2",
-      "description": "添加必要的请求头模拟浏览器行为",
+      "description": "添加必要的请求头模拟浏览器行為",
       "confidence": 0.78,
       "implementation": "headers = {\n    'User-Agent': 'Mozilla/5.0...',\n    'Accept-Language': 'en-US,en;q=0.9',\n    'Sec-Ch-Ua': '\"Chromium\";v=\"112\", \"Google Chrome\";v=\"112\", \"Not_A Brand\";v=\"24\"'\n}"
     }
@@ -14691,9 +14691,9 @@ Content-Type: application/json
 }
 ```
 
-#### 6.6.3 学习推荐API
+#### 6.6.3 学习推薦API
 
-**获取学习推荐 (GET /api/v1/learning/recommendations)**
+**獲取学习推薦 (GET /api/v1/learning/recommendations)**
 
 *请求示例:*
 ```http
@@ -14702,7 +14702,7 @@ Host: aids.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -14775,8 +14775,8 @@ Content-Type: application/json
     }
   ],
   "recommended_content": {
-    "title": "个性化爬虫技能提升路径",
-    "description": "根据您的技能评估生成的个性化学习路径",
+    "title": "個性化爬蟲技能提升路径",
+    "description": "根據您的技能評估生成的個性化学习路径",
     "domains": [
       {
         "domain": "web_scraping",
@@ -14787,8 +14787,8 @@ Content-Type: application/json
             "contents": [
               {
                 "id": "content-1",
-                "title": "使用Selenium处理JavaScript渲染页面",
-                "description": "学习如何使用Selenium处理动态渲染的网页内容",
+                "title": "使用Selenium處理JavaScript渲染頁面",
+                "description": "学习如何使用Selenium處理動态渲染的網頁內容",
                 "domain": "web_scraping",
                 "skill": "dynamic_rendering",
                 "format": "video",
@@ -14803,8 +14803,8 @@ Content-Type: application/json
               },
               {
                 "id": "content-2",
-                "title": "Playwright高级应用：处理单页应用",
-                "description": "深入学习Playwright处理复杂的单页应用",
+                "title": "Playwright高级应用：處理单頁应用",
+                "description": "深入学习Playwright處理複杂的单頁应用",
                 "domain": "web_scraping",
                 "skill": "dynamic_rendering",
                 "format": "tutorial",
@@ -14826,8 +14826,8 @@ Content-Type: application/json
             "contents": [
               {
                 "id": "content-3",
-                "title": "绕过常见反爬机制：理论与实践",
-                "description": "全面了解并学习绕过各种反爬机制的方法",
+                "title": "绕過常见反爬機制：理论與實践",
+                "description": "全面了解並学习绕過各種反爬機制的方法",
                 "domain": "web_scraping",
                 "skill": "anti_crawling",
                 "format": "article",
@@ -14856,11 +14856,11 @@ Content-Type: application/json
 }
 ```
 
-### 6.7 性能优化策略
+### 6.7 效能優化策略
 
-#### 6.7.1 LLM调用优化
+#### 6.7.1 LLM調用優化
 
-1. **缓存机制**
+1. **缓存機制**
    ```python
    class LLMCachingClient:
        """带缓存的LLM客户端"""
@@ -14872,7 +14872,7 @@ Content-Type: application/json
        
        def generate(self, prompt: str) -> str:
            """生成文本，使用缓存"""
-           # 生成缓存键（提示词的哈希）
+           # 生成缓存鍵（提示词的哈希）
            cache_key = self._generate_cache_key(prompt)
            
            # 检查缓存
@@ -14880,12 +14880,12 @@ Content-Type: application/json
                self.logger.info("LLM response from cache")
                return self.cache[cache_key]
            
-           # 调用LLM
+           # 調用LLM
            start_time = time.time()
            response = self.llm_client.generate(prompt)
            duration = time.time() - start_time
            
-           # 记录指标
+           # 記錄指標
            self.logger.info("LLM call completed in %.2f seconds", duration)
            
            # 缓存结果
@@ -14894,17 +14894,17 @@ Content-Type: application/json
            return response
        
        def _generate_cache_key(self, prompt: str) -> str:
-           """生成缓存键"""
+           """生成缓存鍵"""
            return hashlib.md5(prompt.encode('utf-8')).hexdigest()
    ```
 
-2. **提示词优化**
+2. **提示词優化**
    ```python
    class PromptOptimizer:
-       """提示词优化器，减少token使用"""
+       """提示词優化器，减少token使用"""
        
        def optimize(self, prompt: str) -> str:
-           """优化提示词"""
+           """優化提示词"""
            # 1. 移除冗余空格和换行
            optimized = re.sub(r'\s+', ' ', prompt).strip()
            
@@ -14920,18 +14920,18 @@ Content-Type: application/json
            for old, new in replacements.items():
                optimized = re.sub(r'\b' + old + r'\b', new, optimized, flags=re.IGNORECASE)
            
-           # 3. 截断过长的部分
+           # 3. 截断過長的部分
            if len(optimized) > 2000:
-               # 保留开头和结尾
+               # 保留開头和结尾
                optimized = optimized[:1000] + "...[TRUNCATED]..." + optimized[-1000:]
            
            return optimized
    ```
 
-3. **批处理请求**
+3. **批處理请求**
    ```python
    class BatchLLMClient:
-       """批处理LLM客户端"""
+       """批處理LLM客户端"""
        
        def __init__(self, llm_client, batch_size=5, max_wait=2.0):
            self.llm_client = llm_client
@@ -14943,7 +14943,7 @@ Content-Type: application/json
            self.thread.start()
        
        def _process_queue(self):
-           """处理请求队列"""
+           """處理请求隊列"""
            while True:
                with self.lock:
                    if len(self.request_queue) >= self.batch_size or (self.request_queue and time.time() - self.request_queue[0][2] > self.max_wait):
@@ -14958,15 +14958,15 @@ Content-Type: application/json
                time.sleep(0.1)
        
        def _process_batch(self, batch):
-           """处理一批请求"""
+           """處理一批请求"""
            prompts = [item[0] for item in batch]
            callbacks = [item[1] for item in batch]
            
            try:
-               # 调用LLM处理批量请求
+               # 調用LLM處理批量请求
                responses = self.llm_client.generate_batch(prompts)
                
-               # 调用回调
+               # 調用回调
                for callback, response in zip(callbacks, responses):
                    callback(response)
            except Exception as e:
@@ -14979,22 +14979,22 @@ Content-Type: application/json
                self.request_queue.append((prompt, callback, time.time()))
    ```
 
-#### 6.7.2 上下文管理优化
+#### 6.7.2 上下文管理優化
 
 1. **上下文压缩**
    ```python
    class ContextCompressor:
-       """上下文压缩器，减少上下文token数量"""
+       """上下文压缩器，减少上下文token數量"""
        
        def compress(self, context: Dict, max_tokens: int = 2000) -> Dict:
            """
            压缩上下文到指定token限制
            
            :param context: 原始上下文
-           :param max_tokens: 最大token数
-           :return: 压缩后的上下文
+           :param max_tokens: 最大token數
+           :return: 压缩後的上下文
            """
-           # 1. 计算当前token数
+           # 1. 计算當前token數
            current_tokens = self._estimate_tokens(context)
            
            # 2. 如果不需要压缩，直接返回
@@ -15005,17 +15005,17 @@ Content-Type: application/json
            important_keys = ["error_log", "user_request", "recent_messages"]
            less_important_keys = [k for k in context.keys() if k not in important_keys]
            
-           # 4. 优先保留重要信息
+           # 4. 优先保留重要資訊
            compressed = {k: context[k] for k in important_keys if k in context}
            
-           # 5. 逐步添加次要信息直到达到token限制
+           # 5. 逐步添加次要資訊直到达到token限制
            remaining_tokens = max_tokens - self._estimate_tokens(compressed)
            
            for key in less_important_keys:
                if remaining_tokens <= 0:
                    break
                
-               # 压缩单个字段
+               # 压缩单個字段
                compressed_value = self._compress_field(context[key], remaining_tokens)
                compressed[key] = compressed_value
                
@@ -15025,17 +15025,17 @@ Content-Type: application/json
            return compressed
        
        def _compress_field(self, value: Any, max_tokens: int) -> Any:
-           """压缩单个字段"""
+           """压缩单個字段"""
            if isinstance(value, str):
-               # 简单实现：截断字符串
+               # 简单實現：截断字符串
                tokens = self._estimate_tokens(value)
                if tokens > max_tokens:
-                   # 保留开头和结尾
+                   # 保留開头和结尾
                    return value[:max_tokens//2] + "...[TRUNCATED]..." + value[-max_tokens//2:]
                return value
            
            elif isinstance(value, list):
-               # 保留前N个元素
+               # 保留前N個元素
                if len(value) > 5:
                    return value[:5]
                return value
@@ -15048,9 +15048,9 @@ Content-Type: application/json
            return value
        
        def _estimate_tokens(self, obj: Any) -> int:
-           """估计对象的token数量"""
+           """估计物件的token數量"""
            if isinstance(obj, str):
-               # 简单估计：每个字符约0.25个token
+               # 简单估计：每個字符约0.25個token
                return max(1, len(obj) // 4)
            elif isinstance(obj, list):
                return sum(self._estimate_tokens(item) for item in obj)
@@ -15074,9 +15074,9 @@ Content-Type: application/json
            :param context: 原始上下文
            :return: 上下文摘要
            """
-           # 构建摘要提示词
+           # 構建摘要提示词
            prompt = f"""
-           请将以下对话上下文总结为简洁的摘要，保留关键信息，不超过100个词：
+           请將以下對话上下文总结為简洁的摘要，保留關鍵資訊，不超過100個词：
 
            {json.dumps(context, indent=2)}
 
@@ -15090,12 +15090,12 @@ Content-Type: application/json
            return summary.strip()
    ```
 
-#### 6.7.3 资源管理策略
+#### 6.7.3 資源管理策略
 
-1. **资源配额管理**
+1. **資源配额管理**
    ```python
    class ResourceQuotaManager:
-       """资源配额管理器"""
+       """資源配额管理器"""
        
        def __init__(self, db: Database, config: Config):
            self.db = db
@@ -15110,36 +15110,36 @@ Content-Type: application/json
            amount: int
        ) -> Tuple[bool, str]:
            """
-           检查资源配额
+           检查資源配额
            
-           :param user_id: 用户ID
-           :param resource_type: 资源类型 (llm_calls, processing_time等)
-           :param amount: 请求的资源量
+           :param user_id: 用戶ID
+           :param resource_type: 資源類型 (llm_calls, processing_time等)
+           :param amount: 请求的資源量
            :return: (是否允许, 消息)
            """
-           # 1. 获取用户配额
+           # 1. 獲取用戶配额
            quota = self._get_user_quota(user_id)
            
-           # 2. 获取已用资源
+           # 2. 獲取已用資源
            used = self._get_used_resources(user_id, resource_type)
            
            # 3. 检查是否超出配额
            if used + amount > quota[resource_type]:
                return False, f"超出{resource_type}配额 ({used}/{quota[resource_type]})"
            
-           # 4. 预扣资源
+           # 4. 預扣資源
            self._reserve_resources(user_id, resource_type, amount)
            
-           return True, f"已预留{amount}单位{resource_type}"
+           return True, f"已預留{amount}单位{resource_type}"
        
        def _get_user_quota(self, user_id: str) -> Dict:
-           """获取用户配额"""
-           # 从缓存获取
+           """獲取用戶配额"""
+           # 從缓存獲取
            cache_key = f"{user_id}:quota"
            if cache_key in self.quota_cache:
                return self.quota_cache[cache_key]
            
-           # 从数据库获取
+           # 從資料庫獲取
            sql = """
            SELECT llm_calls, processing_time, storage 
            FROM user_quotas 
@@ -15166,9 +15166,9 @@ Content-Type: application/json
            return quota
        
        def _get_used_resources(self, user_id: str, resource_type: str) -> int:
-           """获取已用资源"""
-           # 实现资源使用统计
-           # 这里简化为返回0
+           """獲取已用資源"""
+           # 實現資源使用统计
+           # 這里简化為返回0
            return 0
        
        def _reserve_resources(
@@ -15177,19 +15177,19 @@ Content-Type: application/json
            resource_type: str,
            amount: int
        ):
-           """预扣资源"""
-           # 实现资源预留
+           """預扣資源"""
+           # 實現資源預留
            pass
    ```
 
-### 6.8 安全考虑
+### 6.8 安全考慮
 
-#### 6.8.1 LLM输出安全
+#### 6.8.1 LLM輸出安全
 
-1. **输出过滤器**
+1. **輸出過滤器**
    ```python
    class SafetyFilter:
-       """安全过滤器，防止LLM输出有害内容"""
+       """安全過滤器，防止LLM輸出有害內容"""
        
        def __init__(self, config: Config):
            self.config = config
@@ -15197,8 +15197,8 @@ Content-Type: application/json
            self.blocked_keywords = self._load_blocked_keywords()
        
        def _load_blocked_keywords(self) -> List[str]:
-           """加载屏蔽关键词"""
-           # 从配置或数据库加载
+           """加载屏蔽關鍵词"""
+           # 從配置或資料庫加载
            return [
                "rm -rf /",
                "sudo",
@@ -15218,45 +15218,45 @@ Content-Type: application/json
        
        def filter(self, output: str) -> Tuple[bool, str, List[str]]:
            """
-           过滤LLM输出
+           過滤LLM輸出
            
-           :param output: LLM生成的输出
-           :return: (是否安全, 安全输出, 检测到的风险)
+           :param output: LLM生成的輸出
+           :return: (是否安全, 安全輸出, 檢測到的風險)
            """
            risks = []
            
-           # 1. 检查关键词
+           # 1. 检查關鍵词
            for keyword in self.blocked_keywords:
                if keyword.lower() in output.lower():
-                   risks.append(f"潜在危险关键词: {keyword}")
+                   risks.append(f"潜在危險關鍵词: {keyword}")
            
            # 2. 检查代码执行命令
            if re.search(r'os\.(system|popen|exec)', output):
-               risks.append("检测到潜在危险的系统命令调用")
+               risks.append("檢測到潜在危險的系統命令調用")
            
            # 3. 检查文件删除操作
            if re.search(r'(shutil\.rmtree|os\.remove|os\.unlink)', output):
-               risks.append("检测到潜在危险的文件删除操作")
+               risks.append("檢測到潜在危險的文件删除操作")
            
-           # 4. 检查敏感信息
+           # 4. 检查敏感資訊
            if re.search(r'password|secret|token|api_key', output, re.IGNORECASE):
-               risks.append("检测到潜在的敏感信息暴露")
+               risks.append("檢測到潜在的敏感資訊暴露")
            
-           # 5. 如果有风险，返回过滤后的输出
+           # 5. 如果有風險，返回過滤後的輸出
            if risks:
-               # 移除潜在危险内容
+               # 移除潜在危險內容
                safe_output = self._sanitize_output(output)
                return False, safe_output, risks
            
            return True, output, []
        
        def _sanitize_output(self, output: str) -> str:
-           """清理输出中的危险内容"""
-           # 替换危险命令
+           """清理輸出中的危險內容"""
+           # 替换危險命令
            sanitized = re.sub(r'rm\s+-rf\s+/', 'SAFE_rm -rf /', output)
            sanitized = re.sub(r'os\.system\((.*?)\)', 'os.system(SAFE_COMMAND)', sanitized)
            
-           # 移除敏感信息
+           # 移除敏感資訊
            sanitized = re.sub(r'password\s*=\s*["\'].*?["\']', 'password = "***"', sanitized)
            sanitized = re.sub(r'api_key\s*=\s*["\'].*?["\']', 'api_key = "***"', sanitized)
            
@@ -15277,7 +15277,7 @@ Content-Type: application/json
            在沙箱中执行代码
            
            :param code: 要执行的代码
-           :param timeout: 超时时间(秒)
+           :param timeout: 超時時間(秒)
            :return: 执行结果
            """
            # 1. 创建隔离环境
@@ -15289,7 +15289,7 @@ Content-Type: application/json
                with open(code_path, "w") as f:
                    f.write(code)
                
-               # 3. 限制资源
+               # 3. 限制資源
                resource_limits = {
                    "cpu_time": self.config.sandbox_cpu_time,
                    "memory": self.config.sandbox_memory,
@@ -15321,10 +15321,10 @@ Content-Type: application/json
            """创建沙箱环境"""
            sandbox_dir = tempfile.mkdtemp(prefix="sandbox_")
            
-           # 创建必要的目录结构
+           # 创建必要的目录結構
            os.makedirs(os.path.join(sandbox_dir, "output"), exist_ok=True)
            
-           # 复制必要的库（如果需要）
+           # 複制必要的庫（如果需要）
            # ...
            
            return sandbox_dir
@@ -15336,11 +15336,11 @@ Content-Type: application/json
            timeout: int,
            resource_limits: Dict
        ) -> ExecutionResult:
-           """在资源限制下运行命令"""
+           """在資源限制下运行命令"""
            start_time = time.time()
            
            try:
-               # 使用subprocess运行，带超时
+               # 使用subprocess运行，带超時
                process = subprocess.Popen(
                    command,
                    cwd=cwd,
@@ -15387,12 +15387,12 @@ Content-Type: application/json
                self.logger.error("Error cleaning up sandbox: %s", str(e))
    ```
 
-#### 6.8.2 数据隐私保护
+#### 6.8.2 資料隐私保护
 
-1. **数据脱敏中间件**
+1. **資料脱敏中间件**
    ```python
    class DataAnonymizer:
-       """数据脱敏中间件"""
+       """資料脱敏中间件"""
        
        def __init__(self, config: Config):
            self.config = config
@@ -15424,10 +15424,10 @@ Content-Type: application/json
        
        def anonymize(self, data: Any) -> Any:
            """
-           脱敏数据
+           脱敏資料
            
-           :param data: 要脱敏的数据
-           :return: 脱敏后的数据
+           :param data: 要脱敏的資料
+           :return: 脱敏後的資料
            """
            if isinstance(data, str):
                return self._anonymize_string(data)
@@ -15455,9 +15455,9 @@ Content-Type: application/json
            return result
    ```
 
-### 6.9 与其他模块的交互
+### 6.9 與其他模組的交互
 
-#### 6.9.1 与数据处理工作流引擎交互
+#### 6.9.1 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
@@ -15465,16 +15465,16 @@ sequenceDiagram
     participant AIDS as AI-Assisted Development System
     
     DPWE->>AIDS: GET /api/v1/workflows/generate (生成工作流)
-    AIDS-->>DPWE: 工作流定义
+    AIDS-->>DPWE: 工作流定義
     
-    DPWE->>AIDS: POST /api/v1/workflows/assist (工作流辅助)
-    AIDS-->>DPWE: 建议和优化
+    DPWE->>AIDS: POST /api/v1/workflows/assist (工作流輔助)
+    AIDS-->>DPWE: 建議和優化
     
-    DPWE->>AIDS: GET /api/v1/nodes/templates (获取节点模板)
-    AIDS-->>DPWE: 节点模板列表
+    DPWE->>AIDS: GET /api/v1/nodes/templates (獲取節点模板)
+    AIDS-->>DPWE: 節点模板列表
 ```
 
-#### 6.9.2 与网站指纹分析引擎交互
+#### 6.9.2 與網站指紋分析引擎交互
 
 ```mermaid
 sequenceDiagram
@@ -15482,13 +15482,13 @@ sequenceDiagram
     participant AIDS as AI-Assisted Development System
     
     AIDS->>WFE: GET /api/v1/analyze?url={url}
-    WFE-->>AIDS: 详细分析报告
+    WFE-->>AIDS: 詳細分析报告
     
-    AIDS->>WFE: POST /api/v1/rules (新规则建议)
+    AIDS->>WFE: POST /api/v1/rules (新规则建議)
     WFE-->>AIDS: 规则创建确认
 ```
 
-#### 6.9.3 与数据源健康监测系统交互
+#### 6.9.3 與資料源健康监测系統交互
 
 ```mermaid
 sequenceDiagram
@@ -15496,120 +15496,120 @@ sequenceDiagram
     participant AIDS as AI-Assisted Development System
     
     DSHMS->>AIDS: POST /api/v1/alerts (告警通知)
-    AIDS-->>DSHMS: 诊断建议
+    AIDS-->>DSHMS: 诊断建議
     
     AIDS->>DSHMS: GET /api/v1/health/history/{id}?interval=1h
-    DSHMS-->>AIDS: 健康历史数据
+    DSHMS-->>AIDS: 健康歷史資料
 ```
 
-#### 6.9.4 与自动化媒体处理管道交互
+#### 6.9.4 與自動化媒體處理管道交互
 
 ```mermaid
 sequenceDiagram
     participant AMP as Automated Media Processing Pipeline
     participant AIDS as AI-Assisted Development System
     
-    AIDS->>AMP: GET /api/v1/media/models (获取可用模型)
+    AIDS->>AMP: GET /api/v1/media/models (獲取可用模型)
     AMP-->>AIDS: 模型列表
     
-    AIDS->>AMP: POST /api/v1/media/process (请求处理示例)
-    AMP-->>AIDS: 处理结果示例
+    AIDS->>AMP: POST /api/v1/media/process (请求處理示例)
+    AMP-->>AIDS: 處理结果示例
     
-    AIDS->>AMP: GET /api/v1/media/analysis (获取分析能力)
+    AIDS->>AMP: GET /api/v1/media/analysis (獲取分析能力)
     AMP-->>AIDS: 分析能力描述
 ```
 
-## 7. 数据合规与安全中心 (Data Compliance and Security Center)
+## 7. 資料合規與安全中心 (Data Compliance and Security Center)
 
-### 7.1 模块概述
-数据合规与安全中心是镜界平台的数据安全与合规性管理组件，负责确保所有数据采集、处理和存储活动符合法律法规要求。它提供全面的数据安全策略管理、隐私保护机制和合规性审计功能。
+### 7.1 模組概述
+資料合規與安全中心是镜界平台的資料安全與合規性管理組件，負責確保所有資料採集、處理和儲存活動符合法律法规要求。它提供全面的資料安全策略管理、隐私保护機制和合規性審計功能。
 
-### 7.2 详细功能清单
+### 7.2 詳細功能清單
 
 #### 7.2.1 核心功能
-- **合规性检查**
-  - GDPR合规性检查
-  - CCPA合规性检查
-  - 本地化数据法规检查
+- **合規性检查**
+  - GDPR合規性检查
+  - CCPA合規性检查
+  - 本地化資料法规检查
   - 行业特定法规检查（如HIPAA、PCI DSS）
-- **数据安全策略管理**
-  - 敏感数据检测规则
-  - 数据脱敏策略
-  - 数据保留策略
-  - 数据访问控制策略
-- **隐私保护机制**
-  - 个人身份信息(PII)检测
-  - 数据最小化实施
-  - 用户同意管理
-  - 数据主体权利处理
-- **安全审计与监控**
-  - 数据访问审计
-  - 安全事件监控
-  - 合规性报告生成
-  - 风险评估与管理
+- **資料安全策略管理**
+  - 敏感資料檢測规则
+  - 資料脱敏策略
+  - 資料保留策略
+  - 資料訪問控制策略
+- **隐私保护機制**
+  - 個人身份資訊(PII)檢測
+  - 資料最小化實施
+  - 用戶同意管理
+  - 資料主體权利處理
+- **安全審計與監控**
+  - 資料訪問審計
+  - 安全事件監控
+  - 合規性报告生成
+  - 風險評估與管理
 
 #### 7.2.2 高级功能
-- **自动化合规工作流**
-  - 合规性任务自动化
-  - 合规性检查计划
-  - 合规性问题跟踪
-  - 合规性状态看板
-- **数据地图与血缘**
-  - 数据流可视化
-  - 数据血缘追踪
-  - 数据存储位置映射
-  - 数据使用情况分析
-- **跨境数据传输管理**
-  - 数据传输影响评估
-  - 传输加密策略
-  - 数据驻留管理
-  - 传输日志审计
-- **第三方数据处理商管理**
-  - 供应商合规性评估
-  - 数据处理协议管理
-  - 供应商风险监控
-  - 供应商审计跟踪
+- **自動化合規工作流**
+  - 合規性任務自動化
+  - 合規性检查計畫
+  - 合規性问题跟踪
+  - 合規性狀態看板
+- **資料地图與血缘**
+  - 資料流可视化
+  - 資料血缘追蹤
+  - 資料儲存位置映射
+  - 資料使用情況分析
+- **跨境資料傳輸管理**
+  - 資料傳輸影响評估
+  - 傳輸加密策略
+  - 資料驻留管理
+  - 傳輸日志審計
+- **第三方資料處理商管理**
+  - 供应商合規性評估
+  - 資料處理协议管理
+  - 供应商風險監控
+  - 供应商審計跟踪
 
-### 7.3 技术架构
+### 7.3 技術架構
 
-#### 7.3.1 架构图
+#### 7.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                           数据合规与安全中心 (DCSC)                                           │
+│                           資料合規與安全中心 (DCSC)                                           │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  合规控制层           │  策略执行层           │  数据分析层                                │
+│  合規控制层           │  策略执行层           │  資料分析层                                │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 合规规则引擎        │ • 敏感数据检测器      │ • 数据血缘分析器                           │
-│ • 同意管理系统        │ • 数据脱敏处理器      │ • 风险评估引擎                            │
-│ • 数据主体请求处理    │ • 访问控制执行器      │ • 合规性报告生成器                         │
-│ • 合规状态监控        │ • 传输加密处理器      │ • 审计日志分析器                           │
+│ • 合規规则引擎        │ • 敏感資料檢測器      │ • 資料血缘分析器                           │
+│ • 同意管理系統        │ • 資料脱敏處理器      │ • 風險評估引擎                            │
+│ • 資料主體请求處理    │ • 訪問控制执行器      │ • 合規性报告生成器                         │
+│ • 合規狀態監控        │ • 傳輸加密處理器      │ • 審計日志分析器                           │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 7.3.2 服务边界与交互
-- **输入**：
-  - 数据源元数据（来自数据源注册中心）
-  - 数据处理日志（来自数据处理工作流引擎）
-  - 数据内容（来自自动化媒体处理管道）
-  - 用户操作（来自各模块）
-- **输出**：
-  - 合规性检查结果
+#### 7.3.2 服務边界與交互
+- **輸入**：
+  - 資料源元資料（來自資料源註冊中心）
+  - 資料處理日志（來自資料處理工作流引擎）
+  - 資料內容（來自自動化媒體處理管道）
+  - 用戶操作（來自各模組）
+- **輸出**：
+  - 合規性检查结果
   - 安全告警
-  - 合规性报告
-  - 数据处理建议
+  - 合規性报告
+  - 資料處理建議
 
-### 7.4 核心组件详细实现
+### 7.4 核心組件詳細實現
 
-#### 7.4.1 合规规则引擎
+#### 7.4.1 合規规则引擎
 
-**技术实现：**
+**技術實現：**
 ```python
 import re
 from typing import Dict, List, Optional, Tuple
 import logging
 
 class ComplianceRuleEngine:
-    """合规规则引擎，执行合规性检查"""
+    """合規规则引擎，执行合規性检查"""
     
     def __init__(
         self,
@@ -15626,13 +15626,13 @@ class ComplianceRuleEngine:
         data_content: Optional[bytes] = None
     ) -> ComplianceCheckResult:
         """
-        检查数据源的合规性
+        检查資料源的合規性
         
-        :param data_source: 数据源对象
-        :param data_content: 数据内容（可选）
-        :return: 合规性检查结果
+        :param data_source: 資料源物件
+        :param data_content: 資料內容（可选）
+        :return: 合規性检查结果
         """
-        # 1. 获取适用的合规规则
+        # 1. 獲取适用的合規规则
         applicable_rules = self._get_applicable_rules(data_source)
         
         # 2. 执行规则检查
@@ -15645,14 +15645,14 @@ class ComplianceRuleEngine:
         return self._generate_summary(data_source, results)
     
     def _get_applicable_rules(self, data_source: DataSource) -> List[ComplianceRule]:
-        """获取适用于数据源的合规规则"""
-        # 1. 获取数据源所在地区
+        """獲取适用於資料源的合規规则"""
+        # 1. 獲取資料源所在地区
         region = self._determine_region(data_source)
         
-        # 2. 获取数据类型
+        # 2. 獲取資料類型
         data_type = self._determine_data_type(data_source)
         
-        # 3. 获取适用规则
+        # 3. 獲取适用规则
         return self.rule_repository.get_rules(
             regions=[region],
             data_types=[data_type],
@@ -15660,7 +15660,7 @@ class ComplianceRuleEngine:
         )
     
     def _determine_region(self, data_source: DataSource) -> str:
-        """确定数据源所在地区"""
+        """确定資料源所在地区"""
         # 1. 检查URL中的国家代码
         url = data_source.url.lower()
         
@@ -15682,24 +15682,24 @@ class ComplianceRuleEngine:
             if tld in url:
                 return region
         
-        # 2. 检查IP地理位置（如果实现）
+        # 2. 检查IP地理位置（如果實現）
         # ...
         
-        # 3. 默认为国际
+        # 3. 默认為国际
         return "international"
     
     def _determine_data_type(self, data_source: DataSource) -> str:
-        """确定数据类型"""
-        # 1. 检查数据源类型
+        """确定資料類型"""
+        # 1. 检查資料源類型
         if data_source.data_type == "user-generated":
             return "personal"
         
-        # 2. 检查内容类型
+        # 2. 检查內容類型
         content_type = data_source.content_type or ""
         if "json" in content_type or "xml" in content_type:
             return "structured"
         
-        # 3. 默认类型
+        # 3. 默认類型
         return "general"
     
     def _check_rule(
@@ -15708,7 +15708,7 @@ class ComplianceRuleEngine:
         data_source: DataSource,
         data_content: Optional[bytes]
     ) -> RuleCheckResult:
-        """检查单个规则"""
+        """检查单個规则"""
         # 1. 检查规则是否适用
         if not self._is_rule_applicable(rule, data_source):
             return RuleCheckResult(
@@ -15730,7 +15730,7 @@ class ComplianceRuleEngine:
                         rule_name=rule.name,
                         applicable=True,
                         passed=False,
-                        message="需要内容检查，但未提供内容"
+                        message="需要內容检查，但未提供內容"
                     )
                 else:
                     result = self._check_content_rule(rule, data_content)
@@ -15740,7 +15740,7 @@ class ComplianceRuleEngine:
                     rule_name=rule.name,
                     applicable=True,
                     passed=False,
-                    message=f"不支持的规则类型: {rule.check_type}"
+                    message=f"不支援的规则類型: {rule.check_type}"
                 )
             
             return result
@@ -15759,16 +15759,16 @@ class ComplianceRuleEngine:
         rule: ComplianceRule,
         data_source: DataSource
     ) -> bool:
-        """检查规则是否适用于数据源"""
+        """检查规则是否适用於資料源"""
         # 1. 检查地区适用性
         if rule.regions and self._determine_region(data_source) not in rule.regions:
             return False
         
-        # 2. 检查数据类型适用性
+        # 2. 检查資料類型适用性
         if rule.data_types and self._determine_data_type(data_source) not in rule.data_types:
             return False
         
-        # 3. 检查数据源分类适用性
+        # 3. 检查資料源分類适用性
         if rule.categories and data_source.category not in rule.categories:
             return False
         
@@ -15779,8 +15779,8 @@ class ComplianceRuleEngine:
         rule: ComplianceRule,
         data_source: DataSource
     ) -> RuleCheckResult:
-        """检查元数据规则"""
-        # 1. 提取检查参数
+        """检查元資料规则"""
+        # 1. 提取检查參數
         field = rule.parameters.get("field")
         operator = rule.parameters.get("operator")
         value = rule.parameters.get("value")
@@ -15794,7 +15794,7 @@ class ComplianceRuleEngine:
                 message="规则配置不完整"
             )
         
-        # 2. 获取字段值
+        # 2. 獲取字段值
         field_value = self._get_metadata_field(data_source, field)
         if field_value is None:
             return RuleCheckResult(
@@ -15802,7 +15802,7 @@ class ComplianceRuleEngine:
                 rule_name=rule.name,
                 applicable=True,
                 passed=False,
-                message=f"元数据字段 '{field}' 不存在"
+                message=f"元資料字段 '{field}' 不存在"
             )
         
         # 3. 执行检查
@@ -15822,7 +15822,7 @@ class ComplianceRuleEngine:
         data_source: DataSource,
         field: str
     ) -> Optional[Any]:
-        """获取元数据字段值"""
+        """獲取元資料字段值"""
         if field == "url":
             return data_source.url
         elif field == "category":
@@ -15843,7 +15843,7 @@ class ComplianceRuleEngine:
         operator: str,
         expected: Any
     ) -> bool:
-        """评估条件表达式"""
+        """評估條件表达式"""
         if operator == "eq":
             return actual == expected
         elif operator == "neq":
@@ -15867,27 +15867,27 @@ class ComplianceRuleEngine:
     ) -> str:
         """生成检查结果消息"""
         if passed:
-            return f"规则通过: {rule.description}"
+            return f"规则通過: {rule.description}"
         
-        return f"规则失败: {rule.description} (检测到: {field_value})"
+        return f"规则失败: {rule.description} (檢測到: {field_value})"
     
     def _check_content_rule(
         self,
         rule: ComplianceRule,
         data_content: bytes
     ) -> RuleCheckResult:
-        """检查内容规则"""
-        # 1. 检查内容类型
+        """检查內容规则"""
+        # 1. 检查內容類型
         if rule.content_type not in ["text", "json", "xml", "html"]:
             return RuleCheckResult(
                 rule_id=rule.id,
                 rule_name=rule.name,
                 applicable=True,
                 passed=False,
-                message=f"不支持的内容类型: {rule.content_type}"
+                message=f"不支援的內容類型: {rule.content_type}"
             )
         
-        # 2. 解析内容
+        # 2. 解析內容
         try:
             content = self._parse_content(data_content, rule.content_type)
         except Exception as e:
@@ -15896,7 +15896,7 @@ class ComplianceRuleEngine:
                 rule_name=rule.name,
                 applicable=True,
                 passed=False,
-                message=f"内容解析失败: {str(e)}"
+                message=f"內容解析失败: {str(e)}"
             )
         
         # 3. 执行检查
@@ -15924,21 +15924,21 @@ class ComplianceRuleEngine:
         content: bytes,
         content_type: str
     ) -> Any:
-        """解析内容"""
-        # 尝试解码为UTF-8
+        """解析內容"""
+        # 尝试解码為UTF-8
         try:
             text = content.decode('utf-8')
         except UnicodeDecodeError:
             text = content.decode('latin-1')
         
-        # 根据内容类型进一步处理
+        # 根據內容類型进一步處理
         if content_type == "json":
             try:
                 return json.loads(text)
             except json.JSONDecodeError:
                 return text
         elif content_type in ["xml", "html"]:
-            # 返回原始文本，由模式匹配处理
+            # 返回原始文本，由模式匹配處理
             return text
         else:
             return text
@@ -15952,7 +15952,7 @@ class ComplianceRuleEngine:
         matches = []
         
         if isinstance(content, str):
-            # 在文本中搜索
+            # 在文本中搜尋
             for match in re.finditer(pattern.regex, content):
                 matches.append({
                     "pattern_id": pattern.id,
@@ -15963,11 +15963,11 @@ class ComplianceRuleEngine:
                 })
         
         elif isinstance(content, dict):
-            # 递归搜索字典
+            # 递归搜尋字典
             self._search_dict(content, pattern, "", matches)
         
         elif isinstance(content, list):
-            # 递归搜索列表
+            # 递归搜尋列表
             self._search_list(content, pattern, "", matches)
         
         return matches
@@ -15979,7 +15979,7 @@ class ComplianceRuleEngine:
         end: int,
         context_size: int = 20
     ) -> str:
-        """获取匹配上下文"""
+        """獲取匹配上下文"""
         context_start = max(0, start - context_size)
         context_end = min(len(text), end + context_size)
         return text[context_start:context_start] + "[...]" + text[end:context_end]
@@ -15991,11 +15991,11 @@ class ComplianceRuleEngine:
         path: str,
         matches: List[Dict]
     ):
-        """在字典中搜索模式"""
+        """在字典中搜尋模式"""
         for key, value in obj.items():
             current_path = f"{path}.{key}" if path else key
             
-            # 检查键
+            # 检查鍵
             if re.search(pattern.regex, key):
                 matches.append({
                     "pattern_id": pattern.id,
@@ -16017,7 +16017,7 @@ class ComplianceRuleEngine:
                         "type": "value"
                     })
             
-            # 递归搜索
+            # 递归搜尋
             elif isinstance(value, dict):
                 self._search_dict(value, pattern, current_path, matches)
             elif isinstance(value, list):
@@ -16030,7 +16030,7 @@ class ComplianceRuleEngine:
         path: str,
         matches: List[Dict]
     ):
-        """在列表中搜索模式"""
+        """在列表中搜尋模式"""
         for i, item in enumerate(obj):
             current_path = f"{path}[{i}]"
             
@@ -16047,7 +16047,7 @@ class ComplianceRuleEngine:
                         "type": "value"
                     })
             
-            # 递归搜索
+            # 递归搜尋
             elif isinstance(item, dict):
                 self._search_dict(item, pattern, current_path, matches)
             elif isinstance(item, list):
@@ -16058,25 +16058,25 @@ class ComplianceRuleEngine:
         rule: ComplianceRule,
         findings: List[Dict]
     ) -> str:
-        """生成内容检查消息"""
+        """生成內容检查消息"""
         if not findings:
-            return f"规则通过: {rule.description}"
+            return f"规则通過: {rule.description}"
         
-        return f"规则失败: {rule.description} (检测到 {len(findings)} 处敏感数据)"
+        return f"规则失败: {rule.description} (檢測到 {len(findings)} 处敏感資料)"
     
     def _generate_summary(
         self,
         data_source: DataSource,
         results: List[RuleCheckResult]
     ) -> ComplianceCheckResult:
-        """生成合规性检查汇总"""
+        """生成合規性检查汇总"""
         # 统计结果
         total = len(results)
         passed = sum(1 for r in results if r.passed)
         failed = sum(1 for r in results if not r.passed and r.applicable)
         not_applicable = sum(1 for r in results if not r.applicable)
         
-        # 生成状态
+        # 生成狀態
         if failed == 0:
             status = "compliant"
         elif failed <= self.config.warning_threshold:
@@ -16084,13 +16084,13 @@ class ComplianceRuleEngine:
         else:
             status = "non_compliant"
         
-        # 生成关键问题
+        # 生成關鍵问题
         critical_issues = [
             r for r in results 
             if not r.passed and r.applicable and r.rule_severity == "critical"
         ]
         
-        # 生成建议
+        # 生成建議
         suggestions = self._generate_suggestions(results)
         
         return ComplianceCheckResult(
@@ -16108,33 +16108,33 @@ class ComplianceRuleEngine:
         )
     
     def _generate_suggestions(self, results: List[RuleCheckResult]) -> List[str]:
-        """生成合规性建议"""
+        """生成合規性建議"""
         suggestions = []
         
-        # 1. 针对失败的关键规则
+        # 1. 针對失败的關鍵规则
         critical_failures = [
             r for r in results 
             if not r.passed and r.applicable and r.rule_severity == "critical"
         ]
-        for result in critical_failures[:3]:  # 只取前3个
-            suggestions.append(f"必须解决: {result.rule_name} - {result.message}")
+        for result in critical_failures[:3]:  # 只取前3個
+            suggestions.append(f"必須解决: {result.rule_name} - {result.message}")
         
-        # 2. 针对警告级别的规则
+        # 2. 针對警告级别的规则
         warning_failures = [
             r for r in results 
             if not r.passed and r.applicable and r.rule_severity == "warning"
         ]
         if warning_failures:
-            suggestions.append(f"建议改进: 检测到 {len(warning_failures)} 个可优化的合规性问题")
+            suggestions.append(f"建議改进: 檢測到 {len(warning_failures)} 個可優化的合規性问题")
         
-        # 3. 一般建议
+        # 3. 一般建議
         if not suggestions:
-            suggestions.append("数据源符合所有关键合规性要求")
+            suggestions.append("資料源符合所有關鍵合規性要求")
         
         return suggestions
 
 class ComplianceRuleRepository:
-    """合规规则仓库"""
+    """合規规则仓庫"""
     
     def __init__(self, db: Database):
         self.db = db
@@ -16147,8 +16147,8 @@ class ComplianceRuleRepository:
         categories: List[str] = None,
         active: bool = True
     ) -> List[ComplianceRule]:
-        """获取合规规则"""
-        # 构建查询
+        """獲取合規规则"""
+        # 構建查詢
         conditions = []
         params = {"active": active}
         
@@ -16176,13 +16176,13 @@ class ComplianceRuleRepository:
         return [self._row_to_rule(row) for row in rows]
     
     def get_rule(self, rule_id: str) -> Optional[ComplianceRule]:
-        """获取单个合规规则"""
+        """獲取单個合規规则"""
         sql = "SELECT * FROM compliance_rules WHERE id = %(id)s"
         row = self.db.fetchone(sql, {"id": rule_id})
         return self._row_to_rule(row) if row else None
     
     def _row_to_rule(self, row: Dict) -> ComplianceRule:
-        """将数据库行转换为ComplianceRule对象"""
+        """將資料庫行转换為ComplianceRule物件"""
         return ComplianceRule(
             id=row["id"],
             name=row["name"],
@@ -16203,7 +16203,7 @@ class ComplianceRuleRepository:
         )
     
     def _decode_patterns(self, json_data: str) -> List[CompliancePattern]:
-        """解码模式定义"""
+        """解码模式定義"""
         if not json_data:
             return []
         
@@ -16219,9 +16219,9 @@ class ComplianceRuleRepository:
             ) for p in patterns_data
         ]
 
-# 辅助类定义
+# 輔助类定義
 class ComplianceRule:
-    """合规规则"""
+    """合規规则"""
     def __init__(
         self,
         id: str,
@@ -16259,7 +16259,7 @@ class ComplianceRule:
         self.updated_at = updated_at
 
 class CompliancePattern:
-    """合规模式"""
+    """合規模式"""
     def __init__(
         self,
         id: str,
@@ -16293,10 +16293,10 @@ class RuleCheckResult:
         self.passed = passed
         self.message = message
         self.details = details or {}
-        self.rule_severity = "warning"  # 可以从规则中获取
+        self.rule_severity = "warning"  # 可以從规则中獲取
 
 class ComplianceCheckResult:
-    """合规性检查结果"""
+    """合規性检查结果"""
     def __init__(
         self,
         data_source_id: str,
@@ -16324,9 +16324,9 @@ class ComplianceCheckResult:
         self.timestamp = timestamp
 ```
 
-#### 7.4.2 敏感数据检测器
+#### 7.4.2 敏感資料檢測器
 
-**技术实现：**
+**技術實現：**
 ```python
 import re
 import json
@@ -16335,7 +16335,7 @@ import logging
 import hashlib
 
 class SensitiveDataDetector:
-    """敏感数据检测器，检测数据中的敏感信息"""
+    """敏感資料檢測器，檢測資料中的敏感資訊"""
     
     def __init__(
         self,
@@ -16352,19 +16352,19 @@ class SensitiveDataDetector:
         context: Optional[Dict] = None
     ) -> SensitiveDataDetectionResult:
         """
-        检测数据中的敏感信息
+        檢測資料中的敏感資訊
         
-        :param data: 要检测的数据
-        :param context: 上下文信息
-        :return: 检测结果
+        :param data: 要檢測的資料
+        :param context: 上下文資訊
+        :return: 檢測结果
         """
-        # 1. 获取敏感数据模式
+        # 1. 獲取敏感資料模式
         patterns = self.pattern_repository.get_patterns(
             categories=context.get("categories") if context else None,
             regions=context.get("regions") if context else None
         )
         
-        # 2. 执行检测
+        # 2. 执行檢測
         findings = self._scan_data(data, patterns)
         
         # 3. 生成结果
@@ -16377,8 +16377,8 @@ class SensitiveDataDetector:
         )
     
     def _calculate_data_hash(self, data: Any) -> str:
-        """计算数据哈希"""
-        # 简单实现：转换为JSON并计算哈希
+        """计算資料哈希"""
+        # 简单實現：转换為JSON並计算哈希
         try:
             data_str = json.dumps(data, sort_keys=True)
             return hashlib.sha256(data_str.encode('utf-8')).hexdigest()
@@ -16390,7 +16390,7 @@ class SensitiveDataDetector:
         data: Any,
         patterns: List[DataPattern]
     ) -> List[DataFinding]:
-        """扫描数据中的敏感信息"""
+        """扫描資料中的敏感資訊"""
         findings = []
         
         if isinstance(data, str):
@@ -16410,7 +16410,7 @@ class SensitiveDataDetector:
         elif isinstance(data, dict):
             # 递归扫描字典
             for key, value in data.items():
-                # 检查键
+                # 检查鍵
                 for pattern in patterns:
                     if re.search(pattern.regex, key):
                         findings.append(DataFinding(
@@ -16446,13 +16446,13 @@ class SensitiveDataDetector:
         end: int,
         context_size: int = 20
     ) -> str:
-        """获取匹配上下文"""
+        """獲取匹配上下文"""
         context_start = max(0, start - context_size)
         context_end = min(len(text), end + context_size)
         return text[context_start:start] + "[...]" + text[end:context_end]
 
 class PatternRepository:
-    """敏感数据模式仓库"""
+    """敏感資料模式仓庫"""
     
     def __init__(self, db: Database):
         self.db = db
@@ -16463,8 +16463,8 @@ class PatternRepository:
         categories: List[str] = None,
         regions: List[str] = None
     ) -> List[DataPattern]:
-        """获取敏感数据模式"""
-        # 构建查询
+        """獲取敏感資料模式"""
+        # 構建查詢
         conditions = []
         params = {}
         
@@ -16489,13 +16489,13 @@ class PatternRepository:
         return [self._row_to_pattern(row) for row in rows]
     
     def get_pattern(self, pattern_id: str) -> Optional[DataPattern]:
-        """获取单个敏感数据模式"""
+        """獲取单個敏感資料模式"""
         sql = "SELECT * FROM sensitive_data_patterns WHERE id = %(id)s"
         row = self.db.fetchone(sql, {"id": pattern_id})
         return self._row_to_pattern(row) if row else None
     
     def _row_to_pattern(self, row: Dict) -> DataPattern:
-        """将数据库行转换为DataPattern对象"""
+        """將資料庫行转换為DataPattern物件"""
         return DataPattern(
             id=row["id"],
             name=row["name"],
@@ -16513,9 +16513,9 @@ class PatternRepository:
             updated_at=row["updated_at"]
         )
 
-# 辅助类定义
+# 輔助类定義
 class DataPattern:
-    """敏感数据模式"""
+    """敏感資料模式"""
     def __init__(
         self,
         id: str,
@@ -16549,7 +16549,7 @@ class DataPattern:
         self.updated_at = updated_at
 
 class DataFinding:
-    """数据发现"""
+    """資料發現"""
     def __init__(
         self,
         pattern_id: str,
@@ -16573,7 +16573,7 @@ class DataFinding:
         self.type = type
 
 class SensitiveDataDetectionResult:
-    """敏感数据检测结果"""
+    """敏感資料檢測结果"""
     def __init__(
         self,
         data_hash: str,
@@ -16590,16 +16590,16 @@ class SensitiveDataDetectionResult:
         self.severity = self._calculate_severity()
     
     def _calculate_severity(self) -> str:
-        """计算检测结果严重程度"""
+        """计算檢測结果严重程度"""
         if not self.findings:
             return "none"
         
-        # 检查是否有关键发现
+        # 检查是否有關鍵發現
         has_critical = any(f.data_category == "critical" for f in self.findings)
         if has_critical:
             return "critical"
         
-        # 检查发现数量
+        # 检查發現數量
         if len(self.findings) > 5:
             return "high"
         elif len(self.findings) > 2:
@@ -16608,12 +16608,12 @@ class SensitiveDataDetectionResult:
         return "low"
 ```
 
-### 7.5 数据模型详细定义
+### 7.5 資料模型詳細定義
 
-#### 7.5.1 合规规则表
+#### 7.5.1 合規规则表
 
 ```sql
--- 合规规则表
+-- 合規规则表
 CREATE TABLE compliance_rules (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
@@ -16639,7 +16639,7 @@ CREATE TABLE compliance_rules (
     INDEX idx_rules_priority ON compliance_rules(priority)
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_compliance_rules_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -16654,10 +16654,10 @@ FOR EACH ROW
 EXECUTE FUNCTION update_compliance_rules_modtime();
 ```
 
-#### 7.5.2 敏感数据模式表
+#### 7.5.2 敏感資料模式表
 
 ```sql
--- 敏感数据模式表
+-- 敏感資料模式表
 CREATE TABLE sensitive_data_patterns (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
@@ -16681,7 +16681,7 @@ CREATE TABLE sensitive_data_patterns (
     INDEX idx_patterns_priority ON sensitive_data_patterns(priority)
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_sensitive_data_patterns_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -16696,10 +16696,10 @@ FOR EACH ROW
 EXECUTE FUNCTION update_sensitive_data_patterns_modtime();
 ```
 
-#### 7.5.3 合规性检查结果表
+#### 7.5.3 合規性检查结果表
 
 ```sql
--- 合规性检查结果表
+-- 合規性检查结果表
 CREATE TABLE compliance_checks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     data_source_id UUID NOT NULL REFERENCES data_sources(id) ON DELETE CASCADE,
@@ -16722,10 +16722,10 @@ CREATE TABLE compliance_checks (
 );
 ```
 
-#### 7.5.4 敏感数据检测结果表
+#### 7.5.4 敏感資料檢測结果表
 
 ```sql
--- 敏感数据检测结果表
+-- 敏感資料檢測结果表
 CREATE TABLE sensitive_data_detections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     data_hash VARCHAR(64) NOT NULL,
@@ -16746,10 +16746,10 @@ CREATE TABLE sensitive_data_detections (
 );
 ```
 
-#### 7.5.5 用户同意记录表
+#### 7.5.5 用戶同意記錄表
 
 ```sql
--- 用户同意记录表
+-- 用戶同意記錄表
 CREATE TABLE user_consents (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -16771,11 +16771,11 @@ CREATE TABLE user_consents (
 );
 ```
 
-### 7.6 API详细规范
+### 7.6 API詳細規範
 
-#### 7.6.1 合规性检查API
+#### 7.6.1 合規性检查API
 
-**检查数据源合规性 (POST /api/v1/compliance/check)**
+**检查資料源合規性 (POST /api/v1/compliance/check)**
 
 *请求示例:*
 ```http
@@ -16790,7 +16790,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -16807,10 +16807,10 @@ Content-Type: application/json
   "results": [
     {
       "rule_id": "rule-gdpr-001",
-      "rule_name": "个人数据标识检查",
+      "rule_name": "個人資料標识检查",
       "applicable": true,
       "passed": false,
-      "message": "检测到潜在的个人身份信息",
+      "message": "檢測到潜在的個人身份資訊",
       "details": {
         "findings": [
           {
@@ -16820,30 +16820,30 @@ Content-Type: application/json
             "start": 125,
             "end": 150,
             "value": "user@example.com",
-            "context": "联系信息: user@example.com"
+            "context": "联系資訊: user@example.com"
           }
         ]
       }
     },
     {
       "rule_id": "rule-gdpr-002",
-      "rule_name": "数据最小化检查",
+      "rule_name": "資料最小化检查",
       "applicable": true,
       "passed": true,
-      "message": "规则通过: 数据最小化要求已满足"
+      "message": "规则通過: 資料最小化要求已满足"
     }
   ],
   "suggestions": [
-    "必须解决: 个人数据标识检查 - 检测到潜在的个人身份信息",
-    "建议改进: 检测到 2 个可优化的合规性问题"
+    "必須解决: 個人資料標识检查 - 檢測到潜在的個人身份資訊",
+    "建議改进: 檢測到 2 個可優化的合規性问题"
   ],
   "timestamp": "2023-06-15T10:30:45Z"
 }
 ```
 
-#### 7.6.2 敏感数据检测API
+#### 7.6.2 敏感資料檢測API
 
-**检测敏感数据 (POST /api/v1/data:detect-sensitive)**
+**檢測敏感資料 (POST /api/v1/data:detect-sensitive)**
 
 *请求示例:*
 ```http
@@ -16866,7 +16866,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -16877,7 +16877,7 @@ Content-Type: application/json
   "findings": [
     {
       "pattern_id": "pattern-name",
-      "pattern_name": "个人姓名",
+      "pattern_name": "個人姓名",
       "data_category": "personal",
       "value": "John Doe",
       "context": "name: John Doe",
@@ -16895,7 +16895,7 @@ Content-Type: application/json
     },
     {
       "pattern_id": "pattern-phone",
-      "pattern_name": "电话号码",
+      "pattern_name": "电话號码",
       "data_category": "personal",
       "value": "+1-555-123-4567",
       "context": "phone: +1-555-123-4567",
@@ -16912,9 +16912,9 @@ Content-Type: application/json
 }
 ```
 
-#### 7.6.3 用户同意管理API
+#### 7.6.3 用戶同意管理API
 
-**记录用户同意 (POST /api/v1/consents)**
+**記錄用戶同意 (POST /api/v1/consents)**
 
 *请求示例:*
 ```http
@@ -16929,14 +16929,14 @@ Content-Type: application/json
   "consent_type": "data_processing",
   "consent_value": true,
   "consent_details": {
-    "purpose": "数据采集与处理",
+    "purpose": "資料採集與處理",
     "data_types": ["personal", "contact"],
     "retention_period": "2 years"
   }
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -16950,7 +16950,7 @@ Location: /api/v1/consents/consent-1a2b3c4d
   "consent_type": "data_processing",
   "consent_value": true,
   "consent_details": {
-    "purpose": "数据采集与处理",
+    "purpose": "資料採集與處理",
     "data_types": ["personal", "contact"],
     "retention_period": "2 years"
   },
@@ -16959,7 +16959,7 @@ Location: /api/v1/consents/consent-1a2b3c4d
 }
 ```
 
-**获取用户同意记录 (GET /api/v1/consents/{user_id})**
+**獲取用戶同意記錄 (GET /api/v1/consents/{user_id})**
 
 *请求示例:*
 ```http
@@ -16968,7 +16968,7 @@ Host: dcsc.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -16983,7 +16983,7 @@ Content-Type: application/json
       "consent_type": "data_processing",
       "consent_value": true,
       "consent_details": {
-        "purpose": "数据采集与处理",
+        "purpose": "資料採集與處理",
         "data_types": ["personal", "contact"],
         "retention_period": "2 years"
       },
@@ -16998,7 +16998,7 @@ Content-Type: application/json
       "consent_type": "data_sharing",
       "consent_value": false,
       "consent_details": {
-        "purpose": "与第三方共享数据",
+        "purpose": "與第三方共享資料",
         "data_types": ["personal"],
         "retention_period": "1 year"
       },
@@ -17011,36 +17011,36 @@ Content-Type: application/json
 }
 ```
 
-### 7.7 性能优化策略
+### 7.7 效能優化策略
 
-#### 7.7.1 敏感数据检测优化
+#### 7.7.1 敏感資料檢測優化
 
-1. **多阶段检测流水线**
+1. **多阶段檢測流水线**
    ```python
    class MultiStageDetector:
-       """多阶段敏感数据检测器"""
+       """多阶段敏感資料檢測器"""
        
        def __init__(self, detectors: List[Detector]):
            self.detectors = detectors
            self.logger = logging.getLogger(__name__)
        
        def detect(self, data: Any, context: Dict) -> DetectionResult:
-           """执行多阶段检测"""
+           """执行多阶段檢測"""
            findings = []
            stage_times = []
            
            for i, detector in enumerate(self.detectors):
                start_time = time.time()
                
-               # 执行阶段检测
+               # 执行阶段檢測
                stage_findings = detector.detect(data, context)
                findings.extend(stage_findings)
                
-               # 记录时间
+               # 記錄時間
                stage_time = time.time() - start_time
                stage_times.append((detector.__class__.__name__, stage_time))
                
-               # 檢查是否需要继续
+               # 檢查是否需要继續
                if self._should_terminate(i, stage_findings, context):
                    break
            
@@ -17057,22 +17057,22 @@ Content-Type: application/json
            findings: List[DataFinding],
            context: Dict
        ) -> bool:
-           """检查是否应该终止检测"""
-           # 如果检测到关键敏感数据，提前终止
+           """检查是否应该终止檢測"""
+           # 如果檢測到關鍵敏感資料，提前终止
            if any(f.data_category == "critical" for f in findings):
                return True
            
-           # 如果达到最大阶段数
+           # 如果达到最大阶段數
            if stage_index >= self.config.max_detection_stages - 1:
                return True
            
            return False
    ```
 
-2. **Aho-Corasick算法优化**
+2. **Aho-Corasick算法優化**
    ```python
    class AhoCorasickDetector:
-       """使用Aho-Corasick算法的敏感数据检测器"""
+       """使用Aho-Corasick算法的敏感資料檢測器"""
        
        def __init__(self, patterns: List[str]):
            self.automaton = ahocorasick.Automaton()
@@ -17081,11 +17081,11 @@ Content-Type: application/json
            for idx, pattern in enumerate(patterns):
                self.automaton.add_word(pattern, (idx, pattern))
            
-           # 构建自动机
+           # 構建自動机
            self.automaton.make_automaton()
        
        def detect(self, text: str) -> List[Match]:
-           """检测文本中的模式"""
+           """檢測文本中的模式"""
            matches = []
            
            # 执行匹配
@@ -17100,12 +17100,12 @@ Content-Type: application/json
            return matches
    ```
 
-#### 7.7.2 合规性检查优化
+#### 7.7.2 合規性检查優化
 
 1. **规则优先级调度**
    ```python
    class RuleScheduler:
-       """规则调度器，优化规则执行顺序"""
+       """规则调度器，優化规则执行顺序"""
        
        def __init__(self, rules: List[ComplianceRule]):
            self.rules = rules
@@ -17120,14 +17120,14 @@ Content-Type: application/json
                reverse=True
            )
            
-           # 2. 应用优化策略
+           # 2. 应用優化策略
            optimized_rules = self._apply_optimization(sorted_rules)
            
            return optimized_rules
        
        @property
        def severity_rank(self) -> int:
-           """将严重程度转换为数值排名"""
+           """將严重程度转换為數值排名"""
            severity_ranks = {
                "critical": 4,
                "high": 3,
@@ -17137,12 +17137,12 @@ Content-Type: application/json
            return severity_ranks.get(self.severity, 1)
        
        def _apply_optimization(self, rules: List[ComplianceRule]) -> List[ComplianceRule]:
-           """应用优化策略"""
-           # 1. 将元数据规则放在内容规则之前
+           """应用優化策略"""
+           # 1. 將元資料规则放在內容规则之前
            metadata_rules = [r for r in rules if r.check_type == "metadata"]
            content_rules = [r for r in rules if r.check_type == "content"]
            
-           # 2. 在内容规则中，将简单规则放在复杂规则之前
+           # 2. 在內容规则中，將简单规则放在複杂规则之前
            simple_content_rules = [r for r in content_rules if self._is_simple_rule(r)]
            complex_content_rules = [r for r in content_rules if not self._is_simple_rule(r)]
            
@@ -17150,7 +17150,7 @@ Content-Type: application/json
        
        def _is_simple_rule(self, rule: ComplianceRule) -> bool:
            """检查规则是否简单"""
-           # 简单规则：没有复杂的正则表达式
+           # 简单规则：沒有複杂的正则表达式
            if ".*" in rule.regex or ".+" in rule.regex:
                return False
            if len(rule.regex) > 50:
@@ -17168,7 +17168,7 @@ Content-Type: application/json
            self.logger = logging.getLogger(__name__)
        
        def get(self, rule_id: str, data_hash: str) -> Optional[RuleCheckResult]:
-           """获取缓存的规则结果"""
+           """獲取缓存的规则结果"""
            key = f"{rule_id}:{data_hash}"
            return self.cache.get(key)
        
@@ -17198,7 +17198,7 @@ Content-Type: application/json
            if rule_last_modified and rule_last_modified > last_check:
                return True
            
-           # 如果数据最近被修改
+           # 如果資料最近被修改
            data_last_modified = self._get_data_last_modified(data_hash)
            if data_last_modified and data_last_modified > last_check:
                return True
@@ -17206,24 +17206,24 @@ Content-Type: application/json
            return False
        
        def _get_rule_last_modified(self, rule_id: str) -> Optional[datetime]:
-           """获取规则最后修改时间"""
-           # 实现规则元数据查询
+           """獲取规则最後修改時間"""
+           # 實現规则元資料查詢
            pass
        
        def _get_data_last_modified(self, data_hash: str) -> Optional[datetime]:
-           """获取数据最后修改时间"""
-           # 实现数据元数据查询
+           """獲取資料最後修改時間"""
+           # 實現資料元資料查詢
            pass
    ```
 
-### 7.8 安全考虑
+### 7.8 安全考慮
 
-#### 7.8.1 数据安全策略
+#### 7.8.1 資料安全策略
 
-1. **基于属性的访问控制(PABC)**
+1. **基於属性的訪問控制(PABC)**
    ```python
    class AttributeBasedAccessControl:
-       """基于属性的访问控制"""
+       """基於属性的訪問控制"""
        
        def __init__(self, policy_engine: PolicyEngine):
            self.policy_engine = policy_engine
@@ -17236,14 +17236,14 @@ Content-Type: application/json
            action: str
        ) -> bool:
            """
-           检查用户是否有权限访问资源
+           检查用戶是否有權限訪問資源
            
-           :param user: 用户对象
-           :param resource: 资源对象
-           :param action: 操作类型
-           :return: 是否有权限
+           :param user: 用戶物件
+           :param resource: 資源物件
+           :param action: 操作類型
+           :return: 是否有權限
            """
-           # 1. 构建请求上下文
+           # 1. 構建请求上下文
            context = {
                "user": self._extract_user_attributes(user),
                "resource": self._extract_resource_attributes(resource),
@@ -17251,16 +17251,16 @@ Content-Type: application/json
                "environment": self._get_environment_attributes()
            }
            
-           # 2. 评估策略
+           # 2. 評估策略
            decision = self.policy_engine.evaluate(context)
            
-           # 3. 记录审计日志
+           # 3. 記錄審計日志
            self._log_audit(user, resource, action, decision)
            
            return decision == "permit"
        
        def _extract_user_attributes(self, user: User) -> Dict:
-           """提取用户属性"""
+           """提取用戶属性"""
            return {
                "id": user.id,
                "roles": user.roles,
@@ -17270,7 +17270,7 @@ Content-Type: application/json
            }
        
        def _extract_resource_attributes(self, resource: Resource) -> Dict:
-           """提取资源属性"""
+           """提取資源属性"""
            if isinstance(resource, DataSource):
                return {
                    "type": "data_source",
@@ -17279,21 +17279,21 @@ Content-Type: application/json
                    "region": self._determine_region(resource),
                    "sensitivity": self._determine_sensitivity(resource)
                }
-           # 其他资源类型...
+           # 其他資源類型...
            return {}
        
        def _determine_region(self, data_source: DataSource) -> str:
-           """确定数据源所在地区"""
-           # 实现地区检测逻辑
+           """确定資料源所在地区"""
+           # 實現地区檢測逻辑
            pass
        
        def _determine_sensitivity(self, data_source: DataSource) -> str:
-           """确定数据敏感度"""
-           # 实现敏感度评估
+           """确定資料敏感度"""
+           # 實現敏感度評估
            pass
        
        def _get_environment_attributes(self) -> Dict:
-           """获取环境属性"""
+           """獲取环境属性"""
            return {
                "time": datetime.utcnow(),
                "ip_address": get_current_ip(),
@@ -17307,15 +17307,15 @@ Content-Type: application/json
            action: str,
            decision: str
        ):
-           """记录审计日志"""
-           # 实现审计日志记录
+           """記錄審計日志"""
+           # 實現審計日志記錄
            pass
    ```
 
-2. **数据脱敏策略引擎**
+2. **資料脱敏策略引擎**
    ```python
    class DataRedactionEngine:
-       """数据脱敏策略引擎"""
+       """資料脱敏策略引擎"""
        
        def __init__(
            self,
@@ -17332,20 +17332,20 @@ Content-Type: application/json
            context: Dict
        ) -> Any:
            """
-           脱敏数据
+           脱敏資料
            
-           :param data: 要脱敏的数据
-           :param context: 上下文信息
-           :return: 脱敏后的数据
+           :param data: 要脱敏的資料
+           :param context: 上下文資訊
+           :return: 脱敏後的資料
            """
-           # 1. 获取适用的脱敏策略
+           # 1. 獲取适用的脱敏策略
            policies = self._get_applicable_policies(context)
            
            # 2. 应用脱敏策略
            return self._apply_policies(data, policies)
        
        def _get_applicable_policies(self, context: Dict) -> List[RedactionPolicy]:
-           """获取适用的脱敏策略"""
+           """獲取适用的脱敏策略"""
            return self.policy_repository.get_policies(
                data_types=context.get("data_types", []),
                regions=context.get("regions", []),
@@ -17386,7 +17386,7 @@ Content-Type: application/json
            return result
        
        def _get_replacement(self, rule: RedactionRule, text: str) -> str:
-           """获取替换字符串"""
+           """獲取替换字符串"""
            if rule.replacement_template == "hash":
                return hashlib.sha256(text.encode('utf-8')).hexdigest()[:8] + "..."
            elif rule.replacement_template == "mask":
@@ -17397,11 +17397,11 @@ Content-Type: application/json
            return rule.replacement_template
    ```
 
-#### 7.8.2 合规性审计
+#### 7.8.2 合規性審計
 
-1. **审计日志管理**
+1. **審計日志管理**
    ```sql
-   -- 合规性审计日志表
+   -- 合規性審計日志表
    CREATE TABLE compliance_audit_logs (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
        user_id UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -17422,7 +17422,7 @@ Content-Type: application/json
        INDEX idx_audit_timestamp ON compliance_audit_logs(timestamp DESC)
    );
    
-   -- 数据访问审计日志表
+   -- 資料訪問審計日志表
    CREATE TABLE data_access_audit_logs (
        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -17446,10 +17446,10 @@ Content-Type: application/json
    );
    ```
 
-2. **审计分析服务**
+2. **審計分析服務**
    ```python
    class AuditAnalysisService:
-       """审计分析服务，检测异常访问模式"""
+       """審計分析服務，檢測異常訪問模式"""
        
        def __init__(
            self,
@@ -17466,21 +17466,21 @@ Content-Type: application/json
            time_window: timedelta = timedelta(days=7)
        ) -> AccessPatternAnalysis:
            """
-           分析用户访问模式
+           分析用戶訪問模式
            
-           :param user_id: 用户ID
-           :param time_window: 分析时间窗口
-           :return: 访问模式分析结果
+           :param user_id: 用戶ID
+           :param time_window: 分析時間窗口
+           :return: 訪問模式分析结果
            """
-           # 1. 获取访问日志
+           # 1. 獲取訪問日志
            start_time = datetime.utcnow() - time_window
            access_logs = self._get_access_logs(user_id, start_time)
            
-           # 2. 分析访问模式
+           # 2. 分析訪問模式
            pattern_analysis = self._analyze_patterns(access_logs)
            anomaly_detection = self._detect_anomalies(access_logs)
            
-           # 3. 生成风险评估
+           # 3. 生成風險評估
            risk_score = self._calculate_risk_score(pattern_analysis, anomaly_detection)
            
            return AccessPatternAnalysis(
@@ -17498,7 +17498,7 @@ Content-Type: application/json
            user_id: str,
            start_time: datetime
        ) -> List[DataAccessLog]:
-           """获取访问日志"""
+           """獲取訪問日志"""
            sql = """
            SELECT * FROM data_access_audit_logs 
            WHERE user_id = %(user_id)s AND timestamp >= %(start_time)s
@@ -17513,13 +17513,13 @@ Content-Type: application/json
            return [self._row_to_log(row) for row in rows]
        
        def _analyze_patterns(self, access_logs: List[DataAccessLog]) -> Dict:
-           """分析访问模式"""
-           # 1. 按数据源分析
+           """分析訪問模式"""
+           # 1. 按資料源分析
            by_data_source = defaultdict(list)
            for log in access_logs:
                by_data_source[log.data_source_id].append(log)
            
-           # 2. 计算每个数据源的访问频率
+           # 2. 计算每個資料源的訪問频率
            frequency = {}
            for ds_id, logs in by_data_source.items():
                time_diffs = [
@@ -17533,7 +17533,7 @@ Content-Type: application/json
                    "sensitive_data_ratio": sum(1 for log in logs if log.sensitive_data_accessed) / len(logs)
                }
            
-           # 3. 识别常用访问模式
+           # 3. 识别常用訪問模式
            common_patterns = self._identify_common_patterns(access_logs)
            
            return {
@@ -17543,15 +17543,15 @@ Content-Type: application/json
            }
        
        def _identify_common_patterns(self, access_logs: List[DataAccessLog]) -> List[AccessPattern]:
-           """识别常用访问模式"""
-           # 简单实现：基于访问序列
+           """识别常用訪問模式"""
+           # 简单實現：基於訪問序列
            sequences = []
            current_sequence = []
            
            for i, log in enumerate(access_logs):
                current_sequence.append(log.data_source_id)
                
-               # 如果是序列结束或达到最大长度
+               # 如果是序列结束或达到最大長度
                if i == len(access_logs) - 1 or len(current_sequence) >= 5:
                    sequences.append(tuple(current_sequence))
                    current_sequence = []
@@ -17564,7 +17564,7 @@ Content-Type: application/json
            ]
        
        def _analyze_time_patterns(self, access_logs: List[DataAccessLog]) -> Dict:
-           """分析时间模式"""
+           """分析時間模式"""
            hour_counts = [0] * 24
            day_counts = [0] * 7  # 0=Monday, 6=Sunday
            
@@ -17578,35 +17578,35 @@ Content-Type: application/json
            }
        
        def _detect_anomalies(self, access_logs: List[DataAccessLog]) -> List[Anomaly]:
-           """检测异常访问"""
+           """檢測異常訪問"""
            anomalies = []
            
-           # 1. 检测非常规时间访问
+           # 1. 檢測非常规時間訪問
            off_hours = self._detect_off_hours_access(access_logs)
            if off_hours:
                anomalies.append(Anomaly(
                    type="off_hours",
-                   description="检测到非常规时间访问",
+                   description="檢測到非常规時間訪問",
                    severity="medium",
                    details={"count": len(off_hours), "times": [str(log.timestamp) for log in off_hours]}
                ))
            
-           # 2. 检测敏感数据异常访问
+           # 2. 檢測敏感資料異常訪問
            sensitive_access = self._detect_sensitive_data_access(access_logs)
            if sensitive_access:
                anomalies.append(Anomaly(
                    type="sensitive_data",
-                   description="检测到异常的敏感数据访问",
+                   description="檢測到異常的敏感資料訪問",
                    severity="high",
                    details=sensitive_access
                ))
            
-           # 3. 检测访问频率突增
+           # 3. 檢測訪問频率突增
            frequency_spike = self._detect_frequency_spike(access_logs)
            if frequency_spike:
                anomalies.append(Anomaly(
                    type="frequency_spike",
-                   description="检测到访问频率突增",
+                   description="檢測到訪問频率突增",
                    severity="medium",
                    details=frequency_spike
                ))
@@ -17614,22 +17614,22 @@ Content-Type: application/json
            return anomalies
        
        def _detect_off_hours_access(self, access_logs: List[DataAccessLog]) -> List[DataAccessLog]:
-           """检测非常规时间访问"""
+           """檢測非常规時間訪問"""
            off_hours = []
            for log in access_logs:
                hour = log.timestamp.hour
-               # 檢查是否在正常工作时间外 (假设工作时间为9AM-6PM)
+               # 檢查是否在正常工作時間外 (假设工作時間為9AM-6PM)
                if hour < 9 or hour > 18:
                    off_hours.append(log)
            return off_hours
        
        def _detect_sensitive_data_access(self, access_logs: List[DataAccessLog]) -> Optional[Dict]:
-           """检测敏感数据异常访问"""
+           """檢測敏感資料異常訪問"""
            sensitive_logs = [log for log in access_logs if log.sensitive_data_accessed]
            if not sensitive_logs:
                return None
            
-           # 檢查敏感数据访问比例是否异常高
+           # 檢查敏感資料訪問比例是否異常高
            total = len(access_logs)
            sensitive_count = len(sensitive_logs)
            ratio = sensitive_count / total
@@ -17645,21 +17645,21 @@ Content-Type: application/json
            return None
        
        def _detect_frequency_spike(self, access_logs: List[DataAccessLog]) -> Optional[Dict]:
-           """检测访问频率突增"""
+           """檢測訪問频率突增"""
            if len(access_logs) < 2:
                return None
            
-           # 计算时间间隔
+           # 计算時間间隔
            time_diffs = [
                (access_logs[i].timestamp - access_logs[i-1].timestamp).total_seconds()
                for i in range(1, len(access_logs))
            ]
            
-           # 计算平均间隔和标准差
+           # 计算平均间隔和標准差
            avg_interval = sum(time_diffs) / len(time_diffs)
            std_dev = (sum((x - avg_interval) ** 2 for x in time_diffs) / len(time_diffs)) ** 0.5
            
-           # 檢查是否有明显突增（间隔远小于平均）
+           # 檢查是否有明显突增（间隔远小於平均）
            spike_threshold = max(1.0, avg_interval - 2 * std_dev)
            spikes = [diff for diff in time_diffs if diff < spike_threshold]
            
@@ -17677,15 +17677,15 @@ Content-Type: application/json
            pattern_analysis: Dict,
            anomaly_detection: List[Anomaly]
        ) -> float:
-           """计算风险评分"""
+           """计算風險評分"""
            score = 0.0
            
-           # 基于异常
+           # 基於異常
            for anomaly in anomaly_detection:
                weight = 0.3 if anomaly.severity == "high" else 0.1
                score += weight
            
-           # 基于敏感数据访问比例
+           # 基於敏感資料訪問比例
            sensitive_ratio = pattern_analysis["by_data_source"].get("sensitive_data_ratio", 0)
            score += sensitive_ratio * 0.4
            
@@ -17693,7 +17693,7 @@ Content-Type: application/json
            return min(1.0, max(0.0, score))
        
        def _row_to_log(self, row: Dict) -> DataAccessLog:
-           """将数据库行转换为DataAccessLog对象"""
+           """將資料庫行转换為DataAccessLog物件"""
            return DataAccessLog(
                id=row["id"],
                user_id=row["user_id"],
@@ -17710,9 +17710,9 @@ Content-Type: application/json
                timestamp=row["timestamp"]
            )
 
-   # 辅助类定义
+   # 輔助类定義
    class DataAccessLog:
-       """数据访问日志"""
+       """資料訪問日志"""
        def __init__(
            self,
            id: str,
@@ -17744,7 +17744,7 @@ Content-Type: application/json
            self.timestamp = timestamp
 
    class AccessPattern:
-       """访问模式"""
+       """訪問模式"""
        def __init__(
            self,
            pattern: List[str],
@@ -17754,7 +17754,7 @@ Content-Type: application/json
            self.frequency = frequency
 
    class Anomaly:
-       """异常检测结果"""
+       """異常檢測结果"""
        def __init__(
            self,
            type: str,
@@ -17768,7 +17768,7 @@ Content-Type: application/json
            self.details = details
 
    class AccessPatternAnalysis:
-       """访问模式分析结果"""
+       """訪問模式分析结果"""
        def __init__(
            self,
            user_id: str,
@@ -17788,160 +17788,160 @@ Content-Type: application/json
            self.timestamp = timestamp
    ```
 
-### 7.9 与其他模块的交互
+### 7.9 與其他模組的交互
 
-#### 7.9.1 与数据源注册中心交互
+#### 7.9.1 與資料源註冊中心交互
 
 ```mermaid
 sequenceDiagram
     participant DSR as Data Source Registry
     participant DCSC as Data Compliance and Security Center
     
-    DSR->>DCSC: POST /api/v1/compliance/check (新数据源创建)
-    DCSC-->>DSR: 合规性检查结果
+    DSR->>DCSC: POST /api/v1/compliance/check (新資料源创建)
+    DCSC-->>DSR: 合規性检查结果
     
-    DSR->>DCSC: GET /api/v1/compliance/check/{id} (检查现有数据源)
-    DCSC-->>DSR: 合规性检查结果
+    DSR->>DCSC: GET /api/v1/compliance/check/{id} (检查現有資料源)
+    DCSC-->>DSR: 合規性检查结果
     
-    DCSC->>DSR: GET /api/v1/data-sources/{id} (获取数据源详情)
-    DSR-->>DCSC: 数据源元数据
+    DCSC->>DSR: GET /api/v1/data-sources/{id} (獲取資料源詳情)
+    DSR-->>DCSC: 資料源元資料
 ```
 
-#### 7.9.2 与自动化媒体处理管道交互
+#### 7.9.2 與自動化媒體處理管道交互
 
 ```mermaid
 sequenceDiagram
     participant AMP as Automated Media Processing Pipeline
     participant DCSC as Data Compliance and Security Center
     
-    AMP->>DCSC: POST /api/v1/data:detect-sensitive (处理前内容检查)
-    DCSC-->>AMP: 敏感数据检测结果
+    AMP->>DCSC: POST /api/v1/data:detect-sensitive (處理前內容检查)
+    DCSC-->>AMP: 敏感資料檢測结果
     
-    AMP->>DCSC: POST /api/v1/data:redact (请求数据脱敏)
-    DCSC-->>AMP: 脱敏后的内容
+    AMP->>DCSC: POST /api/v1/data:redact (请求資料脱敏)
+    DCSC-->>AMP: 脱敏後的內容
     
-    DCSC->>AMP: GET /api/v1/media/processingTasks/{task_id} (监控处理任务)
-    AMP-->>DCSC: 处理任务详情
+    DCSC->>AMP: GET /api/v1/media/processingTasks/{task_id} (監控處理任務)
+    AMP-->>DCSC: 處理任務詳情
 ```
 
-#### 7.9.3 与AI辅助开发系统交互
+#### 7.9.3 與AI輔助開发系統交互
 
 ```mermaid
 sequenceDiagram
     participant AIDS as AI-Assisted Development System
     participant DCSC as Data Compliance and Security Center
     
-    AIDS->>DCSC: GET /api/v1/compliance/rules (获取合规规则)
-    DCSC-->>AIDS: 合规规则列表
+    AIDS->>DCSC: GET /api/v1/compliance/rules (獲取合規规则)
+    DCSC-->>AIDS: 合規规则列表
     
-    DCSC->>AIDS: POST /api/v1/code:generate (请求合规代码生成)
-    AIDS-->>DCSC: 合规代码示例
+    DCSC->>AIDS: POST /api/v1/code:generate (请求合規代码生成)
+    AIDS-->>DCSC: 合規代码示例
     
-    DCSC->>AIDS: GET /api/v1/diagnose (诊断合规问题)
+    DCSC->>AIDS: GET /api/v1/diagnose (诊断合規问题)
     AIDS-->>DCSC: 诊断结果和解决方案
 ```
 
-#### 7.9.4 与数据处理工作流引擎交互
+#### 7.9.4 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
     participant DPWE as Data Processing Workflow Engine
     participant DCSC as Data Compliance and Security Center
     
-    DPWE->>DCSC: POST /api/v1/workflows:validate (工作流合规验证)
-    DCSC-->>DPWE: 合规性验证结果
+    DPWE->>DCSC: POST /api/v1/workflows:validate (工作流合規验證)
+    DCSC-->>DPWE: 合規性验證结果
     
-    DPWE->>DCSC: GET /api/v1/consents (检查用户同意)
-    DCSC-->>DPWE: 同意状态
+    DPWE->>DCSC: GET /api/v1/consents (检查用戶同意)
+    DCSC-->>DPWE: 同意狀態
     
-    DCSC->>DPWE: POST /api/v1/workflowInstances/{id}:monitor (监控工作流执行)
-    DPWE-->>DCSC: 工作流执行详情
+    DCSC->>DPWE: POST /api/v1/workflowInstances/{id}:monitor (監控工作流执行)
+    DPWE-->>DCSC: 工作流执行詳情
 ```
 
-## 8. 分布式爬虫集群管理系统 (Distributed Crawler Cluster Management System)
+## 8. 分布式爬蟲集群管理系統 (Distributed Crawler Cluster Management System)
 
-### 8.1 模块概述
-分布式爬虫集群管理系统是镜界平台的爬虫执行引擎，负责管理和调度分布式爬虫节点，实现高效、可靠的数据采集。它提供爬虫任务调度、资源管理、状态监控和动态扩展能力，支持大规模分布式爬取任务。
+### 8.1 模組概述
+分布式爬蟲集群管理系統是镜界平台的爬蟲执行引擎，負責管理和调度分布式爬蟲節点，實現高效、可靠的資料採集。它提供爬蟲任務调度、資源管理、狀態監控和動态擴展能力，支援大規模分布式爬取任務。
 
-### 8.2 详细功能清单
+### 8.2 詳細功能清單
 
 #### 8.2.1 核心功能
-- **爬虫节点管理**
-  - 节点自动发现与注册
-  - 节点状态监控
-  - 节点资源监控（CPU、内存、网络）
-  - 节点健康检查
-- **任务调度与分配**
-  - 爬虫任务队列管理
-  - 动态任务分配算法
-  - 任务优先级管理
-  - 任务分片与合并
-- **爬虫执行管理**
-  - 爬虫启动与停止
-  - 爬虫参数配置
-  - 爬虫执行状态监控
+- **爬蟲節点管理**
+  - 節点自動發現與註冊
+  - 節点狀態監控
+  - 節点資源監控（CPU、内存、网络）
+  - 節点健康检查
+- **任務调度與分配**
+  - 爬蟲任務隊列管理
+  - 動态任務分配算法
+  - 任務优先级管理
+  - 任務分片與合並
+- **爬蟲执行管理**
+  - 爬蟲启動與停止
+  - 爬蟲參數配置
+  - 爬蟲执行狀態監控
   - 执行结果收集
-- **资源管理**
-  - 资源配额管理
-  - 动态资源分配
-  - 资源使用监控
-  - 资源限制策略
+- **資源管理**
+  - 資源配额管理
+  - 動态資源分配
+  - 資源使用監控
+  - 資源限制策略
 
 #### 8.2.2 高级功能
 - **智能调度策略**
-  - 基于内容的调度
-  - 基于地理位置的调度
-  - 基于反爬特征的调度
+  - 基於內容的调度
+  - 基於地理位置的调度
+  - 基於反爬特徵的调度
   - 负载均衡策略
-- **弹性扩展**
-  - 自动扩缩容
-  - 预热机制
+- **弹性擴展**
+  - 自動扩缩容
+  - 預热機制
   - 优雅下线
   - 容量规划
-- **爬虫隔离与沙箱**
-  - 爬虫运行沙箱
-  - 资源隔离
+- **爬蟲隔离與沙箱**
+  - 爬蟲运行沙箱
+  - 資源隔离
   - 网络隔离
   - 安全策略执行
-- **任务依赖管理**
-  - 任务依赖关系
-  - 任务编排
-  - 条件触发
+- **任務依賴管理**
+  - 任務依賴關係
+  - 任務编排
+  - 條件触发
   - 错误重试策略
 
-### 8.3 技术架构
+### 8.3 技術架構
 
-#### 8.3.1 架构图
+#### 8.3.1 架構图
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                      分布式爬虫集群管理系统 (DCCMS)                                           │
+│                      分布式爬蟲集群管理系統 (DCCMS)                                           │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
 │  控制层               │  调度层               │  执行层                                    │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 集群管理服务        │ • 任务调度器          │ • 爬虫执行器                               │
-│ • API网关             │ • 资源分配器          │ • 状态报告器                              │
-│ • 节点注册服务        │ • 优先级管理器        │ • 心跳监控器                              │
-│ • 配置管理服务        │ • 依赖解析器          │ • 资源监控器                              │
+│ • 集群管理服務        │ • 任務调度器          │ • 爬蟲执行器                               │
+│ • API网關             │ • 資源分配器          │ • 狀態报告器                              │
+│ • 節点註冊服務        │ • 优先级管理器        │ • 心跳監控器                              │
+│ • 配置管理服務        │ • 依賴解析器          │ • 資源監控器                              │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 8.3.2 服务边界与交互
-- **输入**：
-  - 爬虫任务定义（来自数据处理工作流引擎）
-  - 爬虫节点注册
-  - 节点状态报告
-  - 资源使用指标
-- **输出**：
-  - 爬虫任务执行状态
-  - 爬虫结果数据
-  - 集群健康状态
-  - 资源使用报告
+#### 8.3.2 服務边界與交互
+- **輸入**：
+  - 爬蟲任務定義（來自資料處理工作流引擎）
+  - 爬蟲節点註冊
+  - 節点狀態报告
+  - 資源使用指標
+- **輸出**：
+  - 爬蟲任務执行狀態
+  - 爬蟲结果資料
+  - 集群健康狀態
+  - 資源使用报告
 
-### 8.4 核心组件详细实现
+### 8.4 核心組件詳細實現
 
-#### 8.4.1 爬虫节点管理服务
+#### 8.4.1 爬蟲節点管理服務
 
-**技术实现：**
+**技術實現：**
 ```python
 import uuid
 import time
@@ -17951,7 +17951,7 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 
 class CrawlerNodeManager:
-    """爬虫节点管理服务，负责节点注册、状态监控和健康检查"""
+    """爬蟲節点管理服務，負責節点註冊、狀態監控和健康检查"""
     
     def __init__(
         self,
@@ -17971,21 +17971,21 @@ class CrawlerNodeManager:
         self.lock = threading.Lock()
     
     def start(self):
-        """启动节点管理服务"""
+        """启動節点管理服務"""
         if self.running:
             return
         
         self.running = True
         self.logger.info("Starting crawler node manager")
         
-        # 启动心跳处理线程
+        # 启動心跳處理线程
         self.heartbeat_thread = threading.Thread(
             target=self._process_heartbeats,
             daemon=True
         )
         self.heartbeat_thread.start()
         
-        # 启动健康检查线程
+        # 启動健康检查线程
         self.health_check_thread = threading.Thread(
             target=self._perform_health_checks,
             daemon=True
@@ -17995,7 +17995,7 @@ class CrawlerNodeManager:
         self.logger.info("Crawler node manager started")
     
     def stop(self):
-        """停止节点管理服务"""
+        """停止節点管理服務"""
         if not self.running:
             return
         
@@ -18015,21 +18015,21 @@ class CrawlerNodeManager:
         node_info: NodeInfo
     ) -> NodeRegistrationResult:
         """
-        注册爬虫节点
+        註冊爬蟲節点
         
-        :param node_info: 节点信息
-        :return: 注册结果
+        :param node_info: 節点資訊
+        :return: 註冊结果
         """
         with self.lock:
-            # 生成节点ID
+            # 生成節点ID
             node_id = f"node-{uuid.uuid4().hex[:8]}"
             node_info.id = node_id
             
-            # 设置默认状态
+            # 设置默认狀態
             node_info.status = "online"
             node_info.last_heartbeat = time.time()
             
-            # 保存节点信息
+            # 保存節点資訊
             self.node_registry.register_node(node_info)
             
             # 发布事件
@@ -18048,18 +18048,18 @@ class CrawlerNodeManager:
     
     def unregister_node(self, node_id: str):
         """
-        注销爬虫节点
+        註销爬蟲節点
         
-        :param node_id: 节点ID
+        :param node_id: 節点ID
         """
         with self.lock:
-            # 获取节点信息
+            # 獲取節点資訊
             node_info = self.node_registry.get_node(node_id)
             if not node_info:
                 self.logger.warning("Node %s not found for unregistration", node_id)
                 return
             
-            # 更新状态
+            # 更新狀態
             node_info.status = "offline"
             node_info.last_heartbeat = 0
             self.node_registry.update_node(node_info)
@@ -18073,19 +18073,19 @@ class CrawlerNodeManager:
     
     def handle_heartbeat(self, node_id: str, heartbeat: NodeHeartbeat):
         """
-        处理节点心跳
+        處理節点心跳
         
-        :param node_id: 节点ID
-        :param heartbeat: 心跳数据
+        :param node_id: 節点ID
+        :param heartbeat: 心跳資料
         """
         with self.lock:
-            # 获取节点信息
+            # 獲取節点資訊
             node_info = self.node_registry.get_node(node_id)
             if not node_info:
                 self.logger.warning("Received heartbeat from unknown node: %s", node_id)
                 return
             
-            # 更新节点信息
+            # 更新節点資訊
             node_info.last_heartbeat = time.time()
             node_info.status = "online"
             node_info.resources = heartbeat.resources
@@ -18102,13 +18102,13 @@ class CrawlerNodeManager:
             })
     
     def _process_heartbeats(self):
-        """处理心跳超时"""
+        """處理心跳超時"""
         while self.running:
             try:
                 current_time = time.time()
                 timeout_threshold = current_time - self.config.heartbeat_timeout
                 
-                # 检查所有节点
+                # 检查所有節点
                 nodes = self.node_registry.get_all_nodes()
                 for node in nodes:
                     if node.last_heartbeat < timeout_threshold:
@@ -18122,13 +18122,13 @@ class CrawlerNodeManager:
                 time.sleep(1)
     
     def _handle_heartbeat_timeout(self, node_id: str):
-        """处理心跳超时"""
+        """處理心跳超時"""
         with self.lock:
             node_info = self.node_registry.get_node(node_id)
             if not node_info or node_info.status == "offline":
                 return
             
-            # 更新状态
+            # 更新狀態
             node_info.status = "unresponsive"
             self.node_registry.update_node(node_info)
             
@@ -18144,10 +18144,10 @@ class CrawlerNodeManager:
         """执行健康检查"""
         while self.running:
             try:
-                # 获取需要检查的节点
+                # 獲取需要检查的節点
                 nodes = self.node_registry.get_nodes_by_status("online")
                 
-                # 并行执行健康检查
+                # 並行执行健康检查
                 with ThreadPoolExecutor(max_workers=self.config.health_check_workers) as executor:
                     futures = {
                         executor.submit(self._check_node_health, node.id): node.id
@@ -18169,21 +18169,21 @@ class CrawlerNodeManager:
                 time.sleep(1)
     
     def _check_node_health(self, node_id: str):
-        """检查节点健康状态"""
+        """检查節点健康狀態"""
         # 1. 执行健康检查
         health_status = self.health_checker.check(node_id)
         
-        # 2. 更新节点状态
+        # 2. 更新節点狀態
         with self.lock:
             node_info = self.node_registry.get_node(node_id)
             if not node_info:
                 return
             
-            # 更新健康状态
+            # 更新健康狀態
             node_info.health = health_status
             self.node_registry.update_node(node_info)
             
-            # 处理健康状态变化
+            # 處理健康狀態变化
             self._handle_health_status_change(node_id, node_info, health_status)
     
     def _handle_health_status_change(
@@ -18192,12 +18192,12 @@ class CrawlerNodeManager:
         node_info: NodeInfo,
         new_health: NodeHealthStatus
     ):
-        """处理健康状态变化"""
-        # 檢查状态是否发生变化
+        """處理健康狀態变化"""
+        # 檢查狀態是否發生变化
         if node_info.health.status == new_health.status:
             return
         
-        # 更新状态
+        # 更新狀態
         node_info.health = new_health
         self.node_registry.update_node(node_info)
         
@@ -18209,18 +18209,18 @@ class CrawlerNodeManager:
             "details": new_health.details
         })
         
-        # 根据健康状态采取行动
+        # 根據健康狀態采取行動
         if new_health.status == "unhealthy":
             self._handle_unhealthy_node(node_id)
     
     def _handle_unhealthy_node(self, node_id: str):
-        """处理不健康节点"""
-        # 1. 从调度中移除节点
+        """處理不健康節点"""
+        # 1. 從调度中移除節点
         self.event_bus.publish("scheduler.node_unavailable", {
             "node_id": node_id
         })
         
-        # 2. 重新分配任务
+        # 2. 重新分配任務
         self.event_bus.publish("task.reassign", {
             "node_id": node_id
         })
@@ -18228,14 +18228,14 @@ class CrawlerNodeManager:
         self.logger.warning("Node marked as unhealthy: %s", node_id)
 
 class NodeRegistry:
-    """节点注册表，存储节点信息"""
+    """節点註冊表，儲存節点資訊"""
     
     def __init__(self, db: Database):
         self.db = db
         self.logger = logging.getLogger(__name__)
     
     def register_node(self, node_info: NodeInfo):
-        """注册节点"""
+        """註冊節点"""
         sql = """
         INSERT INTO crawler_nodes (
             id, cluster_id, name, description, 
@@ -18269,7 +18269,7 @@ class NodeRegistry:
         })
     
     def update_node(self, node_info: NodeInfo):
-        """更新节点信息"""
+        """更新節点資訊"""
         sql = """
         UPDATE crawler_nodes SET
             name = %(name)s,
@@ -18294,25 +18294,25 @@ class NodeRegistry:
         })
     
     def get_node(self, node_id: str) -> Optional[NodeInfo]:
-        """获取节点信息"""
+        """獲取節点資訊"""
         sql = "SELECT * FROM crawler_nodes WHERE id = %(id)s"
         row = self.db.fetchone(sql, {"id": node_id})
         return self._row_to_node(row) if row else None
     
     def get_all_nodes(self) -> List[NodeInfo]:
-        """获取所有节点"""
+        """獲取所有節点"""
         sql = "SELECT * FROM crawler_nodes"
         rows = self.db.fetchall(sql)
         return [self._row_to_node(row) for row in rows]
     
     def get_nodes_by_status(self, status: str) -> List[NodeInfo]:
-        """获取特定状态的节点"""
+        """獲取特定狀態的節点"""
         sql = "SELECT * FROM crawler_nodes WHERE status = %(status)s"
         rows = self.db.fetchall(sql, {"status": status})
         return [self._row_to_node(row) for row in rows]
     
     def _row_to_node(self, row: Dict) -> NodeInfo:
-        """将数据库行转换为NodeInfo对象"""
+        """將資料庫行转换為NodeInfo物件"""
         return NodeInfo(
             id=row["id"],
             cluster_id=row["cluster_id"],
@@ -18335,7 +18335,7 @@ class NodeRegistry:
         )
 
 class NodeHealthChecker:
-    """节点健康检查器"""
+    """節点健康检查器"""
     
     def __init__(self, config: Config):
         self.config = config
@@ -18343,12 +18343,12 @@ class NodeHealthChecker:
     
     def check(self, node_id: str) -> NodeHealthStatus:
         """
-        检查节点健康状态
+        检查節点健康狀態
         
-        :param node_id: 节点ID
-        :return: 健康状态
+        :param node_id: 節点ID
+        :return: 健康狀態
         """
-        # 1. 检查基础连通性
+        # 1. 检查基礎连通性
         if not self._check_connectivity(node_id):
             return NodeHealthStatus(
                 status="unreachable",
@@ -18356,25 +18356,25 @@ class NodeHealthChecker:
                 timestamp=datetime.utcnow()
             )
         
-        # 2. 检查资源使用
+        # 2. 检查資源使用
         resource_status = self._check_resources(node_id)
         
-        # 3. 检查任务执行
+        # 3. 检查任務执行
         task_status = self._check_tasks(node_id)
         
-        # 4. 综合健康状态
+        # 4. 综合健康狀態
         return self._determine_overall_status(resource_status, task_status)
     
     def _check_connectivity(self, node_id: str) -> bool:
-        """检查节点连通性"""
-        # 实现节点连通性检查
-        # 这里简化为返回True
+        """检查節点连通性"""
+        # 實現節点连通性检查
+        # 這里简化為返回True
         return True
     
     def _check_resources(self, node_id: str) -> Dict:
-        """检查资源使用"""
-        # 实现资源检查
-        # 这里简化为返回示例数据
+        """检查資源使用"""
+        # 實現資源检查
+        # 這里简化為返回示例資料
         return {
             "cpu_usage": 0.65,
             "memory_usage": 0.75,
@@ -18383,9 +18383,9 @@ class NodeHealthChecker:
         }
     
     def _check_tasks(self, node_id: str) -> Dict:
-        """检查任务执行"""
-        # 实现任务检查
-        # 这里简化为返回示例数据
+        """检查任務执行"""
+        # 實現任務检查
+        # 這里简化為返回示例資料
         return {
             "task_count": 5,
             "task_errors": 0,
@@ -18397,8 +18397,8 @@ class NodeHealthChecker:
         resource_status: Dict,
         task_status: Dict
     ) -> NodeHealthStatus:
-        """确定整体健康状态"""
-        # 1. 檢查资源使用是否超标
+        """确定整體健康狀態"""
+        # 1. 檢查資源使用是否超標
         if resource_status["cpu_usage"] > 0.9 or resource_status["memory_usage"] > 0.95:
             return NodeHealthStatus(
                 status="unhealthy",
@@ -18410,7 +18410,7 @@ class NodeHealthChecker:
                 timestamp=datetime.utcnow()
             )
         
-        # 2. 檢查任务错误率
+        # 2. 檢查任務错误率
         if task_status["task_errors"] > 0:
             return NodeHealthStatus(
                 status="degraded",
@@ -18421,7 +18421,7 @@ class NodeHealthChecker:
                 timestamp=datetime.utcnow()
             )
         
-        # 3. 檢查任务延迟
+        # 3. 檢查任務延遲
         if task_status["task_latency"] > 5.0:
             return NodeHealthStatus(
                 status="degraded",
@@ -18432,7 +18432,7 @@ class NodeHealthChecker:
                 timestamp=datetime.utcnow()
             )
         
-        # 4. 健康状态
+        # 4. 健康狀態
         return NodeHealthStatus(
             status="healthy",
             details={
@@ -18443,9 +18443,9 @@ class NodeHealthChecker:
             timestamp=datetime.utcnow()
         )
 
-# 辅助类定义
+# 輔助类定義
 class NodeInfo:
-    """节点信息"""
+    """節点資訊"""
     def __init__(
         self,
         id: str,
@@ -18479,7 +18479,7 @@ class NodeInfo:
         self.updated_at = updated_at
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "id": self.id,
             "cluster_id": self.cluster_id,
@@ -18498,7 +18498,7 @@ class NodeInfo:
         }
 
 class NodeHealthStatus:
-    """节点健康状态"""
+    """節点健康狀態"""
     def __init__(
         self,
         status: str,
@@ -18510,7 +18510,7 @@ class NodeHealthStatus:
         self.timestamp = timestamp or datetime.utcnow()
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "status": self.status,
             "details": self.details,
@@ -18518,7 +18518,7 @@ class NodeHealthStatus:
         }
 
 class NodeHeartbeat:
-    """节点心跳"""
+    """節点心跳"""
     def __init__(
         self,
         node_id: str,
@@ -18534,7 +18534,7 @@ class NodeHeartbeat:
         self.active_tasks = active_tasks
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "node_id": self.node_id,
             "timestamp": self.timestamp,
@@ -18544,7 +18544,7 @@ class NodeHeartbeat:
         }
 
 class NodeRegistrationResult:
-    """节点注册结果"""
+    """節点註冊结果"""
     def __init__(
         self,
         node_id: str,
@@ -18556,9 +18556,9 @@ class NodeRegistrationResult:
         self.initial_status = initial_status
 ```
 
-#### 8.4.2 任务调度器
+#### 8.4.2 任務调度器
 
-**技术实现：**
+**技術實現：**
 ```python
 import heapq
 import time
@@ -18567,7 +18567,7 @@ from typing import Dict, List, Optional, Set
 import threading
 
 class TaskScheduler:
-    """任务调度器，负责爬虫任务的分配和调度"""
+    """任務调度器，負責爬蟲任務的分配和调度"""
     
     def __init__(
         self,
@@ -18587,14 +18587,14 @@ class TaskScheduler:
         self.assigned_tasks = {}  # task_id -> node_id
     
     def start(self):
-        """启动调度器"""
+        """启動调度器"""
         if self.running:
             return
         
         self.running = True
         self.logger.info("Starting task scheduler")
         
-        # 启动调度线程
+        # 启動调度线程
         self.scheduler_thread = threading.Thread(
             target=self._schedule_loop,
             daemon=True
@@ -18621,13 +18621,13 @@ class TaskScheduler:
         """调度循环"""
         while self.running:
             try:
-                # 1. 获取可用节点
+                # 1. 獲取可用節点
                 online_nodes = self.node_manager.get_nodes_by_status("online")
                 if not online_nodes:
                     time.sleep(self.config.schedule_interval)
                     continue
                 
-                # 2. 获取待调度任务
+                # 2. 獲取待调度任務
                 tasks = self.task_queue.get_pending_tasks(
                     limit=self.config.max_tasks_per_schedule
                 )
@@ -18635,14 +18635,14 @@ class TaskScheduler:
                     time.sleep(self.config.schedule_interval)
                     continue
                 
-                # 3. 为每个任务选择合适的节点
+                # 3. 為每個任務选择合适的節点
                 for task in tasks:
                     node_id = self._select_node(task, online_nodes)
                     if node_id:
-                        # 分配任务
+                        # 分配任務
                         self._assign_task(task, node_id)
                     else:
-                        # 没有合适的节点，稍后重试
+                        # 沒有合适的節点，稍後重试
                         self.logger.debug(
                             "No suitable node for task %s, will retry later", 
                             task.id
@@ -18660,8 +18660,8 @@ class TaskScheduler:
         task: CrawlerTask,
         online_nodes: List[NodeInfo]
     ) -> Optional[str]:
-        """选择最适合的节点"""
-        # 1. 过滤不支持任务类型的节点
+        """选择最适合的節点"""
+        # 1. 過滤不支援任務類型的節点
         compatible_nodes = [
             node for node in online_nodes
             if self._is_node_compatible(node, task)
@@ -18686,8 +18686,8 @@ class TaskScheduler:
         node: NodeInfo,
         task: CrawlerTask
     ) -> bool:
-        """检查节点是否支持任务"""
-        # 1. 檢查节点类型
+        """检查節点是否支援任務"""
+        # 1. 檢查節点類型
         if task.node_type and node.node_type != task.node_type:
             return False
         
@@ -18696,7 +18696,7 @@ class TaskScheduler:
             if capability not in node.capabilities or node.capabilities[capability] < required:
                 return False
         
-        # 3. 檢查资源要求
+        # 3. 檢查資源要求
         if task.min_resources:
             for resource, required in task.min_resources.items():
                 if resource not in node.resources or node.resources[resource] < required:
@@ -18708,7 +18708,7 @@ class TaskScheduler:
         self,
         nodes: List[NodeInfo]
     ) -> Optional[str]:
-        """选择负载最小的节点"""
+        """选择负载最小的節点"""
         if not nodes:
             return None
         
@@ -18721,11 +18721,11 @@ class TaskScheduler:
         nodes: List[NodeInfo],
         task: CrawlerTask
     ) -> Optional[str]:
-        """选择地理位置最近的节点"""
+        """选择地理位置最近的節点"""
         if not task.target_region or not nodes:
             return self._select_least_loaded_node(nodes)
         
-        # 计算每个节点与目标区域的距离
+        # 计算每個節点與目標区域的距离
         node_distances = []
         for node in nodes:
             distance = self._calculate_geo_distance(node.region, task.target_region)
@@ -18741,7 +18741,7 @@ class TaskScheduler:
         target_region: str
     ) -> float:
         """计算地理位置距离"""
-        # 简单实现：基于区域代码的匹配
+        # 简单實現：基於区域代码的匹配
         if node_region == target_region:
             return 0.0
         elif node_region[:2] == target_region[:2]:  # 同一国家
@@ -18754,11 +18754,11 @@ class TaskScheduler:
         nodes: List[NodeInfo],
         task: CrawlerTask
     ) -> Optional[str]:
-        """选择基于内容特性的节点"""
+        """选择基於內容特性的節点"""
         if not task.content_features or not nodes:
             return self._select_least_loaded_node(nodes)
         
-        # 计算每个节点与内容特征的匹配度
+        # 计算每個節点與內容特徵的匹配度
         node_matches = []
         for node in nodes:
             match_score = self._calculate_content_match(node, task.content_features)
@@ -18773,20 +18773,20 @@ class TaskScheduler:
         node: NodeInfo,
         content_features: Dict
     ) -> float:
-        """计算内容匹配度"""
+        """计算內容匹配度"""
         score = 0.0
         
-        # 检查节点是否支持内容类型
+        # 检查節点是否支援內容類型
         if "content_type" in content_features:
             if content_features["content_type"] in node.capabilities.get("content_types", []):
                 score += 0.4
         
-        # 检查节点是否支持特定技术
+        # 检查節点是否支援特定技術
         if "technology" in content_features:
             if content_features["technology"] in node.capabilities.get("technologies", []):
                 score += 0.3
         
-        # 检查节点是否处理过类似内容
+        # 检查節点是否處理過类似內容
         if "similarity" in content_features:
             score += content_features["similarity"] * 0.3
         
@@ -18797,15 +18797,15 @@ class TaskScheduler:
         task: CrawlerTask,
         node_id: str
     ):
-        """分配任务到节点"""
+        """分配任務到節点"""
         with self.lock:
-            # 1. 更新任务状态
+            # 1. 更新任務狀態
             task.status = "assigned"
             task.assigned_node = node_id
             task.assigned_at = time.time()
             self.task_queue.update_task(task)
             
-            # 2. 记录分配
+            # 2. 記錄分配
             self.assigned_tasks[task.id] = node_id
             
             # 3. 发布事件
@@ -18824,18 +18824,18 @@ class TaskScheduler:
         result: TaskResult
     ):
         """
-        处理任务完成
+        處理任務完成
         
-        :param task_id: 任务ID
-        :param node_id: 节点ID
-        :param result: 任务结果
+        :param task_id: 任務ID
+        :param node_id: 節点ID
+        :param result: 任務结果
         """
         with self.lock:
-            # 1. 移除分配记录
+            # 1. 移除分配記錄
             if task_id in self.assigned_tasks:
                 del self.assigned_tasks[task_id]
             
-            # 2. 更新任务状态
+            # 2. 更新任務狀態
             task = self.task_queue.get_task(task_id)
             if not task:
                 self.logger.warning("Task %s not found for completion", task_id)
@@ -18867,17 +18867,17 @@ class TaskScheduler:
         node_id: str
     ):
         """
-        处理任务超时
+        處理任務超時
         
-        :param task_id: 任务ID
-        :param node_id: 节点ID
+        :param task_id: 任務ID
+        :param node_id: 節点ID
         """
         with self.lock:
-            # 1. 移除分配记录
+            # 1. 移除分配記錄
             if task_id in self.assigned_tasks:
                 del self.assigned_tasks[task_id]
             
-            # 2. 更新任务状态
+            # 2. 更新任務狀態
             task = self.task_queue.get_task(task_id)
             if not task:
                 self.logger.warning("Task %s not found for timeout", task_id)
@@ -18887,7 +18887,7 @@ class TaskScheduler:
             task.completed_at = time.time()
             self.task_queue.update_task(task)
             
-            # 3. 重新入队（如果需要重试）
+            # 3. 重新入隊（如果需要重试）
             if task.retry_count < task.max_retries:
                 task.retry_count += 1
                 task.status = "pending"
@@ -18914,14 +18914,14 @@ class TaskScheduler:
             })
 
 class TaskQueue:
-    """任务队列，管理待处理任务"""
+    """任務隊列，管理待處理任務"""
     
     def __init__(self, db: Database):
         self.db = db
         self.logger = logging.getLogger(__name__)
     
     def add_task(self, task: CrawlerTask):
-        """添加任务到队列"""
+        """添加任務到隊列"""
         sql = """
         INSERT INTO crawler_tasks (
             id, project_id, workflow_id, task_type,
@@ -18959,7 +18959,7 @@ class TaskQueue:
         self,
         limit: int = 100
     ) -> List[CrawlerTask]:
-        """获取待处理任务"""
+        """獲取待處理任務"""
         sql = """
         SELECT * FROM crawler_tasks 
         WHERE status = 'pending'
@@ -18971,13 +18971,13 @@ class TaskQueue:
         return [self._row_to_task(row) for row in rows]
     
     def get_task(self, task_id: str) -> Optional[CrawlerTask]:
-        """获取任务详情"""
+        """獲取任務詳情"""
         sql = "SELECT * FROM crawler_tasks WHERE id = %(id)s"
         row = self.db.fetchone(sql, {"id": task_id})
         return self._row_to_task(row) if row else None
     
     def update_task(self, task: CrawlerTask):
-        """更新任务状态"""
+        """更新任務狀態"""
         sql = """
         UPDATE crawler_tasks SET
             status = %(status)s,
@@ -19001,9 +19001,9 @@ class TaskQueue:
             "updated_at": datetime.utcnow()
         })
 
-# 辅助类定义
+# 輔助类定義
 class CrawlerTask:
-    """爬虫任务"""
+    """爬蟲任務"""
     def __init__(
         self,
         id: str,
@@ -19049,7 +19049,7 @@ class CrawlerTask:
         self.max_retries = max_retries
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "id": self.id,
             "project_id": self.project_id,
@@ -19074,7 +19074,7 @@ class CrawlerTask:
         }
 
 class TaskResult:
-    """任务结果"""
+    """任務结果"""
     def __init__(
         self,
         success: bool,
@@ -19089,7 +19089,7 @@ class TaskResult:
         self.timestamp = datetime.utcnow()
     
     def to_dict(self) -> Dict:
-        """转换为字典格式"""
+        """转换為字典格式"""
         return {
             "success": self.success,
             "data": self.data,
@@ -19099,12 +19099,12 @@ class TaskResult:
         }
 ```
 
-### 8.5 数据模型详细定义
+### 8.5 資料模型詳細定義
 
-#### 8.5.1 爬虫节点表
+#### 8.5.1 爬蟲節点表
 
 ```sql
--- 爬虫节点表
+-- 爬蟲節点表
 CREATE TABLE crawler_nodes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     cluster_id UUID NOT NULL REFERENCES crawler_clusters(id) ON DELETE CASCADE,
@@ -19130,7 +19130,7 @@ CREATE TABLE crawler_nodes (
     INDEX idx_nodes_last_heartbeat ON crawler_nodes(last_heartbeat DESC)
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_crawler_nodes_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -19145,10 +19145,10 @@ FOR EACH ROW
 EXECUTE FUNCTION update_crawler_nodes_modtime();
 ```
 
-#### 8.5.2 爬虫任务表
+#### 8.5.2 爬蟲任務表
 
 ```sql
--- 爬虫任务表
+-- 爬蟲任務表
 CREATE TABLE crawler_tasks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -19181,10 +19181,10 @@ CREATE TABLE crawler_tasks (
 );
 ```
 
-#### 8.5.3 爬虫任务执行表
+#### 8.5.3 爬蟲任務执行表
 
 ```sql
--- 爬虫任务执行表
+-- 爬蟲任務执行表
 CREATE TABLE crawler_task_executions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     task_id UUID NOT NULL REFERENCES crawler_tasks(id) ON DELETE CASCADE,
@@ -19204,10 +19204,10 @@ CREATE TABLE crawler_task_executions (
 );
 ```
 
-#### 8.5.4 爬虫集群表
+#### 8.5.4 爬蟲集群表
 
 ```sql
--- 爬虫集群表
+-- 爬蟲集群表
 CREATE TABLE crawler_clusters (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -19224,7 +19224,7 @@ CREATE TABLE crawler_clusters (
     UNIQUE (project_id, name)
 );
 
--- 自动更新updated_at触发器
+-- 自動更新updated_at触发器
 CREATE OR REPLACE FUNCTION update_crawler_clusters_modtime()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -19239,11 +19239,11 @@ FOR EACH ROW
 EXECUTE FUNCTION update_crawler_clusters_modtime();
 ```
 
-### 8.6 API详细规范
+### 8.6 API詳細規範
 
-#### 8.6.1 节点管理API
+#### 8.6.1 節点管理API
 
-**注册爬虫节点 (POST /api/v1/nodes:register)**
+**註冊爬蟲節点 (POST /api/v1/nodes:register)**
 
 *请求示例:*
 ```http
@@ -19272,7 +19272,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -19285,7 +19285,7 @@ Location: /api/v1/nodes/node-1a2b3c4d
 }
 ```
 
-**发送节点心跳 (POST /api/v1/nodes/{node_id}:heartbeat)**
+**发送節点心跳 (POST /api/v1/nodes/{node_id}:heartbeat)**
 
 *请求示例:*
 ```http
@@ -19305,7 +19305,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -19317,9 +19317,9 @@ Content-Type: application/json
 }
 ```
 
-#### 8.6.2 任务管理API
+#### 8.6.2 任務管理API
 
-**创建爬虫任务 (POST /api/v1/tasks)**
+**创建爬蟲任務 (POST /api/v1/tasks)**
 
 *请求示例:*
 ```http
@@ -19359,7 +19359,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例:*
+*成功響應示例:*
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -19373,7 +19373,7 @@ Location: /api/v1/tasks/task-123
 }
 ```
 
-**获取任务状态 (GET /api/v1/tasks/{task_id})**
+**獲取任務狀態 (GET /api/v1/tasks/{task_id})**
 
 *请求示例:*
 ```http
@@ -19382,7 +19382,7 @@ Host: dccms.mirror-realm.com
 Authorization: Bearer <access_token>
 ```
 
-*成功响应示例 (处理中):*
+*成功響應示例 (處理中):*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -19426,7 +19426,7 @@ Content-Type: application/json
 }
 ```
 
-*成功响应示例 (已完成):*
+*成功響應示例 (已完成):*
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -19494,30 +19494,30 @@ Content-Type: application/json
 }
 ```
 
-### 8.7 性能优化策略
+### 8.7 效能優化策略
 
-#### 8.7.1 任务调度优化
+#### 8.7.1 任務调度優化
 
-1. **分层任务队列**
+1. **分层任務隊列**
    ```python
    class LayeredTaskQueue:
-       """分层任务队列，支持优先级和分类"""
+       """分层任務隊列，支援优先级和分類"""
        
        def __init__(self, config: Config):
            self.config = config
            self.logger = logging.getLogger(__name__)
            
-           # 创建优先级队列
+           # 创建优先级隊列
            self.priority_queues = {
                priority: PriorityQueue()
                for priority in range(1, 11)  # 1-10优先级
            }
            
-           # 创建类别队列
+           # 创建类别隊列
            self.category_queues = defaultdict(PriorityQueue)
        
        def add_task(self, task: CrawlerTask):
-           """添加任务到队列"""
+           """添加任務到隊列"""
            # 按优先级添加
            self.priority_queues[task.priority].put((task.created_at, task.id, task))
            
@@ -19530,8 +19530,8 @@ Content-Type: application/json
            max_priority: int = 10,
            categories: Optional[List[str]] = None
        ) -> Optional[CrawlerTask]:
-           """获取下一个任务"""
-           # 1. 按类别获取任务
+           """獲取下一個任務"""
+           # 1. 按类别獲取任務
            if categories:
                for category in categories:
                    if category in self.category_queues:
@@ -19539,7 +19539,7 @@ Content-Type: application/json
                        if task and task.priority <= max_priority:
                            return task
            
-           # 2. 按优先级获取任务
+           # 2. 按优先级獲取任務
            for priority in range(1, max_priority + 1):
                if not self.priority_queues[priority].empty():
                    _, _, task = self.priority_queues[priority].get()
@@ -19548,23 +19548,23 @@ Content-Type: application/json
            return None
        
        def _get_task_from_category_queue(self, category: str) -> Optional[CrawlerTask]:
-           """从类别队列获取任务"""
+           """從类别隊列獲取任務"""
            if self.category_queues[category].empty():
                return None
            
-           # 获取最高优先级任务
+           # 獲取最高优先级任務
            _, _, _, task = self.category_queues[category].get()
            return task
        
        def task_completed(self, task: CrawlerTask):
-           """任务完成处理"""
-           # 从队列中移除
+           """任務完成處理"""
+           # 從隊列中移除
            self._remove_from_priority_queue(task)
            self._remove_from_category_queues(task)
        
        def _remove_from_priority_queue(self, task: CrawlerTask):
-           """从优先级队列移除"""
-           # 简单实现：重建队列
+           """從优先级隊列移除"""
+           # 简单實現：重建隊列
            temp_queue = PriorityQueue()
            while not self.priority_queues[task.priority].empty():
                t = self.priority_queues[task.priority].get()
@@ -19573,10 +19573,10 @@ Content-Type: application/json
            self.priority_queues[task.priority] = temp_queue
        
        def _remove_from_category_queues(self, task: CrawlerTask):
-           """从类别队列移除"""
+           """從类别隊列移除"""
            for category in task.categories:
                if category in self.category_queues:
-                   # 重建类别队列
+                   # 重建类别隊列
                    temp_queue = PriorityQueue()
                    while not self.category_queues[category].empty():
                        t = self.category_queues[category].get()
@@ -19585,10 +19585,10 @@ Content-Type: application/json
                    self.category_queues[category] = temp_queue
    ```
 
-2. **批量任务分配**
+2. **批量任務分配**
    ```python
    class BatchTaskScheduler:
-       """批量任务调度器，提高调度效率"""
+       """批量任務调度器，提高调度效率"""
        
        def __init__(self, config: Config, node_manager: CrawlerNodeManager):
            self.config = config
@@ -19601,24 +19601,24 @@ Content-Type: application/json
            nodes: List[NodeInfo]
        ) -> Dict[str, List[CrawlerTask]]:
            """
-           批量调度任务
+           批量调度任務
            
-           :param tasks: 任务列表
-           :param nodes: 可用节点列表
-           :return: 节点到任务的映射
+           :param tasks: 任務列表
+           :param nodes: 可用節点列表
+           :return: 節点到任務的映射
            """
-           # 1. 按策略对任务排序
+           # 1. 按策略對任務排序
            sorted_tasks = self._sort_tasks(tasks)
            
-           # 2. 按能力对节点排序
+           # 2. 按能力對節点排序
            sorted_nodes = self._sort_nodes(nodes)
            
-           # 3. 分配任务
+           # 3. 分配任務
            assignment = {node.id: [] for node in sorted_nodes}
            node_index = 0
            
            for task in sorted_tasks:
-               # 选择节点（轮询）
+               # 选择節点（轮询）
                node = sorted_nodes[node_index]
                assignment[node.id].append(task)
                
@@ -19628,15 +19628,15 @@ Content-Type: application/json
            return assignment
        
        def _sort_tasks(self, tasks: List[CrawlerTask]) -> List[CrawlerTask]:
-           """对任务排序"""
-           # 按优先级和创建时间排序
+           """對任務排序"""
+           # 按优先级和创建時間排序
            return sorted(
                tasks,
                key=lambda t: (-t.priority, t.created_at)
            )
        
        def _sort_nodes(self, nodes: List[NodeInfo]) -> List[NodeInfo]:
-           """对节点排序"""
+           """對節点排序"""
            # 按负载排序（升序）
            return sorted(
                nodes,
@@ -19644,12 +19644,12 @@ Content-Type: application/json
            )
    ```
 
-#### 8.7.2 资源优化
+#### 8.7.2 資源優化
 
-1. **动态资源分配**
+1. **動态資源分配**
    ```python
    class DynamicResourceAllocator:
-       """动态资源分配器"""
+       """動态資源分配器"""
        
        def __init__(self, config: Config):
            self.config = config
@@ -19661,19 +19661,19 @@ Content-Type: application/json
            node: NodeInfo
        ) -> Dict[str, Any]:
            """
-           分配资源给任务
+           分配資源給任務
            
-           :param task: 任务
-           :param node: 节点
-           :return: 资源分配结果
+           :param task: 任務
+           :param node: 節点
+           :return: 資源分配结果
            """
            # 1. 基始分配
            allocation = self._initial_allocation(task, node)
            
-           # 2. 根据实时负载调整
+           # 2. 根據實時负载调整
            allocation = self._adjust_for_load(allocation, node)
            
-           # 3. 根据任务特性调整
+           # 3. 根據任務特性调整
            allocation = self._adjust_for_task(allocation, task)
            
            return allocation
@@ -19683,15 +19683,15 @@ Content-Type: application/json
            task: CrawlerTask,
            node: NodeInfo
        ) -> Dict[str, Any]:
-           """初始资源分配"""
-           # 基始分配基于任务请求
+           """初始資源分配"""
+           # 基始分配基於任務请求
            allocation = {
                "cpu_cores": min(task.min_resources.get("cpu_cores", 1), node.resources["cpu"]),
                "memory_mb": min(task.min_resources.get("memory_mb", 1024), node.resources["memory_mb"]),
                "gpu": min(task.min_resources.get("gpu", 0), node.resources["gpu"])
            }
            
-           # 确保至少分配最小资源
+           # 確保至少分配最小資源
            allocation["cpu_cores"] = max(allocation["cpu_cores"], 0.5)
            allocation["memory_mb"] = max(allocation["memory_mb"], 512)
            
@@ -19702,13 +19702,13 @@ Content-Type: application/json
            allocation: Dict[str, Any],
            node: NodeInfo
        ) -> Dict[str, Any]:
-           """根据节点负载调整资源分配"""
-           # 如果节点负载高，减少资源分配
+           """根據節点负载调整資源分配"""
+           # 如果節点负载高，减少資源分配
            if node.load > 0.7:
                allocation["cpu_cores"] *= 0.8
                allocation["memory_mb"] *= 0.9
            
-           # 如果节点负载低，增加资源分配
+           # 如果節点负载低，增加資源分配
            elif node.load < 0.3:
                allocation["cpu_cores"] = min(allocation["cpu_cores"] * 1.2, node.resources["cpu"])
                allocation["memory_mb"] = min(allocation["memory_mb"] * 1.1, node.resources["memory_mb"])
@@ -19720,26 +19720,26 @@ Content-Type: application/json
            allocation: Dict[str, Any],
            task: CrawlerTask
        ) -> Dict[str, Any]:
-           """根据任务特性调整资源分配"""
-           # 如果任务需要JavaScript渲染，增加内存
+           """根據任務特性调整資源分配"""
+           # 如果任務需要JavaScript渲染，增加内存
            if task.capabilities.get("javascript_rendering", 0) > 0:
                allocation["memory_mb"] = min(allocation["memory_mb"] * 1.5, 8192)
            
-           # 如果任务需要代理轮换，增加CPU
+           # 如果任務需要代理轮换，增加CPU
            if task.capabilities.get("proxy_rotation", 0) > 0:
                allocation["cpu_cores"] = min(allocation["cpu_cores"] * 1.3, 4.0)
            
            return allocation
    ```
 
-### 8.8 安全考虑
+### 8.8 安全考慮
 
-#### 8.8.1 节点安全
+#### 8.8.1 節点安全
 
-1. **节点认证与授权**
+1. **節点認證與授權**
    ```python
    class NodeAuthenticator:
-       """节点认证器"""
+       """節点認證器"""
        
        def __init__(self, config: Config, db: Database):
            self.config = config
@@ -19752,13 +19752,13 @@ Content-Type: application/json
            token: str
        ) -> Tuple[bool, Optional[str]]:
            """
-           认证节点
+           認證節点
            
-           :param node_id: 节点ID
-           :param token: 认证令牌
-           :return: (是否认证通过, 错误消息)
+           :param node_id: 節点ID
+           :param token: 認證令牌
+           :return: (是否認證通過, 错误消息)
            """
-           # 1. 检查节点是否存在
+           # 1. 检查節点是否存在
            node = self._get_node(node_id)
            if not node:
                return False, "Node not registered"
@@ -19767,19 +19767,19 @@ Content-Type: application/json
            if not self._validate_token(node, token):
                return False, "Invalid token"
            
-           # 3. 检查节点状态
+           # 3. 检查節点狀態
            if node["status"] != "online":
                return False, f"Node not online (status: {node['status']})"
            
            return True, None
        
        def _get_node(self, node_id: str) -> Optional[Dict]:
-           """获取节点信息"""
+           """獲取節点資訊"""
            sql = "SELECT * FROM crawler_nodes WHERE id = %(id)s"
            return self.db.fetchone(sql, {"id": node_id})
        
        def _validate_token(self, node: Dict, token: str) -> bool:
-           """验证令牌"""
+           """验證令牌"""
            # 1. 检查令牌格式
            if not re.match(r'^[a-f0-9]{64}$', token):
                return False
@@ -19789,11 +19789,11 @@ Content-Type: application/json
            return hmac.compare_digest(stored_token, token)
        
        def generate_token(self, node_id: str) -> str:
-           """生成节点认证令牌"""
-           # 1. 生成随机令牌
+           """生成節点認證令牌"""
+           # 1. 生成隨机令牌
            token = secrets.token_hex(32)
            
-           # 2. 存储令牌（哈希后）
+           # 2. 儲存令牌（哈希後）
            hashed_token = self._hash_token(token)
            self._store_token(node_id, hashed_token)
            
@@ -19804,7 +19804,7 @@ Content-Type: application/json
            return hashlib.sha256(token.encode('utf-8')).hexdigest()
        
        def _store_token(self, node_id: str, hashed_token: str):
-           """存储哈希令牌"""
+           """儲存哈希令牌"""
            sql = """
            UPDATE crawler_nodes 
            SET auth_token = %(token)s, auth_token_updated = NOW()
@@ -19816,10 +19816,10 @@ Content-Type: application/json
            })
    ```
 
-2. **节点沙箱环境**
+2. **節点沙箱环境**
    ```python
    class NodeSandbox:
-       """节点沙箱环境，限制爬虫执行"""
+       """節点沙箱环境，限制爬蟲执行"""
        
        def __init__(self, config: Config):
            self.config = config
@@ -19829,27 +19829,27 @@ Content-Type: application/json
            """
            创建沙箱环境
            
-           :param node_id: 节点ID
-           :param task: 任务
+           :param node_id: 節点ID
+           :param task: 任務
            :return: 沙箱路径
            """
-           # 1. 创建临时目录
+           # 1. 创建临時目录
            sandbox_dir = tempfile.mkdtemp(prefix=f"sandbox_{node_id}_")
            
-           # 2. 设置资源限制
+           # 2. 设置資源限制
            self._apply_resource_limits(sandbox_dir, task)
            
            # 3. 设置网络限制
            self._apply_network_limits(sandbox_dir, task)
            
-           # 4. 设置文件系统限制
+           # 4. 设置文件系統限制
            self._apply_filesystem_limits(sandbox_dir, task)
            
            return sandbox_dir
        
        def _apply_resource_limits(self, sandbox_dir: str, task: CrawlerTask):
-           """应用资源限制"""
-           # 使用cgroups限制资源
+           """应用資源限制"""
+           # 使用cgroups限制資源
            cgroup_path = f"/sys/fs/cgroup/crawler/{task.id}"
            os.makedirs(cgroup_path, exist_ok=True)
            
@@ -19878,8 +19878,8 @@ Content-Type: application/json
                ], check=True)
        
        def _apply_filesystem_limits(self, sandbox_dir: str, task: CrawlerTask):
-           """应用文件系统限制"""
-           # 使用bind mount限制文件系统访问
+           """应用文件系統限制"""
+           # 使用bind mount限制文件系統訪問
            allowed_dirs = self.config.sandbox_allowed_dirs
            for src, dest in allowed_dirs.items():
                os.makedirs(f"{sandbox_dir}{dest}", exist_ok=True)
@@ -19887,7 +19887,7 @@ Content-Type: application/json
                    "mount", "-o", "bind", src, f"{sandbox_dir}{dest}"
                ], check=True)
            
-           # 只止其他文件系统访问
+           # 只止其他文件系統訪問
            subprocess.run([
                "mount", "-o", "remount,ro", "proc", f"{sandbox_dir}/proc"
            ], check=True)
@@ -19903,85 +19903,85 @@ Content-Type: application/json
            netns_name = f"crawler_{os.path.basename(sandbox_dir)}"
            subprocess.run(["ip", "netns", "delete", netns_name], check=False)
            
-           # 3. 删除临时目录
+           # 3. 删除临時目录
            if os.path.exists(sandbox_dir):
                shutil.rmtree(sandbox_dir)
    ```
 
-### 8.9 与其他模块的交互
+### 8.9 與其他模組的交互
 
-#### 8.9.1 与数据处理工作流引擎交互
+#### 8.9.1 與資料處理工作流引擎交互
 
 ```mermaid
 sequenceDiagram
     participant DPWE as Data Processing Workflow Engine
     participant DCCMS as Distributed Crawler Cluster Management System
     
-    DPWE->>DCCMS: POST /api/v1/tasks (创建爬虫任务)
-    DCCMS-->>DPWE: 任务ID
+    DPWE->>DCCMS: POST /api/v1/tasks (创建爬蟲任務)
+    DCCMS-->>DPWE: 任務ID
     
-    loop 任务处理中
-        DCCMS->>DPWE: POST /api/v1/workflowInstances/{id}:update (更新状态)
+    loop 任務處理中
+        DCCMS->>DPWE: POST /api/v1/workflowInstances/{id}:update (更新狀態)
         DPWE-->>DCCMS: 确认
     end
     
-    DCCMS->>DPWE: POST /api/v1/workflowInstances/{id}:complete (任务完成)
+    DCCMS->>DPWE: POST /api/v1/workflowInstances/{id}:complete (任務完成)
     DPWE-->>DCCMS: 确认
 ```
 
-#### 8.9.2 与网站指纹分析引擎交互
+#### 8.9.2 與網站指紋分析引擎交互
 
 ```mermaid
 sequenceDiagram
     participant WFE as Website Fingerprinting Engine
     participant DCCMS as Distributed Crawler Cluster Management System
     
-    DCCMS->>WFE: GET /api/v1/analyze?url={url} (获取网站指纹)
-    WFE-->>DCCMS: 网站指纹数据
+    DCCMS->>WFE: GET /api/v1/analyze?url={url} (獲取網站指紋)
+    WFE-->>DCCMS: 網站指紋資料
     
-    DCCMS->>WFE: POST /api/v1/compliance-check (合规性检查)
-    WFE-->>DCCMS: 合规性检查结果
+    DCCMS->>WFE: POST /api/v1/compliance-check (合規性检查)
+    WFE-->>DCCMS: 合規性检查结果
 ```
 
-#### 8.9.3 与数据合规与安全中心交互
+#### 8.9.3 與資料合規與安全中心交互
 
 ```mermaid
 sequenceDiagram
     participant DCSC as Data Compliance and Security Center
     participant DCCMS as Distributed Crawler Cluster Management System
     
-    DCCMS->>DCSC: POST /api/v1/compliance/check (检查爬虫任务合规性)
-    DCSC-->>DCCMS: 合规性检查结果
+    DCCMS->>DCSC: POST /api/v1/compliance/check (检查爬蟲任務合規性)
+    DCSC-->>DCCMS: 合規性检查结果
     
-    DCCMS->>DCSC: POST /api/v1/data:detect-sensitive (检测爬取内容)
-    DCSC-->>DCCMS: 敏感数据检测结果
+    DCCMS->>DCSC: POST /api/v1/data:detect-sensitive (檢測爬取內容)
+    DCSC-->>DCCMS: 敏感資料檢測结果
     
-    DCCMS->>DCSC: POST /api/v1/data:redact (请求数据脱敏)
-    DCSC-->>DCCMS: 脱敏后的内容
+    DCCMS->>DCSC: POST /api/v1/data:redact (请求資料脱敏)
+    DCSC-->>DCCMS: 脱敏後的內容
 ```
 
-#### 8.9.4 与自动化媒体处理管道交互
+#### 8.9.4 與自動化媒體處理管道交互
 
 ```mermaid
 sequenceDiagram
     participant AMP as Automated Media Processing Pipeline
     participant DCCMS as Distributed Crawler Cluster Management System
     
-    DCCMS->>AMP: POST /api/v1/media:process (触发媒体处理)
-    AMP-->>DCCMS: 处理任务ID
+    DCCMS->>AMP: POST /api/v1/media:process (触发媒體處理)
+    AMP-->>DCCMS: 處理任務ID
     
-    loop 处理进行中
-        DCCMS->>AMP: GET /api/v1/media/processingTasks/{task_id} (查询状态)
-        AMP-->>DCCMS: 处理状态
+    loop 處理进行中
+        DCCMS->>AMP: GET /api/v1/media/processingTasks/{task_id} (查詢狀態)
+        AMP-->>DCCMS: 處理狀態
     end
     
-    DCCMS->>AMP: GET /api/v1/media/processingTasks/{task_id} (获取结果)
-    AMP-->>DCCMS: 处理结果和元数据
+    DCCMS->>AMP: GET /api/v1/media/processingTasks/{task_id} (獲取结果)
+    AMP-->>DCCMS: 處理结果和元資料
 ```
 
-## 9. 系统集成与部署
+## 9. 系統整合與部署
 
-### 9.1 部署架构
+### 9.1 部署架構
 
 #### 9.1.1 生产环境部署
 
@@ -19989,32 +19989,32 @@ sequenceDiagram
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                      生产环境部署                                           │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  公户端层             │  API网关层           │  服务层                                   │
+│  公户端层             │  API网關层           │  服務层                                   │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • Web UI             │ • 负载均衡器          │ • 微服务集群                               │
-│ • 移动应用            │ • API网关            │ • 数据库集群                               │
-│ • CLI工具            │ • 身证授权服务        │ • 消息队列集群                             │
-│                      │ • 限流服务            │ • 缓存集群                                 │
-│                      │ • WAF                 │ • 搜索集群                                 │
+│ • Web UI             │ • 负载均衡器          │ • 微服務集群                               │
+│ • 移動应用            │ • API网關            │ • 資料庫集群                               │
+│ • CLI工具            │ • 身證授權服務        │ • 消息隊列集群                             │
+│                      │ • 限流服務            │ • 缓存集群                                 │
+│                      │ • WAF                 │ • 搜尋集群                                 │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
-#### 9.1.2 服务部署拓扑
+#### 9.1.2 服務部署拓扑
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                    镜界平台服务部署拓扑                                     │
+│                                    镜界平台服務部署拓扑                                     │
 ├───────────────────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                               │
 │  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐                │
-│  │  数据源注册  │     │ 网站指纹分析 │     │ 数据源健康   │     │ 数据处理工作 │                │
-│  │  中心(DSR)   │<--->│ 引擎(WFE)   │<--->│ 监测系统     │<--->│ 流引擎      │                │
+│  │  資料源註冊  │     │ 網站指紋分析 │     │ 資料源健康   │     │ 資料處理工作 │                │
+│  │  中心(DSR)   │<--->│ 引擎(WFE)   │<--->│ 监测系統     │<--->│ 流引擎      │                │
 │  └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘                │
 │         ▲                   ▲                   ▲                   ▲                         │
 │         │                   │                   │                   │                         │
 │  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐                │
-│  │ 自动化媒体   │     │ AI辅助开发  │     │ 数据合规与   │     │ 分布式爬虫   │                │
-│  │ 处理管道(AMP)│<--->│ 系统(AIDS)  │<--->│ 安全中心     │<--->│ 集群管理系统 │                │
+│  │ 自動化媒體   │     │ AI輔助開发  │     │ 資料合規與   │     │ 分布式爬蟲   │                │
+│  │ 處理管道(AMP)│<--->│ 系統(AIDS)  │<--->│ 安全中心     │<--->│ 集群管理系統 │                │
 │  └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘                │
 │                                                                                               │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -20022,9 +20022,9 @@ sequenceDiagram
 
 ### 9.2 部署流程
 
-#### 9.2.1 基础设施准备
+#### 9.2.1 基礎設施准備
 
-1. **云资源准备**
+1. **云資源准備**
    ```bash
    # 创建VPC网络
    aws ec2 create-vpc --cidr-block 10.0.0.0/16
@@ -20055,9 +20055,9 @@ sequenceDiagram
      --node-ami auto
    ```
 
-#### 9.2.2 服务部署
+#### 9.2.2 服務部署
 
-1. **数据库部署**
+1. **資料庫部署**
    ```yaml
    # postgres-deployment.yaml
    apiVersion: apps/v1
@@ -20111,7 +20111,7 @@ sequenceDiagram
        app: postgres
    ```
 
-2. **微服务部署**
+2. **微服務部署**
    ```yaml
    # dsr-deployment.yaml
    apiVersion: apps/v1
@@ -20170,7 +20170,7 @@ sequenceDiagram
 
 #### 9.2.3 配置管理
 
-1. **配置文件结构**
+1. **配置文件結構**
    ```
    config/
    ├── base/
@@ -20188,7 +20188,7 @@ sequenceDiagram
        └── overrides.yaml
    ```
 
-2. **配置管理服务实现**
+2. **配置管理服務實現**
    ```python
    import os
    import yaml
@@ -20205,20 +20205,20 @@ sequenceDiagram
        
        def _load_config(self) -> Dict[str, Any]:
            """加载配置"""
-           # 1. 加载基础配置
+           # 1. 加载基礎配置
            base_config = self._load_yaml("config/base/application.yaml")
            
            # 2. 加载环境特定配置
            env_config = self._load_yaml(f"config/{self.env}/application.yaml")
            
-           # 3. 加载覆盖配置
+           # 3. 加载覆蓋配置
            overrides = self._load_yaml(f"config/{self.env}/overrides.yaml")
            
-           # 4. 合并配置
+           # 4. 合並配置
            config = self._deep_merge(base_config, env_config)
            config = self._deep_merge(config, overrides)
            
-           # 5. 从环境变量覆盖
+           # 5. 從环境变量覆蓋
            config = self._apply_env_overrides(config)
            
            return config
@@ -20245,10 +20245,10 @@ sequenceDiagram
            return result
        
        def _apply_env_overrides(self, config: Dict) -> Dict:
-           """应用环境变量覆盖"""
+           """应用环境变量覆蓋"""
            for key, value in os.environ.items():
                if key.startswith("APP_"):
-                   # 转换为配置路径
+                   # 转换為配置路径
                    config_path = key[4:].lower().replace('_', '.')
                    self._set_config_value(config, config_path, value)
            
@@ -20264,7 +20264,7 @@ sequenceDiagram
                    current[key] = {}
                current = current[key]
            
-           # 转换值类型
+           # 转换值類型
            if isinstance(current[keys[-1]], bool):
                value = value.lower() == 'true'
            elif isinstance(current[keys[-1]], int):
@@ -20275,7 +20275,7 @@ sequenceDiagram
            current[keys[-1]] = value
        
        def get(self, path: str, default: Any = None) -> Any:
-           """获取配置值"""
+           """獲取配置值"""
            keys = path.split('.')
            current = self.config
            
@@ -20287,7 +20287,7 @@ sequenceDiagram
            return current
        
        def get_database_config(self) -> Dict:
-           """获取数据库配置"""
+           """獲取資料庫配置"""
            return {
                "host": self.get("database.host", "localhost"),
                "port": self.get("database.port", 5432),
@@ -20297,11 +20297,11 @@ sequenceDiagram
            }
    ```
 
-### 9.3 监控与告警
+### 9.3 監控與告警
 
-#### 9.3.1 监控指标
+#### 9.3.1 監控指標
 
-1. **系统级指标**
+1. **系統级指標**
    ```yaml
    # system-metrics.yaml
    system:
@@ -20319,7 +20319,7 @@ sequenceDiagram
        egress: "system_network_egress"
    ```
 
-2. **应用级指标**
+2. **应用级指標**
    ```yaml
    # application-metrics.yaml
    application:
@@ -20342,7 +20342,7 @@ sequenceDiagram
 
 #### 9.3.2 告警规则
 
-1. **系统健康告警**
+1. **系統健康告警**
    ```yaml
    # system-alerts.yaml
    alerts:
@@ -20394,20 +20394,20 @@ sequenceDiagram
        description: "Queue size is {{ $value }} (threshold: 1000)"
    ```
 
-### 9.4 持续集成与持续部署
+### 9.4 持續整合與持續部署
 
 #### 9.4.1 CI/CD流水线
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                     CI/CD流水线设计                                         │
+│                                     CI/CD流水线設計                                         │
 ├───────────────────────┬───────────────────────┬───────────────────────────────────────────────┤
-│  代码阶段             │  构建阶段             │  部署阶段                                  │
+│  代码阶段             │  構建阶段             │  部署阶段                                  │
 ├───────────────────────┼───────────────────────┼───────────────────────────────────────────────┤
-│ • 代码提交            │ • 代码构建            │ • 单元测试部署                             │
-│ • 静设检查            │ • 单元测试            │ • 自动化测试部署                           │
-│ • 代码审查            │ • 安全扫描            │ • 预产环境部署                             │
-│ • 单元测试            │ • 镜镜构建            │ • 蓝度发布                                 │
+│ • 代码提交            │ • 代码構建            │ • 单元测试部署                             │
+│ • 静设检查            │ • 单元测试            │ • 自動化测试部署                           │
+│ • 代码审查            │ • 安全扫描            │ • 預产环境部署                             │
+│ • 单元测试            │ • 镜镜構建            │ • 藍度发布                                 │
 └───────────────────────┴───────────────────────┴───────────────────────────────────────────────┘
 ```
 
@@ -20505,31 +20505,31 @@ sequenceDiagram
              docker-compose -f docker-compose.prod.yml up -d --build
    ```
 
-#### 9.4.3 蓝度发布策略
+#### 9.4.3 藍度发布策略
 
-1. **蓝绿部署实现**
+1. **藍綠部署實現**
    ```bash
    # blue-green-deploy.sh
    #!/bin/bash
    
    set -e
    
-   # 参数
+   # 參數
    SERVICE_NAME=$1
    NEW_VERSION=$2
    TRAFFIC_PERCENTAGE=${3:-0}
    
    echo "Starting blue-green deployment for $SERVICE_NAME to version $NEW_VERSION"
    
-   # 1. 部署新版本（绿色环境）
+   # 1. 部署新版本（綠色环境）
    echo "Deploying new version to green environment"
    kubectl apply -f manifests/$SERVICE_NAME-green.yaml
    
-   # 2. 等待新版本准备就绪
+   # 2. 等待新版本准備就绪
    echo "Waiting for green environment to be ready"
    kubectl rollout status deployment/$SERVICE_NAME-green
    
-   # 3. 逐步切换流量
+   # 3. 逐步切換流量
    if [ "$TRAFFIC_PERCENTAGE" -gt 0 ]; then
      echo "Shifting $TRAFFIC_PERCENTAGE% of traffic to green environment"
      kubectl patch virtualservice/$SERVICE_NAME -n istio-system -p \
@@ -20544,7 +20544,7 @@ sequenceDiagram
    echo "Running smoke tests"
    ./smoke-tests.sh $SERVICE_NAME
    
-   # 5. 完成切换或回滚
+   # 5. 完成切換或回滚
    if [ $? -eq 0 ]; then
      echo "Deployment successful, cleaning up old version"
      kubectl delete deployment/$SERVICE_NAME-blue
@@ -20556,14 +20556,14 @@ sequenceDiagram
    fi
    ```
 
-2. **金丝雀发布实现**
+2. **金丝雀发布實現**
    ```bash
    # canary-release.sh
    #!/bin/bash
    
    set -e
    
-   # 参数
+   # 參數
    SERVICE_NAME=$1
    NEW_VERSION=$2
    CANARY_PERCENTAGE=${3:-5}
@@ -20576,7 +20576,7 @@ sequenceDiagram
    echo "Deploying canary version"
    sed "s/{{VERSION}}/$NEW_VERSION/g" manifests/$SERVICE_NAME-canary.yaml | kubectl apply -f -
    
-   # 2. 等待金丝雀版本准备就绪
+   # 2. 等待金丝雀版本准備就绪
    echo "Waiting for canary version to be ready"
    kubectl rollout status deployment/$SERVICE_NAME-canary
    
@@ -20589,7 +20589,7 @@ sequenceDiagram
      kubectl patch virtualservice/$SERVICE_NAME -n istio-system -p \
        "{\"spec\":{\"http\":[{\"route\":[{\"destination\":{\"host\":\"$SERVICE_NAME\"}, \"weight\":$((100 - current_percentage))},{\"destination\":{\"host\":\"$SERVICE_NAME-canary\"}, \"weight\":$current_percentage}]}]}}"
      
-     # 檢查指标
+     # 檢查指標
      ./check-metrics.sh $SERVICE_NAME $current_percentage
      
      # 檢查错误率
@@ -20613,7 +20613,7 @@ sequenceDiagram
    kubectl patch deployment/$SERVICE_NAME-canary --type='json' -p='[{"op": "replace", "path": "/metadata/name", "value":"'$SERVICE_NAME'"}]'
    ```
 
-### 9.5 安全与合规
+### 9.5 安全與合規
 
 #### 9.5.1 安全策略
 
@@ -20695,12 +20695,12 @@ sequenceDiagram
              restartPolicy: OnFailure
    ```
 
-#### 9.5.2 合规性检查
+#### 9.5.2 合規性检查
 
-1. **自动化合规工作流**
+1. **自動化合規工作流**
    ```python
    class ComplianceWorkflow:
-       """自动化合规工作流"""
+       """自動化合規工作流"""
        
        def __init__(
            self,
@@ -20714,11 +20714,11 @@ sequenceDiagram
            self.logger = logging.getLogger(__name__)
        
        def run_daily_check(self):
-           """执行每日合规性检查"""
-           # 1. 获取所有活跃数据源
+           """执行每日合規性检查"""
+           # 1. 獲取所有活跃資料源
            data_sources = self.compliance_service.get_active_data_sources()
            
-           # 2. 检查每个数据源
+           # 2. 检查每個資料源
            non_compliant_sources = []
            for ds in data_sources:
                result = self.compliance_service.check_compliance(ds)
@@ -20735,7 +20735,7 @@ sequenceDiagram
            self._track_issues(non_compliant_sources)
        
        def _generate_report(self, non_compliant_sources: List) -> ComplianceReport:
-           """生成合规性报告"""
+           """生成合規性报告"""
            return ComplianceReport(
                date=datetime.utcnow(),
                total_sources=len(data_sources),
@@ -20747,14 +20747,14 @@ sequenceDiagram
        
        def _send_notifications(self, report: ComplianceReport):
            """发送通知"""
-           # 发送给合规团队
+           # 发送給合規團隊
            self.notification_service.send_email(
                to=self.config.compliance_team_email,
                subject=f"Daily Compliance Report - {report.date.strftime('%Y-%m-%d')}",
                body=self._format_report_email(report)
            )
            
-           # 如果有关键问题，发送警报
+           # 如果有關鍵问题，发送警报
            if report.critical_issues > 0:
                self.notification_service.send_slack_alert(
                    channel=self.config.alert_channel,
@@ -20762,7 +20762,7 @@ sequenceDiagram
                )
        
        def _track_issues(self, non_compliant_sources: List):
-           """跟踪合规性问题"""
+           """跟踪合規性问题"""
            for ds, result in non_compliant_sources:
                # 创建或更新问题
                issue = self.compliance_service.get_issue(ds.id)
@@ -20774,7 +20774,7 @@ sequenceDiagram
                        due_date=datetime.utcnow() + timedelta(days=7)
                    )
                else:
-                   # 更新现有问题
+                   # 更新現有问题
                    self.compliance_service.update_issue(
                        issue.id,
                        status="open",
@@ -20782,11 +20782,11 @@ sequenceDiagram
                    )
    ```
 
-### 9.6 性能测试方案
+### 9.6 效能测试方案
 
-#### 9.6.1 基準测试场景
+#### 9.6.1 基準测试場景
 
-1. **数据源注册中心性能测试**
+1. **資料源註冊中心效能测试**
    ```python
    # dsr_load_test.py
    import os
@@ -20810,7 +20810,7 @@ sequenceDiagram
    
    @events.test_start.add_listener
    def on_test_start(environment, **kwargs):
-       """测试开始前的准备工作"""
+       """测试開始前的准備工作"""
        if not isinstance(environment.runner, MasterRunner):
            print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Starting DSR performance test")
            print(f"  * Test data sources: {len(TEST_DATA_SOURCES)}")
@@ -20820,7 +20820,7 @@ sequenceDiagram
        wait_time = between(0.1, 0.5)
        
        def on_start(self):
-           """用户启动时的初始化"""
+           """用戶启動時的初始化"""
            self.auth_token = self._get_auth_token()
            self.headers = {
                "Authorization": f"Bearer {self.auth_token}",
@@ -20828,7 +20828,7 @@ sequenceDiagram
            }
        
        def _get_auth_token(self):
-           """获取认证令牌"""
+           """獲取認證令牌"""
            response = self.client.post(
                "/api/v1/auth/token",
                json={
@@ -20841,7 +20841,7 @@ sequenceDiagram
        
        @task(5)
        def list_data_sources(self):
-           """列出数据源"""
+           """列出資料源"""
            self.client.get(
                "/api/v1/data-sources",
                headers=self.headers,
@@ -20850,7 +20850,7 @@ sequenceDiagram
        
        @task(3)
        def get_data_source(self):
-           """获取单个数据源"""
+           """獲取单個資料源"""
            source_id = f"ds-{random.randint(1, 1000):04d}"
            self.client.get(
                f"/api/v1/data-sources/{source_id}",
@@ -20860,7 +20860,7 @@ sequenceDiagram
        
        @task(2)
        def create_data_source(self):
-           """创建数据源"""
+           """创建資料源"""
            source = random.choice(TEST_DATA_SOURCES)
            self.client.post(
                "/api/v1/data-sources",
@@ -20871,7 +20871,7 @@ sequenceDiagram
        
        @task(1)
        def search_data_sources(self):
-           """搜索数据源"""
+           """搜尋資料源"""
            query = random.choice(["test", "example", "api", "web"])
            self.client.get(
                f"/api/v1/data-sources?search={query}",
@@ -20880,7 +20880,7 @@ sequenceDiagram
            )
    ```
 
-2. **分布式爬虫集群性能测试**
+2. **分布式爬蟲集群效能测试**
    ```python
    # crawler_cluster_load_test.py
    import os
@@ -20910,7 +20910,7 @@ sequenceDiagram
        wait_time = between(0.01, 0.1)
        
        def on_start(self):
-           """用户启动时的初始化"""
+           """用戶启動時的初始化"""
            self.auth_token = self._get_auth_token()
            self.headers = {
                "Authorization": f"Bearer {self.auth_token}",
@@ -20918,7 +20918,7 @@ sequenceDiagram
            }
        
        def _get_auth_token(self):
-           """获取认证令牌"""
+           """獲取認證令牌"""
            response = self.client.post(
                "/api/v1/auth/token",
                json={
@@ -20931,7 +20931,7 @@ sequenceDiagram
        
        @task(10)
        def create_task(self):
-           """创建爬虫任务"""
+           """创建爬蟲任務"""
            task = random.choice(TEST_TASKS)
            response = self.client.post(
                "/api/v1/tasks",
@@ -20942,7 +20942,7 @@ sequenceDiagram
            
            if response.status_code == 201:
                task_id = response.json()["id"]
-               # 轮询任务状态
+               # 轮询任務狀態
                for _ in range(10):
                    time.sleep(0.1)
                    status_response = self.client.get(
@@ -20957,37 +20957,37 @@ sequenceDiagram
                            break
    ```
 
-#### 9.6.2 性能指标阈值
+#### 9.6.2 效能指標阈值
 
-1. **API性能指标阈值**
-   | 指标 | 95分位 | 99分位 | 错误率 | 资源使用 |
+1. **API效能指標阈值**
+   | 指標 | 95分位 | 99分位 | 错误率 | 資源使用 |
    |------|--------|--------|--------|----------|
-   | **数据源注册中心** | | | | |
-   | 列建数据源 | <200ms | <500ms | <0.1% | CPU<50%, Mem<70% |
-   | 获取数据源列表 | <100ms | <300ms | <0.1% | CPU<40%, Mem<60% |
-   | 搜索数据源 | <150ms | <400ms | <0.1% | CPU<45%, Mem<65% |
-   | **分布式爬虫集群** | | | | |
-   | 创建爬虫任务 | <100ms | <300ms | <0.1% | CPU<50%, Mem<70% |
-   | 任务状态查询 | <50ms | <200ms | <0.1% | CPU<30%, Mem<50% |
-   | 节点心跳 | <20ms | <100ms | <0.01% | CPU<20%, Mem<40% |
+   | **資料源註冊中心** | | | | |
+   | 列建資料源 | <200ms | <500ms | <0.1% | CPU<50%, Mem<70% |
+   | 獲取資料源列表 | <100ms | <300ms | <0.1% | CPU<40%, Mem<60% |
+   | 搜尋資料源 | <150ms | <400ms | <0.1% | CPU<45%, Mem<65% |
+   | **分布式爬蟲集群** | | | | |
+   | 创建爬蟲任務 | <100ms | <300ms | <0.1% | CPU<50%, Mem<70% |
+   | 任務狀態查詢 | <50ms | <200ms | <0.1% | CPU<30%, Mem<50% |
+   | 節点心跳 | <20ms | <100ms | <0.01% | CPU<20%, Mem<40% |
 
-2. **系统容量规划**
-   | 服务 | 单例配置 | 单例数量 | 支持QPS | 每日任务量 | 存储需求 |
+2. **系統容量规划**
+   | 服務 | 单例配置 | 单例數量 | 支援QPS | 每日任務量 | 儲存需求 |
    |------|----------|----------|---------|------------|----------|
-   | 数据源注册中心 | 2vCPU, 4GB | 3 | 1,000 | - | 50GB |
-   | 网站指纹分析引擎 | 4vCPU, 8GB | 5 | 500 | - | 200GB |
-   | 数据源健康监测系统 | 2vCPU, 4GB | 3 | 2,000 | - | 100GB |
-   | 数据处理工作流引擎 | 4vCPU, 8GB | 5 | 1,500 | - | 150GB |
-   | 自动化媒体处理管道 | 8vCPU, 16GB, 1GPU | 10 | 100 | 10,000 | 10TB |
-   | AI辅助开发系统 | 4vCPU, 8GB | 3 | 300 | - | 50GB |
-   | 数据合规与安全中心 | 2vCPU, 4GB | 3 | 500 | - | 75GB |
-   | 分布式爬虫集群管理系统 | 4vCPU, 8GB | 5 | 2,000 | 1,000,000 | 200GB |
+   | 資料源註冊中心 | 2vCPU, 4GB | 3 | 1,000 | - | 50GB |
+   | 網站指紋分析引擎 | 4vCPU, 8GB | 5 | 500 | - | 200GB |
+   | 資料源健康监测系統 | 2vCPU, 4GB | 3 | 2,000 | - | 100GB |
+   | 資料處理工作流引擎 | 4vCPU, 8GB | 5 | 1,500 | - | 150GB |
+   | 自動化媒體處理管道 | 8vCPU, 16GB, 1GPU | 10 | 100 | 10,000 | 10TB |
+   | AI輔助開发系統 | 4vCPU, 8GB | 3 | 300 | - | 50GB |
+   | 資料合規與安全中心 | 2vCPU, 4GB | 3 | 500 | - | 75GB |
+   | 分布式爬蟲集群管理系統 | 4vCPU, 8GB | 5 | 2,000 | 1,000,000 | 200GB |
 
-### 9.7 灾难恢复计划
+### 9.7 災難恢復計畫
 
-#### 9.7.1 备份策略
+#### 9.7.1 備份策略
 
-1. **数据备份计划**
+1. **資料備份計畫**
    ```yaml
    # backup-policy.yaml
    backups:
@@ -21025,29 +21025,29 @@ sequenceDiagram
        compression: "gzip"
    ```
 
-2. **备份验证脚本**
+2. **備份验證脚本**
    ```bash
    # verify-db-backup.sh
    #!/bin/bash
    
    set -e
    
-   # 参数
+   # 參數
    BACKUP_FILE=$1
    
-   # 1. 检查备份文件是否存在
+   # 1. 检查備份文件是否存在
    if [ ! -f "$BACKUP_FILE" ]; then
      echo "Backup file not found: $BACKUP_FILE"
      exit 1
    fi
    
-   # 2. 检查备份文件完整性
+   # 2. 检查備份文件完整性
    if ! pg_restore -l "$BACKUP_FILE" > /dev/null; then
      echo "Backup file is corrupted: $BACKUP_FILE"
      exit 1
    fi
    
-   # 3. 检查备份时间戳
+   # 3. 检查備份時間戳
    BACKUP_TIME=$(stat -c %Y "$BACKUP_FILE")
    CURRENT_TIME=$(date +%s)
    AGE=$((CURRENT_TIME - BACKUP_TIME))
@@ -21061,74 +21061,74 @@ sequenceDiagram
    exit 0
    ```
 
-#### 9.7.2 災难恢复流程
+#### 9.7.2 災难恢復流程
 
-1. **数据恢复流程**
+1. **資料恢復流程**
    ```mermaid
    graph TD
-     A[灾难发生] --> B{确定影响范围}
-     B -->|部分影响| C[隔离受影响组件]
-     B -->|全面影响| D[启动灾难恢复计划]
-     C --> E[评估数据损坏程度]
-     E --> F[从最近备份恢复]
-     F --> G[验证数据完整性]
-     G --> H[逐步恢复服务]
-     H --> I[监控系统稳定性]
-     I --> J[恢复正常运营]
-     D --> K[激活备用数据中心]
-     K --> L[从异地备份恢复数据]
-     L --> M[验证关键系统功能]
+     A[災難發生] --> B{确定影响范围}
+     B -->|部分影响| C[隔离受影响組件]
+     B -->|全面影响| D[启動災難恢復計畫]
+     C --> E[評估資料损壞程度]
+     E --> F[從最近備份恢復]
+     F --> G[验證資料完整性]
+     G --> H[逐步恢復服務]
+     H --> I[監控系統稳定性]
+     I --> J[恢復正常运营]
+     D --> K[激活備用資料中心]
+     K --> L[從异地備份恢復資料]
+     L --> M[验證關鍵系統功能]
      M --> N[逐步迁移流量]
-     N --> O[全面恢复服务]
-     O --> P[事后分析与改进]
+     N --> O[全面恢復服務]
+     O --> P[事後分析與改进]
    ```
 
-2. **恢复时间目标(RTO)与恢复点目标(RPO)**
-   | 系统 | RTO | RPO | 恢复策略 |
+2. **恢復時間目標(RTO)與恢復点目標(RPO)**
+   | 系統 | RTO | RPO | 恢復策略 |
    |------|-----|-----|----------|
-   | 数据源注册中心 | 15分钟 | 5分钟 | 热备数据库切换 |
-   | 网站指纹分析引擎 | 30分钟 | 15分钟 | 从备份恢复+增量同步 |
-   | 数据源健康监测系统 | 10分钟 | 1分钟 | 实时数据复制 |
-   | 数据处理工作流引擎 | 20分钟 | 5分钟 | 任务队列持久化 |
-   | 自动化媒体处理管道 | 1小时 | 15分钟 | 从对象存储恢复 |
-   | AI辅助开发系统 | 15分钟 | 5分钟 | 热备实例切换 |
-   | 数据合规与安全中心 | 30分钟 | 10分钟 | 从备份恢复 |
-   | 分布式爬虫集群管理系统 | 10分钟 | 1分钟 | 实时状态同步 |
+   | 資料源註冊中心 | 15分钟 | 5分钟 | 热備資料庫切換 |
+   | 網站指紋分析引擎 | 30分钟 | 15分钟 | 從備份恢復+增量同步 |
+   | 資料源健康监测系統 | 10分钟 | 1分钟 | 實時資料複制 |
+   | 資料處理工作流引擎 | 20分钟 | 5分钟 | 任務隊列持久化 |
+   | 自動化媒體處理管道 | 1小時 | 15分钟 | 從物件儲存恢復 |
+   | AI輔助開发系統 | 15分钟 | 5分钟 | 热備實例切換 |
+   | 資料合規與安全中心 | 30分钟 | 10分钟 | 從備份恢復 |
+   | 分布式爬蟲集群管理系統 | 10分钟 | 1分钟 | 實時狀態同步 |
 
 ## 10. 附录
 
 ### 10.1 术语表
 
-| 术语 | 定义 |
+| 术语 | 定義 |
 |------|------|
-| 数据源 | 可供数据的网站、API或其他内容来源 |
-| 数据指纹 | 通过分析确定网站技术栈和特征的标识 |
-| 工作流 | 定义数据采集、处理和存储的自动化流程 |
-| 爬虫节点 | 执行爬取任务的计算资源单元 |
-| 敏感数据 | 需要特殊保护的个人信息或其他敏感信息 |
-| 合规性 | 符合法律法规和行业标准的要求 |
-| 反片 | 临时存储中间结果的数据单元 |
-| 反片处理 | 对数据进行转换、清洗和增强的过程 |
-| 资源配额 | 分配给用户或项目的计算资源限制 |
-| 负载均衡 | 将分配请求到多个服务器以优化资源使用 |
+| 資料源 | 可供資料的網站、API或其他內容來源 |
+| 資料指紋 | 通過分析确定網站技術棧和特徵的標识 |
+| 工作流 | 定義資料採集、處理和儲存的自動化流程 |
+| 爬蟲節点 | 执行爬取任務的计算資源单元 |
+| 敏感資料 | 需要特殊保护的個人資訊或其他敏感資訊 |
+| 合規性 | 符合法律法规和行业標准的要求 |
+| 反片 | 临時儲存中间结果的資料单元 |
+| 反片處理 | 對資料进行转换、清洗和增强的過程 |
+| 資源配额 | 分配給用戶或專案的计算資源限制 |
+| 负载均衡 | 將分配请求到多個服務器以優化資源使用 |
 
-### 10.2 参考文献
+### 10.2 參考文献
 
-1. **Web爬虫技术**
+1. **Web爬蟲技術**
    - Severn, M. (2020). Web Scraping with Python. O'Reilly Media.
    - Zhang, Y., & Chen, L. (2019). Large-scale Web Crawling Techniques. ACM Computing Surveys.
 
-2. **分布式系统**
+2. **分布式系統**
    - Kleppmann, M. (2017). Designing Data-Intensive Applications. O'Reilly Media.
    - Tanenbaum, A., & Van Steen, M. (2017). Distributed Systems: Principles and Paradigms. Pearson.
 
-3. **数据安全与合规**
+3. **資料安全與合規**
    - Schneier, B. (2015). Data and Goliath: The Hidden Battles to Collect Your Data and Control Your World. W.W. Norton & Company.
    - EU General Data Protection Regulation (GDPR), Regulation (EU) 2016/679.
 
-4. **人工智能与机器学习**
+4. **人工智能與机器学习**
    - Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.
    - Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv:2005.14165.
 
 
-**注意**: 本技术需求规格说明书提供了镜界平台的完整技术细节，包括精确的系统架构、详细的数据库设计、核心功能的实现规范、API的具体定义、性能测试方案、安全合规措施、错误处理机制以及监控告警配置。所有内容均达到可直接用于开发的详细程度，确保开发团队能够准确理解和实现系统功能。随着项目进展，本文件将根据实际需要进行更新和补充。
+**註意**: 本技術需求规格說明书提供了镜界平台的完整技術细節，包括精确的系統架構、詳細的資料庫設計、核心功能的實現規範、API的具體定義、效能测试方案、安全合規措施、错误處理機制以及監控告警配置。所有內容均达到可直接用於開发的詳細程度，確保開发團隊能够准确理解和實現系統功能。隨著專案进展，本文件將根據實际需要进行更新和补充。
