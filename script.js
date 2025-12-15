@@ -44,6 +44,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ------------------------------------------------------------
+// Shadow DOM safe helpers (custom-navbar uses shadowRoot)
+// ------------------------------------------------------------
+function getNavbarRoot() {
+    const navbar = document.querySelector('custom-navbar');
+    return navbar && navbar.shadowRoot ? navbar.shadowRoot : null;
+}
+
+function getNavbarEl(id) {
+    const root = getNavbarRoot();
+    return root ? root.getElementById(id) : null;
+}
+
 // Utility functions
 function showToast(message, type = 'info') {
     // Create toast notification
@@ -417,8 +430,11 @@ function logout() {
 }
 
 function updateNavAuthState(user) {
-    const authButtons = document.getElementById('auth-buttons');
-    const userMenu = document.getElementById('user-menu');
+    const authButtons = getNavbarEl('auth-buttons');
+    const userMenu = getNavbarEl('user-menu');
+
+    // Navbar might not be ready yet (custom element upgrades async)
+    if (!authButtons || !userMenu) return;
 
     if (user) {
         // Show user menu
@@ -433,7 +449,8 @@ function updateNavAuthState(user) {
 }
 
 function toggleUserMenu() {
-    const dropdown = document.getElementById('user-dropdown');
+    const dropdown = getNavbarEl('user-dropdown');
+    if (!dropdown) return;
     dropdown.classList.toggle('show');
 }
 
@@ -453,11 +470,18 @@ document.addEventListener('click', function(e) {
 
 // Close user menu when clicking outside
 document.addEventListener('click', function(e) {
-    const userMenu = document.getElementById('user-menu');
-    const userDropdown = document.getElementById('user-dropdown');
-    const userAvatar = document.querySelector('.user-avatar');
+    const navbarRoot = getNavbarRoot();
+    if (!navbarRoot) return;
 
-    if (userMenu && !userMenu.contains(e.target)) {
+    const userMenu = navbarRoot.getElementById('user-menu');
+    const userDropdown = navbarRoot.getElementById('user-dropdown');
+
+    // Clicks inside shadow root don't bubble with a normal DOM target;
+    // use composedPath for correct "outside click" detection.
+    const path = typeof e.composedPath === 'function' ? e.composedPath() : [];
+    const clickedInsideUserMenu = path.includes(userMenu);
+
+    if (userMenu && userDropdown && !clickedInsideUserMenu) {
         userDropdown.classList.remove('show');
     }
 });
@@ -571,6 +595,7 @@ function initRouter() {
         '/community.html': 'community.html',
         '/profile.html': 'profile.html',
         '/workflow.html': 'workflow.html',
+        '/data-sources.html': 'data-sources.html',
         '/notifications': 'notifications.html'
     };
 
@@ -702,6 +727,8 @@ function initRouter() {
             }, 200);
         }
     }
+    // Expose for navbar shadow-root onclick handlers and other pages
+    window.navigateTo = navigateTo;
 
     // Initialize page scripts (for dynamic content)
     function initPageScripts() {

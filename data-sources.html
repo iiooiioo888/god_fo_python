@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資料源註冊中心 - Data Source Registry | 鏡界</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+  <custom-navbar></custom-navbar>
+
+  <main class="pt-28 pb-16">
+    <div class="container mx-auto px-4">
+      <header class="mb-8">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold flex items-center gap-3">
+              <i data-feather="database" class="text-blue-400"></i>
+              資料源註冊中心 (Data Source Registry)
+            </h1>
+            <p class="text-gray-400 mt-2">
+              公測版：支援資料源新增/更新/軟刪除、搜尋、版本快照與健康狀態更新（localStorage 持久化）
+            </p>
+          </div>
+
+          <div class="flex gap-3">
+            <button id="btn-seed" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors">
+              匯入示範資料
+            </button>
+            <button id="btn-create" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors">
+              新增資料源
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section class="bg-gray-800/40 border border-gray-700 rounded-xl p-5 mb-6">
+        <div class="flex flex-col md:flex-row gap-4 items-center">
+          <div class="flex-1 w-full">
+            <label class="text-sm text-gray-300">搜尋</label>
+            <input id="search" type="text" placeholder="依名稱 / 描述 / 類型 / Tag / URL 搜尋..."
+                   class="mt-2 w-full px-4 py-3 bg-gray-900/60 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="w-full md:w-48">
+            <label class="text-sm text-gray-300">狀態</label>
+            <select id="filter-status"
+                    class="mt-2 w-full px-4 py-3 bg-gray-900/60 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">全部</option>
+              <option value="healthy">正常</option>
+              <option value="degraded">需關注</option>
+              <option value="down">故障</option>
+            </select>
+          </div>
+          <div class="w-full md:w-48">
+            <label class="text-sm text-gray-300">顯示</label>
+            <select id="filter-deleted"
+                    class="mt-2 w-full px-4 py-3 bg-gray-900/60 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="active">僅啟用</option>
+              <option value="all">包含已刪除</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-gray-800/40 border border-gray-700 rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-900/60 text-gray-300">
+              <tr>
+                <th class="text-left px-4 py-3">名稱</th>
+                <th class="text-left px-4 py-3">類型</th>
+                <th class="text-left px-4 py-3">狀態</th>
+                <th class="text-left px-4 py-3">Uptime</th>
+                <th class="text-left px-4 py-3">RTT</th>
+                <th class="text-left px-4 py-3">最後檢查</th>
+                <th class="text-left px-4 py-3">版本</th>
+                <th class="text-right px-4 py-3">操作</th>
+              </tr>
+            </thead>
+            <tbody id="table-body" class="divide-y divide-gray-700/60"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="ds-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="w-full max-w-2xl bg-gray-900 border border-gray-700 rounded-xl shadow-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+        <h3 id="modal-title" class="text-xl font-semibold">新增資料源</h3>
+        <button id="modal-close" class="text-gray-400 hover:text-white">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <input type="hidden" id="form-id">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-gray-300">名稱 *</label>
+            <input id="form-name" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例如：Unsplash 圖片 API">
+          </div>
+          <div>
+            <label class="text-sm text-gray-300">類型 *</label>
+            <input id="form-type" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="例如：image-api / web / database">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-300">端點/URL *</label>
+          <input id="form-endpoint" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://api.example.com">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-gray-300">區域</label>
+            <input id="form-region" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="全球 / 亞洲 / 歐洲...">
+          </div>
+          <div>
+            <label class="text-sm text-gray-300">Tags（逗號分隔）</label>
+            <input id="form-tags" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="image,free,public">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-300">描述</label>
+          <textarea id="form-desc" rows="3" class="mt-2 w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="簡述資料源用途、授權或注意事項"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <div class="text-xs text-gray-500">
+            會自動建立版本快照（更新時）
+          </div>
+          <div class="flex gap-3">
+            <button id="modal-cancel" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">取消</button>
+            <button id="modal-save" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">儲存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <custom-footer></custom-footer>
+
+  <script src="components/navbar.js"></script>
+  <script src="components/footer.js"></script>
+  <script src="components/data-source-registry.js"></script>
+  <script src="script.js"></script>
+  <script>
+    feather.replace();
+
+    const registry = window.DataSourceRegistry;
+
+    const seedData = [
+      {
+        name: 'Unsplash 高清圖片庫',
+        description: '高品質免費可商用圖片源，支援 API 呼叫',
+        type: 'image-api',
+        endpoint: 'https://api.unsplash.com',
+        region: '全球',
+        tags: ['image', 'public', 'free'],
+        status: 'healthy',
+        uptime: 99.8,
+        responseTimeMs: 800
+      },
+      {
+        name: 'Pexels 影片素材庫',
+        description: '免費 4K 影片素材，定期更新',
+        type: 'video-api',
+        endpoint: 'https://api.pexels.com',
+        region: '美洲',
+        tags: ['video', 'public'],
+        status: 'healthy',
+        uptime: 98.5,
+        responseTimeMs: 1200
+      },
+      {
+        name: 'NASA 圖像資料庫',
+        description: 'NASA 公開圖像資料庫（偶發連線不穩）',
+        type: 'public-api',
+        endpoint: 'https://images-api.nasa.gov',
+        region: '北美',
+        tags: ['public', 'space'],
+        status: 'down',
+        uptime: 78.3,
+        responseTimeMs: null
+      },
+      {
+        name: 'Pixabay 多媒體庫',
+        description: '免費圖片與影片素材，商用授權友善',
+        type: 'media-api',
+        endpoint: 'https://pixabay.com/api',
+        region: '歐洲',
+        tags: ['image', 'video', 'public'],
+        status: 'degraded',
+        uptime: 96.7,
+        responseTimeMs: 8200
+      }
+    ];
+
+    function statusLabel(status) {
+      if (status === 'healthy') return '🟢 正常';
+      if (status === 'degraded') return '🟡 需關注';
+      if (status === 'down') return '🔴 故障';
+      return status || '-';
+    }
+
+    function fmtUptime(v) {
+      return typeof v === 'number' ? (v.toFixed(1) + '%') : '-';
+    }
+
+    function fmtRtt(v) {
+      if (v == null) return '-';
+      if (v >= 1000) return (v / 1000).toFixed(1) + 's';
+      return v + 'ms';
+    }
+
+    function fmtLastCheck(v) {
+      if (!v) return '-';
+      try {
+        return new Date(v).toLocaleString('zh-TW');
+      } catch {
+        return v;
+      }
+    }
+
+    function rowHtml(ds) {
+      const isDeleted = !!ds.deletedAt;
+      const statusClass =
+        ds.status === 'healthy' ? 'text-green-400' :
+        ds.status === 'degraded' ? 'text-yellow-400' :
+        ds.status === 'down' ? 'text-red-400' : 'text-gray-300';
+
+      return `
+        <tr class="${isDeleted ? 'opacity-50' : ''}">
+          <td class="px-4 py-3">
+            <div class="font-medium">${ds.name}</div>
+            <div class="text-xs text-gray-500 truncate max-w-[360px]">${ds.endpoint || ''}</div>
+            <div class="text-xs text-gray-500">${(ds.tags || []).map(t => `#${t}`).join(' ')}</div>
+          </td>
+          <td class="px-4 py-3 text-gray-300">${ds.type || '-'}</td>
+          <td class="px-4 py-3 ${statusClass} font-medium">${statusLabel(ds.status)}</td>
+          <td class="px-4 py-3 text-gray-300">${fmtUptime(ds.health?.uptime)}</td>
+          <td class="px-4 py-3 text-gray-300">${fmtRtt(ds.health?.responseTimeMs)}</td>
+          <td class="px-4 py-3 text-gray-300">${fmtLastCheck(ds.health?.lastCheckAt)}</td>
+          <td class="px-4 py-3 text-gray-300">v${ds.version || 1}</td>
+          <td class="px-4 py-3 text-right">
+            <div class="flex gap-2 justify-end flex-wrap">
+              <button data-action="test" data-id="${ds.id}" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs transition-colors">測試</button>
+              ${isDeleted
+                ? `<button data-action="restore" data-id="${ds.id}" class="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-xs transition-colors">還原</button>`
+                : `<button data-action="edit" data-id="${ds.id}" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs transition-colors">編輯</button>
+                   <button data-action="delete" data-id="${ds.id}" class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-xs transition-colors">刪除</button>`
+              }
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    function render() {
+      const q = document.getElementById('search').value;
+      const status = document.getElementById('filter-status').value || null;
+      const includeDeleted = document.getElementById('filter-deleted').value === 'all';
+
+      const items = registry.list({ query: q, status: status || null, includeDeleted });
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = items.length
+        ? items.map(rowHtml).join('')
+        : `<tr><td class="px-4 py-10 text-center text-gray-400" colspan="8">目前沒有資料源，請先「匯入示範資料」或「新增資料源」</td></tr>`;
+      feather.replace();
+    }
+
+    function openModal(mode, ds) {
+      document.getElementById('ds-modal').classList.remove('hidden');
+      document.getElementById('ds-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      document.getElementById('modal-title').textContent = mode === 'edit' ? '編輯資料源' : '新增資料源';
+
+      document.getElementById('form-id').value = ds?.id || '';
+      document.getElementById('form-name').value = ds?.name || '';
+      document.getElementById('form-type').value = ds?.type || '';
+      document.getElementById('form-endpoint').value = ds?.endpoint || '';
+      document.getElementById('form-region').value = ds?.region || '全球';
+      document.getElementById('form-tags').value = (ds?.tags || []).join(', ');
+      document.getElementById('form-desc').value = ds?.description || '';
+    }
+
+    function closeModal() {
+      document.getElementById('ds-modal').classList.add('hidden');
+      document.getElementById('ds-modal').classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    function saveFromModal() {
+      const id = document.getElementById('form-id').value.trim();
+      const payload = {
+        name: document.getElementById('form-name').value,
+        type: document.getElementById('form-type').value,
+        endpoint: document.getElementById('form-endpoint').value,
+        region: document.getElementById('form-region').value,
+        tags: document.getElementById('form-tags').value,
+        description: document.getElementById('form-desc').value
+      };
+
+      try {
+        if (id) {
+          registry.update(id, payload);
+          showToast('已更新資料源（並建立版本快照）', 'success');
+        } else {
+          registry.create(payload);
+          showToast('已新增資料源', 'success');
+        }
+        closeModal();
+        render();
+      } catch (e) {
+        showToast(e?.message || '操作失敗', 'error');
+      }
+    }
+
+    async function simulateTest(id) {
+      const ds = registry.get(id);
+      if (!ds) return;
+
+      showToast(`正在測試：${ds.name}`, 'info');
+
+      // simple animation via staged toasts and derived status
+      const ms = Math.floor(Math.random() * 2500) + 300;
+      await new Promise(r => setTimeout(r, 600));
+
+      const rtt = Math.random() < 0.15 ? null : ms;
+      const status =
+        rtt == null ? 'down' :
+        rtt > 5000 ? 'degraded' :
+        rtt > 1500 ? 'degraded' :
+        'healthy';
+
+      const uptime = typeof ds.health?.uptime === 'number'
+        ? Math.max(0, Math.min(100, ds.health.uptime + (status === 'healthy' ? 0.05 : -0.2)))
+        : (status === 'down' ? 80 : 99);
+
+      registry.upsertHealth(id, {
+        responseTimeMs: rtt,
+        uptime: Number(uptime.toFixed(1)),
+        lastCheckAt: new Date().toISOString(),
+        status
+      });
+
+      showToast(`測試完成：${statusLabel(status)}（${fmtRtt(rtt)}）`, status === 'healthy' ? 'success' : (status === 'degraded' ? 'warning' : 'error'));
+      render();
+    }
+
+    // Wiring
+    document.getElementById('btn-seed').addEventListener('click', () => {
+      try {
+        const res = registry.seedIfEmpty(seedData);
+        showToast(res.seeded ? `已匯入 ${res.count} 筆示範資料` : `目前已有 ${res.count} 筆資料，未重複匯入`, res.seeded ? 'success' : 'info');
+        render();
+      } catch (e) {
+        showToast(e?.message || '匯入失敗', 'error');
+      }
+    });
+
+    document.getElementById('btn-create').addEventListener('click', () => openModal('create'));
+
+    document.getElementById('search').addEventListener('input', render);
+    document.getElementById('filter-status').addEventListener('change', render);
+    document.getElementById('filter-deleted').addEventListener('change', render);
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-cancel').addEventListener('click', closeModal);
+    document.getElementById('modal-save').addEventListener('click', saveFromModal);
+    document.getElementById('ds-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'ds-modal') closeModal();
+    });
+
+    document.getElementById('table-body').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      const id = btn.dataset.id;
+
+      try {
+        if (action === 'edit') {
+          openModal('edit', registry.get(id));
+        } else if (action === 'delete') {
+          registry.softDelete(id);
+          showToast('已軟刪除（可還原）', 'info');
+          render();
+        } else if (action === 'restore') {
+          registry.restore(id);
+          showToast('已還原資料源', 'success');
+          render();
+        } else if (action === 'test') {
+          simulateTest(id);
+        }
+      } catch (err) {
+        showToast(err?.message || '操作失敗', 'error');
+      }
+    });
+
+    // Auto re-render when registry changes (multi-tab friendly)
+    window.addEventListener(registry.EVENT_NAME, render);
+
+    // Initial
+    document.addEventListener('DOMContentLoaded', () => {
+      render();
+    });
+  </script>
+</body>
+</html>
+
