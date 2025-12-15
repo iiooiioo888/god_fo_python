@@ -57,6 +57,26 @@ function getNavbarEl(id) {
     return root ? root.getElementById(id) : null;
 }
 
+// ------------------------------------------------------------
+// Router path normalization (supports relative links for file:// usage)
+// ------------------------------------------------------------
+function normalizeRoutePath(input) {
+    const raw = (input == null ? '' : String(input)).trim();
+    if (!raw) return null;
+    if (raw.startsWith('#')) return raw;
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw)) return null; // external URL
+
+    // strip any leading "./"
+    let p = raw.replace(/^\.\//, '');
+
+    // normalize "index.html" to "/"
+    if (p === 'index.html' || p === '/index.html') return '/';
+
+    // ensure leading slash for internal route key
+    if (!p.startsWith('/')) p = '/' + p;
+    return p;
+}
+
 // Utility functions
 function showToast(message, type = 'info') {
     // Create toast notification
@@ -642,12 +662,13 @@ function initRouter() {
 
     // Navigate function
     async function navigateTo(path, pushState = true) {
+        const normalizedPath = normalizeRoutePath(path) || path;
         // Show loading
         loadingOverlay.style.opacity = '1';
         loadingOverlay.style.pointerEvents = 'auto';
 
         try {
-            const htmlFile = routes[path] || routes['/'];
+            const htmlFile = routes[normalizedPath] || routes['/'];
 
             // Check cache first
             let content = pageCache.get(htmlFile);
@@ -712,7 +733,7 @@ function initRouter() {
 
                 // Update URL
                 if (pushState) {
-                    history.pushState({ path }, '', path);
+                    history.pushState({ path: normalizedPath }, '', normalizedPath);
                 }
             }, 150);
 
@@ -776,9 +797,10 @@ function initRouter() {
         const href = link.getAttribute('href');
 
         // Only handle internal routes
-        if (routes[href]) {
+        const key = normalizeRoutePath(href);
+        if (key && routes[key]) {
             e.preventDefault();
-            navigateTo(href);
+            navigateTo(key);
         } else if (href.startsWith('#')) {
             // Handle anchor links
             e.preventDefault();

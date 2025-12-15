@@ -183,27 +183,27 @@ class CustomNavbar extends HTMLElement {
         }
       </style>
       <nav>
-        <a href="/" class="logo">
+        <a href="index.html" class="logo">
           <i data-feather="disc"></i>
           <span>镜界</span>
         </a>
         
         <ul class="nav-links">
-          <li><a href="/"><i data-feather="home"></i> 首页</a></li>
-          <li><a href="/data-sources.html"><i data-feather="database"></i> 註冊中心</a></li>
-          <li><a href="/mirrors.html"><i data-feather="database"></i> 镜库</a></li>
-          <li><a href="/tools.html"><i data-feather="tool"></i> 工坊</a></li>
-          <li><a href="/collection.html"><i data-feather="hexagon"></i> 万花筒</a></li>
-          <li><a href="/pipeline.html"><i data-feather="git-branch"></i> 镜链</a></li>
-          <li><a href="/workflow.html"><i data-feather="zap"></i> 镜流</a></li>
-          <li><a href="/prediction.html"><i data-feather="eye"></i> 预言</a></li>
-          <li><a href="/cluster.html"><i data-feather="network"></i> 镜阵</a></li>
-          <li><a href="/sdk.html"><i data-feather="code"></i> SDK</a></li>
-          <li><a href="/chat.html"><i data-feather="bot"></i> 镜灵</a></li>
-          <li><a href="/status.html"><i data-feather="activity"></i> 监控</a></li>
-          <li><a href="/community.html"><i data-feather="message-square"></i> 镜厅</a></li>
-          <li><a href="/security.html"><i data-feather="shield"></i> 镜盾</a></li>
-          <li><a href="/extension.html"><i data-feather="file-text"></i> 扩展规划</a></li>
+          <li><a href="index.html"><i data-feather="home"></i> 首页</a></li>
+          <li><a href="data-sources.html"><i data-feather="database"></i> 註冊中心</a></li>
+          <li><a href="mirrors.html"><i data-feather="database"></i> 镜库</a></li>
+          <li><a href="tools.html"><i data-feather="tool"></i> 工坊</a></li>
+          <li><a href="collection.html"><i data-feather="hexagon"></i> 万花筒</a></li>
+          <li><a href="pipeline.html"><i data-feather="git-branch"></i> 镜链</a></li>
+          <li><a href="workflow.html"><i data-feather="zap"></i> 镜流</a></li>
+          <li><a href="prediction.html"><i data-feather="eye"></i> 预言</a></li>
+          <li><a href="cluster.html"><i data-feather="network"></i> 镜阵</a></li>
+          <li><a href="sdk.html"><i data-feather="code"></i> SDK</a></li>
+          <li><a href="chat.html"><i data-feather="bot"></i> 镜灵</a></li>
+          <li><a href="status.html"><i data-feather="activity"></i> 监控</a></li>
+          <li><a href="community.html"><i data-feather="message-square"></i> 镜厅</a></li>
+          <li><a href="security.html"><i data-feather="shield"></i> 镜盾</a></li>
+          <li><a href="extension.html"><i data-feather="file-text"></i> 扩展规划</a></li>
         </ul>
         
         <div class="auth-buttons" id="auth-buttons">
@@ -215,10 +215,10 @@ class CustomNavbar extends HTMLElement {
           <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>"
                alt="用户头像" class="user-avatar" onclick="toggleUserMenu()">
           <div class="user-dropdown" id="user-dropdown">
-            <div class="user-dropdown-item" onclick="navigateTo('/profile.html')">
+            <div class="user-dropdown-item" onclick="navigateTo('profile.html')">
               <i data-feather="user"></i> 个人中心
             </div>
-            <div class="user-dropdown-item" onclick="navigateTo('/mirrors.html')">
+            <div class="user-dropdown-item" onclick="navigateTo('mirrors.html')">
               <i data-feather="bookmark"></i> 我的收藏
             </div>
             <div class="user-dropdown-item" onclick="navigateTo('/notifications')">
