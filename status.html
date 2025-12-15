@@ -435,6 +435,67 @@
 
         let statusData = buildStatusData();
 
+        function findRegistryIdByHint(hint) {
+            const h = String(hint || '').toLowerCase();
+            if (!h) return null;
+            const items = registry.list({ includeDeleted: false });
+            const byEndpoint = items.find(ds => (ds.endpoint || '').toLowerCase().includes(h));
+            if (byEndpoint) return byEndpoint.id;
+            const byName = items.find(ds => (ds.name || '').toLowerCase().includes(h));
+            if (byName) return byName.id;
+            const byType = items.find(ds => (ds.type || '').toLowerCase().includes(h));
+            return byType ? byType.id : null;
+        }
+
+        async function runHealthCheckAndPersist(idOrHint) {
+            const id = registry.get(idOrHint) ? idOrHint : findRegistryIdByHint(idOrHint);
+            if (!id) {
+                showToast('找不到對應的資料源，無法更新健康狀態', 'warning');
+                return;
+            }
+
+            const ds = registry.get(id);
+            if (!ds) return;
+
+            showToast(`正在測試連線：${ds.name}`, 'info');
+
+            // Simulate a probe result (public beta)
+            const ms = Math.floor(Math.random() * 2500) + 300;
+            await new Promise(r => setTimeout(r, 600));
+
+            const rtt = Math.random() < 0.12 ? null : ms;
+            const status =
+                rtt == null ? 'down' :
+                rtt > 5000 ? 'degraded' :
+                rtt > 1500 ? 'degraded' :
+                'healthy';
+
+            const uptime = typeof ds.health?.uptime === 'number'
+                ? Math.max(0, Math.min(100, ds.health.uptime + (status === 'healthy' ? 0.05 : -0.2)))
+                : (status === 'down' ? 80 : 99);
+
+            registry.upsertHealth(id, {
+                responseTimeMs: rtt,
+                uptime: Number(uptime.toFixed(1)),
+                lastCheckAt: new Date().toISOString(),
+                status
+            });
+
+            // Refresh UI from registry (single source of truth)
+            statusData = buildStatusData();
+            updateStatusStats();
+            renderStatusGrid(
+                document.getElementById('status-search').value,
+                document.getElementById('status-filter').value
+            );
+
+            const label =
+                status === 'healthy' ? '🟢 正常' :
+                status === 'degraded' ? '🟡 需要關注' :
+                '🔴 故障';
+            showToast(`測試完成：${label}`, status === 'healthy' ? 'success' : (status === 'degraded' ? 'warning' : 'error'));
+        }
+
         let currentFilter = 'all';
 
         // Initialize charts and data
@@ -702,10 +763,8 @@
         });
 
         function retryConnection(dataSource) {
-            showToast(`正在重试连接 ${dataSource}...`, 'info');
-            setTimeout(() => {
-                showToast('连接重试完成', 'success');
-            }, 2000);
+            showToast(`正在重試連線 ${dataSource}...`, 'info');
+            runHealthCheckAndPersist(dataSource);
         }
 
         function acknowledgeAlert(alertId) {
@@ -719,7 +778,7 @@
         }
 
         function investigatePerformance(dataSource) {
-            showToast(`开始调查 ${dataSource} 性能问题...`, 'info');
+            showToast(`開始調查 ${dataSource} 效能問題...`, 'info');
         }
 
         function dismissAlert(dataSource) {
@@ -735,13 +794,7 @@
         }
 
         function testConnection(id) {
-            const item = statusData.find(item => item.id === id);
-            if (item) {
-                showToast(`正在測試 ${item.name} 連線...`, 'info');
-                setTimeout(() => {
-                    showToast(`連線測試完成: ${item.status}`, item.status.includes('🟢') ? 'success' : 'warning');
-                }, 1500);
-            }
+            runHealthCheckAndPersist(id);
         }
 
         // Search and filter handlers
