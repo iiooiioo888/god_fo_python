@@ -318,6 +318,116 @@
       return this.get(id);
     }
 
+    exportDump(options = {}) {
+      const { includeDeleted = true } = options;
+      const items = this.list({ includeDeleted, query: '' });
+      return {
+        schema: 1,
+        exportedAt: nowIso(),
+        items: JSON.parse(JSON.stringify(items))
+      };
+    }
+
+    importDump(dump, options = {}) {
+      const { mode = 'merge' } = options; // merge | replace
+      if (!dump || typeof dump !== 'object') throw new Error('匯入內容格式不正確（需為 JSON 物件）');
+      if (!Array.isArray(dump.items)) throw new Error('匯入內容格式不正確（缺少 items 陣列）');
+
+      // Validate minimal shape
+      const incoming = dump.items.map((ds) => {
+        if (!ds || typeof ds !== 'object') throw new Error('匯入內容包含不合法的資料源項目');
+        if (!ds.id) ds.id = uuid();
+        // Required for validateCreate
+        ds.name = normalizeString(ds.name);
+        ds.type = normalizeString(ds.type);
+        ds.endpoint = normalizeString(ds.endpoint);
+        validateCreate(ds);
+
+        // Normalize common fields
+        ds.description = normalizeString(ds.description);
+        ds.region = normalizeString(ds.region || '全球');
+        ds.tags = normalizeTags(ds.tags);
+        ds.categoryPath = Array.isArray(ds.categoryPath) ? ds.categoryPath.map(normalizeString).filter(Boolean) : [];
+        ds.status = normalizeString(ds.status || 'healthy');
+        ds.health = ds.health && typeof ds.health === 'object' ? ds.health : { uptime: null, responseTimeMs: null, lastCheckAt: null };
+        ds.version = typeof ds.version === 'number' ? ds.version : 1;
+        ds.versions = Array.isArray(ds.versions) ? ds.versions : [];
+        ds.createdAt = ds.createdAt || nowIso();
+        ds.updatedAt = ds.updatedAt || ds.createdAt;
+        ds.deletedAt = ds.deletedAt || null;
+        return ds;
+      });
+
+      const items = this._items();
+
+      if (mode === 'replace') {
+        this._cache.items = incoming;
+        this._save();
+        this._emit({ type: 'import', mode, count: incoming.length });
+        return { mode, count: incoming.length };
+      }
+
+      // merge: upsert by id (overwrite existing)
+      const indexById = new Map(items.map((it, idx) => [it.id, idx]));
+      let upserted = 0;
+      incoming.forEach((ds) => {
+        const idx = indexById.get(ds.id);
+        if (idx == null) {
+          items.push(ds);
+          indexById.set(ds.id, items.length - 1);
+          upserted++;
+        } else {
+          items[idx] = ds;
+          upserted++;
+        }
+      });
+
+      this._save();
+      this._emit({ type: 'import', mode: 'merge', count: upserted });
+      return { mode: 'merge', count: upserted };
+    }
+
+    rollback(id, targetVersion, meta = {}) {
+      const items = this._items();
+      const idx = items.findIndex(ds => ds.id === id);
+      if (idx === -1) throw new Error('找不到資料源');
+
+      const current = items[idx];
+      if (current.deletedAt) throw new Error('資料源已刪除（軟刪除），請先還原再回滾');
+
+      const tv = Number(targetVersion);
+      if (!Number.isFinite(tv)) throw new Error('回滾版本號不正確');
+
+      const versions = Array.isArray(current.versions) ? current.versions : [];
+      const entry = versions.find(v => Number(v.version) === tv);
+      if (!entry || !entry.data) throw new Error(`找不到版本 v${tv} 的快照`);
+
+      const snapshot = JSON.parse(JSON.stringify(current));
+      const restored = JSON.parse(JSON.stringify(entry.data));
+
+      // Keep id stable and keep full history; record rollback as a new snapshot of current state.
+      restored.id = current.id;
+      restored.versions = versions.slice();
+      restored.versions.unshift({
+        version: current.version,
+        at: nowIso(),
+        by: meta.actor || null,
+        action: 'rollback_from',
+        data: snapshot
+      });
+      restored.version = (current.version || 1) + 1;
+      restored.updatedAt = nowIso();
+      restored.updatedBy = meta.actor || null;
+      restored.createdAt = current.createdAt || restored.createdAt || nowIso();
+      restored.deletedAt = null;
+
+      validateCreate(restored);
+      items[idx] = restored;
+      this._save();
+      this._emit({ type: 'rollback', id, to: tv });
+      return this.get(id);
+    }
+
     clearAll() {
       this._cache = { schema: 1, items: [] };
       this._save();

@@ -27,6 +27,12 @@
           </div>
 
           <div class="flex gap-3">
+            <button id="btn-export" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors">
+              匯出 JSON
+            </button>
+            <button id="btn-import" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors">
+              匯入 JSON
+            </button>
             <button id="btn-seed" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors">
               匯入示範資料
             </button>
@@ -144,6 +150,67 @@
     </div>
   </div>
 
+  <!-- Export/Import Modal -->
+  <div id="backup-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="w-full max-w-3xl bg-gray-900 border border-gray-700 rounded-xl shadow-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+        <h3 class="text-xl font-semibold" id="backup-title">匯出 / 匯入 JSON</h3>
+        <button id="backup-close" class="text-gray-400 hover:text-white">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="flex gap-2">
+          <button id="backup-tab-export" class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium">匯出</button>
+          <button id="backup-tab-import" class="px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-sm font-medium">匯入</button>
+        </div>
+
+        <div id="backup-export-pane" class="space-y-3">
+          <div class="text-sm text-gray-400">會匯出包含已刪除項目的完整資料（公測備份/分享用）。</div>
+          <textarea id="backup-export-text" rows="10" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" readonly></textarea>
+          <div class="flex justify-end gap-3">
+            <button id="backup-copy" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">複製</button>
+            <button id="backup-download" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">下載檔案</button>
+          </div>
+        </div>
+
+        <div id="backup-import-pane" class="space-y-3 hidden">
+          <div class="text-sm text-gray-400">貼上 JSON 後可選擇「合併」或「取代」。合併會以 id 覆蓋同 id 資料。</div>
+          <div class="flex gap-3 items-center">
+            <label class="text-sm text-gray-300">模式</label>
+            <select id="backup-import-mode" class="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <option value="merge">合併 (merge)</option>
+              <option value="replace">取代 (replace)</option>
+            </select>
+          </div>
+          <textarea id="backup-import-text" rows="10" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder='{"schema":1,"items":[...]} 或 {"items":[...]}'></textarea>
+          <div class="flex justify-end gap-3">
+            <button id="backup-import-run" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">執行匯入</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Versions Modal -->
+  <div id="versions-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="w-full max-w-3xl bg-gray-900 border border-gray-700 rounded-xl shadow-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+        <div>
+          <h3 class="text-xl font-semibold">版本清單 / 回滾</h3>
+          <div class="text-xs text-gray-500 mt-1" id="versions-subtitle"></div>
+        </div>
+        <button id="versions-close" class="text-gray-400 hover:text-white">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <div id="versions-list" class="space-y-2"></div>
+        <div class="text-xs text-gray-500 mt-4">提示：回滾會把「當前狀態」先存成一個快照，再切回指定版本。</div>
+      </div>
+    </div>
+  </div>
+
   <custom-footer></custom-footer>
 
   <script src="components/navbar.js"></script>
@@ -251,6 +318,7 @@
           <td class="px-4 py-3 text-right">
             <div class="flex gap-2 justify-end flex-wrap">
               <button data-action="test" data-id="${ds.id}" class="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-xs transition-colors">測試</button>
+              <button data-action="versions" data-id="${ds.id}" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs transition-colors">版本</button>
               ${isDeleted
                 ? `<button data-action="restore" data-id="${ds.id}" class="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-xs transition-colors">還原</button>`
                 : `<button data-action="edit" data-id="${ds.id}" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs transition-colors">編輯</button>
@@ -295,6 +363,99 @@
       document.getElementById('ds-modal').classList.add('hidden');
       document.getElementById('ds-modal').classList.remove('flex');
       document.body.style.overflow = 'auto';
+    }
+
+    function openBackupModal(mode) {
+      document.getElementById('backup-modal').classList.remove('hidden');
+      document.getElementById('backup-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      setBackupTab(mode || 'export');
+      refreshExportText();
+    }
+
+    function closeBackupModal() {
+      document.getElementById('backup-modal').classList.add('hidden');
+      document.getElementById('backup-modal').classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    function setBackupTab(tab) {
+      const exportBtn = document.getElementById('backup-tab-export');
+      const importBtn = document.getElementById('backup-tab-import');
+      const exportPane = document.getElementById('backup-export-pane');
+      const importPane = document.getElementById('backup-import-pane');
+
+      if (tab === 'import') {
+        exportBtn.className = 'px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-sm font-medium';
+        importBtn.className = 'px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium';
+        exportPane.classList.add('hidden');
+        importPane.classList.remove('hidden');
+      } else {
+        importBtn.className = 'px-3 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors text-sm font-medium';
+        exportBtn.className = 'px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium';
+        importPane.classList.add('hidden');
+        exportPane.classList.remove('hidden');
+      }
+    }
+
+    function refreshExportText() {
+      const dump = registry.exportDump({ includeDeleted: true });
+      document.getElementById('backup-export-text').value = JSON.stringify(dump, null, 2);
+    }
+
+    function downloadExport() {
+      const content = document.getElementById('backup-export-text').value;
+      const blob = new Blob([content], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `jingjie-datasources-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function openVersionsModal(ds) {
+      document.getElementById('versions-modal').classList.remove('hidden');
+      document.getElementById('versions-modal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('versions-subtitle').textContent = `${ds.name}（目前 v${ds.version || 1}）`;
+      renderVersionsList(ds);
+      feather.replace();
+    }
+
+    function closeVersionsModal() {
+      document.getElementById('versions-modal').classList.add('hidden');
+      document.getElementById('versions-modal').classList.remove('flex');
+      document.body.style.overflow = 'auto';
+      document.getElementById('versions-list').innerHTML = '';
+    }
+
+    function renderVersionsList(ds) {
+      const list = document.getElementById('versions-list');
+      const versions = Array.isArray(ds.versions) ? ds.versions : [];
+
+      if (versions.length === 0) {
+        list.innerHTML = `<div class="text-gray-400 text-sm">目前沒有版本快照（更新一次後就會開始產生）。</div>`;
+        return;
+      }
+
+      list.innerHTML = versions.map(v => {
+        const at = v.at ? new Date(v.at).toLocaleString('zh-TW') : '-';
+        const action = v.action ? `（${v.action}）` : '';
+        return `
+          <div class="flex items-center justify-between gap-3 bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3">
+            <div>
+              <div class="text-sm font-medium text-gray-200">v${v.version} ${action}</div>
+              <div class="text-xs text-gray-500">${at}</div>
+            </div>
+            <button class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-xs transition-colors" data-rollback-id="${ds.id}" data-rollback-version="${v.version}">
+              回滾到 v${v.version}
+            </button>
+          </div>
+        `;
+      }).join('');
     }
 
     function saveFromModal() {
@@ -356,6 +517,9 @@
     }
 
     // Wiring
+    document.getElementById('btn-export').addEventListener('click', () => openBackupModal('export'));
+    document.getElementById('btn-import').addEventListener('click', () => openBackupModal('import'));
+
     document.getElementById('btn-seed').addEventListener('click', () => {
       try {
         const res = registry.seedIfEmpty(seedData);
@@ -379,6 +543,68 @@
       if (e.target.id === 'ds-modal') closeModal();
     });
 
+    // Backup modal wiring
+    document.getElementById('backup-close').addEventListener('click', closeBackupModal);
+    document.getElementById('backup-tab-export').addEventListener('click', () => setBackupTab('export'));
+    document.getElementById('backup-tab-import').addEventListener('click', () => setBackupTab('import'));
+    document.getElementById('backup-copy').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(document.getElementById('backup-export-text').value);
+        showToast('已複製到剪貼簿', 'success');
+      } catch {
+        showToast('複製失敗（瀏覽器限制）', 'warning');
+      }
+    });
+    document.getElementById('backup-download').addEventListener('click', () => {
+      downloadExport();
+      showToast('已開始下載', 'success');
+    });
+    document.getElementById('backup-import-run').addEventListener('click', () => {
+      const mode = document.getElementById('backup-import-mode').value;
+      const raw = document.getElementById('backup-import-text').value.trim();
+      if (!raw) {
+        showToast('請先貼上要匯入的 JSON', 'warning');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        const dump = Array.isArray(parsed) ? { schema: 1, items: parsed } : parsed;
+        const res = registry.importDump(dump, { mode });
+        showToast(`匯入完成：${res.mode} / ${res.count} 筆`, 'success');
+        refreshExportText();
+        render();
+      } catch (e) {
+        showToast(e?.message || '匯入失敗', 'error');
+      }
+    });
+    document.getElementById('backup-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'backup-modal') closeBackupModal();
+    });
+
+    // Versions modal wiring
+    document.getElementById('versions-close').addEventListener('click', closeVersionsModal);
+    document.getElementById('versions-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'versions-modal') closeVersionsModal();
+    });
+    document.getElementById('versions-list').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-rollback-id]');
+      if (!btn) return;
+      const id = btn.dataset.rollbackId;
+      const v = btn.dataset.rollbackVersion;
+      try {
+        registry.rollback(id, v);
+        showToast(`已回滾到 v${v}`, 'success');
+        const ds = registry.get(id);
+        if (ds) {
+          document.getElementById('versions-subtitle').textContent = `${ds.name}（目前 v${ds.version || 1}）`;
+          renderVersionsList(ds);
+        }
+        render();
+      } catch (err) {
+        showToast(err?.message || '回滾失敗', 'error');
+      }
+    });
+
     document.getElementById('table-body').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
@@ -388,6 +614,9 @@
       try {
         if (action === 'edit') {
           openModal('edit', registry.get(id));
+        } else if (action === 'versions') {
+          const ds = registry.get(id);
+          if (ds) openVersionsModal(ds);
         } else if (action === 'delete') {
           registry.softDelete(id);
           showToast('已軟刪除（可還原）', 'info');
