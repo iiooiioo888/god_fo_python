@@ -190,6 +190,7 @@ class CustomNavbar extends HTMLElement {
         
         <ul class="nav-links">
           <li><a href="/"><i data-feather="home"></i> 首页</a></li>
+          <li><a href="/data-sources.html"><i data-feather="database"></i> 註冊中心</a></li>
           <li><a href="/mirrors.html"><i data-feather="database"></i> 镜库</a></li>
           <li><a href="/tools.html"><i data-feather="tool"></i> 工坊</a></li>
           <li><a href="/collection.html"><i data-feather="hexagon"></i> 万花筒</a></li>

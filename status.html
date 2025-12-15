@@ -300,104 +300,140 @@
 
     <script src="components/navbar.js"></script>
     <script src="components/footer.js"></script>
+    <script src="components/data-source-registry.js"></script>
     <script src="script.js"></script>
     <script>
         feather.replace();
 
-        // Status monitoring data
-        let statusData = [
+        // Data Source Registry -> Status page projection
+        const registry = window.DataSourceRegistry;
+
+        const seedData = [
             {
-                id: 1,
-                name: "Unsplash 高清图片库",
-                description: "高质量免费商用图片源，支持API调用",
-                status: "🟢 正常",
+                name: 'Unsplash 高清圖片庫',
+                description: '高品質免費可商用圖片源，支援 API 呼叫',
+                type: 'image-api',
+                endpoint: 'https://api.unsplash.com',
+                region: '全球',
+                tags: ['image', 'public', 'free'],
+                status: 'healthy',
                 uptime: 99.8,
-                lastCheck: "2分钟前",
-                responseTime: "0.8秒",
-                region: "全球",
-                type: "图片API",
-                issues: [],
-                history: [99.9, 99.8, 99.7, 99.8, 99.9, 99.8, 99.8]
+                responseTimeMs: 800
             },
             {
-                id: 2,
-                name: "Pexels 视频素材库",
-                description: "免费4K视频素材，定期更新高质量视频",
-                status: "🟢 正常",
+                name: 'Pexels 影片素材庫',
+                description: '免費 4K 影片素材，定期更新',
+                type: 'video-api',
+                endpoint: 'https://api.pexels.com',
+                region: '美洲',
+                tags: ['video', 'public'],
+                status: 'healthy',
                 uptime: 98.5,
-                lastCheck: "1分钟前",
-                responseTime: "1.2秒",
-                region: "美洲",
-                type: "视频API",
-                issues: ["上周维护导致短暂中断"],
-                history: [98.2, 98.1, 98.3, 98.5, 98.4, 98.6, 98.5]
+                responseTimeMs: 1200
             },
             {
-                id: 3,
-                name: "NASA 图像数据库",
-                description: "美国宇航局公开图像数据库",
-                status: "🔴 故障",
+                name: 'NASA 圖像資料庫',
+                description: 'NASA 公開圖像資料庫（偶發連線不穩）',
+                type: 'public-api',
+                endpoint: 'https://images-api.nasa.gov',
+                region: '北美',
+                tags: ['public', 'space'],
+                status: 'down',
                 uptime: 78.3,
-                lastCheck: "45分钟前",
-                responseTime: "超时",
-                region: "北美",
-                type: "公开API",
-                issues: ["网络连接失败", "正在调查"],
-                history: [88.1, 85.2, 82.4, 78.3, 78.3, 78.3, 78.3]
+                responseTimeMs: null
             },
             {
-                id: 4,
-                name: "Pixabay 多媒体库",
-                description: "免费图片和视频素材，支持商业使用",
-                status: "🟡 需要关注",
+                name: 'Pixabay 多媒體庫',
+                description: '免費圖片與影片素材，商用授權友善',
+                type: 'media-api',
+                endpoint: 'https://pixabay.com/api',
+                region: '歐洲',
+                tags: ['image', 'video', 'public'],
+                status: 'degraded',
                 uptime: 96.7,
-                lastCheck: "3分钟前",
-                responseTime: "8.2秒",
-                region: "欧洲",
-                type: "媒体API",
-                issues: ["响应时间变慢"],
-                history: [97.2, 97.1, 96.8, 96.5, 96.7, 96.7, 96.7]
+                responseTimeMs: 8200
             },
             {
-                id: 5,
-                name: "Getty Images 商业库",
-                description: "全球领先的商业图片库，提供专业级图片和视频素材",
-                status: "🟢 正常",
+                name: 'Getty Images 商業庫',
+                description: '商業級圖片素材庫（示範）',
+                type: 'commercial-api',
+                endpoint: 'https://api.gettyimages.com',
+                region: '全球',
+                tags: ['image', 'commercial'],
+                status: 'healthy',
                 uptime: 99.2,
-                lastCheck: "5分钟前",
-                responseTime: "2.1秒",
-                region: "全球",
-                type: "商业API",
-                issues: [],
-                history: [99.0, 99.1, 99.3, 99.2, 99.2, 99.1, 99.2]
+                responseTimeMs: 2100
             },
             {
-                id: 6,
-                name: "Flickr 公共图片库",
-                description: "雅虎旗下图片分享平台，提供海量用户上传图片",
-                status: "🟢 正常",
+                name: 'Flickr 公共圖片庫',
+                description: '圖片分享平台（示範）',
+                type: 'ugc-api',
+                endpoint: 'https://www.flickr.com/services/api',
+                region: '亞洲',
+                tags: ['image', 'ugc'],
+                status: 'healthy',
                 uptime: 97.8,
-                lastCheck: "4分钟前",
-                responseTime: "3.5秒",
-                region: "亚洲",
-                type: "用户生成内容",
-                issues: [],
-                history: [98.1, 98.0, 97.9, 97.8, 97.6, 97.8, 97.8]
+                responseTimeMs: 3500
             },
             {
-                id: 7,
-                name: "Giphy GIF动画库",
-                description: "全球最大的GIF动画图片库",
-                status: "🟢 正常",
+                name: 'Giphy GIF 動畫庫',
+                description: 'GIF 動畫圖片庫（示範）',
+                type: 'gif-api',
+                endpoint: 'https://api.giphy.com',
+                region: '美國',
+                tags: ['gif', 'image'],
+                status: 'healthy',
                 uptime: 99.5,
-                lastCheck: "1分钟前",
-                responseTime: "0.6秒",
-                region: "美国",
-                type: "GIF动画",
-                issues: [],
-                history: [99.6, 99.4, 99.3, 99.5, 99.5, 99.4, 99.5]
+                responseTimeMs: 600
             }
         ];
+
+        registry.seedIfEmpty(seedData);
+
+        function statusEmoji(status) {
+            if (status === 'healthy') return '🟢 正常';
+            if (status === 'degraded') return '🟡 需要關注';
+            if (status === 'down') return '🔴 故障';
+            return status || '🟡 需要關注';
+        }
+
+        function responseTimeLabel(ms) {
+            if (ms == null) return '超時';
+            if (ms >= 1000) return (ms / 1000).toFixed(1) + '秒';
+            return ms + 'ms';
+        }
+
+        function lastCheckRelative(iso) {
+            if (!iso) return '未檢查';
+            const diff = Date.now() - new Date(iso).getTime();
+            const mins = Math.max(0, Math.floor(diff / 60000));
+            if (mins <= 0) return '剛剛';
+            if (mins < 60) return `${mins}分鐘前`;
+            const hrs = Math.floor(mins / 60);
+            return `${hrs}小時前`;
+        }
+
+        function buildStatusData() {
+            return registry.list().map((ds, i) => ({
+                id: ds.id, // keep string id
+                name: ds.name,
+                description: ds.description || '',
+                status: statusEmoji(ds.status),
+                uptime: typeof ds.health?.uptime === 'number' ? ds.health.uptime : 99.0,
+                lastCheck: lastCheckRelative(ds.health?.lastCheckAt),
+                responseTime: responseTimeLabel(ds.health?.responseTimeMs),
+                region: ds.region || '全球',
+                type: ds.type || 'api',
+                issues: ds.status === 'degraded' ? ['回應時間變慢'] : (ds.status === 'down' ? ['連線失敗/超時'] : []),
+                history: [99.9, 99.8, 99.7, 99.8, 99.9, 99.8, 99.8].map(v => {
+                    // small deterministic-ish variation per row to keep charts alive
+                    const jitter = ((i + 1) % 3) * 0.1;
+                    return Math.max(0, Math.min(100, v - jitter));
+                })
+            }));
+        }
+
+        let statusData = buildStatusData();
 
         let currentFilter = 'all';
 
@@ -644,15 +680,26 @@
 
         // Event handlers
         function refreshData() {
-            // Simulate refresh
+            // Pull latest from registry (can be changed in data-sources.html)
+            statusData = buildStatusData();
             updateStatusStats();
             renderStatusGrid(
                 document.getElementById('status-search').value,
                 document.getElementById('status-filter').value
             );
 
-            showToast('数据已刷新', 'success');
+            showToast('資料已刷新', 'success');
         }
+
+        // Auto refresh when registry changes (e.g. from data-sources.html in another tab)
+        window.addEventListener(registry.EVENT_NAME, () => {
+            statusData = buildStatusData();
+            updateStatusStats();
+            renderStatusGrid(
+                document.getElementById('status-search').value,
+                document.getElementById('status-filter').value
+            );
+        });
 
         function retryConnection(dataSource) {
             showToast(`正在重试连接 ${dataSource}...`, 'info');
@@ -683,16 +730,16 @@
             const item = statusData.find(item => item.id === id);
             if (item) {
                 // In a real app, this would navigate to a details page
-                showToast(`查看 ${item.name} 详情`, 'info');
+                showToast(`查看 ${item.name} 詳情`, 'info');
             }
         }
 
         function testConnection(id) {
             const item = statusData.find(item => item.id === id);
             if (item) {
-                showToast(`正在测试 ${item.name} 连接...`, 'info');
+                showToast(`正在測試 ${item.name} 連線...`, 'info');
                 setTimeout(() => {
-                    showToast(`连接测试完成: ${item.status}`, item.status.includes('🟢') ? 'success' : 'warning');
+                    showToast(`連線測試完成: ${item.status}`, item.status.includes('🟢') ? 'success' : 'warning');
                 }, 1500);
             }
         }
