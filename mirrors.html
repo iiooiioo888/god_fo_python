@@ -52,21 +52,23 @@
                         </div>
                         <div class="flex gap-2">
                             <select class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="type-filter">
-                                <option>全部类型</option>
-                                <option>图片</option>
-                                <option>视频</option>
-                                <option>GIF</option>
+                                <option value="all">全部类型</option>
+                                <option value="图片">图片</option>
+                                <option value="视频">视频</option>
+                                <option value="GIF">GIF</option>
+                                <option value="其他">其他</option>
                             </select>
                             <select class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="status-filter">
-                                <option>全部状态</option>
-                                <option>🟢 镜像清晰</option>
-                                <option>🟡 镜像模糊</option>
-                                <option>🔴 镜面破碎</option>
+                                <option value="all">全部状态</option>
+                                <option value="🟢 镜像清晰">🟢 镜像清晰</option>
+                                <option value="🟡 镜像模糊">🟡 镜像模糊</option>
+                                <option value="🔴 镜面破碎">🔴 镜面破碎</option>
+                                <option value="🔵 更新">🔵 更新</option>
                             </select>
                             <select class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="sort-select">
-                                <option>最新优先</option>
-                                <option>评分最高</option>
-                                <option>下载最多</option>
+                                <option value="latest">最新优先</option>
+                                <option value="rating">评分最高</option>
+                                <option value="downloads">下载最多</option>
                             </select>
                         </div>
                         <button class="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors" onclick="applyFilters()">
@@ -123,11 +125,11 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">数据源名称</label>
-                                    <input type="text" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入数据源名称">
+                                    <input type="text" name="name" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="请输入数据源名称">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-300 mb-2">数据类型</label>
-                                    <select required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select name="type" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option>请选择类型</option>
                                         <option>图片</option>
                                         <option>视频</option>
@@ -139,22 +141,22 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">数据源 URL</label>
-                                <input type="url" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="https://example.com/downloads">
+                                <input type="url" name="url" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="https://example.com/downloads">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">描述</label>
-                                <textarea required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="请描述数据源的特性和使用方法"></textarea>
+                                <textarea name="description" required class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none" rows="3" placeholder="请描述数据源的特性和使用方法"></textarea>
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">标签 (用逗号分隔)</label>
-                                <input type="text" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="免费商用, API, 高质量" id="tags-input">
+                                <input type="text" name="tags" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white" placeholder="免费商用, API, 高质量" id="tags-input">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">当前状态</label>
-                                <select class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select name="status" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option>🟢 镜像清晰</option>
                                     <option>🟡 镜像模糊</option>
                                     <option>🔴 镜面破碎</option>
@@ -270,179 +272,106 @@
 
     <script src="components/navbar.js"></script>
     <script src="components/footer.js"></script>
+    <script src="components/data-source-registry.js"></script>
     <script src="script.js"></script>
     <script>
         feather.replace();
 
-        // Mirror data - enhanced with more properties
-        let mirrorData = [
-            {
-                id: 1,
-                name: "Unsplash 高清图片库",
-                description: "高质量免费商用图片源，支持API调用。提供超过300万张高清照片，支持按主题、颜色、关键词等多种方式搜索。API支持每小时5000次请求，适合个人项目和小型应用。",
-                type: "图片",
-                status: "🟢 镜像清晰",
-                tags: ["图片", "免费商用", "API"],
-                date: "2023-10-15",
-                downloads: 15420,
-                monthlyDownloads: 2156,
-                favorites: 342,
-                rating: 4.8,
-                submitter: "摄影爱好者",
-                verified: true,
-                exampleCode: `// 使用 Unsplash API
-fetch('https://api.unsplash.com/photos/random?client_id=YOUR_ACCESS_KEY&query=nature')
-  .then(response => response.json())
-  .then(data => {
-    console.log('图片信息:', data);
-    // 处理图片数据显示
-  })
-  .catch(error => console.error('API请求失败:', error));`,
-                url: "https://unsplash.com/api"
-            },
-            {
-                id: 2,
-                name: "Pexels 视频素材库",
-                description: "免费4K视频素材库，定期更新高质量视频内容。包含自然景观、城市风光、人物表演等多个分类，每个视频都经过精心挑选和质量审核。",
-                type: "视频",
-                status: "🟡 镜像模糊",
-                tags: ["视频", "免费商用", "需登录"],
-                date: "2023-10-10",
-                downloads: 8934,
-                monthlyDownloads: 1247,
-                favorites: 198,
-                rating: 4.6,
-                submitter: "视频创作者",
-                verified: true,
-                exampleCode: `// 使用 Pexels API
-fetch('https://api.pexels.com/v1/videos/search?query=nature&page=1&per_page=15', {
-  headers: {
-    'Authorization': 'YOUR_API_KEY'
-  }
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log('视频列表:', data.videos);
-    // 处理视频数据
-  });`,
-                url: "https://pexels.com/api"
-            },
-            {
-                id: 3,
-                name: "NASA 图像数据库",
-                description: "美国宇航局公开图像数据库，包含太空望远镜拍摄的超高分辨率天文图像、火星探测器照片、国际空间站图像等。所有图像均为公共领域，可自由商用。",
-                type: "图片",
-                status: "🟢 镜像清晰",
-                tags: ["图片", "公共领域", "API"],
-                date: "2023-10-18",
-                downloads: 9876,
-                monthlyDownloads: 1789,
-                favorites: 543,
-                rating: 4.9,
-                submitter: "天文爱好者",
-                verified: true,
-                exampleCode: `// NASA 开放API使用示例
-fetch('https://images-api.nasa.gov/search?q=mars&page=1&media_type=image')
-  .then(response => response.json())
-  .then(data => {
-    const images = data.collection.items;
-    console.log('火星图片:', images);
-    // 遍历显示图片
-    images.forEach(item => {
-      const imageUrl = item.links[0].href;
-      // 创建img元素显示图片
-    });
-  })
-  .catch(error => console.error('API请求失败:', error));`,
-                url: "https://images.nasa.gov"
-            },
-            {
-                id: 4,
-                name: "Pixabay 多媒体库",
-                description: "近期调整了API接口规范，需要更新客户端代码。提供免费图片和视频素材，支持商业使用，完全免费无版权限制。新增了高级搜索功能和分类筛选。",
-                type: "图片",
-                status: "🔵 更新",
-                tags: ["图片", "视频", "免费商用"],
-                date: "2023-10-20",
-                downloads: 12567,
-                monthlyDownloads: 1893,
-                favorites: 677,
-                rating: 4.7,
-                submitter: "开源贡献者",
-                verified: true,
-                exampleCode: `// 新的 Pixabay API 接口
-const apiKey = 'YOUR_API_KEY';
-const baseUrl = 'https://pixabay.com/api/';
+        const registry = window.DataSourceRegistry;
 
-// 搜索图片
-fetch(baseUrl + \`?key=\${apiKey}&q=nature&image_type=photo&page=1&per_page=20\`)
-  .then(response => response.json())
-  .then(data => {
-    console.log('搜索结果:', data.hits);
-    // 处理返回的图片数据
-    data.hits.forEach(hit => {
-      console.log('图片URL:', hit.webformatURL);
-      // 这里可以创建img元素显示图片
-    });
-  })
-  .catch(error => console.error('搜索失败:', error));`,
-                url: "https://pixabay.com/api"
-            },
-            {
-                id: 5,
-                name: "Flickr 公共图片库",
-                description: "雅虎旗下图片分享平台，提供海量用户上传图片。包含创用CC许可协议图片，支持免费商用。支持多种图片尺寸和格式下载。",
-                type: "图片",
-                status: "🟢 镜像清晰",
-                tags: ["图片", "免费商用", "用户生成内容"],
-                date: "2023-10-08",
-                downloads: 8765,
-                monthlyDownloads: 1234,
-                favorites: 456,
-                rating: 4.3,
-                submitter: "内容创作者",
-                verified: true,
-                exampleCode: `// Flickr API 使用
-const apiKey = 'YOUR_FLICKR_API_KEY';
-fetch(\`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\${apiKey}&tags=nature&format=json&nojsoncallback=1\`)
-  .then(response => response.json())
-  .then(data => {
-    console.log('Flickr照片:', data.photos.photo);
-    // 构建实际图片URL
-    const photo = data.photos.photo[0];
-    const imgUrl = \`https://live.staticflickr.com/\${photo.server}/\${photo.id}_\${photo.secret}_b.jpg\`;
-    console.log('图片URL:', imgUrl);
-  });`,
-                url: "https://flickr.com/api"
-            },
-            {
-                id: 6,
-                name: "Giphy GIF 动画库",
-                description: "全球最大的GIF动画图片库，包含数百万条动态表情和动画。提供丰富多彩的视觉内容，支持在社交媒体和网页中使用。",
-                type: "GIF",
-                status: "🟢 镜像清晰",
-                tags: ["GIF", "动画", "表情包"],
-                date: "2023-10-16",
-                downloads: 6789,
-                monthlyDownloads: 987,
-                favorites: 321,
-                rating: 4.4,
-                submitter: "UI设计师",
-                verified: true,
-                exampleCode: `// GIPHY API
-fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&limit=10')
-  .then(response => response.json())
-  .then(data => {
-    console.log('GIF结果:', data.data);
-    // 显示GIF图片
-    data.data.forEach(gif => {
-      const gifUrl = gif.images.fixed_height.url;
-      // 创建img元素显示动图
-    });
-  });`,
-                url: "https://giphy.com/api"
+        // Seed demo data if needed (shared with status/data-sources pages)
+        registry.seedIfEmpty([
+            { name: 'Unsplash 高清圖片庫', description: '高品質免費可商用圖片源，支援 API 呼叫', type: 'image-api', endpoint: 'https://api.unsplash.com', region: '全球', tags: ['image', 'public', 'free'], status: 'healthy', uptime: 99.8, responseTimeMs: 800 },
+            { name: 'Pexels 影片素材庫', description: '免費 4K 影片素材，定期更新', type: 'video-api', endpoint: 'https://api.pexels.com', region: '美洲', tags: ['video', 'public'], status: 'healthy', uptime: 98.5, responseTimeMs: 1200 },
+            { name: 'NASA 圖像資料庫', description: 'NASA 公開圖像資料庫（偶發連線不穩）', type: 'public-api', endpoint: 'https://images-api.nasa.gov', region: '北美', tags: ['public', 'space'], status: 'down', uptime: 78.3, responseTimeMs: null },
+            { name: 'Pixabay 多媒體庫', description: '免費圖片與影片素材，商用授權友善', type: 'media-api', endpoint: 'https://pixabay.com/api', region: '歐洲', tags: ['image', 'video', 'public'], status: 'degraded', uptime: 96.7, responseTimeMs: 8200 }
+        ]);
+
+        const MIRROR_STATS_KEY = 'jingjie:mirror-stats:v1';
+
+        function safeJsonParse(value, fallback) {
+            try { return JSON.parse(value); } catch { return fallback; }
+        }
+
+        function loadMirrorStats() {
+            return safeJsonParse(localStorage.getItem(MIRROR_STATS_KEY) || '', {}) || {};
+        }
+
+        function saveMirrorStats(stats) {
+            localStorage.setItem(MIRROR_STATS_KEY, JSON.stringify(stats));
+        }
+
+        function hashToInt(str) {
+            let h = 2166136261;
+            for (let i = 0; i < str.length; i++) {
+                h ^= str.charCodeAt(i);
+                h = Math.imul(h, 16777619);
             }
-        ];
+            return Math.abs(h);
+        }
+
+        function getOrCreateStats(id) {
+            const stats = loadMirrorStats();
+            if (stats[id]) return stats[id];
+            const base = hashToInt(String(id));
+            const created = {
+                date: new Date(Date.now() - (base % (60 * 24 * 3600 * 1000))).toISOString().split('T')[0],
+                downloads: 1000 + (base % 20000),
+                monthlyDownloads: 200 + (base % 4000),
+                favorites: 50 + (base % 1200),
+                rating: Number((3.8 + (base % 12) / 10).toFixed(1)),
+                submitter: "公测用户",
+                verified: (base % 3) !== 0
+            };
+            stats[id] = created;
+            saveMirrorStats(stats);
+            return created;
+        }
+
+        function mapTypeToCN(type) {
+            const t = String(type || '').toLowerCase();
+            if (t.includes('video')) return '视频';
+            if (t.includes('gif')) return 'GIF';
+            if (t.includes('image')) return '图片';
+            return '其他';
+        }
+
+        function mapStatusToMirror(status) {
+            if (status === 'healthy') return '🟢 镜像清晰';
+            if (status === 'degraded') return '🟡 镜像模糊';
+            if (status === 'down') return '🔴 镜面破碎';
+            return '🔵 更新';
+        }
+
+        function buildExampleCode(endpoint) {
+            const url = endpoint || 'https://api.example.com';
+            return `// 公测示例：请求资料源端点\nfetch('${url}')\n  .then(r => r.json())\n  .then(data => console.log('响应数据:', data))\n  .catch(err => console.error('请求失败:', err));`;
+        }
+
+        function buildMirrorData() {
+            return registry.list().map(ds => {
+                const st = getOrCreateStats(ds.id);
+                return {
+                    id: ds.id, // string id
+                    name: ds.name,
+                    description: ds.description || '',
+                    type: mapTypeToCN(ds.type),
+                    status: mapStatusToMirror(ds.status),
+                    tags: (ds.tags && ds.tags.length) ? ds.tags : [mapTypeToCN(ds.type)],
+                    date: st.date,
+                    downloads: st.downloads,
+                    monthlyDownloads: st.monthlyDownloads,
+                    favorites: st.favorites,
+                    rating: st.rating,
+                    submitter: st.submitter,
+                    verified: st.verified,
+                    exampleCode: buildExampleCode(ds.endpoint),
+                    url: ds.endpoint
+                };
+            });
+        }
+
+        let mirrorData = buildMirrorData();
 
         // Initialize mirror grid
         function initMirrorPage() {
@@ -452,6 +381,7 @@ fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&li
         // Render mirror cards using our components system
         function renderMirrorGrid(searchTerm = '', typeFilter = 'all', statusFilter = 'all', sortOption = 'latest') {
             const grid = document.getElementById('mirror-grid');
+            mirrorData = buildMirrorData();
             let filteredData = mirrorData.filter(item => {
                 const matchesSearch = !searchTerm || item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.description.toLowerCase().includes(searchTerm.toLowerCase()) || item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
                 const matchesType = typeFilter === 'all' || item.type === typeFilter;
@@ -503,7 +433,7 @@ fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&li
             }).join(' ');
 
             return `
-                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-${hoverColor}-500 transition-all duration-300 card-hover" onclick="openDetailModal(${item.id})" style="cursor: pointer;">
+                <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 hover:border-${hoverColor}-500 transition-all duration-300 card-hover" onclick="openDetailModal(${JSON.stringify(item.id)})" style="cursor: pointer;">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-xl font-semibold">${item.name}</h3>
                         <span class="status-indicator ${statusClass}">${item.status}</span>
@@ -518,7 +448,7 @@ fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&li
                             <span><i data-feather="star" class="inline mr-1 w-3 h-3"></i> ${item.rating}</span>
                             <span><i data-feather="calendar" class="inline mr-1 w-3 h-3"></i> ${item.date}</span>
                         </div>
-                        <button class="text-blue-400 hover:text-blue-300 flex items-center" onclick="event.stopPropagation(); openDetailModal(${item.id})">
+                        <button class="text-blue-400 hover:text-blue-300 flex items-center" onclick="event.stopPropagation(); openDetailModal(${JSON.stringify(item.id)})">
                             查看详情 <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i>
                         </button>
                     </div>
@@ -537,6 +467,7 @@ fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&li
         }
 
         function openDetailModal(itemId) {
+            mirrorData = buildMirrorData();
             const item = mirrorData.find(m => m.id === itemId);
             if (!item) return;
 
@@ -615,28 +546,63 @@ fetch('https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=cat&page=0&li
         document.getElementById('submit-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
+            const data = Object.fromEntries(formData.entries());
 
-            const newMirror = {
-                name: data['数据源名称'] || data['name'],
-                description: data['描述'] || data['description'],
-                type: data['数据类型'] || data.type,
-                status: data['当前状态'] || data.status,
-                tags: (data['标签'] || data['tags'] || '').split(',').map(tag => tag.trim()).filter(tag => tag),
-                date: new Date().toISOString().split('T')[0],
-                downloads: 0,
-                monthlyDownloads: 0,
-                favorites: 0,
-                rating: 0,
-                submitter: "用户提交",
-                verified: false
-            };
+            const typeCN = data.type || '其他';
+            const registryType =
+                typeCN === '图片' ? 'image' :
+                typeCN === '视频' ? 'video' :
+                typeCN === 'GIF' ? 'gif' : 'other';
 
-            mirrorData.push(newMirror);
-            renderMirrorGrid();
-            closeSubmitModal();
+            const mirrorStatus = data.status || '🟢 镜像清晰';
+            const registryStatus =
+                mirrorStatus.includes('🟢') ? 'healthy' :
+                mirrorStatus.includes('🟡') ? 'degraded' :
+                mirrorStatus.includes('🔴') ? 'down' : 'healthy';
 
-            showToast('数据源提交成功！', 'success');
+            try {
+                const created = registry.create({
+                    name: data.name,
+                    description: data.description,
+                    type: registryType,
+                    endpoint: data.url,
+                    tags: (data.tags || '').split(',').map(t => t.trim()).filter(Boolean),
+                    status: registryStatus
+                });
+
+                const stats = loadMirrorStats();
+                stats[created.id] = {
+                    date: new Date().toISOString().split('T')[0],
+                    downloads: 0,
+                    monthlyDownloads: 0,
+                    favorites: 0,
+                    rating: 5.0,
+                    submitter: "用户提交",
+                    verified: false
+                };
+                saveMirrorStats(stats);
+
+                renderMirrorGrid(
+                    document.getElementById('search-input').value,
+                    document.getElementById('type-filter').value,
+                    document.getElementById('status-filter').value,
+                    document.getElementById('sort-select').value
+                );
+                closeSubmitModal();
+                showToast('資料源提交成功！', 'success');
+            } catch (err) {
+                showToast(err?.message || '提交失败', 'error');
+            }
+        });
+
+        // Re-render when registry changes (multi-tab)
+        window.addEventListener(registry.EVENT_NAME, () => {
+            renderMirrorGrid(
+                document.getElementById('search-input').value,
+                document.getElementById('type-filter').value,
+                document.getElementById('status-filter').value,
+                document.getElementById('sort-select').value
+            );
         });
 
         // Initialize page
