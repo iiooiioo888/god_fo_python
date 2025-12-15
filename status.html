@@ -182,43 +182,7 @@
                     </h3>
 
                     <div class="space-y-4" id="global-alerts">
-                        <div class="bg-red-900/30 rounded-lg p-4 border border-red-500/50">
-                            <div class="flex items-start gap-3">
-                                <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
-                                        <i data-feather="x-circle" class="text-red-400 w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-semibold text-red-400">无法找到 NASA 数据源</h4>
-                                    <p class="text-sm text-gray-300 mt-1">最后检查时间: 2024-10-28 13:42:15 | 持续时间: 2小时43分钟</p>
-                                    <p class="text-sm text-gray-400 mt-2">错误详情: 网络超时，已尝试3次重连</p>
-                                    <div class="flex gap-2 mt-3">
-                                        <button onclick="retryConnection('nasa-api')" class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors">重试连接</button>
-                                        <button onclick="acknowledgeAlert('nasa-api')" class="px-3 py-1 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">标记已读</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-yellow-900/30 rounded-lg p-4 border border-yellow-500/50">
-                            <div class="flex items-start gap-3">
-                                <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center">
-                                        <i data-feather="alert-circle" class="text-yellow-400 w-4 h-4"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-semibold text-yellow-400">Pixabay API 响应缓慢</h4>
-                                    <p class="text-sm text-gray-300 mt-1">最后检查时间: 2024-10-28 14:15:30 | 平均响应时间: 8.2秒</p>
-                                    <p class="text-sm text-gray-400 mt-2">性能下降，可能影响数据采集效率</p>
-                                    <div class="flex gap-2 mt-3">
-                                        <button onclick="investigatePerformance('pixabay')" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-sm transition-colors">调查问题</button>
-                                        <button onclick="dismissAlert('pixabay')" class="px-3 py-1 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">忽略</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Alerts will be populated by JavaScript (from DataSourceRegistry) -->
                     </div>
                 </div>
             </div>
@@ -435,6 +399,114 @@
 
         let statusData = buildStatusData();
 
+        // ---------------------------
+        // Alerts (data-driven + ack)
+        // ---------------------------
+        const ALERT_ACK_KEY = 'jingjie:alerts:ack:v1';
+
+        function loadAlertAckMap() {
+            try {
+                return JSON.parse(localStorage.getItem(ALERT_ACK_KEY) || '{}') || {};
+            } catch {
+                return {};
+            }
+        }
+
+        function saveAlertAckMap(map) {
+            localStorage.setItem(ALERT_ACK_KEY, JSON.stringify(map || {}));
+        }
+
+        function getAlertSignature(ds) {
+            const status = ds.status || '';
+            const lastCheckAt = ds.health?.lastCheckAt || '';
+            const rtt = ds.health?.responseTimeMs == null ? 'null' : String(ds.health.responseTimeMs);
+            return `${status}|${lastCheckAt}|${rtt}`;
+        }
+
+        function isAlertAcknowledged(ds) {
+            const map = loadAlertAckMap();
+            return map[ds.id] === getAlertSignature(ds);
+        }
+
+        function acknowledgeAlertForDs(ds) {
+            const map = loadAlertAckMap();
+            map[ds.id] = getAlertSignature(ds);
+            saveAlertAckMap(map);
+        }
+
+        function formatLastCheck(iso) {
+            if (!iso) return '未檢查';
+            try { return new Date(iso).toLocaleString('zh-TW'); } catch { return iso; }
+        }
+
+        function formatRtt(ms) {
+            if (ms == null) return '超時';
+            if (ms >= 1000) return (ms / 1000).toFixed(1) + '秒';
+            return ms + 'ms';
+        }
+
+        function renderGlobalAlerts() {
+            const container = document.getElementById('global-alerts');
+            if (!container) return;
+
+            const dsList = registry.list({ includeDeleted: false });
+            const alertSources = dsList
+                .filter(ds => ds.status === 'down' || ds.status === 'degraded')
+                .filter(ds => !isAlertAcknowledged(ds));
+
+            if (alertSources.length === 0) {
+                container.innerHTML = '<div class="text-center py-6 text-gray-400">目前無需處理的告警</div>';
+                feather.replace();
+                return;
+            }
+
+            container.innerHTML = alertSources.map(ds => {
+                const isDown = ds.status === 'down';
+                const title = isDown ? `無法連線：${ds.name}` : `效能下降：${ds.name}`;
+                const border = isDown ? 'border-red-500/50 bg-red-900/30' : 'border-yellow-500/50 bg-yellow-900/30';
+                const icon = isDown ? 'x-circle' : 'alert-circle';
+                const iconColor = isDown ? 'text-red-400' : 'text-yellow-400';
+                const btnPrimary = isDown
+                    ? `<button onclick="retryConnection(${JSON.stringify(ds.id)})" class="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-sm transition-colors">重試連線</button>`
+                    : `<button onclick="investigatePerformance(${JSON.stringify(ds.id)})" class="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-sm transition-colors">調查問題</button>`;
+                const btnSecondary = isDown
+                    ? `<button onclick="acknowledgeAlert(${JSON.stringify(ds.id)})" class="px-3 py-1 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">標記已讀</button>`
+                    : `<button onclick="dismissAlert(${JSON.stringify(ds.id)})" class="px-3 py-1 bg-gray-600 hover:bg-gray-700 rounded text-sm transition-colors">忽略</button>`;
+
+                const lastCheckAt = formatLastCheck(ds.health?.lastCheckAt);
+                const rtt = formatRtt(ds.health?.responseTimeMs);
+                const detail = isDown
+                    ? `最後檢查時間: ${lastCheckAt} | 端點: ${ds.endpoint || '-'}`
+                    : `最後檢查時間: ${lastCheckAt} | 平均回應時間: ${rtt}`;
+                const hint = isDown
+                    ? '錯誤詳情: 連線失敗/超時（公測探測）'
+                    : '效能下降，可能影響資料採集效率';
+
+                return `
+                    <div class="${border} rounded-lg p-4 border">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 ${isDown ? 'bg-red-500/20' : 'bg-yellow-500/20'} rounded-full flex items-center justify-center">
+                                    <i data-feather="${icon}" class="${iconColor} w-4 h-4"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold ${iconColor}">${title}</h4>
+                                <p class="text-sm text-gray-300 mt-1">${detail}</p>
+                                <p class="text-sm text-gray-400 mt-2">${hint}</p>
+                                <div class="flex gap-2 mt-3 flex-wrap">
+                                    ${btnPrimary}
+                                    ${btnSecondary}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            feather.replace();
+        }
+
         function findRegistryIdByHint(hint) {
             const h = String(hint || '').toLowerCase();
             if (!h) return null;
@@ -503,6 +575,7 @@
             initCharts();
             renderStatusGrid();
             updateStatusStats();
+            renderGlobalAlerts();
 
             // Auto refresh data every 30 seconds
             setInterval(refreshData, 30000);
@@ -748,6 +821,7 @@
                 document.getElementById('status-search').value,
                 document.getElementById('status-filter').value
             );
+            renderGlobalAlerts();
 
             showToast('資料已刷新', 'success');
         }
@@ -760,6 +834,7 @@
                 document.getElementById('status-search').value,
                 document.getElementById('status-filter').value
             );
+            renderGlobalAlerts();
         });
 
         function retryConnection(dataSource) {
@@ -768,17 +843,29 @@
         }
 
         function acknowledgeAlert(alertId) {
-            // Remove alert from UI
-            const alertElement = document.querySelector(`[onclick*="acknowledgeAlert('${alertId}')"]`).closest('.bg-red-900\\/30, .bg-yellow-900\\/30');
-            if (alertElement) {
-                alertElement.style.opacity = '0';
-                setTimeout(() => alertElement.remove(), 300);
+            const id = registry.get(alertId) ? alertId : findRegistryIdByHint(alertId);
+            if (!id) {
+                showToast('找不到對應資料源，無法標記已讀', 'warning');
+                return;
             }
-            showToast('告警已确认', 'success');
+            const ds = registry.get(id);
+            if (!ds) return;
+            acknowledgeAlertForDs(ds);
+            renderGlobalAlerts();
+            showToast('告警已標記已讀', 'success');
         }
 
         function investigatePerformance(dataSource) {
-            showToast(`開始調查 ${dataSource} 效能問題...`, 'info');
+            const id = registry.get(dataSource) ? dataSource : findRegistryIdByHint(dataSource);
+            const ds = id ? registry.get(id) : null;
+            showToast(`開始調查 ${ds ? ds.name : dataSource} 效能問題...`, 'info');
+            try {
+                if (typeof window.navigateTo === 'function') {
+                    window.navigateTo('data-sources.html');
+                }
+            } catch {
+                // ignore
+            }
         }
 
         function dismissAlert(dataSource) {
